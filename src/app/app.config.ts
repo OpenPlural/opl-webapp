@@ -42,21 +42,6 @@ const languages = [
   }, {
     id: 'en',
     name: 'English'
-  }, {
-    id: 'de',
-    name: 'Deutsch'
-  }, {
-    id: 'hr',
-    name: 'Hrvatski'
-  }, {
-    id: 'hu',
-    name: 'Magyar',
-  }, {
-    id: 'rs-lat',
-    name: 'Srpski (Latinica)'
-  }, {
-    id: 'rs-cyr',
-    name: 'Српски (Ћирилица)'
   }
 ];
 
