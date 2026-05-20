@@ -1,0 +1,10 @@
+@import "../../../styles.css";
+
+div.dynamic-grid {
+  @apply grid-cols-6;
+  @apply max-[811px]:grid-cols-5;
+  @apply max-[653px]:grid-cols-4;
+  @apply max-[495px]:grid-cols-3;
+  @apply max-[337px]:grid-cols-2;
+  @apply max-[220px]:grid-cols-1;
+}

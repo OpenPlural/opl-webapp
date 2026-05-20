@@ -1,0 +1,21 @@
+<dialog [id]="dialogId()" class="modal"
+        (mouseup)="mouseState.set(false)"
+        (mouseleave)="mouseState.set(false)"
+        (mousemove)="mouseMoved($event)">
+  <div class="modal-box">
+    <h3 class="text-lg font-bold">{{'select color' | translate}}</h3>
+    <form method="dialog" class="w-full" (submit)="submitForm()">
+      <canvas [id]="canvasId()" class="w-full" width="600" height="200" (mousedown)="mouseState.set(true)" (click)="canvasClicked($event)">
+      </canvas>
+      <input class="hue range w-full appearance-none rounded-full my-2" [style]="'accent-color: hsl(' + hsl().h + ', 100%, 50%)'"
+             type="range" min="0" max="360" step="1" [value]="hsl().h" (input)="hueChanged($event)">
+      @let color = this.color();
+      <input name="value" type="text" class="input w-full" [value]="color" (input)="colorTyped($event)">
+      <div class="my-5 rounded-full" [style]="'background-color:' + color"><br></div>
+      <button type="submit" class="mx-auto mt-5 block btn btn-success">{{'confirm' | translate}}</button>
+    </form>
+  </div>
+  <form method="dialog" class="modal-backdrop">
+    <button></button>
+  </form>
+</dialog>

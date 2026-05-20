@@ -1,0 +1,57 @@
+@let user = this.user();
+<app-popup-page-container [footer]="user ? user.user.system : false" [title]="user ? user.user.name : ''">
+  <app-vertical-center class="header-buttons">
+    <app-icon-button name="friend settings" icon="fa-cog" (click)="gotoFriendSettings()" />
+  </app-vertical-center>
+  @let tab = selectedTab();
+  <main>
+    @if (user) {
+      @if (tab === 'account') {
+        <div class="mx-auto mt-4 mb-2 w-fit">
+          <app-profile-picture [avatarUrl]="user.user.avatar" size="w-48" fallbackSize="fa-5x" [fallbackIcon]="user.user.system ? 'fa-users' : 'fa-user'" [roundPfp]="false" />
+        </div>
+        @if (user.user.system) {
+          <div class="divider">{{'fronters' | translate}}</div>
+          @if (user.front) {
+            <div class="px-5">
+              @if (user.front.length === 0) {
+                <div class="text-center font-light">
+                  {{'front empty' | translate}}
+                </div>
+              } @else {
+                @for (frontEntry of user.front; track frontEntry.id) {
+                  @let member = findMember(user, frontEntry.member);
+                  @if (member) {
+                    <app-member-list-item [member]="member" [editable]="false" (action)="gotoMemberPage(member.id)" />
+                  }
+                }
+              }
+            </div>
+          } @else {
+            <div class="text-center">
+              {{'front permission missing' | translate}}
+            </div>
+          }
+        }
+      } @else if (tab === 'members') {
+        @if (user.folders && user.members) {
+          <app-member-folder-view [folders]="user.folders" [members]="user.members" [searchQuery]="searchQuery()" [archived]="false" [editable]="false" [custom]="false" (selectMember)="gotoMemberPage($event)" />
+        } @else {
+          <div class="text-center mt-5">
+            {{'members permission missing' | translate}}
+          </div>
+        }
+      }
+    } @else {
+      <app-loading />
+    }
+  </main>
+  <footer class="h-16">
+    <app-vertical-center>
+      <app-pager [currentPage]="tab" justify="justify-between">
+        <app-toggle-icon-button name="account" icon="fa-id-card-o" size="fa-lg" [toggled]="tab === 'account'" (toggle)="gotoTab('account')" />
+        <app-toggle-icon-button name="members" icon="fa-users" size="fa-lg" [toggled]="tab === 'members'" (toggle)="gotoTab('members')" />
+      </app-pager>
+    </app-vertical-center>
+  </footer>
+</app-popup-page-container>

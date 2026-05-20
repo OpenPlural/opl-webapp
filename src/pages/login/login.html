@@ -1,0 +1,32 @@
+<div class="w-full h-full">
+  <img src="/icons/icon512.png" class="mx-auto py-5 md:py-10 w-1/4 sm:w-1/5 md:w-1/6" alt="Open Plural" />
+  <form (submit)="login($event)">
+    <div class="sm:w-2/3 sm:mx-auto mx-2">
+      <div class="w-full join join-vertical">
+        <label class="w-full input input-lg join-item">
+          <i class="fa fa-user" aria-hidden="true"></i>
+          <input type="text" name="username" [placeholder]="'username' | translate" required>
+        </label>
+        <label class="w-full input input-lg join-item">
+          <i class="fa fa-lock" aria-hidden="true"></i>
+          <input type="password" name="password" [placeholder]="'password' | translate" required>
+        </label>
+      </div>
+      @let error = errorMessage();
+      @if (error) {
+        <div class="mt-2 text-error text-sm">
+          {{error}}
+        </div>
+      }
+      <div class="w-full mt-4 text-center">
+        <button type="submit" class="btn btn-primary btn-lg">
+          {{'login' | translate}}
+        </button>
+        <br>
+        <button type="button" class="btn btn-ghost btn-md" (click)="goToRegister()">
+          {{'register instead' | translate}}
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

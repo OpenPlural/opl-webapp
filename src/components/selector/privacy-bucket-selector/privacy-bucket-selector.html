@@ -1,0 +1,11 @@
+@let buckets = this.buckets();
+<app-selector [dialogId]="dialogId()" [title]="title()" (submitSelection)="buckets ? submitSelection.emit(this.updatedSelection()) : {}" (forceClose)="forceClose.emit()">
+  @if (buckets) {
+    @let selection = this.selection();
+    @for (bucket of buckets; track bucket.id) {
+      <app-privacy-bucket-list-item [bucket]="bucket" [selectable]="true" [selected]="selection.includes(bucket.id)" (selectionStatus)="setSelected(bucket.id, $event)" />
+    }
+  } @else {
+    <app-loading />
+  }
+</app-selector>

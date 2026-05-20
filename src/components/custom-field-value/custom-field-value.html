@@ -1,0 +1,43 @@
+@let field = this.field();
+@let value = valueCleared() ? null : this.value()?.value || '';
+@let editable = this.editable();
+@if (editable || value) {
+  <div class="divider mb-0"></div>
+  <div class="mb-1">{{field.name}}</div>
+  <div class="flex">
+    @switch (field.dataType) {
+      @case (CUSTOM_FIELD_DATA_TYPE_TEXT) {
+        <input type="text" class="grow input" [value]="value" [readOnly]="!editable" (input)="textChanged($event)" />
+      }
+      @case (CUSTOM_FIELD_DATA_TYPE_COLOR) {
+        <app-color-input class="grow" [dialogId]="'field' + field.id + 'ColorPicker'" [initialValue]="colorValue()" [clearedValue]="valueCleared()" [editable]="editable" (selectColor)="colorChanged($event)" />
+      }
+      @case (CUSTOM_FIELD_DATA_TYPE_TIME) {
+        @if (editable) {
+          <input type="time" class="grow input" [value]="value" (input)="textChanged($event)" />
+        } @else {
+          <input type="text" class="grow input" [value]="value" readonly />
+        }
+      }
+      @case (CUSTOM_FIELD_DATA_TYPE_DATE) {
+        @if (editable) {
+          <input type="date" class="grow input" [value]="dateValue()" (input)="dateTimeChanged($event)" />
+        } @else {
+          <input type="text" class="grow input" [value]="dateTimeFormatted() || ''" readonly />
+        }
+      }
+      @case (CUSTOM_FIELD_DATA_TYPE_DATETIME) {
+        @if (editable) {
+          <input type="datetime-local" class="grow input" [value]="dateTimeValue()" (input)="dateTimeChanged($event)" />
+        } @else {
+          <input type="text" class="grow input" [value]="dateTimeFormatted() || ''" readonly />
+        }
+      }
+    }
+    @if (editable) {
+      <app-vertical-center class="max-h-10">
+        <app-icon-button name="delete" icon="fa-trash" size="fa-lg" buttonClass="btn-error" (click)="fieldClear()" />
+      </app-vertical-center>
+    }
+  </div>
+}

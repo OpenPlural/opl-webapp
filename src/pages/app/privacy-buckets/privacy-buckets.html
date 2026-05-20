@@ -1,0 +1,19 @@
+<app-nav-page-container [fab]="true" (fabAction)="openDialog('bucketNamePrompt')">
+  <main>
+    @let buckets = this.buckets();
+    @if (buckets) {
+      <ul cdkDropList (cdkDropListDropped)="reorderBuckets($event)">
+        @for (bucket of buckets; track bucket.id) {
+          <li cdkDrag class="h-full">
+            <app-privacy-bucket-list-item [bucket]="bucket" (action)="gotoPrivacyBucket(bucket.id)" />
+          </li>
+        }
+      </ul>
+    } @else {
+      <app-loading />
+    }
+  </main>
+  <i class="fa fa-plus"></i>
+</app-nav-page-container>
+
+<app-popup-input dialogId="bucketNamePrompt" title="create privacy bucket" label="name" (submitValue)="createBucket($event)" />

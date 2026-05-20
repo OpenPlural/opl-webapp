@@ -1,0 +1,292 @@
+import { inject, Injectable, isDevMode } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { ExtendedUserInfo, UserId, UserInfo } from './model/User';
+import { Folder, FolderId } from './model/Folder';
+import { ExtendedMember, Member, MemberId } from './model/Member';
+import { AccountInfo } from './model/Auth';
+import { fromJson } from '../util/FixedJson';
+import { firstValueFrom } from 'rxjs';
+import { FrontEntry, FrontEntryId } from './model/Front';
+import { ServerTimeResponse, SyncData } from './model/Sync';
+import { Friend, FriendRequest, FriendSettings } from './model/Friend';
+import { PrivacyBucket, PrivacyBucketId, SimplePrivacyBucket } from './model/Privacy';
+import {
+  CustomField,
+  CustomFieldDataId,
+  CustomFieldDataValue,
+  CustomFieldId,
+  ViewedCustomFieldDataValue
+} from './model/Field';
+import { SessionToken, TokenId } from './model/Session';
+import {
+  translateCustomFieldDataValue,
+  translateFolder,
+  translateFrontEntry,
+  translateMember, translatePrivacyBucket
+} from '../util/IdTranslator';
+import { LocalStorageService } from './LocalStorageService';
+
+const BASE_URL: string = localStorage.getItem('baseUrl') || (isDevMode() ? 'https://localhost:4200' : 'https://opl-api.webbiii.cc');
+
+@Injectable({providedIn: 'root'})
+export class WebService {
+  private readonly http = inject(HttpClient);
+  private readonly localStorageService = inject(LocalStorageService);
+
+  async register(username: string, password: string, system: boolean): Promise<void> {
+    await firstValueFrom(this.http.post(`${BASE_URL}/auth/register`, { name: username, password, system }));
+  }
+
+  async login(username: string, password: string): Promise<AccountInfo> {
+    const device = navigator.userAgent;
+
+    return firstValueFrom(this.http.post(`${BASE_URL}/auth/login`, { name: username, password, device }, {responseType: 'text'})).then(fromJson);
+  }
+
+  async deleteAccount(id: UserId, password: string): Promise<void> {
+    await firstValueFrom(this.http.post(`${BASE_URL}/auth/delete-account`, { id, password }));
+  }
+
+  async changePassword(id: UserId, oldPassword: string, newPassword: string): Promise<void> {
+    await firstValueFrom(this.http.post(`${BASE_URL}/auth/change-password`, { id, oldPassword, newPassword }));
+  }
+
+  async getSessions(): Promise<SessionToken[]> {
+    return firstValueFrom(this.http.get(`${BASE_URL}/api/session/`, {responseType: 'text'})).then(fromJson);
+  }
+
+  async invalidateSession(id: TokenId): Promise<void> {
+    await firstValueFrom(this.http.delete(`${BASE_URL}/api/session/${id}`));
+  }
+
+  async invalidateCurrentSession(): Promise<void> {
+    await firstValueFrom(this.http.delete(`${BASE_URL}/api/session/self`));
+  }
+
+  async sync(since: Date): Promise<SyncData> {
+    return firstValueFrom(this.http.get(`${BASE_URL}/api/sync/?since=${since.toISOString()}`, {responseType: 'text'})).then(fromJson);
+  }
+
+  async getServerTime(): Promise<ServerTimeResponse> {
+    return firstValueFrom(this.http.get(`${BASE_URL}/api/sync/finish`, {responseType: 'text'})).then(fromJson);
+  }
+
+  async createFolder(folder: Folder): Promise<FolderId> {
+    folder = translateFolder(this.localStorageService, folder, 'remoteId');
+    return firstValueFrom(this.http.put<IdResponse>(`${BASE_URL}/api/folder/`, folder)).then(res => res.id);
+  }
+
+  async deleteFolder(remoteId: FolderId): Promise<void> {
+    await firstValueFrom(this.http.delete(`${BASE_URL}/api/folder/${remoteId}`));
+  }
+
+  async updateFolder(folder: Folder): Promise<void> {
+    folder = translateFolder(this.localStorageService, folder, 'remoteId');
+    await firstValueFrom(this.http.patch(`${BASE_URL}/api/folder/${folder.remoteId}`, folder));
+  }
+
+  async createMember(member: Member): Promise<MemberId> {
+    member = translateMember(this.localStorageService, member, 'remoteId');
+    return firstValueFrom(this.http.put<IdResponse>(`${BASE_URL}/api/member/`, member)).then(res => res.id);
+  }
+
+  async deleteMember(remoteId: MemberId): Promise<void> {
+    await firstValueFrom(this.http.delete(`${BASE_URL}/api/member/${remoteId}`));
+  }
+
+  async updateMember(member: Member): Promise<void> {
+    member = translateMember(this.localStorageService, member, 'remoteId');
+    await firstValueFrom(this.http.patch(`${BASE_URL}/api/member/${member.remoteId}`, member));
+  }
+
+  async updateMemberFolders(member: Member): Promise<void> {
+    member = translateMember(this.localStorageService, member, 'remoteId');
+    await firstValueFrom(this.http.patch(`${BASE_URL}/api/member/${member.remoteId}/folders`, member.folders));
+  }
+
+  async createFrontEntry(frontEntry: FrontEntry): Promise<FrontEntryId> {
+    frontEntry = translateFrontEntry(this.localStorageService, frontEntry, 'remoteId');
+    return firstValueFrom(this.http.put<IdResponse>(`${BASE_URL}/api/front/`, frontEntry)).then(res => res.id);
+  }
+
+  async deleteFrontEntry(remoteId: FrontEntryId): Promise<void> {
+    await firstValueFrom(this.http.delete(`${BASE_URL}/api/front/${remoteId}`));
+  }
+
+  async updateFrontEntry(frontEntry: FrontEntry): Promise<void> {
+    frontEntry = translateFrontEntry(this.localStorageService, frontEntry, 'remoteId');
+    await firstValueFrom(this.http.patch(`${BASE_URL}/api/front/${frontEntry.remoteId}`, frontEntry));
+  }
+
+  async createCustomField(customField: CustomField): Promise<CustomFieldId> {
+    return firstValueFrom(this.http.put<IdResponse>(`${BASE_URL}/api/field/`, customField)).then(res => res.id);
+  }
+
+  async deleteCustomField(remoteId: CustomFieldId): Promise<void> {
+    await firstValueFrom(this.http.delete(`${BASE_URL}/api/field/${remoteId}`));
+  }
+
+  async updateCustomField(customField: CustomField): Promise<void> {
+    await firstValueFrom(this.http.patch(`${BASE_URL}/api/field/${customField.remoteId}`, customField));
+  }
+
+  async reorderCustomFields(ids: CustomFieldId[]): Promise<void> {
+    await firstValueFrom(this.http.post(`${BASE_URL}/api/field/reorder`, ids));
+  }
+
+  async createCustomFieldValue(customFieldValue: CustomFieldDataValue): Promise<CustomFieldDataId> {
+    customFieldValue = translateCustomFieldDataValue(this.localStorageService, customFieldValue, 'remoteId');
+    return firstValueFrom(this.http.put<IdResponse>(`${BASE_URL}/api/field/value/`, customFieldValue)).then(res => res.id);
+  }
+
+  async deleteCustomFieldValue(remoteId: CustomFieldDataId): Promise<void> {
+    await firstValueFrom(this.http.delete(`${BASE_URL}/api/field/value/${remoteId}`));
+  }
+
+  async updateCustomFieldValue(customFieldValue: CustomFieldDataValue): Promise<void> {
+    customFieldValue = translateCustomFieldDataValue(this.localStorageService, customFieldValue, 'remoteId');
+    await firstValueFrom(this.http.patch(`${BASE_URL}/api/field/value/${customFieldValue.remoteId}`, customFieldValue));
+  }
+
+  async createPrivacyBucket(privacyBucket: PrivacyBucket): Promise<PrivacyBucketId> {
+    privacyBucket = translatePrivacyBucket(this.localStorageService, privacyBucket, 'remoteId');
+    return firstValueFrom(this.http.put<IdResponse>(`${BASE_URL}/api/privacy/`, privacyBucket)).then(res => res.id);
+  }
+
+  async deletePrivacyBucket(privacyBucketId: PrivacyBucketId): Promise<void> {
+    await firstValueFrom(this.http.delete(`${BASE_URL}/api/privacy/${privacyBucketId}`));
+  }
+
+  async updatePrivacyBucket(privacyBucket: PrivacyBucket): Promise<void> {
+    privacyBucket = translatePrivacyBucket(this.localStorageService, privacyBucket, 'remoteId');
+    await firstValueFrom(this.http.patch(`${BASE_URL}/api/privacy/${privacyBucket.id}`, privacyBucket))
+  }
+
+  async reorderPrivacyBuckets(ids: PrivacyBucketId[]): Promise<void> {
+    await firstValueFrom(this.http.post(`${BASE_URL}/api/privacy/reorder`, ids));
+  }
+
+  async getPrivacyBuckets(): Promise<PrivacyBucket[]> {
+    return firstValueFrom(this.http.get(`${BASE_URL}/api/privacy/`, {responseType: 'text'})).then(fromJson);
+  }
+
+  async getPrivacyBucket(id: PrivacyBucketId): Promise<PrivacyBucket> {
+    return firstValueFrom(this.http.get(`${BASE_URL}/api/privacy/${id}`, {responseType: 'text'})).then(fromJson);
+  }
+
+  async addPrivacyBucketFolder(privacyBucketId: PrivacyBucketId, folder: Folder): Promise<void> {
+    await firstValueFrom(this.http.put(`${BASE_URL}/api/privacy/${privacyBucketId}/folder/${folder.remoteId}`, {}));
+  }
+
+  async addPrivacyBucketMember(privacyBucketId: PrivacyBucketId, member: Member): Promise<void> {
+    await firstValueFrom(this.http.put(`${BASE_URL}/api/privacy/${privacyBucketId}/member/${member.remoteId}`, {}));
+  }
+
+  async addPrivacyBucketCustomField(privacyBucketId: PrivacyBucketId, field: CustomField): Promise<void> {
+    await firstValueFrom(this.http.put(`${BASE_URL}/api/privacy/${privacyBucketId}/field/${field.remoteId}`, {}));
+  }
+
+  async addPrivacyBucketFriend(privacyBucketId: PrivacyBucketId, friendId: UserId): Promise<void> {
+    await firstValueFrom(this.http.put(`${BASE_URL}/api/privacy/${privacyBucketId}/friend/${friendId}`, {}));
+  }
+
+  async removePrivacyBucketFolder(privacyBucketId: PrivacyBucketId, folder: Folder): Promise<void> {
+    await firstValueFrom(this.http.delete(`${BASE_URL}/api/privacy/${privacyBucketId}/folder/${folder.remoteId}`));
+  }
+
+  async removePrivacyBucketMember(privacyBucketId: PrivacyBucketId, member: Member): Promise<void> {
+    await firstValueFrom(this.http.delete(`${BASE_URL}/api/privacy/${privacyBucketId}/member/${member.remoteId}`));
+  }
+
+  async removePrivacyBucketCustomField(privacyBucketId: PrivacyBucketId, field: CustomField): Promise<void> {
+    await firstValueFrom(this.http.delete(`${BASE_URL}/api/privacy/${privacyBucketId}/field/${field.remoteId}`));
+  }
+
+  async removePrivacyBucketFriend(privacyBucketId: PrivacyBucketId, friendId: UserId): Promise<void> {
+    await firstValueFrom(this.http.delete(`${BASE_URL}/api/privacy/${privacyBucketId}/friend/${friendId}`));
+  }
+
+  async getFolderPrivacy(folder: Folder): Promise<SimplePrivacyBucket[]> {
+    return firstValueFrom(this.http.get(`${BASE_URL}/api/folder/${folder.remoteId}/privacy`, {responseType: 'text'})).then(fromJson);
+  }
+
+  async getMemberPrivacy(member: Member): Promise<SimplePrivacyBucket[]> {
+    return firstValueFrom(this.http.get(`${BASE_URL}/api/member/${member.remoteId}/privacy`, {responseType: 'text'})).then(fromJson);
+  }
+
+  async getCustomFieldPrivacy(field: CustomField): Promise<SimplePrivacyBucket[]> {
+    return firstValueFrom(this.http.get(`${BASE_URL}/api/field/${field.remoteId}/privacy`, {responseType: 'text'})).then(fromJson);
+  }
+
+  async getFriendPrivacy(friendId: UserId): Promise<SimplePrivacyBucket[]> {
+    return firstValueFrom(this.http.get(`${BASE_URL}/api/friend/${friendId}/privacy`, {responseType: 'text'})).then(fromJson);
+  }
+
+  async getFriendSettings(friendId: UserId): Promise<FriendSettings> {
+    return firstValueFrom(this.http.get(`${BASE_URL}/api/friend/${friendId}/settings`, {responseType: 'text'})).then(fromJson);
+  }
+
+  async updateFriendSettings(friendId: UserId, settings: FriendSettings): Promise<void> {
+    await firstValueFrom(this.http.patch(`${BASE_URL}/api/friend/${friendId}/settings`, settings));
+  }
+
+  async getFriends(): Promise<Friend[]> {
+    return firstValueFrom(this.http.get(`${BASE_URL}/api/friend/`, {responseType: 'text'})).then(fromJson);
+  }
+
+  async getIncomingFriendRequests(): Promise<FriendRequest[]> {
+    return firstValueFrom(this.http.get(`${BASE_URL}/api/friend/requests/incoming`, {responseType: 'text'})).then(fromJson);
+  }
+
+  async getOutgoingFriendRequests(): Promise<FriendRequest[]> {
+    return firstValueFrom(this.http.get(`${BASE_URL}/api/friend/requests/outgoing`, {responseType: 'text'})).then(fromJson);
+  }
+
+  async sendFriendRequest(friendCode: string): Promise<void> {
+    await firstValueFrom(this.http.put(`${BASE_URL}/api/friend/requests/${friendCode}`, {}));
+  }
+
+  async cancelFriendRequest(friendCode: string): Promise<void> {
+    await firstValueFrom(this.http.delete(`${BASE_URL}/api/friend/requests/${friendCode}`, {}));
+  }
+
+  async acceptFriendRequest(friendCode: string): Promise<void> {
+    await firstValueFrom(this.http.post(`${BASE_URL}/api/friend/requests/${friendCode}/accept`, {}));
+  }
+
+  async declineFriendRequest(friendCode: string): Promise<void> {
+    await firstValueFrom(this.http.post(`${BASE_URL}/api/friend/requests/${friendCode}/decline`, {}));
+  }
+
+  async unfriend(friendId: UserId): Promise<void> {
+    await firstValueFrom(this.http.delete(`${BASE_URL}/api/friend/${friendId}`));
+  }
+
+  async updateUser(user: UserInfo): Promise<void> {
+    await firstValueFrom(this.http.patch(`${BASE_URL}/api/user/self`, user));
+  }
+
+  async getUser(id: UserId): Promise<ExtendedUserInfo> {
+    return firstValueFrom(this.http.get(`${BASE_URL}/api/user/${id}`, {responseType: 'text'})).then(fromJson);
+  }
+
+  async getUsername(id: UserId): Promise<string> {
+    return firstValueFrom(this.http.get(`${BASE_URL}/api/user/${id}/name`, {responseType: 'text'})).then(fromJson);
+  }
+
+  async getMemberFrontHistory(member: Member, page: number): Promise<FrontEntry[]> {
+    return firstValueFrom(this.http.get(`${BASE_URL}/api/member/${member.remoteId}/front-history?page=${page}`, {responseType: 'text'})).then(fromJson);
+  }
+
+  async getMemberCustomFields(userId: UserId, memberId: MemberId): Promise<ViewedCustomFieldDataValue[]> {
+    return firstValueFrom(this.http.get(`${BASE_URL}/api/member/${memberId}/fields?userId=${userId}`, {responseType: 'text'})).then(fromJson);
+  }
+
+  async getMemberWithFolders(userId: UserId, memberId: MemberId): Promise<ExtendedMember> {
+    return firstValueFrom(this.http.get(`${BASE_URL}/api/member/${memberId}?userId=${userId}&extended=true`, {responseType: 'text'})).then(fromJson);
+  }
+}
+
+interface IdResponse {
+  id: bigint;
+}

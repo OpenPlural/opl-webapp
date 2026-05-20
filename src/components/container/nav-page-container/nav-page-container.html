@@ -1,0 +1,54 @@
+<app-page-container [footer]="footer()" [fab]="fab()" (fabAction)="fabAction.emit()">
+  <header class="navbar">
+    <div class="navbar-start">
+      <div class="dropdown">
+        <div tabindex="0" role="button" class="btn btn-ghost btn-circle btn-lg">
+          <i class="fa fa-bars" aria-hidden="true"></i>
+        </div>
+        <ul tabindex="-1" class="menu menu-lg dropdown-content bg-base-200 rounded-box z-1 p-2 shadow-lg">
+          @for (route of getAppRoutes(); track route.path) {
+            <button class="btn btn-ghost btn-md" (click)="gotoRoute(route)">
+              <span class="w-full text-left text-nowrap">{{getRouteName(route) | translate}}</span>
+            </button>
+          }
+          <div class="divider"></div>
+          <button class="btn btn-ghost btn-md" (click)="openDialog('logoutPrompt')">
+            <span class="w-full text-left text-nowrap text-error">{{'logout' | translate}}</span>
+          </button>
+        </ul>
+      </div>
+      @let currentRouteName = getCurrentRouteName();
+      @if (currentRouteName) {
+        <span class="ml-6">
+          {{currentRouteName | translate}}
+        </span>
+      }
+    </div>
+    <div class="navbar-end">
+      @if (searchable()) {
+        @if (searching()) {
+          <ng-content select=".search-options"></ng-content>
+          <label class="input">
+            <i class="fa fa-search" aria-hidden="true"></i>
+            <input type="search" class="grow" (input)="search.emit($any($event).target.value)">
+          </label>
+        }
+        <app-toggle-icon-button name="search" icon="fa-search" size="" [toggled]="searching()" (toggle)="toggleSearch()"/>
+      } @else {
+        <ng-content select=".header-buttons"></ng-content>
+      }
+    </div>
+  </header>
+  <div ngProjectAs="main">
+    <ng-content select="main"></ng-content>
+  </div>
+  <div ngProjectAs="footer">
+    <ng-content select="footer"></ng-content>
+  </div>
+  <div ngProjectAs="i">
+    <ng-content select="i"></ng-content>
+  </div>
+</app-page-container>
+<app-popup-confirm dialogId="logoutPrompt" title="logout" [confirmations]="3" (confirm)="logout()">
+  {{'logout prompt' | translate }}
+</app-popup-confirm>

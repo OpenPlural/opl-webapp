@@ -1,0 +1,77 @@
+@let folder = this.folder();
+@if (folder) {
+  <app-edit-page-container [title]="folder.name" (save)="save()" (delete)="openDialog('folderDeletePrompt')">
+    <div class="p-5 pb-0">
+      <form id="folderForm">
+        <fieldset class="fieldset">
+          <legend class="fieldset-legend">{{'name' | translate}}</legend>
+          <input name="name" type="text" class="w-full input" [value]="folder.name" />
+        </fieldset>
+        <fieldset class="fieldset">
+          <legend class="fieldset-legend">{{'description' | translate}}</legend>
+          <textarea name="description" class="w-full textarea" [value]="folder.description"></textarea>
+        </fieldset>
+        <fieldset class="fieldset">
+          <legend class="fieldset-legend">{{'emoji' | translate}}</legend>
+          <input name="emoji" type="text" class="w-full input" maxlength="3" [value]="folder.emoji" />
+        </fieldset>
+        <fieldset class="fieldset">
+          <legend class="fieldset-legend">{{'color' | translate}}</legend>
+          <app-color-input dialogId="folderColorPicker" [initialValue]="folder.color" [editable]="true" (selectColor)="colorSelected($event)" />
+        </fieldset>
+      </form>
+    </div>
+    @let memberCounts = this.memberCounts();
+    @if (memberCounts) {
+      <div class="divider"></div>
+      <div class="text-center">
+        <span class="font-bold">{{'folder member count header' | translate}}</span>
+        <div class="mt-2 mb-5">
+          @if (showMemberCount()) {
+            <span>{{'folder member count' | translate:{ count: memberCounts.count, archivedCount: memberCounts.archivedCount } }}</span>
+          } @else {
+            <button class="btn btn-soft" (click)="showMemberCount.set(true)">
+              <i class="fa fa-eye"></i>
+              {{'unhide' | translate}}
+            </button>
+          }
+        </div>
+        <span class="font-bold">{{'folder creation date' | translate}}</span>
+        <div class="mt-2">
+          @if (showCreationDate()) {
+            <span>{{folderCreationDate()}}</span>
+          } @else {
+            <button class="btn btn-soft" (click)="showCreationDate.set(true)">
+              <i class="fa fa-eye"></i>
+              {{'unhide' | translate}}
+            </button>
+          }
+        </div>
+      </div>
+    }
+    @if (folder.remoteId) {
+      <div class="divider"></div>
+      <div class="p-5 pt-0">
+        @let privacy = this.privacy();
+        @if (privacy) {
+          <app-privacy-bucket-list title="change folder privacy" [buckets]="privacy" (submitSelection)="updatePrivacy($event)" />
+        } @else {
+          <div class="text-center">
+            @let loading = this.loadingPrivacy();
+            <button type="button" class="btn btn-soft" [class.btn-disabled]="loading" (click)="loadPrivacy()">
+              {{'load privacy' | translate}}
+              @if (loading) {
+                <span class="loading loading-spinner"></span>
+              }
+            </button>
+          </div>
+        }
+      </div>
+    }
+  </app-edit-page-container>
+  <app-popup-confirm dialogId="folderDeletePrompt" title="delete folder" (confirm)="delete()">
+    {{'delete folder prompt' | translate:{ folderName: folder.name } }}
+  </app-popup-confirm>
+} @else {
+  <app-misrouted />
+}

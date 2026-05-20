@@ -1,0 +1,21 @@
+input.hue {
+  background: linear-gradient(
+    to right,
+    red,
+    yellow,
+    lime,
+    cyan,
+    blue,
+    magenta,
+    red
+  );
+  --range-bg: rgba(0,0,0,0);
+  --range-thumb: rgba(0,0,0,0);
+  --range-fill: 0;
+}
+
+input.hue::-webkit-slider-thumb,
+input.hue::-moz-range-thumb,
+input.hue::-ms-thumb {
+  height: 4px;
+}

@@ -1,0 +1,13 @@
+@import "../../styles.css";
+
+button {
+  @apply w-full h-auto aspect-square;
+}
+
+button:not(:hover) {
+  @apply bg-base-100;
+}
+
+button:hover {
+  @apply bg-base-200;
+}

@@ -1,0 +1,21 @@
+<app-page-container [footer]="footer()">
+  <header class="h-full flex justify-between">
+    <div class="flex justify-start">
+      <app-vertical-center>
+        <app-icon-button name="close" icon="fa-times" (action)="goBack()" />
+      </app-vertical-center>
+      <app-vertical-center>
+        {{title()}}
+      </app-vertical-center>
+    </div>
+    <div class="flex justify-end">
+      <ng-content select=".header-buttons"></ng-content>
+    </div>
+  </header>
+  <div ngProjectAs="main">
+    <ng-content select="main"></ng-content>
+  </div>
+  <div ngProjectAs="footer">
+    <ng-content select="footer"></ng-content>
+  </div>
+</app-page-container>

@@ -1,0 +1,14 @@
+@let url = avatarUrl();
+@if (url && loadAvatar()) {
+  <div class="avatar">
+    <div [class]="size()" [class.rounded-full]="roundPfp()" [class.rounded-xl]="!roundPfp()">
+      <img [src]="url" />
+    </div>
+  </div>
+} @else {
+  <div class="avatar avatar-placeholder">
+    <div class="bg-neutral text-neutral-content {{size()}}" [class.rounded-full]="roundPfp()" [class.rounded-xl]="!roundPfp()">
+      <i class="fa {{fallbackIcon()}} {{fallbackSize()}}" aria-hidden="true"></i>
+    </div>
+  </div>
+}

@@ -1,0 +1,55 @@
+@let member = this.member();
+@let editable = this.editable();
+@let avatarUrl = this.avatarUrl();
+<div class="mx-auto my-2 w-fit" [class.cursor-pointer]="editable">
+  <app-profile-picture [avatarUrl]="avatarUrl || member.avatar" size="w-48" fallbackSize="fa-5x" [roundPfp]="false" (click)="openAvatarPrompt()" />
+</div>
+<form id="memberForm">
+  <fieldset class="fieldset">
+    <legend class="fieldset-legend">{{'name' | translate}}</legend>
+    <input name="name" type="text" class="w-full input" [value]="member.name" [readOnly]="!editable" (input)="onUpdate()" />
+  </fieldset>
+  <fieldset class="fieldset">
+    <legend class="fieldset-legend">{{'pronouns' | translate}}</legend>
+    <input name="pronouns" type="text" class="w-full input" [value]="member.pronouns" [readOnly]="!editable" (input)="onUpdate()" />
+  </fieldset>
+  <fieldset class="fieldset">
+    <legend class="fieldset-legend">{{'description' | translate}}</legend>
+    <textarea name="description" class="w-full textarea" [value]="member.description" [readOnly]="!editable" (input)="onUpdate()"></textarea>
+  </fieldset>
+  <fieldset class="fieldset">
+    <legend class="fieldset-legend">{{'color' | translate}}</legend>
+    <app-color-input dialogId="memberColorPicker" [initialValue]="member.color" [editable]="editable" (selectColor)="colorSelected($event)" />
+  </fieldset>
+</form>
+<app-popup-input dialogId="memberAvatarPrompt" title="change avatar" label="avatar url" [initialValue]="avatarUrl || member.avatar || ''" (submitValue)="editAvatar($event)" />
+
+<div class="divider">{{'member folders' | translate}}</div>
+@let folders = this.folders();
+@if (folders !== null) {
+  @let selectedFolders = this.selectedFolders();
+  @if (selectedFolders !== null) {
+    <div>
+      @let allFolders = this.editSelectableFolders();
+      @for (folder of rootFolders(); track folder.id) {
+        <app-folder-tree [folder]="folder" [folders]="allFolders" [selected]="selectedFolders" (toggleSelected)="toggleFolderSelected($event)" />
+      }
+    </div>
+  } @else {
+    <div class="wrap-break-word max-w-full">
+      @for (folder of folders; track folder.id) {
+        <div class="inline-block max-w-full border-b-2 rounded-sm mx-1" [style]="'border-color:' + toColor(folder.color)">{{(folder.emoji ? folder.emoji + ' ' : '') + folder.name}}</div>
+      }
+    </div>
+    @if (editable) {
+      <button class="mt-3 w-full btn btn-soft" (click)="editFolders()">
+        <i class="fa fa-pencil"></i>
+        {{'edit member folders' | translate}}
+      </button>
+    }
+  }
+} @else {
+  <div class="text-center">
+    <span class="loading loading-spinner loading-xl"></span>
+  </div>
+}

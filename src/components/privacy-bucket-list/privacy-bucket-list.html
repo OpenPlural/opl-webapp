@@ -1,0 +1,23 @@
+<ul class="list">
+  @for (bucket of buckets(); track bucket.id) {
+    <li class="list-row bg-base-100 mb-2 border-l-5 border-0" [style]="'border-color: ' + toColor(bucket.color)">
+      <app-vertical-center>
+        @if (bucket.emoji) {
+          <span class="text-xl">{{bucket.emoji}}</span>
+        } @else {
+          <i class="fa fa-shield fa-2x mx-1"></i>
+        }
+      </app-vertical-center>
+      <app-vertical-center>
+        {{bucket.name}}
+      </app-vertical-center>
+    </li>
+  }
+</ul>
+<button class="w-full btn btn-soft" (click)="change.set(true)">
+  <i class="fa fa-shield fa-lg"></i>
+  {{'change privacy' | translate}}
+</button>
+@if (change()) {
+  <app-privacy-bucket-selector dialogId="privacySelector" [title]="title()" [selection]="bucketIds()" (submitSelection)="submit($event)" (forceClose)="change.set(false)" />
+}

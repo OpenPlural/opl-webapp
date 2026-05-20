@@ -1,0 +1,31 @@
+@let member = this.member();
+<app-popup-page-container [title]="member ? member.name : ''">
+  <main>
+    @if (member) {
+      @let tab = selectedTab();
+      <app-pager [currentPage]="tab" placement="top-29" rounding="rounded-b-lg" justify="justify-between">
+        <app-toggle-icon-button name="profile" icon="fa-user" size="fa-lg" [toggled]="tab === 'profile'" (toggle)="selectedTab.set('profile')" />
+        <app-toggle-icon-button name="custom fields" icon="fa-list-ul" size="fa-lg" [toggled]="tab === 'custom fields'" (toggle)="showCustomFields()" />
+      </app-pager>
+      <div class="scroll-container flex flex-col">
+        <div class="mt-5 p-5 overflow-y-auto">
+          @switch (tab) {
+            @case ('profile') {
+              <app-member-profile-page [member]="member!" [folders]="folders()" [editable]="false" />
+            }
+            @case ('custom fields') {
+              @let customFields = this.customFields();
+              @if (customFields) {
+                <app-friend-member-custom-fields-page [fields]="customFields" />
+              } @else {
+                <app-loading />
+              }
+            }
+          }
+        </div>
+      </div>
+    } @else {
+      <app-loading />
+    }
+  </main>
+</app-popup-page-container>

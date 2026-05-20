@@ -1,0 +1,17 @@
+@let bucket = this.bucket();
+<app-list-item containerClass="mx-2 mt-2" [color]="bucket.color" [selectable]="selectable()"
+               [selected]="selected()" (selectionStatus)="selectionStatus.emit($event)" (action)="action.emit()">
+  <app-vertical-center>
+    @if (bucket.emoji) {
+      <span class="text-2xl">{{bucket.emoji}}</span>
+    } @else {
+      <i class="fa fa-shield fa-2x mx-1"></i>
+    }
+  </app-vertical-center>
+  <app-vertical-center>
+    <span class="text-left ml-1.5">
+      <p class="wrap-anywhere">{{bucket.name}}</p>
+      <p class="wrap-anywhere font-light text-base-content/60">{{'privacy bucket assigned friends' | translate:{count: bucket.friends.length} }}</p>
+    </span>
+  </app-vertical-center>
+</app-list-item>

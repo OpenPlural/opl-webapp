@@ -1,0 +1,13 @@
+<div class="flex {{containerClass()}}">
+  <button type="button" class="max-w-full text-left grow flex justify-start btn btn-soft font-medium transition-none h-auto border-l-5 border-0 {{buttonClass()}}"
+          [style]="'border-color: ' + cssColor()" (click)="selectable() ? toggleSelection() : action.emit()">
+    <div class="grow flex">
+      <ng-content></ng-content>
+    </div>
+    @if (selectable()) {
+      <app-vertical-center>
+        <input type="checkbox" class="checkbox" [checked]="selection()">
+      </app-vertical-center>
+    }
+  </button>
+</div>

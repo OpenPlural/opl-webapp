@@ -1,0 +1,4 @@
+.cdk-drag-preview{
+  width: fit-content !important;
+  height: fit-content !important;
+}

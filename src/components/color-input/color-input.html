@@ -1,0 +1,6 @@
+@let color = this.clearedValue() ? '#000000' : this.color();
+<input name="color" type="color" class="w-full input" [value]="color" (change)="valueChanged($event)" [readonly]="!editable() || useCustomColorPicker()" (click)="openColorPicker($event)" />
+
+@if (useCustomColorPicker()) {
+  <app-color-picker [dialogId]="dialogId()" [canvasId]="dialogId() + 'Canvas'" [initialValue]="color" (selectColor)="submitColor($event)" />
+}

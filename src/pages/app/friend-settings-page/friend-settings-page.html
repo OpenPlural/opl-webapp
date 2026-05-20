@@ -1,0 +1,49 @@
+@let username = this.username();
+<app-edit-page-container [title]="username || ''" (delete)="open('unfriendPrompt')" (save)="save()">
+  @let permissionLevel = this.permissionLevel();
+  @let notifyMe = this.notifyMe();
+  @if (permissionLevel !== null && notifyMe !== null) {
+    <div class="md:px-32 md:pt-5 p-5 pb-0">
+      <div class="grid text-left">
+        <span>
+          <input type="checkbox" class="checkbox text-accent" name="1" [checked]="permissionLevel >= 1" (change)="permissionLevelChanged($event)">
+          {{'friend permissions members' | translate}}
+        </span>
+        <span>
+          <input type="checkbox" class="checkbox text-accent" name="2" [checked]="permissionLevel >= 2" (change)="permissionLevelChanged($event)">
+          {{'friend permissions front' | translate}}
+        </span>
+        <span>
+          <input type="checkbox" class="checkbox text-accent" name="3" [checked]="permissionLevel >= 3" (change)="permissionLevelChanged($event)">
+          {{'friend permissions notify' | translate}}
+        </span>
+      </div>
+      <div class="flex justify-between px-2.5 mt-2 text-xs">
+        <span>|</span>
+        <span>|</span>
+        <span>|</span>
+        <span>|</span>
+      </div>
+      <input type="range" class="range w-full text-accent" id="permissionLevel" min="0" max="3" step="1" [value]="permissionLevel" (change)="permissionLevelChanged($event)">
+    </div>
+    <div class="divider"></div>
+    <div class="md:px-32 px-5 py-0">
+      <input type="checkbox" class="checkbox text-accent" name="3" [checked]="notifyMe" (change)="notifyMeChanged($event)">
+      {{'friend notify me' | translate}}
+    </div>
+    <div class="divider"></div>
+    <div class="md:px-32 p-5 pt-0">
+      @let privacy = this.privacy();
+      @if (privacy) {
+        <app-privacy-bucket-list title="change friend privacy" [buckets]="privacy" (submitSelection)="updatePrivacy($event)" />
+      } @else {
+        <app-loading />
+      }
+    </div>
+  } @else {
+    <app-loading />
+  }
+</app-edit-page-container>
+<app-popup-confirm dialogId="unfriendPrompt" title="unfriend" (confirm)="unfriend()">
+  {{'unfriend prompt' | translate:{ friendName: username } }}
+</app-popup-confirm>

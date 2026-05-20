@@ -1,0 +1,3 @@
+@for (fieldValue of fields(); track fieldValue.id) {
+  <app-custom-field-value [field]="fieldValue" [value]="fieldValue" [editable]="false" />
+}

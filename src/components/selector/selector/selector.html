@@ -1,0 +1,14 @@
+<dialog [id]="dialogId()" class="modal modal-open">
+  <div class="modal-box">
+    <h3 class="text-lg font-bold">{{title() | translate}}</h3>
+    <div class="modal-action">
+      <form method="dialog" class="w-full" (submit)="submitForm($event)">
+        <ng-content></ng-content>
+        <button type="submit" class="mx-auto mt-5 block btn btn-success">{{'confirm' | translate}}</button>
+      </form>
+    </div>
+  </div>
+  <form method="dialog" class="modal-backdrop">
+    <button (click)="forceClose.emit()"></button>
+  </form>
+</dialog>

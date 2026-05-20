@@ -1,0 +1,73 @@
+<app-nav-page-container [fab]="true" (fabAction)="openDialog('friendCodePrompt')">
+  <main>
+    @let tab = selectedTab();
+    <app-pager [currentPage]="tab" placement="top-29" rounding="rounded-b-lg" justify="justify-between">
+      <app-toggle-icon-button name="friends" icon="fa-address-book" size="fa-lg" [toggled]="tab === 'friends'" (toggle)="selectedTab.set('friends')" />
+      <app-toggle-icon-button name="friend requests" icon="fa-expand" size="fa-lg" [toggled]="tab === 'friend requests'" (toggle)="selectedTab.set('friend requests')" />
+    </app-pager>
+    <div class="mt-10">
+      @if (tab === 'friends') {
+        @let friendList = friends();
+        @if (friendList) {
+          @for (friend of friendList; track friend.user.id) {
+            <app-user-list-item [user]="friend.user" [subtext]="friend.frontText" (action)="gotoFriend(friend.user.id)" />
+          }
+        } @else {
+          <app-loading />
+        }
+      } @else if (tab === 'friend requests') {
+        @let incoming = incomingRequests();
+        @if (incoming) {
+          <div class="divider">{{'incoming friend requests with count' | translate:{count: incoming.length} }}</div>
+          @for (req of incoming; track req.code) {
+            <div class="flex justify-between bg-base-100 rounded-xl m-2 p-2 font-medium transition-none">
+              <div class="flex">
+                <app-profile-picture [fallbackIcon]="req.system ? 'fa-users' : 'fa-user'" />
+                <p class="ml-1.5 my-auto">{{req.name}}</p>
+              </div>
+              <app-vertical-center>
+                <div class="flex">
+                  <button class="btn btn-circle btn-success" (click)="acceptFriendRequest(req.code)">
+                    <i class="fa fa-check"></i>
+                    <span class="sr-only">{{'accept friend request' | translate}}</span>
+                  </button>
+                  <button class="btn btn-circle btn-error ml-1" (click)="declineFriendRequest(req.code)">
+                    <i class="fa fa-times"></i>
+                    <span class="sr-only">{{'decline friend request' | translate}}</span>
+                  </button>
+                </div>
+              </app-vertical-center>
+            </div>
+          }
+        } @else {
+          <div class="divider">{{'incoming friend requests' | translate}}</div>
+          <app-loading />
+        }
+
+        @let outgoing = outgoingRequests();
+        @if (outgoing) {
+          <div class="divider">{{'outgoing friend requests with count' | translate:{count: outgoing.length} }}</div>
+          @for (req of outgoing; track req.code) {
+            <div class="flex justify-between bg-base-100 rounded-xl m-2 p-2 font-medium transition-none">
+              <div class="flex">
+                <app-profile-picture [fallbackIcon]="req.system ? 'fa-users' : 'fa-user'" />
+                <p class="ml-1.5 my-auto">{{req.name}}</p>
+              </div>
+              <app-vertical-center>
+                <button class="btn btn-circle btn-error" (click)="cancelFriendRequest(req.code)">
+                  <i class="fa fa-times"></i>
+                  <span class="sr-only">{{'cancel friend request' | translate}}</span>
+                </button>
+              </app-vertical-center>
+            </div>
+          }
+        } @else {
+          <div class="divider">{{'outgoing friend requests' | translate}}</div>
+          <app-loading />
+        }
+      }
+    </div>
+  </main>
+  <i class="fa fa-plus"></i>
+</app-nav-page-container>
+<app-popup-input dialogId="friendCodePrompt" title="send friend request" label="friend code" (submitValue)="sendFriendRequest($event)" />

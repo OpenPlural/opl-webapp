@@ -1,0 +1,26 @@
+<app-nav-page-container [fab]="true" (fabAction)="openDialog('fieldNamePrompt')">
+  <main>
+    @let fields = this.customFields();
+    @if (fields) {
+      <ul cdkDropList (cdkDropListDropped)="reorderFields($event)">
+        @for (field of fields; track field.id) {
+          <li cdkDrag class="flex mx-2 mt-2">
+            <button type="button" class="grow flex justify-start btn btn-soft font-medium transition-none h-auto" (click)="gotoCustomField(field.id)">
+              <app-vertical-center>
+                <span class="text-left ml-1">
+                  <p class="wrap-anywhere">{{field.name}}</p>
+                  <p class="wrap-anywhere font-light text-base-content/60">{{'custom field type ' + field.dataType.toLowerCase() | translate}}</p>
+                </span>
+              </app-vertical-center>
+            </button>
+          </li>
+        }
+      </ul>
+    } @else {
+      <app-loading />
+    }
+  </main>
+  <i class="fa fa-plus"></i>
+</app-nav-page-container>
+
+<app-popup-input dialogId="fieldNamePrompt" title="create custom field" label="name" (submitValue)="createCustomField($event)" />

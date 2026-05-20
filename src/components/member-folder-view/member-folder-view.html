@@ -1,0 +1,47 @@
+@let editable = this.editable();
+@let custom = this.custom();
+<div>
+  @if (!custom) {
+    <app-toggle-icon-button name="show folders" toggledName="hide folders" icon="fa-folder" [toggled]="showFolders()" (toggle)="toggleShowFolders()" />
+  }
+  @if (editable) {
+    <app-icon-button name="create member" icon="fa-user-plus" (action)="openDialog('memberNamePrompt')" />
+  }
+</div>
+@let showingFolders = showFolders() && !custom;
+@if (showingFolders) {
+  @let inFolder = currentFolder();
+  <div class="flex justify-between">
+    <span>
+      @if (editable) {
+        <app-icon-button name="create folder" [icon]="['fa-folder-o fa-stack-2x', 'fa-plus fa-stack-1x']" size="text-xs" [stack]="true" (action)="openDialog('folderNamePrompt')" />
+      }
+      @if (inFolder) {
+        <app-icon-button name="go to root folder" icon="fa-arrow-up" (action)="changeCurrentFolder(null)" />
+        <app-icon-button name="go to parent folder" icon="fa-arrow-left" (action)="gotoParentFolder()" />
+      }
+    </span>
+    @if (inFolder && editable) {
+      <app-icon-button name="edit folder" icon="fa-cog" (action)="editFolder()" />
+    }
+  </div>
+}
+<div class="divider my-0"></div>
+@if (showingFolders) {
+  <p class="ml-2 text-md font-medium">{{currentPath()}}</p>
+}
+<div class="grow overflow-y-auto">
+  @if (showingFolders) {
+    @for (folder of shownFolders(); track folder.id) {
+      <app-folder-list-item [folder]="folder" (action)="changeCurrentFolder(folder.id)" />
+    }
+  }
+  @for (member of shownMembers(); track member.id) {
+    <app-member-list-item [member]="member" [editable]="editable" (action)="selectMember.emit(member.id)" />
+  }
+</div>
+
+@if (editable) {
+  <app-popup-input dialogId="memberNamePrompt" title="create member" label="name" (submitValue)="createMember($event)" />
+  <app-popup-input dialogId="folderNamePrompt" title="create folder" label="name" (submitValue)="createFolder($event)" />
+}

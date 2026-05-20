@@ -1,0 +1,13 @@
+@let folder = this.folder();
+@let selected = this.selected();
+
+<app-folder-list-item [folder]="folder" [selectable]="true" [selected]="currentSelected()" (action)="toggleSelected.emit(folder.id)" />
+
+@if (expanded()) {
+  @let folders = this.folders();
+  @for (child of children(); track child.id) {
+    <div class="border-l-2 ml-3.5 pl-1">
+      <app-folder-tree [folder]="child" [folders]="folders" [selected]="selected" (toggleSelected)="toggleSelected.emit($event)" />
+    </div>
+  }
+}

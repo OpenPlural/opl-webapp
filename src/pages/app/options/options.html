@@ -1,0 +1,44 @@
+<app-nav-page-container>
+  <main>
+    <div class="p-5">
+      @let settings = this.settings();
+      <fieldset class="fieldset">
+        <legend class="fieldset-legend">{{'default page' | translate}}</legend>
+        <select class="w-full select" (change)="updateDefaultPage($event)">
+          @for (route of getAppRoutes(); track route.path) {
+            <option [value]="route.path" [selected]="route.path === settings.defaultRoute">{{route.data!['name'] | translate}}</option>
+          }
+        </select>
+      </fieldset>
+
+      <fieldset class="fieldset">
+        <legend class="fieldset-legend">{{'language' | translate}}</legend>
+        <select class="w-full select" (change)="updateLanguage($event)">
+          @for (lang of getLanguages(); track lang.id) {
+            <option [value]="lang.id" [selected]="lang.id === settings.language">{{lang.name}}</option>
+          }
+        </select>
+      </fieldset>
+
+      <fieldset class="fieldset">
+        <legend class="fieldset-legend">{{'date format' | translate}}</legend>
+        <span class="text-base-content/60">{{'date format example 01nov24' | translate}}</span>
+        <select class="w-full select" (change)="updateDateFormat($event)">
+          <option value="yyyy-MM-dd" [selected]="settings.dateFormat === 'yyyy-MM-dd'">2024-11-01</option>
+          <option value="yyyy/MM/dd" [selected]="settings.dateFormat === 'yyyy/MM/dd'">2024/11/01</option>
+          <option value="MM/dd/yyyy" [selected]="settings.dateFormat === 'MM/dd/yyyy'">11/01/2024</option>
+          <option value="dd/MM/yyyy" [selected]="settings.dateFormat === 'dd/MM/yyyy'">01/11/2024</option>
+          <option value="yyyy.MM.dd" [selected]="settings.dateFormat === 'yyyy.MM.dd'">2024.11.01</option>
+          <option value="dd.MM.yyyy" [selected]="settings.dateFormat === 'dd.MM.yyyy'">01.11.2024</option>
+        </select>
+      </fieldset>
+
+      <div class="divider">{{'general settings' | translate}}</div>
+      <app-toggle-setting name="load avatars" [toggled]="settings.loadAvatars" (toggle)="toggleSetting('loadAvatars', $event)" />
+      <app-toggle-setting name="use native color picker" [toggled]="settings.useNativeColorPicker" (toggle)="toggleSetting('useNativeColorPicker', $event)" />
+
+      <div class="divider">{{'group settings' | translate}}</div>
+      <app-toggle-setting name="hide root members" [toggled]="settings.hideRootMembers" (toggle)="toggleSetting('hideRootMembers', $event)" />
+    </div>
+  </main>
+</app-nav-page-container>

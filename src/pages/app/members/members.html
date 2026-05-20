@@ -1,0 +1,21 @@
+<app-nav-page-container [footer]="true" [searchable]="true" (search)="searchQuery.set($event)">
+  <div class="search-options">
+    <app-vertical-center>
+      <app-toggle-icon-button name="archived" icon="fa-archive" [toggled]="searchArchived()" (toggle)="toggleSearchArchived()" />
+    </app-vertical-center>
+  </div>
+  @let customFront = custom();
+  <main>
+    <app-member-folder-view [folders]="localFolders()" [members]="localMembers()" [searchQuery]="searchQuery()"
+                            [archived]="searchArchived()" [editable]="true" [custom]="customFront" (selectMember)="gotoMemberPage($event)" />
+  </main>
+  <footer class="h-16">
+    <app-vertical-center>
+      <app-pager [currentPage]="customFront ? 'custom front' : 'members'">
+        <app-toggle-icon-button name="members" icon="fa-users" size="fa-lg" [toggled]="!customFront" (toggle)="gotoMembers()" />
+        <app-toggle-icon-button name="fronters" icon="fa-tag" size="fa-lg" [toggled]="false" (toggle)="gotoFront()" />
+        <app-toggle-icon-button name="custom front" icon="fa-user-circle-o" size="fa-lg" [toggled]="customFront" (toggle)="gotoCustom()" />
+      </app-pager>
+    </app-vertical-center>
+  </footer>
+</app-nav-page-container>

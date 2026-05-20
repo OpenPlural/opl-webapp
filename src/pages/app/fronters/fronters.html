@@ -1,0 +1,16 @@
+<app-nav-page-container [footer]="true">
+  <main class="flex flex-col">
+    @for (frontEntry of ongoingFront(); track frontEntry.id) {
+      <app-fronter-list-item [frontEntry]="frontEntry" />
+    }
+  </main>
+  <footer class="h-16">
+    <app-vertical-center>
+      <app-pager currentPage="fronters">
+        <app-toggle-icon-button name="members" icon="fa-users" size="fa-lg" [toggled]="false" (toggle)="gotoMembers()" />
+        <app-toggle-icon-button name="fronters" icon="fa-tag" size="fa-lg" [toggled]="true" />
+        <app-toggle-icon-button name="custom front" icon="fa-user-circle-o" size="fa-lg" [toggled]="false" (toggle)="gotoCustom()" />
+      </app-pager>
+    </app-vertical-center>
+  </footer>
+</app-nav-page-container>

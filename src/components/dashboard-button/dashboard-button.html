@@ -1,0 +1,7 @@
+@let disabled = this.disabled();
+<button class="btn" [class.btn-disabled]="disabled" [disabled]="disabled" (click)="gotoLink()">
+  <div class="font-medium">
+    <i class="fa fa-2x {{icon()}}" [class.text-accent]="!disabled" aria-hidden="true"></i>
+    <p>{{name() | translate}}</p>
+  </div>
+</button>

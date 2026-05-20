@@ -1,0 +1,40 @@
+<div class="w-full h-full">
+  <img src="/favicon.ico" class="mx-auto py-5 md:py-10 w-1/3 sm:w-1/5 md:w-1/6" alt="Open Plural" />
+  <form (submit)="register($event)">
+    <div class="sm:w-2/3 sm:mx-auto mx-2">
+      <div class="w-full join join-vertical">
+        <label class="w-full input input-lg join-item">
+          <i class="fa fa-user" aria-hidden="true"></i>
+          <input type="text" name="username" [placeholder]="'username' | translate" required>
+        </label>
+        <label class="w-full input input-lg join-item">
+          <i class="fa fa-lock" aria-hidden="true"></i>
+          <input type="password" name="password" [placeholder]="'password' | translate" required>
+        </label>
+        <label class="w-full input input-lg join-item">
+          <i class="fa fa-lock" aria-hidden="true"></i>
+          <input id="passwordConfirmation" type="password" name="confirmPassword" [placeholder]="'confirm password' | translate" required>
+        </label>
+      </div>
+      <label class="w-full label my-2">
+        <input type="checkbox" class="toggle" name="system" checked>
+        {{'register system toggle' | translate}}
+      </label>
+      @let error = errorMessage();
+      @if (error) {
+        <div class="mt-2 text-error text-sm">
+          {{error}}
+        </div>
+      }
+      <div class="w-full mt-4 text-center">
+        <button type="submit" class="btn btn-primary btn-lg">
+          {{'register' | translate}}
+        </button>
+        <br>
+        <button type="submit" class="btn btn-ghost btn-md" (click)="goToLogin()">
+          {{'login instead' | translate}}
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

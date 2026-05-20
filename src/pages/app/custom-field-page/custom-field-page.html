@@ -1,0 +1,45 @@
+@let field = this.customField();
+@if (field) {
+  <app-edit-page-container [title]="field.name" (save)="save()" (delete)="openDialog('fieldDeletePrompt')">
+    <div class="p-5 pb-0">
+      <form id="customFieldForm">
+        <fieldset class="fieldset">
+          <legend class="fieldset-legend">{{'name' | translate}}</legend>
+          <input name="name" type="text" class="w-full input" [value]="field.name" />
+        </fieldset>
+        <fieldset class="fieldset">
+          <legend class="fieldset-legend">{{'custom field type' | translate}}</legend>
+          <select name="type" class="w-full select">
+            @for (dataType of CUSTOM_FIELD_DATA_TYPES; track dataType) {
+              <option [value]="dataType" [selected]="dataType === field.dataType">{{'custom field type ' + dataType.toLowerCase() | translate}}</option>
+            }
+          </select>
+        </fieldset>
+      </form>
+    </div>
+    @if (field.remoteId) {
+      <div class="divider"></div>
+      <div class="p-5 pt-0">
+        @let privacy = this.privacy();
+        @if (privacy) {
+          <app-privacy-bucket-list title="change custom field privacy" [buckets]="privacy" (submitSelection)="updatePrivacy($event)" />
+        } @else {
+          <div class="text-center">
+            @let loading = this.loadingPrivacy();
+            <button type="button" class="btn btn-soft" [class.btn-disabled]="loading" (click)="loadPrivacy()">
+              {{'load privacy' | translate}}
+              @if (loading) {
+                <span class="loading loading-spinner"></span>
+              }
+            </button>
+          </div>
+        }
+      </div>
+    }
+  </app-edit-page-container>
+  <app-popup-confirm dialogId="fieldDeletePrompt" title="delete custom field" (confirm)="delete()">
+    {{'delete custom field prompt' | translate:{ fieldName: field.name } }}
+  </app-popup-confirm>
+} @else {
+  <app-misrouted />
+}

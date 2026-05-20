@@ -1,0 +1,15 @@
+@let u = user();
+<app-list-item containerClass="mx-2 mt-2" [color]="u.color" [selectable]="selectable()" [selected]="selected()" (selectionStatus)="selectionStatus.emit($event)" (action)="action.emit()">
+  <app-vertical-center>
+    <app-profile-picture [avatarUrl]="u.avatar" [fallbackIcon]="u.system ? 'fa-users' : 'fa-user'" />
+  </app-vertical-center>
+  <app-vertical-center class="grow">
+        <span class="text-left ml-1">
+          <p class="wrap-anywhere">{{ u.name }}</p>
+          @let subtext = this.subtext();
+          @if (subtext) {
+            <p class="wrap-anywhere font-light text-base-content/60">{{ subtext }}</p>
+          }
+        </span>
+  </app-vertical-center>
+</app-list-item>

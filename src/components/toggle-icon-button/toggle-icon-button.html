@@ -1,0 +1,16 @@
+@let disabled = this.disabled();
+<button class="btn btn-ghost btn-circle btn-lg" [disabled]="disabled" (click)="toggle.emit()">
+  <i class="fa {{size()}} {{icon()}}" [class.text-accent]="toggled() && !disabled" aria-hidden="true"></i>
+  <span class="sr-only">
+    @if (toggled()) {
+      @let text = toggledName();
+      @if (text) {
+        {{text | translate}}
+      } @else {
+        {{name() | translate}}
+      }
+    } @else {
+      {{name() | translate}}
+    }
+  </span>
+</button>

@@ -1,0 +1,22 @@
+<div class="h-screen flex flex-col">
+  <div class="w-full h-16 bg-base-100 shadow-md">
+    <ng-content select="header"></ng-content>
+  </div>
+  <div class="flex-1 overflow-y-auto" [class.scroll-container]="footer()">
+    <ng-content select="main"></ng-content>
+  </div>
+  @if (footer()) {
+    <div class="w-full h-16 bg-base-100">
+      <ng-content select="footer"></ng-content>
+    </div>
+  }
+  @if (fab()) {
+    <div class="absolute bottom-0 w-full max-w-[900px]">
+      <div class="fab absolute">
+        <button class="btn btn-lg btn-circle btn-primary" (click)="fabAction.emit()">
+          <ng-content select="i"></ng-content>
+        </button>
+      </div>
+    </div>
+  }
+</div>

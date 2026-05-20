@@ -1,0 +1,36 @@
+@let member = this.member();
+<app-toggle-setting name="archived" [toggled]="member.archived" (toggle)="updateArchived.emit($event)" />
+@if (member.remoteId) {
+  <div class="divider"></div>
+  <div class="p-5 pt-0">
+    @let privacy = this.privacy();
+    @if (privacy) {
+      <app-privacy-bucket-list title="change folder privacy" [buckets]="privacy" (submitSelection)="updatePrivacy($event)" />
+    } @else {
+      <div class="text-center">
+        @let loading = this.loadingPrivacy();
+        <button type="button" class="btn btn-soft" [class.btn-disabled]="loading" (click)="loadPrivacy()">
+          {{'load privacy' | translate}}
+          @if (loading) {
+            <span class="loading loading-spinner"></span>
+          }
+        </button>
+      </div>
+    }
+  </div>
+}
+
+<div class="divider">{{'info' | translate}}</div>
+<div class="text-center">
+  <span class="font-bold">{{'member creation date' | translate}}</span>
+  <div class="mt-2">
+    @if (showCreationDate()) {
+      <span>{{memberCreationDate()}}</span>
+    } @else {
+      <button class="btn btn-soft" (click)="showCreationDate.set(true)">
+        <i class="fa fa-eye"></i>
+        {{'unhide' | translate}}
+      </button>
+    }
+  </div>
+</div>

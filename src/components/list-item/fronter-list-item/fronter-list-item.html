@@ -1,0 +1,12 @@
+@let member = this.member();
+@if (member) {
+  <app-member-list-item [member]="member" [editable]="true" (action)="gotoMemberPage()" />
+  <div class="mx-4 py-2 bg-base-100 rounded-tl-none rounded-xl">
+    <span class="bg-base-300 p-2 rounded-b-xl">
+      {{elapsedTime()}}
+    </span>
+    <div class="flex flex-row mt-3 mx-2">
+      <input type="text" class="input grow" [placeholder]="'front comment' | translate" [value]="frontEntry().comment || ''" (focusout)="updateFrontComment($event)">
+    </div>
+  </div>
+}

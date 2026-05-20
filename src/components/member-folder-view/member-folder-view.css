@@ -1,0 +1,6 @@
+@import '../../styles.css';
+
+:host {
+  @apply flex flex-col;
+  height: calc(100vh - calc(var(--spacing) * 32));
+}

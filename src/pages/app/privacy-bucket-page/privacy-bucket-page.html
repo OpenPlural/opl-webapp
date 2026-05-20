@@ -1,0 +1,35 @@
+@let bucket = this.bucket();
+<app-edit-page-container [title]="bucket ? bucket.name : ''" (save)="save()" (delete)="openDialog('bucketDeletePrompt')">
+  @if (bucket) {
+    <div class="p-5 pb-0">
+      <form id="privacyBucketForm">
+        <fieldset class="fieldset">
+          <legend class="fieldset-legend">{{'name' | translate}}</legend>
+          <input name="name" type="text" class="w-full input" [value]="bucket.name" />
+        </fieldset>
+        <fieldset class="fieldset">
+          <legend class="fieldset-legend">{{'description' | translate}}</legend>
+          <textarea name="description" class="w-full textarea" [value]="bucket.description"></textarea>
+        </fieldset>
+        <fieldset class="fieldset">
+          <legend class="fieldset-legend">{{'emoji' | translate}}</legend>
+          <input name="emoji" type="text" class="w-full input" maxlength="3" [value]="bucket.emoji" />
+        </fieldset>
+      </form>
+    </div>
+    <div class="divider"></div>
+    <div class="p-5 pt-0">
+      @for (friend of friends(); track friend.user.id) {
+        <app-user-list-item [user]="friend.user" [selectable]="true" [selected]="bucket.friends.includes(friend.user.id)" (selectionStatus)="setFriendSelected(friend.user.id, $event)" />
+      }
+    </div>
+  } @else {
+    <app-loading />
+  }
+</app-edit-page-container>
+
+<app-popup-confirm dialogId="bucketDeletePrompt" title="delete privacy bucket" (confirm)="delete()">
+  @if (bucket) {
+    {{'delete privacy bucket prompt' | translate:{ bucketName: bucket.name } }}
+  }
+</app-popup-confirm>
