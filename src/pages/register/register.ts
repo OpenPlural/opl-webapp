@@ -55,7 +55,7 @@ export class Register {
         console.error('Login failed:', e);
         return;
       }
-      this.router.navigate(['app']);
+      this.router.navigate(['app', 'setup']);
     }
   }
 }

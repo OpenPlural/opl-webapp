@@ -1,14 +1,10 @@
-import { inject, Injectable, signal, WritableSignal } from '@angular/core';
-import { UserId, UserInfo } from './model/User';
-import { catchError, EMPTY, Observable, tap, throwError } from 'rxjs';
-import { HttpEvent, HttpEventType, HttpHandlerFn, HttpRequest } from '@angular/common/http';
-import { Router } from '@angular/router';
-import { WebService } from './WebService';
-import { Folder } from './model/Folder';
-import { Member } from './model/Member';
-import { FrontEntry } from './model/Front';
-import { AccountInfo } from './model/Auth';
-import { fromJson } from '../util/FixedJson';
+import {inject, Injectable, signal, WritableSignal} from '@angular/core';
+import {UserInfo} from './model/User';
+import {catchError, EMPTY, Observable, throwError} from 'rxjs';
+import {HttpEvent, HttpHandlerFn, HttpRequest} from '@angular/common/http';
+import {Router} from '@angular/router';
+import {WebService} from './WebService';
+import {AccountInfo} from './model/Auth';
 
 @Injectable({ providedIn: 'root' })
 export class AccountService {
@@ -67,6 +63,11 @@ export class AccountService {
       }
       return account;
     });
+
+    const account = this._account();
+    if (account) {
+      localStorage.setItem('account', JSON.stringify(account));
+    }
   }
 }
 

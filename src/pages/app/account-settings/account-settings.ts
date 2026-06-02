@@ -64,11 +64,13 @@ export class AccountSettings {
     const form = document.getElementById('accountForm') as HTMLFormElement;
     const formData = new FormData(form);
     const name = formData.get('name')?.toString();
+    const email = formData.get('email')?.toString();
     const description = formData.get('description')?.toString();
 
     if (name) {
       const updated = Object.assign({}, account.user);
       updated.name = name;
+      updated.email = nullableField(email);
       updated.description = nullableField(description);
 
       const newAvatar = this.avatarUrl();

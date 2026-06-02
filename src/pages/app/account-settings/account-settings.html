@@ -13,6 +13,10 @@
           <input name="name" type="text" class="w-full input" [value]="account.user.name" (input)="onUpdate()" />
         </fieldset>
         <fieldset class="fieldset">
+          <legend class="fieldset-legend">{{'email' | translate}}</legend>
+          <input name="email" type="email" class="w-full input" [value]="account.user.email" (input)="onUpdate()" />
+        </fieldset>
+        <fieldset class="fieldset">
           <legend class="fieldset-legend">{{'description' | translate}}</legend>
           <textarea name="description" class="w-full textarea" [value]="account.user.description" (input)="onUpdate()"></textarea>
         </fieldset>
