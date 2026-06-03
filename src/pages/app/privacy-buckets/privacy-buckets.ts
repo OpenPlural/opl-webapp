@@ -46,6 +46,10 @@ export class PrivacyBuckets implements OnInit {
   }
 
   protected async createBucket(name: string) {
+    if (name.length === 0) {
+      return;
+    }
+
     const buckets = this.buckets();
     if (!buckets) return;
 

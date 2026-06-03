@@ -80,7 +80,7 @@ export class PrivacyBucketPage implements OnInit {
     const description = formData.get('description')?.toString();
     const emoji = formData.get('emoji')?.toString();
 
-    if (name) {
+    if (name && name.length > 0) {
       const updated = Object.assign({}, bucket);
       updated.name = name;
       updated.description = nullableField(description);

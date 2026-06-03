@@ -40,7 +40,7 @@ export class MemberProfilePage {
     const pronouns = formData.get('pronouns')?.toString();
     const description = formData.get('description')?.toString();
 
-    if (name) {
+    if (name && name.length > 0) {
       const updated = Object.assign({}, member);
       updated.name = name;
       updated.pronouns = nullableField(pronouns);

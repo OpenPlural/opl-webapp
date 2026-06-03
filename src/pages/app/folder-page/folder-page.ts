@@ -120,7 +120,7 @@ export class FolderPage {
     const description = formData.get('description')?.toString();
     const emoji = formData.get('emoji')?.toString();
 
-    if (name) {
+    if (name && name.length > 0) {
       const updated = Object.assign({}, folder);
       updated.name = name;
       updated.description = nullableField(description);

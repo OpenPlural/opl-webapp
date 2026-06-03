@@ -67,7 +67,7 @@ export class AccountSettings {
     const email = formData.get('email')?.toString();
     const description = formData.get('description')?.toString();
 
-    if (name) {
+    if (name && name.length > 0) {
       const updated = Object.assign({}, account.user);
       updated.name = name;
       updated.email = nullableField(email);
