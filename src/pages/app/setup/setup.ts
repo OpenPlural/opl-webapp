@@ -43,6 +43,6 @@ export class Setup {
 
   protected hasEmail(): boolean {
     const email = this.email();
-    return email.includes('@') && email.includes('.');
+    return email.length >= 5 && email.includes('@') && email.includes('.');
   }
 }
