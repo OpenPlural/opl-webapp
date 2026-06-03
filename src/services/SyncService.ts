@@ -240,8 +240,11 @@ export class SyncService {
               remoteAddedData = true;
             } else if (localUpdatedAt < serverUpdatedAt) {
               await localUpdate(makeLocalItem(localItem, updatedServerItem));
+            } else {
+              await webUpdate(updatedServerItem, localItem);
+              remoteAddedData = true;
             }
-          } else if (localUpdatedAt > this.localStorageService.getLastSyncTime()) {
+          } else if (localUpdatedAt >= this.localStorageService.getLastSyncTime()) {
             await webUpdate(null, localItem);
             remoteAddedData = true;
           }
