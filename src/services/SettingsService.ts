@@ -1,5 +1,5 @@
 import { computed, inject, Injectable, Signal, signal, WritableSignal } from '@angular/core';
-import { fromJson } from '../util/FixedJson';
+import {fromJson, toJson} from '../util/FixedJson';
 import { format } from 'date-fns';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
@@ -70,7 +70,7 @@ export class SettingsService {
       updater(updatedSettings);
       return updatedSettings;
     });
-    localStorage.setItem("settings", JSON.stringify(this.storage()));
+    localStorage.setItem("settings", toJson(this.storage()));
   }
 }
 

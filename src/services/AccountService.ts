@@ -2,6 +2,7 @@ import {inject, Injectable, signal, WritableSignal} from '@angular/core';
 import {UserInfo} from './model/User';
 import {WebService} from './WebService';
 import {AccountInfo} from './model/Auth';
+import {fromJson, toJson} from '../util/FixedJson';
 
 @Injectable({ providedIn: 'root' })
 export class AccountService {
@@ -16,14 +17,14 @@ export class AccountService {
   constructor() {
     const accountInfo = localStorage.getItem('account');
     if (accountInfo) {
-      this._account.set(JSON.parse(accountInfo));
+      this._account.set(fromJson(accountInfo));
     }
     this._ready.set(true);
   }
 
   async login(username: string, password: string): Promise<void> {
     const accountInfo = await this.webService.login(username, password);
-    localStorage.setItem('account', JSON.stringify(accountInfo));
+    localStorage.setItem('account', toJson(accountInfo));
     this._account.set(accountInfo);
   }
 
@@ -46,7 +47,7 @@ export class AccountService {
 
     const account = this._account();
     if (account) {
-      localStorage.setItem('account', JSON.stringify(account));
+      localStorage.setItem('account', toJson(account));
     }
   }
 
@@ -63,7 +64,7 @@ export class AccountService {
 
     const account = this._account();
     if (account) {
-      localStorage.setItem('account', JSON.stringify(account));
+      localStorage.setItem('account', toJson(account));
     }
   }
 }

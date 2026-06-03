@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ToastService } from './ToastService';
+import {fromJson} from '../util/FixedJson';
 
 @Injectable({ providedIn: 'root' })
 export class ErrorService {
@@ -18,7 +19,7 @@ export class ErrorService {
   logError(error: unknown) {
     if (error instanceof HttpErrorResponse) {
       const response = error.error;
-      const jsonResponse = typeof response === 'string' ? JSON.parse(response) : response;
+      const jsonResponse = typeof response === 'string' ? fromJson(response) : response;
       if (jsonResponse && jsonResponse.kind && jsonResponse.message) {
         const message = `[${jsonResponse.kind}] ${jsonResponse.message}`;
         console.error(message);
