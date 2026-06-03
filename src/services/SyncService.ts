@@ -14,12 +14,21 @@ import {
   translateFrontEntry,
   translateMember
 } from '../util/IdTranslator';
+import { TranslateService } from '@ngx-translate/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { ToastService } from './ToastService';
 
 @Injectable({providedIn: 'root'})
 export class SyncService {
+  private readonly translate = inject(TranslateService);
   private readonly accountService = inject(AccountService);
   private readonly localStorageService = inject(LocalStorageService);
+  private readonly toastService = inject(ToastService);
   private readonly webService = inject(WebService);
+
+  private readonly syncFailed = toSignal<string>(this.translate.get('sync failed'), {
+    initialValue: null,
+  });
 
   private readonly _syncInProgress = signal(false);
 
@@ -58,6 +67,12 @@ export class SyncService {
       await this.localStorageService.updateSyncTime(Date.parse(serverTime));
 
       console.log('[SyncService] Sync complete');
+    } catch (e) {
+      const syncFailed = this.syncFailed();
+      if (syncFailed) {
+        this.toastService.sendToast(syncFailed, 'alert-warning');
+      }
+      throw e;
     } finally {
       this._syncInProgress.set(false);
     }

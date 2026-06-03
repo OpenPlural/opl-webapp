@@ -16,10 +16,10 @@ import { MemberProfilePage } from '../member-profile-page/member-profile-page';
 import { MemberOptionsPage } from '../member-options-page/member-options-page';
 import { openDialog } from '../../../util/CommonFunctions';
 import { CustomFieldDataUpdate, MemberCustomFieldsPage } from '../member-custom-fields-page/member-custom-fields-page';
-import { CustomField, CustomFieldDataValue } from '../../../services/model/Field';
-import { Folder, FolderId } from '../../../services/model/Folder';
+import { FolderId } from '../../../services/model/Folder';
 import { truncateCurrentDate } from '../../../util/DateTruncate';
 import { MemberFrontHistoryPage } from '../member-front-history-page/member-front-history-page';
+import { ErrorService } from '../../../services/ErrorService';
 
 @Component({
   selector: 'app-member-page',
@@ -41,6 +41,7 @@ import { MemberFrontHistoryPage } from '../member-front-history-page/member-fron
 export class MemberPage {
   private readonly location = inject(Location);
   private readonly route = inject(ActivatedRoute);
+  private readonly errorService = inject(ErrorService);
   private readonly localStorageService = inject(LocalStorageService);
   private readonly syncService = inject(SyncService);
 
@@ -82,7 +83,7 @@ export class MemberPage {
     try {
       await this.syncService.fullSync();
     } catch (e) {
-      console.error('Failed to sync at member delete', e);
+      this.errorService.logError(e);
     }
     this.location.back();
   }
@@ -141,7 +142,7 @@ export class MemberPage {
       try {
         await this.syncService.fullSync();
       } catch (e) {
-        console.error('Failed to sync at member save', e);
+        this.errorService.logError(e);
       }
     }
 

@@ -16,6 +16,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { truncateCurrentDate } from '../../../util/DateTruncate';
 import { SyncService } from '../../../services/SyncService';
 import { nullableField } from '../../../util/NullString';
+import { ErrorService } from '../../../services/ErrorService';
 
 @Component({
   selector: 'app-fronter-list-item',
@@ -24,6 +25,7 @@ import { nullableField } from '../../../util/NullString';
 })
 export class FronterListItem implements AfterViewInit, OnDestroy {
   private readonly router = inject(Router);
+  private readonly errorService = inject(ErrorService);
   private readonly localStorageService = inject(LocalStorageService);
   private readonly syncService = inject(SyncService);
 
@@ -78,7 +80,7 @@ export class FronterListItem implements AfterViewInit, OnDestroy {
     try {
       await this.syncService.fullSync();
     } catch (e) {
-      console.error('Failed to sync at update front comment', e);
+      this.errorService.logError(e);
     }
   }
 }

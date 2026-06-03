@@ -6,6 +6,7 @@ import { AccountService } from '../../services/AccountService';
 import { HttpErrorResponse } from '@angular/common/http';
 import { SyncService } from '../../services/SyncService';
 import {LegalFooter} from '../../components/legal-footer/legal-footer';
+import {ErrorService} from '../../services/ErrorService';
 
 @Component({
   selector: 'app-login',
@@ -15,6 +16,7 @@ import {LegalFooter} from '../../components/legal-footer/legal-footer';
 export class Login {
   private readonly router = inject(Router);
   private readonly accountService = inject(AccountService);
+  private readonly errorService = inject(ErrorService);
   private readonly syncService = inject(SyncService);
 
   protected readonly errorMessage = signal<string | null>(null);
@@ -35,6 +37,7 @@ export class Login {
         await this.accountService.login(username, password);
         await this.syncService.fullSync();
       } catch (e) {
+        this.errorService.logError(e);
         if (e instanceof HttpErrorResponse) {
           const response = e.error;
           if (response && response.message) {
@@ -42,7 +45,6 @@ export class Login {
             return;
           }
         }
-        console.error('Login failed:', e);
         return;
       }
       this.router.navigate(['app']);

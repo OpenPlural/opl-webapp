@@ -14,6 +14,7 @@ import { Friend } from '../../../services/model/Friend';
 import { UserListItem } from '../../../components/list-item/user-list-item/user-list-item';
 import { UserId } from '../../../services/model/User';
 import { openDialog } from '../../../util/CommonFunctions';
+import { ErrorService } from '../../../services/ErrorService';
 
 @Component({
   selector: 'app-privacy-bucket-page',
@@ -23,6 +24,7 @@ import { openDialog } from '../../../util/CommonFunctions';
 export class PrivacyBucketPage implements OnInit {
   private readonly location = inject(Location);
   private readonly route = inject(ActivatedRoute);
+  private readonly errorService = inject(ErrorService);
   private readonly webService = inject(WebService);
 
   protected readonly bucket = signal<PrivacyBucket | null>(null);
@@ -87,7 +89,7 @@ export class PrivacyBucketPage implements OnInit {
       try {
         await this.webService.updatePrivacyBucket(updated);
       } catch (e) {
-        console.error('Failed to update privacy bucket', e);
+        this.errorService.logError(e);
         return;
       }
       this.location.back();
@@ -98,12 +100,7 @@ export class PrivacyBucketPage implements OnInit {
     const id = this.id();
     if (!id) return;
 
-    try {
-      await this.webService.deletePrivacyBucket(id);
-      this.location.back();
-    } catch (e) {
-      console.error('Failed to delete privacy bucket', e);
-    }
+    this.location.back();
   }
 
   protected readonly openDialog = openDialog;

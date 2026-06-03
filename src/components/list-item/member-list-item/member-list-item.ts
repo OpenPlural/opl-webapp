@@ -9,6 +9,7 @@ import { VerticalCenter } from '../../vertical-center/vertical-center';
 import { makeFrontEntry } from '../../../services/model/Front';
 import { SyncService } from '../../../services/SyncService';
 import { truncateCurrentDate } from '../../../util/DateTruncate';
+import { ErrorService } from '../../../services/ErrorService';
 
 @Component({
   selector: 'app-member-list-item',
@@ -16,6 +17,7 @@ import { truncateCurrentDate } from '../../../util/DateTruncate';
   templateUrl: './member-list-item.html',
 })
 export class MemberListItem {
+  private readonly errorService = inject(ErrorService);
   private readonly localStorageService = inject(LocalStorageService);
   private readonly syncService = inject(SyncService);
 
@@ -45,7 +47,7 @@ export class MemberListItem {
     try {
       await this.syncService.fullSync();
     } catch (e) {
-      console.error('Failed to sync at toggle front', e);
+      this.errorService.logError(e);
     }
   }
 }

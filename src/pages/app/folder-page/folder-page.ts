@@ -6,7 +6,7 @@ import { EditPageContainer } from '../../../components/container/edit-page-conta
 import { LocalStorageService } from '../../../services/LocalStorageService';
 import { Misrouted } from '../../../components/misrouted/misrouted';
 import { TranslatePipe } from '@ngx-translate/core';
-import { toColor, toColorInt } from '../../../util/ColorConvert';
+import { toColor } from '../../../util/ColorConvert';
 import { SyncService } from '../../../services/SyncService';
 import { Location } from '@angular/common';
 import { PopupConfirm } from '../../../components/popup-confirm/popup-confirm';
@@ -18,6 +18,7 @@ import { openDialog } from '../../../util/CommonFunctions';
 import { SettingsService } from '../../../services/SettingsService';
 import { truncateCurrentDate } from '../../../util/DateTruncate';
 import { ColorInput } from '../../../components/color-input/color-input';
+import { ErrorService } from '../../../services/ErrorService';
 
 @Component({
   selector: 'app-folder-page',
@@ -35,6 +36,7 @@ import { ColorInput } from '../../../components/color-input/color-input';
 export class FolderPage {
   private readonly location = inject(Location);
   private readonly route = inject(ActivatedRoute);
+  private readonly errorService = inject(ErrorService);
   private readonly localStorageService = inject(LocalStorageService);
   private readonly settingsService = inject(SettingsService);
   private readonly syncService = inject(SyncService);
@@ -134,7 +136,7 @@ export class FolderPage {
       try {
         await this.syncService.fullSync();
       } catch (e) {
-        console.error('Failed to sync at folder save', e);
+        this.errorService.logError(e);
       }
       this.location.back();
     }
@@ -148,7 +150,7 @@ export class FolderPage {
     try {
       await this.syncService.fullSync();
     } catch (e) {
-      console.error('Failed to sync at folder delete', e);
+      this.errorService.logError(e);
     }
     this.location.back();
   }

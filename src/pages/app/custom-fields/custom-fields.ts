@@ -12,6 +12,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
 import { SyncService } from '../../../services/SyncService';
 import { openDialog } from '../../../util/CommonFunctions';
+import { ErrorService } from '../../../services/ErrorService';
 
 @Component({
   selector: 'app-custom-fields',
@@ -29,6 +30,7 @@ import { openDialog } from '../../../util/CommonFunctions';
 })
 export class CustomFields {
   private readonly router = inject(Router);
+  private readonly errorService = inject(ErrorService);
   private readonly localStorageService = inject(LocalStorageService);
   private readonly syncService = inject(SyncService);
 
@@ -71,7 +73,7 @@ export class CustomFields {
     try {
       await this.syncService.fullSync();
     } catch (e) {
-      console.error('Failed to sync at custom field reorder', e);
+      this.errorService.logError(e);
     }
   }
 
