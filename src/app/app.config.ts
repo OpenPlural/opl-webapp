@@ -11,9 +11,9 @@ import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateMessageFormatCompiler } from 'ngx-translate-messageformat-compiler';
 import { provideServiceWorker } from '@angular/service-worker';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { authenticatedInterceptor } from '../services/AccountService';
 import { LoggingMissingTranslationHandler } from '../handlers/missing-translations.handler';
-import {jsonHttpInterceptor} from '../handlers/intercept-http-json.handler';
+import {jsonHttpInterceptor} from '../handlers/json-parser.interceptor.handler';
+import {authenticatedInterceptor} from '../handlers/authenticator.interceptor.handler';
 
 export const appConfig: ApplicationConfig = {
   providers: [
