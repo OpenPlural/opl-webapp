@@ -40,9 +40,11 @@ export class Login {
         this.errorService.logError(e);
         if (e instanceof HttpErrorResponse) {
           const response = e.error;
-          if (response && response.message) {
-            this.errorMessage.set(response.message);
-            return;
+          if (response) {
+            const jsonResponse = typeof response === 'string' ? JSON.parse(response) : response;
+            if (jsonResponse && jsonResponse.message) {
+              this.errorMessage.set(jsonResponse.message);
+            }
           }
         }
         return;
