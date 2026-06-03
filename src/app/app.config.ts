@@ -13,12 +13,13 @@ import { provideServiceWorker } from '@angular/service-worker';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { authenticatedInterceptor } from '../services/AccountService';
 import { LoggingMissingTranslationHandler } from '../handlers/missing-translations.handler';
+import {jsonHttpInterceptor} from '../handlers/intercept-http-json.handler';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
-    provideHttpClient(withInterceptors([authenticatedInterceptor])),
+    provideHttpClient(withInterceptors([authenticatedInterceptor, jsonHttpInterceptor])),
     provideTranslateService({
       loader: provideTranslateHttpLoader({
         prefix: '/i18n/',

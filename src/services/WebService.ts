@@ -4,7 +4,6 @@ import { ExtendedUserInfo, UserId, UserInfo } from './model/User';
 import { Folder, FolderId } from './model/Folder';
 import { ExtendedMember, Member, MemberId } from './model/Member';
 import { AccountInfo } from './model/Auth';
-import { fromJson } from '../util/FixedJson';
 import { firstValueFrom } from 'rxjs';
 import { FrontEntry, FrontEntryId } from './model/Front';
 import { ServerTimeResponse, SyncData } from './model/Sync';
@@ -40,7 +39,7 @@ export class WebService {
   async login(username: string, password: string): Promise<AccountInfo> {
     const device = navigator.userAgent;
 
-    return firstValueFrom(this.http.post(`${BASE_URL}/auth/login`, { name: username, password, device }, {responseType: 'text'})).then(fromJson);
+    return firstValueFrom(this.http.post<AccountInfo>(`${BASE_URL}/auth/login`, { name: username, password, device }));
   }
 
   async deleteAccount(id: UserId, password: string): Promise<void> {
@@ -52,7 +51,7 @@ export class WebService {
   }
 
   async getSessions(): Promise<SessionToken[]> {
-    return firstValueFrom(this.http.get(`${BASE_URL}/api/session/`, {responseType: 'text'})).then(fromJson);
+    return firstValueFrom(this.http.get<SessionToken[]>(`${BASE_URL}/api/session/`));
   }
 
   async invalidateSession(id: TokenId): Promise<void> {
@@ -64,11 +63,11 @@ export class WebService {
   }
 
   async sync(since: Date): Promise<SyncData> {
-    return firstValueFrom(this.http.get(`${BASE_URL}/api/sync/?since=${since.toISOString()}`, {responseType: 'text'})).then(fromJson);
+    return firstValueFrom(this.http.get<SyncData>(`${BASE_URL}/api/sync/?since=${since.toISOString()}`));
   }
 
   async getServerTime(): Promise<ServerTimeResponse> {
-    return firstValueFrom(this.http.get(`${BASE_URL}/api/sync/finish`, {responseType: 'text'})).then(fromJson);
+    return firstValueFrom(this.http.get<ServerTimeResponse>(`${BASE_URL}/api/sync/finish`));
   }
 
   async createFolder(folder: Folder): Promise<FolderId> {
@@ -167,11 +166,11 @@ export class WebService {
   }
 
   async getPrivacyBuckets(): Promise<PrivacyBucket[]> {
-    return firstValueFrom(this.http.get(`${BASE_URL}/api/privacy/`, {responseType: 'text'})).then(fromJson);
+    return firstValueFrom(this.http.get<PrivacyBucket[]>(`${BASE_URL}/api/privacy/`));
   }
 
   async getPrivacyBucket(id: PrivacyBucketId): Promise<PrivacyBucket> {
-    return firstValueFrom(this.http.get(`${BASE_URL}/api/privacy/${id}`, {responseType: 'text'})).then(fromJson);
+    return firstValueFrom(this.http.get<PrivacyBucket>(`${BASE_URL}/api/privacy/${id}`));
   }
 
   async addPrivacyBucketFolder(privacyBucketId: PrivacyBucketId, folder: Folder): Promise<void> {
@@ -207,23 +206,23 @@ export class WebService {
   }
 
   async getFolderPrivacy(folder: Folder): Promise<SimplePrivacyBucket[]> {
-    return firstValueFrom(this.http.get(`${BASE_URL}/api/folder/${folder.remoteId}/privacy`, {responseType: 'text'})).then(fromJson);
+    return firstValueFrom(this.http.get<SimplePrivacyBucket[]>(`${BASE_URL}/api/folder/${folder.remoteId}/privacy`));
   }
 
   async getMemberPrivacy(member: Member): Promise<SimplePrivacyBucket[]> {
-    return firstValueFrom(this.http.get(`${BASE_URL}/api/member/${member.remoteId}/privacy`, {responseType: 'text'})).then(fromJson);
+    return firstValueFrom(this.http.get<SimplePrivacyBucket[]>(`${BASE_URL}/api/member/${member.remoteId}/privacy`));
   }
 
   async getCustomFieldPrivacy(field: CustomField): Promise<SimplePrivacyBucket[]> {
-    return firstValueFrom(this.http.get(`${BASE_URL}/api/field/${field.remoteId}/privacy`, {responseType: 'text'})).then(fromJson);
+    return firstValueFrom(this.http.get<SimplePrivacyBucket[]>(`${BASE_URL}/api/field/${field.remoteId}/privacy`));
   }
 
   async getFriendPrivacy(friendId: UserId): Promise<SimplePrivacyBucket[]> {
-    return firstValueFrom(this.http.get(`${BASE_URL}/api/friend/${friendId}/privacy`, {responseType: 'text'})).then(fromJson);
+    return firstValueFrom(this.http.get<SimplePrivacyBucket[]>(`${BASE_URL}/api/friend/${friendId}/privacy`));
   }
 
   async getFriendSettings(friendId: UserId): Promise<FriendSettings> {
-    return firstValueFrom(this.http.get(`${BASE_URL}/api/friend/${friendId}/settings`, {responseType: 'text'})).then(fromJson);
+    return firstValueFrom(this.http.get<FriendSettings>(`${BASE_URL}/api/friend/${friendId}/settings`));
   }
 
   async updateFriendSettings(friendId: UserId, settings: FriendSettings): Promise<void> {
@@ -231,15 +230,15 @@ export class WebService {
   }
 
   async getFriends(): Promise<Friend[]> {
-    return firstValueFrom(this.http.get(`${BASE_URL}/api/friend/`, {responseType: 'text'})).then(fromJson);
+    return firstValueFrom(this.http.get<Friend[]>(`${BASE_URL}/api/friend/`));
   }
 
   async getIncomingFriendRequests(): Promise<FriendRequest[]> {
-    return firstValueFrom(this.http.get(`${BASE_URL}/api/friend/requests/incoming`, {responseType: 'text'})).then(fromJson);
+    return firstValueFrom(this.http.get<FriendRequest[]>(`${BASE_URL}/api/friend/requests/incoming`));
   }
 
   async getOutgoingFriendRequests(): Promise<FriendRequest[]> {
-    return firstValueFrom(this.http.get(`${BASE_URL}/api/friend/requests/outgoing`, {responseType: 'text'})).then(fromJson);
+    return firstValueFrom(this.http.get<FriendRequest[]>(`${BASE_URL}/api/friend/requests/outgoing`));
   }
 
   async sendFriendRequest(friendCode: string): Promise<void> {
@@ -267,23 +266,23 @@ export class WebService {
   }
 
   async getUser(id: UserId): Promise<ExtendedUserInfo> {
-    return firstValueFrom(this.http.get(`${BASE_URL}/api/user/${id}`, {responseType: 'text'})).then(fromJson);
+    return firstValueFrom(this.http.get<ExtendedUserInfo>(`${BASE_URL}/api/user/${id}`));
   }
 
   async getUsername(id: UserId): Promise<string> {
-    return firstValueFrom(this.http.get(`${BASE_URL}/api/user/${id}/name`, {responseType: 'text'})).then(fromJson);
+    return firstValueFrom(this.http.get<string>(`${BASE_URL}/api/user/${id}/name`));
   }
 
   async getMemberFrontHistory(member: Member, page: number): Promise<FrontEntry[]> {
-    return firstValueFrom(this.http.get(`${BASE_URL}/api/member/${member.remoteId}/front-history?page=${page}`, {responseType: 'text'})).then(fromJson);
+    return firstValueFrom(this.http.get<FrontEntry[]>(`${BASE_URL}/api/member/${member.remoteId}/front-history?page=${page}`));
   }
 
   async getMemberCustomFields(userId: UserId, memberId: MemberId): Promise<ViewedCustomFieldDataValue[]> {
-    return firstValueFrom(this.http.get(`${BASE_URL}/api/member/${memberId}/fields?userId=${userId}`, {responseType: 'text'})).then(fromJson);
+    return firstValueFrom(this.http.get<ViewedCustomFieldDataValue[]>(`${BASE_URL}/api/member/${memberId}/fields?userId=${userId}`));
   }
 
   async getMemberWithFolders(userId: UserId, memberId: MemberId): Promise<ExtendedMember> {
-    return firstValueFrom(this.http.get(`${BASE_URL}/api/member/${memberId}?userId=${userId}&extended=true`, {responseType: 'text'})).then(fromJson);
+    return firstValueFrom(this.http.get<ExtendedMember>(`${BASE_URL}/api/member/${memberId}?userId=${userId}&extended=true`));
   }
 }
 
