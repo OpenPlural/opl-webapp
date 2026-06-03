@@ -17,16 +17,21 @@ import {
 import { TranslateService } from '@ngx-translate/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ToastService } from './ToastService';
+import {SettingsService} from './SettingsService';
 
 @Injectable({providedIn: 'root'})
 export class SyncService {
   private readonly translate = inject(TranslateService);
   private readonly accountService = inject(AccountService);
   private readonly localStorageService = inject(LocalStorageService);
+  private readonly settingsService = inject(SettingsService);
   private readonly toastService = inject(ToastService);
   private readonly webService = inject(WebService);
 
   private readonly syncFailed = toSignal<string>(this.translate.get('sync failed'), {
+    initialValue: null,
+  });
+  private readonly syncFinished = toSignal<string>(this.translate.get('sync finished'), {
     initialValue: null,
   });
 
@@ -67,6 +72,13 @@ export class SyncService {
       await this.localStorageService.updateSyncTime(Date.parse(serverTime));
 
       console.log('[SyncService] Sync complete');
+
+      if (this.settingsService.settings().showSyncToast) {
+        const syncFinished = this.syncFinished();
+        if (syncFinished) {
+          this.toastService.sendToast(syncFinished, 'alert-success');
+        }
+      }
     } catch (e) {
       const syncFailed = this.syncFailed();
       if (syncFailed) {

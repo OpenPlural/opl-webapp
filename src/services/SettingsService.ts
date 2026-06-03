@@ -80,6 +80,7 @@ export interface Settings {
   defaultRoute: string;
   loadAvatars: boolean;
   useNativeColorPicker: boolean;
+  showSyncToast: boolean;
   hideRootMembers: boolean;
 }
 
@@ -90,6 +91,7 @@ function makeDefaultSettings(): Settings {
     defaultRoute: '',
     loadAvatars: true,
     useNativeColorPicker: false,
+    showSyncToast: false,
     hideRootMembers: false,
   }
 }

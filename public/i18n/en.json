@@ -2,6 +2,7 @@
   "opl": "Open Plural",
   "loading app": "Open Plural is loading, please wait…",
   "sync failed": "Failed to sync with the server",
+  "sync finished": "Successfully synced with the server",
   "misrouted": "The resource with this ID could not be found.",
   "choose language": "Choose your language",
 
@@ -123,6 +124,8 @@
   "load avatars description": "When enabled, you will be able to see avatars of folders, members and friends",
   "use native color picker": "Use native color picker",
   "use native color picker description": "When enabled, the app will use your system's native color picker instead of the built-in one",
+  "show sync toast": "Show toast on successful sync",
+  "show sync toast description": "When enabled, a toast will pop up when a sync has finished successfully",
   "hide root members": "Hide members from the root folder if they are part of a folder",
   "hide root members description": "When enabled, members who are in folders will not show up in the root folder",
   "account system": "This account is a system",

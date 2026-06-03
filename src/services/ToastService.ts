@@ -2,7 +2,7 @@ import { Injectable, signal } from '@angular/core';
 import { generateLocalId } from '../util/IdGenerator';
 
 const TOAST_VALIDITY = 10000;
-type ToastType = 'alert-warning' | 'alert-error' | 'alert-info';
+type ToastType = 'alert-warning' | 'alert-error' | 'alert-success';
 
 @Injectable({ providedIn: 'root' })
 export class ToastService {
