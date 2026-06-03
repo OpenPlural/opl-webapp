@@ -4,5 +4,5 @@ export interface SessionToken {
   id: TokenId;
   name: string;
   createdAt: string;
-  expiresAt: string;
+  lastUsedAt: string;
 }

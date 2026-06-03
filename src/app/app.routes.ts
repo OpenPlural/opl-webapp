@@ -19,6 +19,7 @@ import { Options } from '../pages/app/options/options';
 import { AccountSettings } from '../pages/app/account-settings/account-settings';
 import {Legal} from '../pages/app/legal/legal';
 import {Setup} from '../pages/app/setup/setup';
+import {Sessions} from '../pages/app/sessions/sessions';
 
 export const appRoutes: Routes = [
   {
@@ -70,6 +71,10 @@ export const appRoutes: Routes = [
   }, {
     path: 'custom-field/:id',
     component: CustomFieldPage
+  }, {
+    path: 'sessions',
+    component: Sessions,
+    data: { name: 'sessions' }
   }, {
     path: 'account-settings',
     component: AccountSettings,
