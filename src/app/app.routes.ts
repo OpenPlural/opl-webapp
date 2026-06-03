@@ -78,15 +78,15 @@ export const appRoutes: Routes = [
   }, {
     path: 'account-settings',
     component: AccountSettings,
-    data: { name: 'account settings', navigable: true }
+    data: { name: 'account settings' }
   }, {
     path: 'options',
     component: Options,
-    data: { name: 'options', navigable: true }
+    data: { name: 'options' }
   }, {
     path: 'legal',
     component: Legal,
-    data: { name: 'legal', navigable: true }
+    data: { name: 'legal' }
   }, {
     path: 'setup',
     component: Setup
