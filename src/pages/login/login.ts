@@ -5,10 +5,11 @@ import { Router } from '@angular/router';
 import { AccountService } from '../../services/AccountService';
 import { HttpErrorResponse } from '@angular/common/http';
 import { SyncService } from '../../services/SyncService';
+import {LegalFooter} from '../../components/legal-footer/legal-footer';
 
 @Component({
   selector: 'app-login',
-  imports: [FormsModule, TranslatePipe],
+  imports: [FormsModule, TranslatePipe, LegalFooter],
   templateUrl: './login.html',
 })
 export class Login {

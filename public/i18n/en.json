@@ -44,6 +44,7 @@
   "custom fields": "Custom Fields",
   "account settings": "Account Settings",
   "options": "Options",
+  "legal": "Legal",
   "setup": "Setup",
 
   "sync now": "Sync now",
@@ -127,6 +128,7 @@
   "account system": "This account is a system",
   "account system description": "When unchecked, folders, members, polls, etc. will be hidden in the app. Your data can be restored by turning this back on.",
   "select color": "Select your color",
+  "legal links": "Links to legal documents",
   "setup email": "Set an email address to be able to reset your password in case you forget it.",
   "setup email identity": "When you ask for support, we will use your email to verify that you own this account.",
   "setup email optional": "If you continue without an email, you won't be able to recover your account if you get locked out!",

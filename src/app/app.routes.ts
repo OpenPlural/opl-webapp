@@ -17,6 +17,7 @@ import { CustomFields } from '../pages/app/custom-fields/custom-fields';
 import { CustomFieldPage } from '../pages/app/custom-field-page/custom-field-page';
 import { Options } from '../pages/app/options/options';
 import { AccountSettings } from '../pages/app/account-settings/account-settings';
+import {Legal} from '../pages/app/legal/legal';
 import {Setup} from '../pages/app/setup/setup';
 
 export const appRoutes: Routes = [
@@ -77,6 +78,10 @@ export const appRoutes: Routes = [
     path: 'options',
     component: Options,
     data: { name: 'options', navigable: true }
+  }, {
+    path: 'legal',
+    component: Legal,
+    data: { name: 'legal', navigable: true }
   }, {
     path: 'setup',
     component: Setup

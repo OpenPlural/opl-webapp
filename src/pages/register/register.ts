@@ -6,10 +6,11 @@ import { AccountService } from '../../services/AccountService';
 import { WebService } from '../../services/WebService';
 import { HttpErrorResponse } from '@angular/common/http';
 import { SyncService } from '../../services/SyncService';
+import {LegalFooter} from '../../components/legal-footer/legal-footer';
 
 @Component({
   selector: 'app-register',
-  imports: [FormsModule, TranslatePipe],
+  imports: [FormsModule, TranslatePipe, LegalFooter],
   templateUrl: './register.html',
 })
 export class Register {
