@@ -55,21 +55,13 @@ export class SyncService {
 
       this.accountService.updateAccountFromSync(syncData.user, syncData.friendCode);
 
-      let remoteAddedData = false;
-      remoteAddedData = await this.syncFolders(syncData.updatedFolders, syncData.folderIds, syncData.deletionDelta) || remoteAddedData;
-      remoteAddedData = await this.syncMembers(syncData.updatedMembers, syncData.memberIds, syncData.deletionDelta) || remoteAddedData;
-      remoteAddedData = await this.syncCustomFields(syncData.updatedFields, syncData.fieldIds, syncData.deletionDelta) || remoteAddedData;
-      remoteAddedData = await this.syncCustomFieldValues(syncData.updatedFieldValues, syncData.fieldValueIds, syncData.deletionDelta) || remoteAddedData;
-      remoteAddedData = await this.syncFrontEntries(syncData.front) || remoteAddedData;
+      await this.syncFolders(syncData.updatedFolders, syncData.folderIds, syncData.deletionDelta);
+      await this.syncMembers(syncData.updatedMembers, syncData.memberIds, syncData.deletionDelta);
+      await this.syncCustomFields(syncData.updatedFields, syncData.fieldIds, syncData.deletionDelta);
+      await this.syncCustomFieldValues(syncData.updatedFieldValues, syncData.fieldValueIds, syncData.deletionDelta);
+      await this.syncFrontEntries(syncData.front);
 
-      let serverTime: string;
-      if (remoteAddedData) {
-        const res = await this.webService.getServerTime();
-        serverTime = res.time;
-      } else {
-        serverTime = syncData.time;
-      }
-      await this.localStorageService.updateSyncTime(Date.parse(serverTime));
+      await this.localStorageService.updateSyncTime(Date.parse(syncData.time));
 
       console.log('[SyncService] Sync complete');
 
@@ -90,8 +82,8 @@ export class SyncService {
     }
   }
 
-  private async syncFrontEntries(serverFront: FrontEntry[]): Promise<boolean> {
-    return this.syncGeneric(
+  private async syncFrontEntries(serverFront: FrontEntry[]) {
+    await this.syncGeneric(
       this.localStorageService.front(),
       serverFront,
       [],
@@ -107,8 +99,8 @@ export class SyncService {
     );
   }
 
-  private async syncFolders(updatedFolders: Folder[], folderIds: FolderId[], deletionDelta: boolean): Promise<boolean> {
-    return this.syncGeneric(
+  private async syncFolders(updatedFolders: Folder[], folderIds: FolderId[], deletionDelta: boolean) {
+    await this.syncGeneric(
       this.localStorageService.folders(),
       updatedFolders,
       folderIds,
@@ -124,8 +116,8 @@ export class SyncService {
     );
   }
 
-  private async syncMembers(updatedMembers: Member[], memberIds: MemberId[], deletionDelta: boolean): Promise<boolean> {
-    return this.syncGeneric(
+  private async syncMembers(updatedMembers: Member[], memberIds: MemberId[], deletionDelta: boolean) {
+    await this.syncGeneric(
       this.localStorageService.members(),
       updatedMembers,
       memberIds,
@@ -147,8 +139,8 @@ export class SyncService {
     );
   }
 
-  private async syncCustomFields(updatedFields: CustomField[], fieldIds: CustomFieldId[], deletionDelta: boolean): Promise<boolean> {
-    let remoteAddedData = await this.syncGeneric(
+  private async syncCustomFields(updatedFields: CustomField[], fieldIds: CustomFieldId[], deletionDelta: boolean) {
+    await this.syncGeneric(
       this.localStorageService.customFields(),
       updatedFields,
       fieldIds,
@@ -165,13 +157,11 @@ export class SyncService {
 
     if (this.localStorageService.isCustomFieldReorderRequired()) {
       await this.webService.reorderCustomFields([...this.localStorageService.customFields()].sort(compareCustomSort).map(f => f.remoteId).filter(id => id != null));
-      remoteAddedData = true;
     }
-    return remoteAddedData;
   }
 
-  private async syncCustomFieldValues(updatedFieldValues: CustomFieldDataValue[], fieldValueIds: CustomFieldDataId[], deletionDelta: boolean): Promise<boolean> {
-    return this.syncGeneric(
+  private async syncCustomFieldValues(updatedFieldValues: CustomFieldDataValue[], fieldValueIds: CustomFieldDataId[], deletionDelta: boolean) {
+    await this.syncGeneric(
       this.localStorageService.customFieldValues(),
       updatedFieldValues,
       fieldValueIds,
@@ -200,7 +190,7 @@ export class SyncService {
     localAdd: (item: L) => Promise<void>,
     localUpdate: (item: L) => Promise<void>,
     localRemove: (itemId: bigint) => Promise<void>,
-  ): Promise<boolean> {
+  ) {
     serverIds = [...serverIds];
     function isServerKnown(remoteId: bigint): boolean {
       if (updatedServerItems.find((v) => v.id === remoteId) != undefined) {
@@ -223,8 +213,6 @@ export class SyncService {
       return translateRemoteItem(localItem);
     }
 
-    let remoteAddedData = false;
-
     for (const localItem of localItems) {
       const localId = localItem.id;
       const remoteId = localItem.remoteId;
@@ -237,16 +225,13 @@ export class SyncService {
             const serverUpdatedAt = Date.parse(updatedServerItem.updatedAt);
             if (localUpdatedAt > serverUpdatedAt) {
               await webUpdate(updatedServerItem, localItem);
-              remoteAddedData = true;
             } else if (localUpdatedAt < serverUpdatedAt) {
               await localUpdate(makeLocalItem(localItem, updatedServerItem));
             } else {
               await webUpdate(updatedServerItem, localItem);
-              remoteAddedData = true;
             }
           } else if (localUpdatedAt >= this.localStorageService.getLastSyncTime()) {
             await webUpdate(null, localItem);
-            remoteAddedData = true;
           }
         } else {
           await localRemove(localId);
@@ -257,7 +242,6 @@ export class SyncService {
           ...localItem,
           remoteId
         });
-        remoteAddedData = true;
       }
     }
 
@@ -285,6 +269,5 @@ export class SyncService {
         }
       }
     }
-    return remoteAddedData;
   }
 }
