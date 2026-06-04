@@ -14,7 +14,7 @@ export function authenticatedInterceptor(req: HttpRequest<unknown>, next: HttpHa
   const account = accountService.account();
   if (account) {
     req = req.clone({
-      headers: req.headers.set('Authorization', `Bearer ${account.session.token}${account.session.id}`)
+      headers: req.headers.set('Authorization', `Bearer ${account.session.token}`)
     })
   }
 
