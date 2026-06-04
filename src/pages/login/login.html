@@ -19,7 +19,11 @@
         </div>
       }
       <div class="w-full mt-4 text-center">
-        <button type="submit" class="btn btn-primary btn-lg">
+        @let loading = this.loading();
+        <button type="submit" class="btn btn-primary btn-lg" [disabled]="loading">
+          @if (loading) {
+            <span class="loading loading-spinner"></span>
+          }
           {{'login' | translate}}
         </button>
         <br>

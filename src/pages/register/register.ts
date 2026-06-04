@@ -22,6 +22,7 @@ export class Register {
   private readonly webService = inject(WebService);
 
   protected readonly errorMessage = signal<string | null>(null);
+  protected readonly loading = signal<boolean>(false);
 
   protected goToLogin() {
     this.router.navigate(['auth', 'login']);
@@ -43,6 +44,7 @@ export class Register {
         passwordConfirmationInput.parentElement!.className += " input-error";
         return;
       }
+      this.loading.set(true);
       try {
         await this.webService.register(username, password, system === 'on');
         await this.accountService.login(username, password);
@@ -57,6 +59,8 @@ export class Register {
           }
         }
         return;
+      } finally {
+        this.loading.set(false);
       }
       this.router.navigate(['app', 'setup']);
     }

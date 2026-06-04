@@ -20,6 +20,7 @@ export class Login {
   private readonly syncService = inject(SyncService);
 
   protected readonly errorMessage = signal<string | null>(null);
+  protected readonly loading = signal<boolean>(false);
 
   protected goToRegister() {
     this.router.navigate(['auth', 'register']);
@@ -33,6 +34,7 @@ export class Login {
     const password = formData.get('password')?.toString();
 
     if (username && password) {
+      this.loading.set(true);
       try {
         await this.accountService.login(username, password);
         await this.syncService.fullSync();
@@ -45,6 +47,8 @@ export class Login {
           }
         }
         return;
+      } finally {
+        this.loading.set(false);
       }
       this.router.navigate(['app']);
     }
