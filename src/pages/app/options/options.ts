@@ -23,7 +23,7 @@ export class Options {
 
   protected updateDefaultPage(event: Event) {
     const select = event.target as HTMLSelectElement;
-    this.settingsService.changeStringSetting('language', select.value);
+    this.settingsService.changeStringSetting('defaultRoute', select.value);
   }
 
   protected updateLanguage(event: Event) {
