@@ -26,7 +26,9 @@ export class ErrorService {
         this.logErrorMessage(message);
       } else {
         console.error(error);
-        this.logErrorMessage(`HTTP Error ${error.status} for ${error.url}`);
+        if (error.status !== 504) {
+          this.logErrorMessage(`HTTP Error ${error.status} for ${error.url}`);
+        }
       }
       return;
     }
