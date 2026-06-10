@@ -100,6 +100,12 @@ export class PrivacyBucketPage implements OnInit {
     const id = this.id();
     if (!id) return;
 
+    try {
+      await this.webService.deletePrivacyBucket(id);
+    } catch (e) {
+      this.errorService.logError(e);
+      return;
+    }
     this.location.back();
   }
 
