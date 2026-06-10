@@ -28,6 +28,7 @@ export class NavPageContainer {
   readonly footer = input<boolean>(false);
   readonly fab = input<boolean>(false);
   readonly searchable = input<boolean>(false);
+  readonly headerButtons = input<boolean>(false);
   readonly search = output<string | null>();
   readonly fabAction = output();
 
