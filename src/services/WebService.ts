@@ -66,10 +66,6 @@ export class WebService {
     return firstValueFrom(this.http.get<SyncData>(`${BASE_URL}/api/v1/sync/?since=${since.toISOString()}`));
   }
 
-  async getServerTime(): Promise<ServerTimeResponse> {
-    return firstValueFrom(this.http.get<ServerTimeResponse>(`${BASE_URL}/api/v1/sync/finish`));
-  }
-
   async createFolder(folder: Folder): Promise<FolderId> {
     folder = translateFolder(this.localStorageService, folder, 'remoteId');
     return firstValueFrom(this.http.put<IdResponse>(`${BASE_URL}/api/v1/folder/`, folder)).then(res => res.id);
