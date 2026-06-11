@@ -18,7 +18,6 @@ import { openDialog } from '../../../util/CommonFunctions';
 import { SettingsService } from '../../../services/SettingsService';
 import { truncateCurrentDate } from '../../../util/DateTruncate';
 import { ColorInput } from '../../../components/color-input/color-input';
-import { ErrorService } from '../../../services/ErrorService';
 
 @Component({
   selector: 'app-folder-page',
@@ -36,7 +35,6 @@ import { ErrorService } from '../../../services/ErrorService';
 export class FolderPage {
   private readonly location = inject(Location);
   private readonly route = inject(ActivatedRoute);
-  private readonly errorService = inject(ErrorService);
   private readonly localStorageService = inject(LocalStorageService);
   private readonly settingsService = inject(SettingsService);
   private readonly syncService = inject(SyncService);
@@ -133,11 +131,7 @@ export class FolderPage {
       }
 
       await this.localStorageService.updateFolder(updated);
-      try {
-        await this.syncService.fullSync();
-      } catch (e) {
-        this.errorService.logError(e);
-      }
+      this.syncService.fullSync();
       this.location.back();
     }
   }
@@ -147,11 +141,7 @@ export class FolderPage {
     if (!folder) return;
 
     await this.localStorageService.removeFolder(folder.id, folder.remoteId);
-    try {
-      await this.syncService.fullSync();
-    } catch (e) {
-      this.errorService.logError(e);
-    }
+    this.syncService.fullSync();
     this.location.back();
   }
 

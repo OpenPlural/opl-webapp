@@ -15,7 +15,6 @@ import { CUSTOM_FIELD_DATA_TYPES } from '../../../services/model/Field';
 import { PrivacyBucketId, SimplePrivacyBucket } from '../../../services/model/Privacy';
 import { openDialog } from '../../../util/CommonFunctions';
 import { truncateCurrentDate } from '../../../util/DateTruncate';
-import { ErrorService } from '../../../services/ErrorService';
 
 @Component({
   selector: 'app-custom-field-page',
@@ -25,7 +24,6 @@ import { ErrorService } from '../../../services/ErrorService';
 export class CustomFieldPage {
   private readonly location = inject(Location);
   private readonly route = inject(ActivatedRoute);
-  private readonly errorService = inject(ErrorService);
   private readonly localStorageService = inject(LocalStorageService);
   private readonly syncService = inject(SyncService);
   private readonly webService = inject(WebService);
@@ -90,11 +88,7 @@ export class CustomFieldPage {
       updated.updatedAt = truncateCurrentDate();
 
       await this.localStorageService.updateCustomField(updated);
-      try {
-        await this.syncService.fullSync();
-      } catch (e) {
-        this.errorService.logError(e);
-      }
+      this.syncService.fullSync();
       this.location.back();
     }
   }
@@ -104,11 +98,7 @@ export class CustomFieldPage {
     if (!field) return;
 
     await this.localStorageService.removeCustomField(field.id, field.remoteId);
-    try {
-      await this.syncService.fullSync();
-    } catch (e) {
-      this.errorService.logError(e);
-    }
+    this.syncService.fullSync();
     this.location.back();
   }
 

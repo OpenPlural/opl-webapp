@@ -19,7 +19,6 @@ import { CustomFieldDataUpdate, MemberCustomFieldsPage } from '../member-custom-
 import { FolderId } from '../../../services/model/Folder';
 import { truncateCurrentDate } from '../../../util/DateTruncate';
 import { MemberFrontHistoryPage } from '../member-front-history-page/member-front-history-page';
-import { ErrorService } from '../../../services/ErrorService';
 
 @Component({
   selector: 'app-member-page',
@@ -41,7 +40,6 @@ import { ErrorService } from '../../../services/ErrorService';
 export class MemberPage {
   private readonly location = inject(Location);
   private readonly route = inject(ActivatedRoute);
-  private readonly errorService = inject(ErrorService);
   private readonly localStorageService = inject(LocalStorageService);
   private readonly syncService = inject(SyncService);
 
@@ -80,11 +78,7 @@ export class MemberPage {
     if (!member) return;
 
     await this.localStorageService.removeMember(member.id, member.remoteId);
-    try {
-      await this.syncService.fullSync();
-    } catch (e) {
-      this.errorService.logError(e);
-    }
+    this.syncService.fullSync();
     this.location.back();
   }
 
@@ -139,11 +133,7 @@ export class MemberPage {
     }
 
     if (syncRequired) {
-      try {
-        await this.syncService.fullSync();
-      } catch (e) {
-        this.errorService.logError(e);
-      }
+      this.syncService.fullSync();
     }
 
     this.location.back();
