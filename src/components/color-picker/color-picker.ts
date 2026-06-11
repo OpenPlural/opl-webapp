@@ -130,11 +130,16 @@ export class ColorPicker implements OnInit, AfterViewInit {
     }
   }
 
-  protected canvasClicked(event: MouseEvent) {
+  protected canvasClicked(event: { clientX: number; clientY: number }) {
     if (this.pickColor(true, event.clientX, event.clientY)) {
       this.lastMousePosition = { x: event.clientX, y: event.clientY };
       this.renderCanvas();
     }
+  }
+
+  protected canvasTouched(event: TouchEvent) {
+    const touch = event.touches[0];
+    this.canvasClicked(touch);
   }
 
   protected hueChanged(event: Event) {
