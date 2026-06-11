@@ -18,7 +18,7 @@
         </fieldset>
         <fieldset class="fieldset">
           <legend class="fieldset-legend">{{'description' | translate}}</legend>
-          <textarea name="description" class="w-full textarea" [value]="account.user.description" (input)="onUpdate()"></textarea>
+          <app-markdown-box class="w-full" textareaName="description" [markdown]="account.user.description || ''" [editable]="true" (changeMarkdown)="descriptionChanged($event)" />
         </fieldset>
         <fieldset class="fieldset">
           <legend class="fieldset-legend">{{'color' | translate}}</legend>

@@ -7,7 +7,7 @@
   <div class="flex">
     @switch (field.dataType) {
       @case (CUSTOM_FIELD_DATA_TYPE_TEXT) {
-        <input type="text" class="grow input" [value]="value" [readOnly]="!editable" (input)="textChanged($event)" />
+        <app-markdown-box class="grow" textareaName="customFieldValue" [markdown]="value || ''" [editable]="editable" (changeMarkdown)="textChangedRaw($event)" />
       }
       @case (CUSTOM_FIELD_DATA_TYPE_COLOR) {
         <app-color-input class="grow" [dialogId]="'field' + field.id + 'ColorPicker'" [initialValue]="colorValue()" [clearedValue]="valueCleared()" [editable]="editable" (selectColor)="colorChanged($event)" />

@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, output, signal } from '@angular/core';
+import { Component, computed, input, output, signal } from '@angular/core';
 import { ProfilePicture } from '../../../components/profile-picture/profile-picture';
 import { TranslatePipe } from '@ngx-translate/core';
 import { toColor } from '../../../util/ColorConvert';
@@ -10,10 +10,11 @@ import { truncateCurrentDate } from '../../../util/DateTruncate';
 import { ColorInput } from '../../../components/color-input/color-input';
 import { Folder, FolderId } from '../../../services/model/Folder';
 import { FolderTree } from '../../../components/folder-tree/folder-tree';
+import {MarkdownBox} from '../../../components/markdown-box/markdown-box';
 
 @Component({
   selector: 'app-member-profile-page',
-  imports: [ProfilePicture, TranslatePipe, PopupInput, ColorInput, FolderTree],
+  imports: [ProfilePicture, TranslatePipe, PopupInput, ColorInput, FolderTree, MarkdownBox],
   templateUrl: './member-profile-page.html',
 })
 export class MemberProfilePage {
@@ -27,6 +28,7 @@ export class MemberProfilePage {
   protected readonly rootFolders = computed(() => this.editSelectableFolders().filter((f) => !f.parentId));
 
   protected readonly avatarUrl = signal<string | null>(null);
+  protected readonly description = signal<string | null>(null);
   protected readonly color = signal<bigint | null>(null);
   protected readonly selectedFolders = signal<FolderId[] | null>(null);
 
@@ -38,14 +40,17 @@ export class MemberProfilePage {
     const formData = new FormData(form);
     const name = formData.get('name')?.toString();
     const pronouns = formData.get('pronouns')?.toString();
-    const description = formData.get('description')?.toString();
 
     if (name && name.length > 0) {
       const updated = Object.assign({}, member);
       updated.name = name;
       updated.pronouns = nullableField(pronouns);
-      updated.description = nullableField(description);
       updated.updatedAt = truncateCurrentDate();
+
+      const newDescription = this.description();
+      if (newDescription != null) {
+        updated.description = nullableField(newDescription);
+      }
 
       const newAvatar = this.avatarUrl();
       if (newAvatar != null) {
@@ -63,6 +68,11 @@ export class MemberProfilePage {
 
   protected async editAvatar(url: string) {
     this.avatarUrl.set(url);
+    this.onUpdate();
+  }
+
+  protected descriptionChanged(description: string) {
+    this.description.set(description);
     this.onUpdate();
   }
 

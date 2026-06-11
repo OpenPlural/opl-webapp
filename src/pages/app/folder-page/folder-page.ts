@@ -18,17 +18,19 @@ import { openDialog } from '../../../util/CommonFunctions';
 import { SettingsService } from '../../../services/SettingsService';
 import { truncateCurrentDate } from '../../../util/DateTruncate';
 import { ColorInput } from '../../../components/color-input/color-input';
+import {MarkdownBox} from "../../../components/markdown-box/markdown-box";
 
 @Component({
   selector: 'app-folder-page',
-  imports: [
-    EditPageContainer,
-    Misrouted,
-    TranslatePipe,
-    PopupConfirm,
-    PrivacyBucketList,
-    ColorInput,
-  ],
+    imports: [
+        EditPageContainer,
+        Misrouted,
+        TranslatePipe,
+        PopupConfirm,
+        PrivacyBucketList,
+        ColorInput,
+        MarkdownBox,
+    ],
   templateUrl: './folder-page.html',
   styleUrl: './folder-page.css',
 })
@@ -65,6 +67,7 @@ export class FolderPage {
     const archivedCount = members.filter((m) => m.archived).length;
     return { count, archivedCount };
   });
+  protected readonly description = signal<string | null>(null);
   protected readonly color = signal<bigint | null>(null);
   protected readonly privacyIds = computed(() => this.privacy()?.map((bucket) => bucket.id) || []);
   protected readonly privacy = signal<SimplePrivacyBucket[] | null>(null);
@@ -115,15 +118,18 @@ export class FolderPage {
     const form = document.getElementById('folderForm') as HTMLFormElement;
     const formData = new FormData(form);
     const name = formData.get('name')?.toString();
-    const description = formData.get('description')?.toString();
     const emoji = formData.get('emoji')?.toString();
 
     if (name && name.length > 0) {
       const updated = Object.assign({}, folder);
       updated.name = name;
-      updated.description = nullableField(description);
       updated.emoji = nullableField(emoji);
       updated.updatedAt = truncateCurrentDate();
+
+      const newDescription = this.description();
+      if (newDescription != null) {
+        updated.description = nullableField(newDescription);
+      }
 
       const newColor = this.color();
       if (newColor != null) {

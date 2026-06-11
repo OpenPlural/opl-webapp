@@ -15,10 +15,11 @@ import { UserListItem } from '../../../components/list-item/user-list-item/user-
 import { UserId } from '../../../services/model/User';
 import { openDialog } from '../../../util/CommonFunctions';
 import { ErrorService } from '../../../services/ErrorService';
+import {MarkdownBox} from '../../../components/markdown-box/markdown-box';
 
 @Component({
   selector: 'app-privacy-bucket-page',
-  imports: [EditPageContainer, PopupConfirm, TranslatePipe, Loading, UserListItem],
+  imports: [EditPageContainer, PopupConfirm, TranslatePipe, Loading, UserListItem, MarkdownBox],
   templateUrl: './privacy-bucket-page.html',
 })
 export class PrivacyBucketPage implements OnInit {
@@ -29,6 +30,7 @@ export class PrivacyBucketPage implements OnInit {
 
   protected readonly bucket = signal<PrivacyBucket | null>(null);
   protected readonly friends = signal<Friend[] | null>(null);
+  protected readonly description = signal<string | null>(null);
 
   readonly id = toSignal(
     this.route.paramMap.pipe(
@@ -77,14 +79,17 @@ export class PrivacyBucketPage implements OnInit {
     const form = document.getElementById('privacyBucketForm') as HTMLFormElement;
     const formData = new FormData(form);
     const name = formData.get('name')?.toString();
-    const description = formData.get('description')?.toString();
     const emoji = formData.get('emoji')?.toString();
 
     if (name && name.length > 0) {
       const updated = Object.assign({}, bucket);
       updated.name = name;
-      updated.description = nullableField(description);
       updated.emoji = nullableField(emoji);
+
+      const newDescription = this.description();
+      if (newDescription != null) {
+        updated.description = nullableField(newDescription);
+      }
 
       try {
         await this.webService.updatePrivacyBucket(updated);

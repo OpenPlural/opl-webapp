@@ -14,10 +14,11 @@ import { SettingsService } from '../../services/SettingsService';
 import { nullableField } from '../../util/NullString';
 import { IconButton } from '../icon-button/icon-button';
 import { VerticalCenter } from '../vertical-center/vertical-center';
+import {MarkdownBox} from '../markdown-box/markdown-box';
 
 @Component({
   selector: 'app-custom-field-value',
-  imports: [ColorInput, IconButton, VerticalCenter],
+  imports: [ColorInput, IconButton, VerticalCenter, MarkdownBox],
   templateUrl: './custom-field-value.html',
 })
 export class CustomFieldValue {
@@ -84,7 +85,11 @@ export class CustomFieldValue {
 
   protected textChanged(event: Event) {
     const input = event.target as HTMLInputElement;
-    const value = nullableField(input.value);
+    this.textChangedRaw(input.value);
+  }
+
+  protected textChangedRaw(text: string | null | undefined) {
+    const value = nullableField(text);
     if (value) {
       this.changeValue.emit(value);
       this.valueCleared.set(false);

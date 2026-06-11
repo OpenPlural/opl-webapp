@@ -18,6 +18,7 @@ import { LocalStorageService } from '../../../services/LocalStorageService';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { ColorInput } from '../../../components/color-input/color-input';
+import {MarkdownBox} from '../../../components/markdown-box/markdown-box';
 
 @Component({
   selector: 'app-account-settings',
@@ -30,6 +31,7 @@ import { ColorInput } from '../../../components/color-input/color-input';
     ProfilePicture,
     ToggleSetting,
     ColorInput,
+    MarkdownBox,
   ],
   templateUrl: './account-settings.html',
 })
@@ -51,6 +53,7 @@ export class AccountSettings {
   });
 
   protected readonly avatarUrl = signal<string | null>(null);
+  protected readonly description = signal<string | null>(null);
   protected readonly color = signal<bigint | null>(null);
   protected readonly updatedAccount = signal<UserInfo | null>(null);
   protected readonly showCreationDate = signal<boolean>(false);
@@ -65,22 +68,25 @@ export class AccountSettings {
     const formData = new FormData(form);
     const name = formData.get('name')?.toString();
     const email = formData.get('email')?.toString();
-    const description = formData.get('description')?.toString();
 
     if (name && name.length > 0) {
       const updated = Object.assign({}, account.user);
       updated.name = name;
       updated.email = nullableField(email);
-      updated.description = nullableField(description);
 
-      const newAvatar = this.avatarUrl();
-      if (newAvatar != null) {
-        updated.avatar = nullableField(newAvatar);
+      const newDescription = this.description();
+      if (newDescription != null) {
+        updated.description = nullableField(newDescription);
       }
 
       const newColor = this.color();
       if (newColor != null) {
         updated.color = newColor;
+      }
+
+      const newAvatar = this.avatarUrl();
+      if (newAvatar != null) {
+        updated.avatar = nullableField(newAvatar);
       }
 
       this.updatedAccount.set(updated);
@@ -103,6 +109,11 @@ export class AccountSettings {
 
   protected async editAvatar(url: string) {
     this.avatarUrl.set(url);
+    this.onUpdate();
+  }
+
+  protected descriptionChanged(description: string) {
+    this.description.set(description);
     this.onUpdate();
   }
 
