@@ -7,7 +7,7 @@
 @for (fieldValue of customFieldValuePairs(); track fieldValue.field.id) {
   @if (editing || fieldValue.value) {
     <app-custom-field-value [field]="fieldValue.field" [value]="fieldValue.value" [editable]="editing"
-                            (changeValue)="changeValue(fieldValue.field, fieldValue.value, $event)"
+                            (changeValue)="changeValue(fieldValue.field, $event)"
                             (clearValue)="clearValue(fieldValue.field, fieldValue.value)" />
   }
 }
