@@ -7,8 +7,11 @@
   <main>
     @if (user) {
       @if (tab === 'account') {
-        <div class="mx-auto mt-4 mb-2 w-fit">
+        <div class="m-4 flex flex-col items-center space-y-2">
           <app-profile-picture [avatarUrl]="user.user.avatar" size="w-48" fallbackSize="fa-5x" [fallbackIcon]="user.user.system ? 'fa-users' : 'fa-user'" [roundPfp]="false" />
+          @if (user.user.description) {
+            <app-markdown-box class="w-full sm:w-2/3" textareaName="description" [markdown]="user.user.description || ''" [editable]="false" />
+          }
         </div>
         @if (user.user.system) {
           <div class="divider">{{'fronters' | translate}}</div>
