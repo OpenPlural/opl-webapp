@@ -454,7 +454,7 @@ export class LocalStorageService {
       }
     }
     if (WARN_NON_PERSISTENT) {
-      alert('Your browser has denied us persistent storage!\n\nYou may lose data unexpectedly.');
+      alert('Your browser has denied us persistent storage!\n\nIf this warning shows up repeatedly, please check your browser settings to allow persistent storage for this site. Until then, your data might be cleared by the browser when it needs to free up space.');
     }
   }
 }
