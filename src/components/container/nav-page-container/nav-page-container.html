@@ -4,7 +4,7 @@
     @let headerButtons = this.headerButtons();
     @let headerHasEnding = searchable || headerButtons;
 
-    <div class="inline-flex items-center" [class.navbar-start]="headerHasEnding">
+    <div class="flex-none inline-flex items-center">
       <div class="dropdown">
         <div tabindex="0" role="button" class="btn btn-ghost btn-circle btn-lg">
           <i class="fa fa-bars" aria-hidden="true"></i>
@@ -28,8 +28,9 @@
         </span>
       }
     </div>
+    <div class="flex-1"></div>
     @if (headerHasEnding) {
-      <div class="navbar-end">
+      <div class="flex-none">
         @if (searchable) {
           @if (searching()) {
             <ng-content select=".search-options"></ng-content>
