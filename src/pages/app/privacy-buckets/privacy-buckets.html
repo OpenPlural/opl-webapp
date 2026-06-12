@@ -1,8 +1,11 @@
-<app-nav-page-container [fab]="true" (fabAction)="openDialog('bucketNamePrompt')">
+<app-nav-page-container [fab]="true" [headerButtons]="true" (fabAction)="openDialog('bucketNamePrompt')">
+  <app-vertical-center class="header-buttons">
+    <app-toggle-icon-button name="start reorder" toggledName="stop reorder" icon="fa-sort" [toggled]="reorder()" (toggle)="toggleReorder()" />
+  </app-vertical-center>
   <main>
     @let buckets = this.buckets();
     @if (buckets) {
-      <ul cdkDropList (cdkDropListDropped)="reorderBuckets($event)">
+      <ul cdkDropList [cdkDropListDisabled]="!reorder()" (cdkDropListDropped)="reorderBuckets($event)">
         @for (bucket of buckets; track bucket.id) {
           <li cdkDrag class="h-full">
             <app-privacy-bucket-list-item [bucket]="bucket" (action)="gotoPrivacyBucket(bucket.id)" />

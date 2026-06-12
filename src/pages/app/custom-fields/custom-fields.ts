@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core';
+import {Component, computed, inject, signal} from '@angular/core';
 import { LocalStorageService } from '../../../services/LocalStorageService';
 import { Router } from '@angular/router';
 import { NavPageContainer } from '../../../components/container/nav-page-container/nav-page-container';
@@ -13,6 +13,7 @@ import { moveItemInArray } from '@angular/cdk/drag-drop';
 import { SyncService } from '../../../services/SyncService';
 import { openDialog } from '../../../util/CommonFunctions';
 import { ErrorService } from '../../../services/ErrorService';
+import {ToggleIconButton} from '../../../components/toggle-icon-button/toggle-icon-button';
 
 @Component({
   selector: 'app-custom-fields',
@@ -24,6 +25,7 @@ import { ErrorService } from '../../../services/ErrorService';
     PopupInput,
     VerticalCenter,
     TranslatePipe,
+    ToggleIconButton,
   ],
   templateUrl: './custom-fields.html',
   styleUrl: './custom-fields.css',
@@ -34,9 +36,15 @@ export class CustomFields {
   private readonly localStorageService = inject(LocalStorageService);
   private readonly syncService = inject(SyncService);
 
+  protected readonly reorder = signal<boolean>(false);
+
   protected readonly customFields = computed(() =>
     [...this.localStorageService.customFields()].sort(compareCustomSort),
   );
+
+  protected toggleReorder() {
+    this.reorder.update(b => !b);
+  }
 
   protected gotoCustomField(id: CustomFieldId) {
     this.router.navigate(['app', 'custom-field', id]);
