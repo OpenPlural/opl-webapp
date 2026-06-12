@@ -141,6 +141,8 @@
   "setup email identity": "When you ask for support, we will use your email to verify that you own this account.",
   "setup email optional": "If you continue without an email, you won't be able to recover your account if you get locked out!",
   "continue without email": "Continue without email",
+  "start reorder": "Start reordering",
+  "stop reorder": "Stop reordering",
 
   "username": "Username",
   "password": "Password",
