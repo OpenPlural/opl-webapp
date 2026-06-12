@@ -10,10 +10,6 @@
       "sizes": "192x192",
       "type": "image/png"
     }, {
-      "src": "icons/icon256.ico",
-      "sizes": "256x256",
-      "type": "image/x-icon"
-    }, {
       "src": "icons/icon256.png",
       "sizes": "256x256",
       "type": "image/png"
