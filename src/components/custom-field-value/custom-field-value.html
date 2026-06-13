@@ -16,7 +16,7 @@
         @if (editable) {
           <input type="time" class="grow input" [value]="value" (input)="textChanged($event)" />
         } @else {
-          <input type="text" class="grow input" [value]="value" readonly />
+          <input type="text" class="grow input" [value]="timeFormatted()" readonly />
         }
       }
       @case (CUSTOM_FIELD_DATA_TYPE_DATE) {

@@ -33,6 +33,20 @@
         </select>
       </fieldset>
 
+      <fieldset class="fieldset">
+        <legend class="fieldset-legend">{{'time format' | translate}}</legend>
+        <div class="join flex flex-row">
+          <button class="btn join-item flex-1" [class.btn-outline]="settings.time24Hours" [class.btn-accent]="!settings.time24Hours"
+                  (click)="toggleSetting('time24Hours', false)">
+            {{'12 hour time' | translate}}
+          </button>
+          <button class="btn join-item flex-1" [class.btn-outline]="!settings.time24Hours" [class.btn-accent]="settings.time24Hours"
+                  (click)="toggleSetting('time24Hours', true)">
+            {{'24 hour time' | translate}}
+          </button>
+        </div>
+      </fieldset>
+
       <div class="divider">{{'general settings' | translate}}</div>
       <app-toggle-setting name="load avatars" [toggled]="settings.loadAvatars" (toggle)="toggleSetting('loadAvatars', $event)" />
       <app-toggle-setting name="use native color picker" [toggled]="settings.useNativeColorPicker" (toggle)="toggleSetting('useNativeColorPicker', $event)" />
