@@ -162,11 +162,13 @@ export class WebService {
   }
 
   async getPrivacyBuckets(): Promise<PrivacyBucket[]> {
-    return firstValueFrom(this.http.get<PrivacyBucket[]>(`${BASE_URL}/api/v1/privacy/`));
+    const buckets = await firstValueFrom(this.http.get<PrivacyBucket[]>(`${BASE_URL}/api/v1/privacy/`));
+    return buckets.map((bucket) => translatePrivacyBucket(this.localStorageService, bucket, 'id'));
   }
 
   async getPrivacyBucket(id: PrivacyBucketId): Promise<PrivacyBucket> {
-    return firstValueFrom(this.http.get<PrivacyBucket>(`${BASE_URL}/api/v1/privacy/${id}`));
+    const bucket = await firstValueFrom(this.http.get<PrivacyBucket>(`${BASE_URL}/api/v1/privacy/${id}`));
+    return translatePrivacyBucket(this.localStorageService, bucket, 'id');
   }
 
   async addPrivacyBucketFolder(privacyBucketId: PrivacyBucketId, folder: Folder): Promise<void> {
