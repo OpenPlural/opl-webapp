@@ -35,6 +35,15 @@ export class SettingsService {
     });
   }
 
+  private insertDefaultSettings(settings: any) {
+    const defaults = makeDefaultSettings();
+    for (const key in defaults) {
+      if (!(key in settings)) {
+        settings[key] = defaults[key as keyof Settings];
+      }
+    }
+  }
+
   formatDate(date: Date, type: 'Date' | 'DateTime'): string {
     const settings = this.storage();
     switch (type) {
@@ -50,14 +59,14 @@ export class SettingsService {
     this.changeSettings(settings => settings.language = id);
   }
 
-  changeStringSetting(name: string, value: string) {
+  changeStringSetting(name: keyof Settings, value: string) {
     this.changeSettings(settings => {
       // @ts-ignore
       settings[name] = value;
     });
   }
 
-  changeBooleanSetting(name: string, state: boolean) {
+  changeBooleanSetting(name: keyof Settings, state: boolean) {
     this.changeSettings(settings => {
       // @ts-ignore
       settings[name] = state;

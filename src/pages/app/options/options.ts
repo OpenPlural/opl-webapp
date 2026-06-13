@@ -3,7 +3,7 @@ import { NavPageContainer } from '../../../components/container/nav-page-contain
 import { TranslatePipe } from '@ngx-translate/core';
 import { appRoutes } from '../../../app/app.routes';
 import { Route } from '@angular/router';
-import { SettingsService } from '../../../services/SettingsService';
+import {Settings, SettingsService} from '../../../services/SettingsService';
 import { ToggleSetting } from '../../../components/toggle-setting/toggle-setting';
 import { getLanguages } from '../../../app/app.config';
 
@@ -36,7 +36,7 @@ export class Options {
     this.settingsService.changeStringSetting('dateFormat', select.value);
   }
 
-  protected toggleSetting(name: string, state: boolean) {
+  protected toggleSetting(name: keyof Settings, state: boolean) {
     this.settingsService.changeBooleanSetting(name, state);
   }
 
