@@ -43,6 +43,9 @@ const languages = [
   }, {
     id: 'en',
     name: 'English'
+  }, {
+    id: 'de',
+    name: 'Deutsch'
   }
 ];
 
