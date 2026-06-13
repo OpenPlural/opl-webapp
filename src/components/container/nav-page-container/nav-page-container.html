@@ -9,7 +9,7 @@
         <div tabindex="0" role="button" class="btn btn-ghost btn-circle btn-lg">
           <i class="fa fa-bars" aria-hidden="true"></i>
         </div>
-        <ul tabindex="-1" class="menu menu-lg dropdown-content bg-base-200 rounded-box z-1 p-2 shadow-lg">
+        <ul tabindex="-1" class="menu menu-lg dropdown-content bg-base-200 rounded-box z-20 p-2 shadow-lg">
           @for (route of getAppRoutes(); track route.path) {
             <button class="btn btn-ghost btn-md" (click)="gotoRoute(route)">
               <span class="w-full text-left text-nowrap">{{getRouteName(route) | translate}}</span>
