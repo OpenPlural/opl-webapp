@@ -1,5 +1,5 @@
 @if (editing()) {
-  <textarea #markdownEditor [name]="textareaName()" class="w-full textarea" [value]="relevantMarkdown()" (input)="inputChanged($event)" (focusout)="stopEditing()"></textarea>
+  <textarea #markdownEditor [name]="textareaName()" class="w-full textarea" [value]="markdown()" (input)="inputChanged($event)" (focusout)="stopEditing()"></textarea>
 } @else {
   <div class="w-full textarea" [class.cursor-pointer]="editable()" [innerHTML]="htmlText()" (click)="startEditing()"></div>
 }

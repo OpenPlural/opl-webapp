@@ -30,7 +30,7 @@ export class PrivacyBucketPage implements OnInit {
 
   protected readonly bucket = signal<PrivacyBucket | null>(null);
   protected readonly friends = signal<Friend[] | null>(null);
-  protected readonly description = signal<string | null>(null);
+  protected readonly description = signal<string>('');
 
   readonly id = toSignal(
     this.route.paramMap.pipe(
@@ -46,11 +46,13 @@ export class PrivacyBucketPage implements OnInit {
     effect(() => {
       const id = this.id();
       if (id) {
-        this.webService.getPrivacyBucket(id).then((user) => {
-          this.bucket.set(user);
+        this.webService.getPrivacyBucket(id).then((bucket) => {
+          this.bucket.set(bucket);
+          this.description.set(bucket.description || '');
         });
       } else {
         this.bucket.set(null);
+        this.description.set('');
       }
     });
   }

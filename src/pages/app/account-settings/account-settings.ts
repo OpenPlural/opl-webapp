@@ -53,7 +53,7 @@ export class AccountSettings {
   });
 
   protected readonly avatarUrl = signal<string | null>(null);
-  protected readonly description = signal<string | null>(null);
+  protected readonly description = signal<string>('');
   protected readonly color = signal<bigint | null>(null);
   protected readonly updatedAccount = signal<UserInfo | null>(null);
   protected readonly showCreationDate = signal<boolean>(false);
@@ -75,9 +75,7 @@ export class AccountSettings {
       updated.email = nullableField(email);
 
       const newDescription = this.description();
-      if (newDescription != null) {
-        updated.description = nullableField(newDescription);
-      }
+      updated.description = nullableField(newDescription);
 
       const newColor = this.color();
       if (newColor != null) {

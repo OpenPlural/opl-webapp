@@ -9,7 +9,7 @@
         </fieldset>
         <fieldset class="fieldset">
           <legend class="fieldset-legend">{{'description' | translate}}</legend>
-          <app-markdown-box class="w-full" textareaName="description" [markdown]="bucket.description || ''" [editable]="true" (changeMarkdown)="description.set($event)" />
+          <app-markdown-box class="w-full" textareaName="description" [(markdown)]="description" [editable]="true" />
         </fieldset>
         <fieldset class="fieldset">
           <legend class="fieldset-legend">{{'emoji' | translate}}</legend>

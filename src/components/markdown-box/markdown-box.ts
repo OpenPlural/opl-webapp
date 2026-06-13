@@ -1,4 +1,4 @@
-import {Component, computed, ElementRef, input, output, signal, ViewChild} from '@angular/core';
+import {Component, computed, ElementRef, input, model, signal, ViewChild} from '@angular/core';
 import {parseMarkdown} from '../../util/Markdown';
 
 @Component({
@@ -8,22 +8,13 @@ import {parseMarkdown} from '../../util/Markdown';
 })
 export class MarkdownBox {
   readonly textareaName = input.required<string>();
-  readonly markdown = input.required<string>();
   readonly editable = input.required<boolean>();
-  readonly changeMarkdown = output<string>();
+  readonly markdown = model.required<string>();
 
   protected readonly editing = signal<boolean>(false);
-  protected readonly updatedMarkdown = signal<string | null>(null);
 
-  protected readonly relevantMarkdown = computed(() => {
-    const updatedMarkdown = this.updatedMarkdown();
-    if (updatedMarkdown) {
-      return updatedMarkdown;
-    }
-    return this.markdown();
-  });
   protected readonly htmlText = computed(() => {
-    const markdown = this.relevantMarkdown();
+    const markdown = this.markdown();
     return parseMarkdown(markdown);
   });
 
@@ -35,8 +26,7 @@ export class MarkdownBox {
 
   protected inputChanged(event: Event) {
     const input = event.target as HTMLInputElement;
-    this.updatedMarkdown.set(input.value);
-    this.changeMarkdown.emit(input.value);
+    this.markdown.set(input.value);
   }
 
   protected startEditing() {

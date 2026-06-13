@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import {Component, computed, inject, OnInit, signal} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
@@ -34,7 +34,7 @@ import {MarkdownBox} from "../../../components/markdown-box/markdown-box";
   templateUrl: './folder-page.html',
   styleUrl: './folder-page.css',
 })
-export class FolderPage {
+export class FolderPage implements OnInit {
   private readonly location = inject(Location);
   private readonly route = inject(ActivatedRoute);
   private readonly localStorageService = inject(LocalStorageService);
@@ -67,7 +67,7 @@ export class FolderPage {
     const archivedCount = members.filter((m) => m.archived).length;
     return { count, archivedCount };
   });
-  protected readonly description = signal<string | null>(null);
+  protected readonly description = signal<string>('');
   protected readonly color = signal<bigint | null>(null);
   protected readonly privacyIds = computed(() => this.privacy()?.map((bucket) => bucket.id) || []);
   protected readonly privacy = signal<SimplePrivacyBucket[] | null>(null);
@@ -79,6 +79,10 @@ export class FolderPage {
   });
   protected readonly showCreationDate = signal<boolean>(false);
   protected readonly showMemberCount = signal<boolean>(false);
+
+  ngOnInit() {
+    this.description.set(this.folder()?.description || '');
+  }
 
   protected async loadPrivacy() {
     const folder = this.folder();
