@@ -28,10 +28,10 @@ export class SyncService {
   private readonly toastService = inject(ToastService);
   private readonly webService = inject(WebService);
 
-  private readonly syncFailed = toSignal<string>(this.translate.get('sync failed'), {
+  private readonly syncFailed = toSignal<string>(this.translate.getStreamOnTranslationChange('sync failed'), {
     initialValue: null,
   });
-  private readonly syncFinished = toSignal<string>(this.translate.get('sync finished'), {
+  private readonly syncFinished = toSignal<string>(this.translate.getStreamOnTranslationChange('sync finished'), {
     initialValue: null,
   });
 
