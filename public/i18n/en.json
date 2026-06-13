@@ -83,6 +83,7 @@
   "load privacy": "Load privacy buckets",
   "change privacy": "Change privacy buckets",
   "change folder privacy": "Select privacy buckets for this folder",
+  "change member privacy": "Select privacy buckets for this member",
   "change custom field privacy": "Select privacy buckets for this custom field",
   "change friend privacy": "Select which privacy buckets this friend can see",
   "incoming friend requests": "Incoming",

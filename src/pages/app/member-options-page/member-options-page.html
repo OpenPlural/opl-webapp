@@ -5,7 +5,7 @@
   <div class="p-5 pt-0">
     @let privacy = this.privacy();
     @if (privacy) {
-      <app-privacy-bucket-list title="change folder privacy" [buckets]="privacy" (submitSelection)="updatePrivacy($event)" />
+      <app-privacy-bucket-list title="change member privacy" [buckets]="privacy" (submitSelection)="updatePrivacy($event)" />
     } @else {
       <div class="text-center">
         @let loading = this.loadingPrivacy();
