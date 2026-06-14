@@ -20,6 +20,7 @@ import { AccountSettings } from '../pages/app/account-settings/account-settings'
 import {Legal} from '../pages/app/legal/legal';
 import {Setup} from '../pages/app/setup/setup';
 import {Sessions} from '../pages/app/sessions/sessions';
+import {FrontHistoryPage} from '../pages/app/front-history-page/front-history-page';
 
 export const appRoutes: Routes = [
   {
@@ -44,6 +45,10 @@ export const appRoutes: Routes = [
   }, {
     path: 'member/:id',
     component: MemberPage
+  }, {
+    path: 'front-history',
+    component: FrontHistoryPage,
+    data: { name: 'front history', navigable: true }
   }, {
     path: 'friends',
     component: Friends,
