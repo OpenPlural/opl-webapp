@@ -4,7 +4,7 @@
   @for (frontEntry of frontHistory; track frontEntry.id) {
     @let member = getMember(frontEntry.member);
     @if (member) {
-      <app-member-list-item [member]="member" [editable]="false" />
+      <app-member-list-item [member]="member" [editable]="false" [inactive]="true" />
     }
     <div class="border-x border-b rounded-b-lg bg-base-100 p-2 mb-2 mx-4">
       <div class="flex flex-row justify-between w-full">
