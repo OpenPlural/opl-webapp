@@ -11,13 +11,6 @@ export function authenticatedInterceptor(req: HttpRequest<unknown>, next: HttpHa
   const accountService = inject(AccountService);
   const toastService = inject(ToastService);
 
-  const account = accountService.account();
-  if (account) {
-    req = req.clone({
-      headers: req.headers.set('Authorization', `Bearer ${account.session.token}`)
-    })
-  }
-
   const router = inject(Router);
   return next(req).pipe(
     catchError(error => {

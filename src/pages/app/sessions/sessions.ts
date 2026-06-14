@@ -27,7 +27,7 @@ export class Sessions implements OnInit {
 
   protected readonly sessions = signal<Session[] | null>(null);
 
-  protected readonly currentSessionId = computed(() => this.accountService.account()?.session.id);
+  protected readonly currentSessionId = computed(() => this.accountService.account()?.session);
 
   ngOnInit() {
     this.webService.getSessions().then((sessions) => {
