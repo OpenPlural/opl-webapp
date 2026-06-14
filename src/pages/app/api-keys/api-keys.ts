@@ -51,7 +51,7 @@ export class ApiKeys implements OnInit{
       this.apiKeyToken.set(apiKey.token);
       this.apiKeys.update((keys) => {
         if (keys) {
-          return [...keys, apiKey];
+          return [...keys, apiKey].sort((a: ApiKey, b: ApiKey) => a.name.localeCompare(b.name));
         }
         return [apiKey];
       });
