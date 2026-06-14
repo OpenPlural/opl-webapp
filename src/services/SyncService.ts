@@ -246,6 +246,25 @@ export class SyncService {
     }
 
     localItems = [...localItems];
+
+    let remainingServerItems = updatedServerItems.filter(si => !localItems.some(li => li.remoteId === si.id));
+    while (remainingServerItems.length > 0) {
+      const failedServerItems = [];
+      for (const serverItem of remainingServerItems) {
+        try {
+          const localItem = makeLocalItem(null, serverItem);
+          await localAdd(localItem);
+          localItems.push(localItem);
+        } catch (e) {
+          if (failedServerItems.length + 1 < remainingServerItems.length) {
+            failedServerItems.push(serverItem);
+          } else {
+            throw e;
+          }
+        }
+      }
+      remainingServerItems = failedServerItems;
+    }
     for (const serverItem of updatedServerItems) {
       const remoteId = serverItem.id;
       if (!localItems.some(li => li.remoteId === remoteId)) {
