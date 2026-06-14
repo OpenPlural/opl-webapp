@@ -22,6 +22,7 @@ import {Setup} from '../pages/app/setup/setup';
 import {Sessions} from '../pages/app/sessions/sessions';
 import {FrontHistoryPage} from '../pages/app/front-history-page/front-history-page';
 import {ApiKeys} from '../pages/app/api-keys/api-keys';
+import {DataImport} from '../pages/app/data-import/data-import';
 
 export const appRoutes: Routes = [
   {
@@ -93,6 +94,10 @@ export const appRoutes: Routes = [
     path: 'options',
     component: Options,
     data: { name: 'options' }
+  }, {
+    path: 'data-import',
+    component: DataImport,
+    data: { name: 'data import' }
   }, {
     path: 'legal',
     component: Legal,

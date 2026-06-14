@@ -1,0 +1,42 @@
+<app-nav-page-container>
+  <main>
+    <form id="importSPForm" class="mx-2 mt-2" (submit)="importData($event)">
+      <h3 class="text-center text-lg font-bold">{{'data import simply plural' | translate}}</h3>
+      <fieldset class="fieldset">
+        <legend class="fieldset-legend">{{'data file' | translate}}</legend>
+        <input name="file" type="file" accept="application/json" class="w-full file-input" />
+      </fieldset>
+      <fieldset class="fieldset border-base-100 rounded-box w-full border-2 p-4">
+        <legend class="fieldset-legend">{{'data import flags' | translate}}</legend>
+        <label class="label">
+          <input name="folders" type="checkbox" class="checkbox" checked />
+          {{'data import folders' | translate}}
+        </label>
+        <label class="label">
+          <input name="members" type="checkbox" class="checkbox" checked />
+          {{'data import members' | translate}}
+        </label>
+        <label class="label">
+          <input name="customFront" type="checkbox" class="checkbox" checked />
+          {{'data import custom front' | translate}}
+        </label>
+        <label class="label">
+          <input name="customFields" type="checkbox" class="checkbox" checked />
+          {{'data import custom fields' | translate}}
+        </label>
+        <label class="label">
+          <input name="privacyBuckets" type="checkbox" class="checkbox" checked />
+          {{'data import privacy buckets' | translate}}
+        </label>
+      </fieldset>
+      <div class="text-center mt-2">
+        <button type="submit" class="btn btn-primary w-full sm:w-1/2 md:w-1/3" [disabled]="importing()">
+          @if (importing()) {
+            <span class="loading loading-spinner"></span>
+          }
+          {{'confirm' | translate}}
+        </button>
+      </div>
+    </form>
+  </main>
+</app-nav-page-container>

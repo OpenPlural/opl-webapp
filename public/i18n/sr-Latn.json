@@ -48,6 +48,7 @@
   "sessions": "Sesije",
   "account settings": "Podešavanja za nalog",
   "options": "Opcije",
+  "data import": "Uvoz",
   "legal": "Pravno",
   "setup": "Podešavanje",
 
@@ -157,6 +158,14 @@
   "continue without email": "Nastavi bez email-a",
   "start reorder": "Počni preurediti",
   "stop reorder": "Zaustavi preurediti",
+  "data import simply plural": "Uvezi iz Simply Plural",
+  "data file": "Fajl (.json)",
+  "data import flags": "Opcije",
+  "data import folders": "Uvezi fascikle",
+  "data import members": "Uvezi članove",
+  "data import custom front": "Uvezi prilagođen front",
+  "data import custom fields": "Uvezi prilagođena polja",
+  "data import privacy buckets": "Uvezi kante za privatnost",
 
   "username": "Korisničko ime",
   "password": "Šifra",

@@ -48,6 +48,7 @@
   "sessions": "Sessions",
   "account settings": "Account Settings",
   "options": "Options",
+  "data import": "Import",
   "legal": "Legal",
   "setup": "Setup",
 
@@ -157,6 +158,14 @@
   "continue without email": "Continue without email",
   "start reorder": "Start reordering",
   "stop reorder": "Stop reordering",
+  "data import simply plural": "Import from Simply Plural",
+  "data file": "File (.json)",
+  "data import flags": "Options",
+  "data import folders": "Import folders",
+  "data import members": "Import members",
+  "data import custom front": "Import custom front",
+  "data import custom fields": "Import custom fields",
+  "data import privacy buckets": "Import privacy buckets",
 
   "username": "Username",
   "password": "Password",
