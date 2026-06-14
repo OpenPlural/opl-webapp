@@ -1,0 +1,60 @@
+<app-nav-page-container [fab]="true" (fabAction)="openDialog('createApiKeyPrompt')">
+  <main>
+    @let apiKeys = this.apiKeys();
+    @if (apiKeys) {
+      <div class="mx-4 mt-4">
+        <ul class="list bg-base-100 rounded-xl">
+          <li class="p-4 pb-2 tracking-wide text-center text-xl">{{'api keys' | translate}}</li>
+          @for (apiKey of apiKeys; track apiKey.id) {
+            <li class="list-row flex flex-row">
+              <div class="flex-1">
+                <h3 class="text-center text-lg font-bold">{{apiKey.name}}</h3>
+                @if (apiKey.createdAt) {
+                  <span>{{'api key creation' | translate:{date: formatDate(apiKey.createdAt)} }}</span>
+                }
+              </div>
+              <app-vertical-center>
+                <app-icon-button name="delete api key" icon="fa-times" size="fa-lg" buttonClass="btn-error" (action)="deleteApiKey(apiKey.id)" />
+              </app-vertical-center>
+            </li>
+          }
+        </ul>
+      </div>
+    } @else {
+      <app-loading />
+    }
+  </main>
+  <i class="fa fa-plus"></i>
+</app-nav-page-container>
+
+<dialog id="createApiKeyPrompt" class="modal">
+  <div class="modal-box">
+    <h3 class="text-lg font-bold">{{'create api key' | translate}}</h3>
+    <form method="dialog" class="w-full" (submit)="createApiKey($event)">
+      <fieldset class="fieldset">
+        <legend class="fieldset-legend">{{'name' | translate}}</legend>
+        <input name="name" type="text" class="input w-full">
+      </fieldset>
+      <label class="w-full label my-2">
+        <input type="checkbox" class="toggle" name="write">
+        {{'api key write and delete' | translate}}
+      </label>
+      <button type="submit" class="mx-auto mt-5 block btn btn-success">{{'confirm' | translate}}</button>
+    </form>
+  </div>
+  <form method="dialog" class="modal-backdrop">
+    <button></button>
+  </form>
+</dialog>
+<dialog id="apiKeyTokenPopup" class="modal" (close)="unloadCreatedApiKey()">
+  <div class="modal-box">
+    <h3 class="text-lg font-bold">{{apiKeyName()}}</h3>
+    <span>{{'api key token only once' | translate}}</span>
+    <div class="mt-2 p-3 bg-base-200 rounded-lg text-nowrap overflow-x-scroll">
+      {{apiKeyToken()}}
+    </div>
+  </div>
+  <form method="dialog" class="modal-backdrop">
+    <button></button>
+  </form>
+</dialog>

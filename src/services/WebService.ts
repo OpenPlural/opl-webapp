@@ -16,7 +16,7 @@ import {
   CustomFieldId,
   ViewedCustomFieldDataValue
 } from './model/Field';
-import { SessionToken, TokenId } from './model/Session';
+import { Session, SessionId } from './model/Session';
 import {
   translateCustomFieldDataValue,
   translateFolder,
@@ -24,6 +24,7 @@ import {
   translateMember, translatePrivacyBucket
 } from '../util/IdTranslator';
 import { LocalStorageService } from './LocalStorageService';
+import {ApiKey, ApiKeyId} from './model/ApiKey';
 
 const BASE_URL: string = localStorage.getItem('baseUrl') || (isDevMode() ? 'https://localhost:4200' : 'https://opl-api.webbiii.cc');
 
@@ -50,11 +51,11 @@ export class WebService {
     await firstValueFrom(this.http.post(`${BASE_URL}/auth/change-password`, { id, oldPassword, newPassword }));
   }
 
-  async getSessions(): Promise<SessionToken[]> {
-    return firstValueFrom(this.http.get<SessionToken[]>(`${BASE_URL}/api/v1/session/`));
+  async getSessions(): Promise<Session[]> {
+    return firstValueFrom(this.http.get<Session[]>(`${BASE_URL}/api/v1/session/`));
   }
 
-  async invalidateSession(id: TokenId): Promise<void> {
+  async invalidateSession(id: SessionId): Promise<void> {
     await firstValueFrom(this.http.delete(`${BASE_URL}/api/v1/session/${id}`));
   }
 
@@ -285,6 +286,18 @@ export class WebService {
 
   async getMemberWithFolders(userId: UserId, memberId: MemberId): Promise<ExtendedMember> {
     return firstValueFrom(this.http.get<ExtendedMember>(`${BASE_URL}/api/v1/member/${memberId}?userId=${userId}&extended=true`));
+  }
+
+  async getApiKeys(): Promise<ApiKey[]> {
+    return firstValueFrom(this.http.get<ApiKey[]>(`${BASE_URL}/api/v1/api-key/`));
+  }
+
+  async createApiKey(name: string, write: boolean): Promise<ApiKey> {
+    return firstValueFrom(this.http.put<ApiKey>(`${BASE_URL}/api/v1/api-key/`, { name, write }));
+  }
+
+  async deleteApiKey(id: ApiKeyId): Promise<void> {
+    await firstValueFrom(this.http.delete(`${BASE_URL}/api/v1/api-key/${id}`));
   }
 }
 

@@ -21,6 +21,7 @@ import {Legal} from '../pages/app/legal/legal';
 import {Setup} from '../pages/app/setup/setup';
 import {Sessions} from '../pages/app/sessions/sessions';
 import {FrontHistoryPage} from '../pages/app/front-history-page/front-history-page';
+import {ApiKeys} from '../pages/app/api-keys/api-keys';
 
 export const appRoutes: Routes = [
   {
@@ -76,6 +77,10 @@ export const appRoutes: Routes = [
   }, {
     path: 'custom-field/:id',
     component: CustomFieldPage
+  }, {
+    path: 'api-keys',
+    component: ApiKeys,
+    data: { name: 'api keys' }
   }, {
     path: 'sessions',
     component: Sessions,

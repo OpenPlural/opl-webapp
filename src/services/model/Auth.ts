@@ -1,5 +1,5 @@
 import { UserInfo } from './User';
-import { TokenId } from './Session';
+import { SessionId } from './Session';
 
 export interface AccountInfo {
   session: SessionData;
@@ -9,6 +9,6 @@ export interface AccountInfo {
 }
 
 export interface SessionData {
-  id: TokenId;
+  id: SessionId;
   token: string;
 }
