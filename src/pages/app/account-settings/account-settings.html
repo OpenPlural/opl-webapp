@@ -40,6 +40,18 @@
           </button>
         }
       </div>
+      <span class="font-bold">{{'total member count header' | translate}}</span>
+      <div class="mt-2 mb-5">
+        @if (showTotalMemberCount()) {
+          @let memberCounts = this.memberCounts();
+          <span>{{'total member count' | translate:{ count: memberCounts.count, archivedCount: memberCounts.archivedCount } }}</span>
+        } @else {
+          <button class="btn btn-soft" (click)="showTotalMemberCount.set(true)">
+            <i class="fa fa-eye"></i>
+            {{'unhide' | translate}}
+          </button>
+        }
+      </div>
       <span class="font-bold">{{'account creation date' | translate}}</span>
       <div class="mt-2">
         @if (showCreationDate()) {

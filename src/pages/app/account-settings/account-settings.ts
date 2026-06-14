@@ -51,12 +51,21 @@ export class AccountSettings {
     }
     return null;
   });
+  protected readonly memberCounts = computed(() => {
+    const members = this.localStorageService
+      .members()
+      .filter((m) => !m.custom);
+    const count = members.filter((m) => !m.archived).length;
+    const archivedCount = members.filter((m) => m.archived).length;
+    return { count, archivedCount };
+  });
 
   protected readonly avatarUrl = signal<string | null>(null);
   protected readonly description = signal<string>('');
   protected readonly color = signal<bigint | null>(null);
   protected readonly updatedAccount = signal<UserInfo | null>(null);
   protected readonly showCreationDate = signal<boolean>(false);
+  protected readonly showTotalMemberCount = signal<boolean>(false);
   protected readonly showFriendCode = signal<boolean>(false);
   protected readonly accountError = signal<string | null>(null);
 
