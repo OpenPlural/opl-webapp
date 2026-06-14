@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ToastService } from './ToastService';
-import {fromJson} from '../util/FixedJson';
+import {fromJson, toJson} from '../util/FixedJson';
 
 @Injectable({ providedIn: 'root' })
 export class ErrorService {
@@ -39,8 +39,12 @@ export class ErrorService {
       } else {
         this.logErrorMessage(`${error.name}: ${error.message} (${error.text})`);
       }
+    } else if (error instanceof Error) {
+      this.logErrorMessage(error.message);
+    } else if (error instanceof Object) {
+      this.logErrorMessage(toJson(error));
     } else {
-      this.logErrorMessage(error instanceof Error ? error.message : String(error));
+      this.logErrorMessage(String(error));
     }
   }
 
