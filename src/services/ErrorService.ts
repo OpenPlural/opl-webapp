@@ -33,7 +33,15 @@ export class ErrorService {
       return;
     }
     console.error(error);
-    this.logErrorMessage(error instanceof Error ? error.message : String(error));
+    if (error instanceof Object && "name" in error && "message" in error && "text" in error) {
+      if (error.name === "SyntaxError") {
+        this.logErrorMessage(`SNTX: ${error.text}`);
+      } else {
+        this.logErrorMessage(`${error.name}: ${error.message} (${error.text})`);
+      }
+    } else {
+      this.logErrorMessage(error instanceof Error ? error.message : String(error));
+    }
   }
 
   logErrorMessage(message: string) {
