@@ -27,6 +27,7 @@ export class ApiKeys implements OnInit{
   protected readonly apiKeys = signal<ApiKey[] | null>(null);
   protected readonly apiKeyName = signal<string | undefined>(undefined);
   protected readonly apiKeyToken = signal<string | undefined>(undefined);
+  protected readonly apiKeyCopied = signal<boolean>(false);
 
   ngOnInit() {
     this.loadApiKeys();
@@ -67,6 +68,19 @@ export class ApiKeys implements OnInit{
   protected unloadCreatedApiKey() {
     this.apiKeyName.set(undefined);
     this.apiKeyToken.set(undefined);
+  }
+
+  protected async copyCreatedApiKey() {
+    const input = document.getElementById('createdApiKeyToken') as HTMLInputElement;
+    input.select();
+    input.setSelectionRange(0, 99999);
+    if (navigator.clipboard) {
+      await navigator.clipboard.writeText(input.value);
+      this.apiKeyCopied.set(true);
+      setTimeout(() => {
+        this.apiKeyCopied.set(false);
+      }, 500);
+    }
   }
 
   protected formatDate(date: string): string {

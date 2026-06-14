@@ -50,8 +50,14 @@
   <div class="modal-box">
     <h3 class="text-lg font-bold">{{apiKeyName()}}</h3>
     <span>{{'api key token only once' | translate}}</span>
-    <div class="mt-2 p-3 bg-base-200 rounded-lg text-nowrap overflow-x-scroll">
-      {{apiKeyToken()}}
+    <div class="join w-full mt-2">
+      <div class="flex-1">
+        <label class="w-full input join-item">
+          <input id="createdApiKeyToken" readonly [value]="apiKeyToken()">
+        </label>
+      </div>
+      <app-icon-button name="copy to clipboard" [icon]="apiKeyCopied() ? 'fa-check' : 'fa-clipboard'"
+                       buttonSize="" buttonClass="btn-outline join-item" (action)="copyCreatedApiKey()" />
     </div>
   </div>
   <form method="dialog" class="modal-backdrop">
