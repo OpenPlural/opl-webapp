@@ -46,6 +46,12 @@ const languages = [
   }, {
     id: 'de',
     name: 'Deutsch'
+  }, {
+    id: 'sr-Latn',
+    name: 'Srpski (Latinica)'
+  }, {
+    id: 'sr-Cyrl',
+    name: 'Српски (Ћирилица)'
   }
 ];
 
