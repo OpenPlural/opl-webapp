@@ -8,6 +8,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { SyncService } from '../../services/SyncService';
 import { LegalFooter } from '../../components/legal-footer/legal-footer';
 import { ErrorService } from '../../services/ErrorService';
+import {LocalStorageService} from '../../services/LocalStorageService';
+import {deleteLocalData} from '../../util/LocalDataDeletion';
 
 @Component({
   selector: 'app-register',
@@ -18,6 +20,7 @@ export class Register {
   private readonly router = inject(Router);
   private readonly accountService = inject(AccountService);
   private readonly errorService = inject(ErrorService);
+  private readonly localStorageService = inject(LocalStorageService);
   private readonly syncService = inject(SyncService);
   private readonly webService = inject(WebService);
 
@@ -46,6 +49,7 @@ export class Register {
       }
       this.loading.set(true);
       try {
+        await this.localStorageService.clear();
         await this.webService.register(username, password, system === 'on');
         await this.accountService.login(username, password);
         await this.syncService.fullSync();
