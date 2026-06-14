@@ -123,7 +123,7 @@
   "account system description": "Wenn diese Option deaktiviert ist, werden Funktionen wie Ordner, Mitglieder, Umfragen, usw. in der App versteckt. Die Daten werden nicht gelöscht und sind nach Aktivierung dieser Option wieder verfügbar.",
   "default page": "Standardseite",
   "date format": "Datumsformat",
-  "date format example 01nov24": "Das Beispielsdatum ist der 1. November 2024",
+  "date format example 01nov24": "Das Beispieldatum ist der 1. November 2024",
   "time format": "Uhrzeitformat",
   "12 hour time": "12 Stunden",
   "24 hour time": "24 Stunden",
