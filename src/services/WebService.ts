@@ -6,7 +6,7 @@ import { ExtendedMember, Member, MemberId } from './model/Member';
 import { AccountInfo } from './model/Auth';
 import { firstValueFrom } from 'rxjs';
 import { FrontEntry, FrontEntryId } from './model/Front';
-import { ServerTimeResponse, SyncData } from './model/Sync';
+import { SyncData } from './model/Sync';
 import { Friend, FriendRequest, FriendSettings } from './model/Friend';
 import { PrivacyBucket, PrivacyBucketId, SimplePrivacyBucket } from './model/Privacy';
 import {
