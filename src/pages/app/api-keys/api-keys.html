@@ -9,9 +9,19 @@
             <li class="list-row flex flex-row">
               <div class="flex-1">
                 <h3 class="text-center text-lg font-bold">{{apiKey.name}}</h3>
-                @if (apiKey.createdAt) {
-                  <span>{{'api key creation' | translate:{date: formatDate(apiKey.createdAt)} }}</span>
-                }
+                <div class="mt-2 sm:flex justify-between">
+                  <div class="badge badge-soft" [class.badge-success]="!apiKey.write" [class.badge-warning]="apiKey.write">
+                    @if (apiKey.write) {
+                      {{'api key write and delete' | translate}}
+                    } @else {
+                      {{'api key read only' | translate}}
+                    }
+                  </div>
+                  <br class="sm:hidden">
+                  @if (apiKey.createdAt) {
+                    <span>{{'api key creation' | translate:{date: formatDate(apiKey.createdAt)} }}</span>
+                  }
+                </div>
               </div>
               <app-vertical-center>
                 <app-icon-button name="delete api key" icon="fa-times" size="fa-lg" buttonClass="btn-error" (action)="deleteApiKey(apiKey.id)" />

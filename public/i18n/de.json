@@ -140,6 +140,7 @@
   "hide root members": "Mitglieder eines Ordners nicht im Stammordner anzeigen",
   "hide root members description": "Wenn diese Option aktiviert ist, werden Mitglieder, die Teil eines Ordners sind, nicht mehr im Stammordner angezeigt",
   "create api key": "API Schlüssel erstellen",
+  "api key read only": "Darf nur lesen",
   "api key write and delete": "Darf schreiben und löschen",
   "api key token only once": "Du kannst diesen Schlüssel nur einmalig sehen",
   "api key creation": "Erstellt am {date}",

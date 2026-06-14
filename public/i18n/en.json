@@ -140,6 +140,7 @@
   "hide root members": "Hide members from the root folder if they are part of a folder",
   "hide root members description": "When enabled, members who are in folders will not show up in the root folder",
   "create api key": "Create API key",
+  "api key read only": "May only read",
   "api key write and delete": "May write and delete",
   "api key token only once": "You can only see this key once",
   "api key creation": "Created at {date}",
