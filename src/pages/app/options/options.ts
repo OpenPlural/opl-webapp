@@ -6,6 +6,7 @@ import { Route } from '@angular/router';
 import {Settings, SettingsService} from '../../../services/SettingsService';
 import { ToggleSetting } from '../../../components/toggle-setting/toggle-setting';
 import { getLanguages } from '../../../app/app.config';
+import {NotificationService} from '../../../services/NotificationService';
 
 @Component({
   selector: 'app-options',
@@ -13,6 +14,7 @@ import { getLanguages } from '../../../app/app.config';
   templateUrl: './options.html',
 })
 export class Options {
+  private readonly notificationService = inject(NotificationService);
   private readonly settingsService = inject(SettingsService);
 
   protected readonly settings = computed(() => this.settingsService.settings());
@@ -38,6 +40,10 @@ export class Options {
 
   protected toggleSetting(name: keyof Settings, state: boolean) {
     this.settingsService.changeBooleanSetting(name, state);
+  }
+
+  protected requestNotificationPermissions() {
+    this.notificationService.requestPermissions();
   }
 
   protected readonly getLanguages = getLanguages;

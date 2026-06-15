@@ -22,7 +22,8 @@
               {
                 "glob": "**/*",
                 "input": "public"
-              }
+              },
+              "src/ext-sw.js"
             ],
             "styles": ["src/styles.css"]
           },

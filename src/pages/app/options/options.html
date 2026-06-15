@@ -54,6 +54,11 @@
 
       <div class="divider">{{'group settings' | translate}}</div>
       <app-toggle-setting name="hide root members" [toggled]="settings.hideRootMembers" (toggle)="toggleSetting('hideRootMembers', $event)" />
+
+      <div class="divider">{{'notification settings' | translate}}</div>
+      <button class="btn btn-accent w-full" (click)="requestNotificationPermissions()">
+        {{'notification request permissions' | translate}}
+      </button>
     </div>
   </main>
 </app-nav-page-container>

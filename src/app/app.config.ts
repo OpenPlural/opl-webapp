@@ -28,7 +28,7 @@ export const appConfig: ApplicationConfig = {
       compiler: provideTranslateCompiler(TranslateMessageFormatCompiler),
       missingTranslationHandler: provideMissingTranslationHandler(LoggingMissingTranslationHandler),
     }),
-    provideServiceWorker('ngsw-worker.js', {
+    provideServiceWorker('ext-sw.js', {
       enabled: !isDevMode(),
       registrationStrategy: 'registerWhenStable:30000',
     }),

@@ -319,6 +319,10 @@ export class WebService {
   async deleteApiKey(id: ApiKeyId): Promise<void> {
     await firstValueFrom(this.http.delete(`${BASE_URL}/api/v1/api-key/${id}`));
   }
+
+  async subscribeToNotifications(subscription: PushSubscription) {
+    await firstValueFrom(this.http.post(`${BASE_URL}/api/v1/notification/subscribe`, subscription.toJSON()));
+  }
 }
 
 interface IdResponse {
