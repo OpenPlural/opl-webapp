@@ -58,6 +58,18 @@
       <div class="divider">{{'notification settings' | translate}}</div>
       <button class="btn btn-accent w-full" (click)="requestNotificationPermissions()">
         {{'notification request permissions' | translate}}
+        @switch (Notification.permission) {
+          @case ('granted') {
+            <div class="badge badge-soft badge-success btn-circle">
+              <i class="fa fa-check"></i>
+            </div>
+          }
+          @case ('denied') {
+            <div class="badge badge-soft badge-error btn-circle">
+              <i class="fa fa-times"></i>
+            </div>
+          }
+        }
       </button>
     </div>
   </main>

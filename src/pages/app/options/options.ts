@@ -47,4 +47,5 @@ export class Options {
   }
 
   protected readonly getLanguages = getLanguages;
+  protected readonly Notification = Notification;
 }
