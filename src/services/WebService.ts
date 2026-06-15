@@ -292,6 +292,11 @@ export class WebService {
     return firstValueFrom(this.http.get<string>(`${BASE_URL}/api/v1/user/${id}/name`));
   }
 
+  async changeFriendCode(): Promise<string> {
+    const res = await firstValueFrom(this.http.post<{ friendCode: string }>(`${BASE_URL}/api/v1/user/change-friend-code`, {}));
+    return res.friendCode;
+  }
+
   async getFrontHistory(page: number): Promise<FrontEntry[]> {
     return firstValueFrom(this.http.get<FrontEntry[]>(`${BASE_URL}/api/v1/front/history?page=${page}`));
   }

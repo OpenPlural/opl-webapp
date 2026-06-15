@@ -67,4 +67,21 @@ export class AccountService {
       localStorage.setItem('account', toJson(account));
     }
   }
+
+  updateFriendCodeLocally(friendCode: string) {
+    this._account.update((account) => {
+      if (account) {
+        return {
+          ...account,
+          friendCode,
+        };
+      }
+      return account;
+    });
+
+    const account = this._account();
+    if (account) {
+      localStorage.setItem('account', toJson(account));
+    }
+  }
 }

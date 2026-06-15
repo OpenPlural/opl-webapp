@@ -32,7 +32,11 @@
       <span class="font-bold">{{'friend code' | translate}}</span>
       <div class="mt-2 mb-5">
         @if (showFriendCode()) {
-          <span>{{account.friendCode}}</span>
+          <span class="block mb-1">{{account.friendCode}}</span>
+          <button class="btn btn-soft" (click)="changeFriendCode()">
+            <i class="fa fa-refresh"></i>
+            {{'change friend code' | translate}}
+          </button>
         } @else {
           <button class="btn btn-soft" (click)="showFriendCode.set(true)">
             <i class="fa fa-eye"></i>

@@ -138,6 +138,11 @@ export class AccountSettings {
     this.location.back();
   }
 
+  protected async changeFriendCode() {
+    const newFriendCode = await this.webService.changeFriendCode();
+    this.accountService.updateFriendCodeLocally(newFriendCode);
+  }
+
   protected async deleteAccount(password: string) {
     const account = this.account();
     if (!account) return;
