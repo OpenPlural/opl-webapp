@@ -11,6 +11,10 @@ export function authenticatedInterceptor(req: HttpRequest<unknown>, next: HttpHa
   const accountService = inject(AccountService);
   const toastService = inject(ToastService);
 
+  req = req.clone({
+    withCredentials: true
+  });
+
   const router = inject(Router);
   return next(req).pipe(
     catchError(error => {
