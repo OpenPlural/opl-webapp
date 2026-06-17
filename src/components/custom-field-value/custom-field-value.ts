@@ -79,8 +79,7 @@ export class CustomFieldValue {
     const value = this.value();
     if (!value) return null;
 
-    const date = new Date(parseInt(value.value));
-    return this.settingsService.formatDate(date, field.dataType);
+    return this.settingsService.formatDate(parseInt(value.value), field.dataType, false);
   });
   protected readonly timeFormatted = computed(() => {
     const field = this.field();

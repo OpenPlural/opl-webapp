@@ -36,7 +36,7 @@ export class Sessions implements OnInit {
   }
 
   protected formatDate(date: string): string {
-    return this.settingsService.formatDate(new Date(Date.parse(date)), "DateTime");
+    return this.settingsService.formatDate(Date.parse(date), "DateTime");
   }
 
   protected async invalidateSession(id: SessionId) {

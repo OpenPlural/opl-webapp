@@ -5,6 +5,7 @@ import {TranslateService} from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import { hookOnDataDeletion } from '../util/LocalDataDeletion';
 import {toSignal} from '@angular/core/rxjs-interop';
+import {UTCDate} from '@date-fns/utc';
 
 @Injectable({providedIn: 'root'})
 export class SettingsService {
@@ -53,14 +54,34 @@ export class SettingsService {
     }
   }
 
-  formatDate(date: Date, type: 'Date' | 'DateTime'): string {
-    const settings = this.storage();
-
-    const formattedDate = format(date, settings.dateFormat);
+  private formatDateWithTimezone(timestamp: number, dateFormat: string, type: 'Date' | 'DateTime'): string {
+    const date = new Date(timestamp);
+    const formattedDate = format(date, dateFormat);
     if (type === 'DateTime') {
       return formattedDate + " " + this.formatTimeFromValues(date.getHours(), date.getMinutes());
     } else {
       return formattedDate;
+    }
+  }
+
+  private formatDateWithoutTimezone(timestamp: number, dateFormat: string, type: 'Date' | 'DateTime'): string {
+    const date = new UTCDate(timestamp);
+    const formattedDate = format(date, dateFormat);
+    if (type === 'DateTime') {
+      const date = new Date(timestamp);
+      return formattedDate + " " + this.formatTimeFromValues(date.getUTCHours(), date.getUTCMinutes());
+    } else {
+      return formattedDate;
+    }
+  }
+
+  formatDate(timestamp: number, type: 'Date' | 'DateTime', parseTimezone: boolean = true): string {
+    const settings = this.storage();
+
+    if (parseTimezone) {
+      return this.formatDateWithTimezone(timestamp, settings.dateFormat, type);
+    } else {
+      return this.formatDateWithoutTimezone(timestamp, settings.dateFormat, type);
     }
   }
 
