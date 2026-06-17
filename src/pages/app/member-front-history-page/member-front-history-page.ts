@@ -51,7 +51,7 @@ export class MemberFrontHistoryPage implements OnInit {
   }
 
   protected formatDate(date: string): string {
-    return this.settingsService.formatDate(new Date(Date.parse(date)), 'DateTime');
+    return this.settingsService.formatDate(Date.parse(date), 'DateTime');
   }
 
   protected getDuration(startedAt: string, endedAt: string): string {

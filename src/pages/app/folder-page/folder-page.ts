@@ -75,7 +75,7 @@ export class FolderPage implements OnInit {
   protected readonly folderCreationDate = computed(() => {
     const folder = this.folder();
     if (!folder) return null;
-    return this.settingsService.formatDate(new Date(Date.parse(folder.createdAt)), 'DateTime');
+    return this.settingsService.formatDate(Date.parse(folder.createdAt), 'DateTime');
   });
   protected readonly showCreationDate = signal<boolean>(false);
   protected readonly showMemberCount = signal<boolean>(false);

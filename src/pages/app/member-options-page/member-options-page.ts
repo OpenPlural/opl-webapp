@@ -19,7 +19,7 @@ export class MemberOptionsPage {
   readonly member = input.required<Member>();
   readonly updateArchived = output<boolean>();
 
-  protected readonly memberCreationDate = computed(() => this.settingsService.formatDate(new Date(Date.parse(this.member().createdAt)), 'DateTime'));
+  protected readonly memberCreationDate = computed(() => this.settingsService.formatDate(Date.parse(this.member().createdAt), 'DateTime'));
 
   protected readonly privacyIds = computed(() => this.privacy()?.map((bucket) => bucket.id) || []);
   protected readonly privacy = signal<SimplePrivacyBucket[] | null>(null);

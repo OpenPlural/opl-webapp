@@ -47,7 +47,7 @@ export class AccountSettings {
   protected readonly accountCreationDate = computed(() => {
     const account = this.account();
     if (account) {
-      return this.settingsService.formatDate(new Date(Date.parse(account.createdAt)), 'DateTime');
+      return this.settingsService.formatDate(Date.parse(account.createdAt), 'DateTime');
     }
     return null;
   });
