@@ -19,7 +19,7 @@ export function hexToRgb(color: string): {r: number; g: number; b: number} {
     const b = parseInt(color.substring(5, 7), 16);
     return {r, g, b};
   }
-  throw new Error('Invalid color format');
+  return {r: 255, g: 255, b: 255};
 }
 
 export function rgbToHex(r: number, g: number, b: number): string {
