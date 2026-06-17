@@ -143,6 +143,7 @@
   "hide root members": "Mitglieder eines Ordners nicht im Stammordner anzeigen",
   "hide root members description": "Wenn diese Option aktiviert ist, werden Mitglieder, die Teil eines Ordners sind, nicht mehr im Stammordner angezeigt",
   "notification request permissions": "Benachrichtigungsberechtigungen anfragen",
+  "notification unsupported": "Benachrichtungen werden von diesem Browser nicht unterstützt",
   "create api key": "API Schlüssel erstellen",
   "api key read only": "Darf nur lesen",
   "api key write and delete": "Darf schreiben und löschen",

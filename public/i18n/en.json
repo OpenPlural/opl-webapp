@@ -143,6 +143,7 @@
   "hide root members": "Hide members from the root folder if they are part of a folder",
   "hide root members description": "When enabled, members who are in folders will not show up in the root folder",
   "notification request permissions": "Request notification permissions",
+  "notification unsupported": "Notifications are not supported by this browser",
   "create api key": "Create API key",
   "api key read only": "May only read",
   "api key write and delete": "May write and delete",
