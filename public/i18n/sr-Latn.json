@@ -18,6 +18,7 @@
   "unhide": "Kliknite da vidite",
   "load more": "Učitaj više",
   "copy to clipboard": "Kopiraj u međuspremnik",
+  "select all": "Izaberi sve",
 
   "name": "Ime",
   "pronouns": "Zamenice",
@@ -49,6 +50,7 @@
   "account settings": "Podešavanja za nalog",
   "options": "Opcije",
   "data import": "Uvoz",
+  "mass delete": "Masovno brisanje",
   "legal": "Pravno",
   "setup": "Podešavanje",
 
@@ -170,6 +172,8 @@
   "data import custom front": "Uvezi prilagođen front",
   "data import custom fields": "Uvezi prilagođena polja",
   "data import privacy buckets": "Uvezi kante za privatnost",
+  "mass delete selected": "Izbriši izabrano",
+  "mass delete selected prompt": "Da li zaista želite da izbrišete {folderCount, plural, one {# fasciklu} few {# fascikle} other {# fascikla}} i {memberCount, plural, one {# član} few {# člana} other {# članova}}?",
 
   "username": "Korisničko ime",
   "password": "Šifra",

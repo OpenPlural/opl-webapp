@@ -13,5 +13,6 @@ export class FolderListItem {
   readonly folder = input.required<Folder>();
   readonly selectable = input<boolean>(false);
   readonly selected = input<boolean>(false);
+  readonly selectionStatus = output<boolean>();
   readonly action = output();
 }

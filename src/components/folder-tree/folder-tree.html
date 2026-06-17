@@ -1,7 +1,7 @@
 @let folder = this.folder();
 @let selected = this.selected();
 
-<app-folder-list-item [folder]="folder" [selectable]="true" [selected]="currentSelected()" (action)="toggleSelected.emit(folder.id)" />
+<app-folder-list-item [folder]="folder" [selectable]="true" [selected]="currentSelected()" (selectionStatus)="toggleSelected.emit(folder.id)" />
 
 @if (expanded()) {
   @let folders = this.folders();
