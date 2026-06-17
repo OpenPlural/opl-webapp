@@ -7,13 +7,13 @@ export function toColor(num: bigint): string {
   return rgbToHex(r, g, b);
 }
 
-export function toColorInt(color: string): bigint {
+export function toColorInt(color: string | null | undefined): bigint {
   const {r, g, b} = hexToRgb(color);
   return BigInt((r << 16) | (g << 8) | b);
 }
 
-export function hexToRgb(color: string): {r: number; g: number; b: number} {
-  if (color.startsWith('#') && color.length === 7) {
+export function hexToRgb(color: string | null | undefined): {r: number; g: number; b: number} {
+  if (color && color.startsWith('#') && color.length === 7) {
     const r = parseInt(color.substring(1, 3), 16);
     const g = parseInt(color.substring(3, 5), 16);
     const b = parseInt(color.substring(5, 7), 16);
