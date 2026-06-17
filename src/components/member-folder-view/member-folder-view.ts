@@ -119,12 +119,18 @@ export class MemberFolderView {
   }
 
   protected async createMember(name: string) {
+    if (name.length === 0) {
+      return;
+    }
     const member = makeMember(name, this.custom());
     await this.localStorageService.addMember(member);
     this.router.navigate(['app', 'member', member.id]);
   }
 
   protected async createFolder(name: string) {
+    if (name.length === 0) {
+      return;
+    }
     const folder = makeFolder(name, this.currentFolder());
     await this.localStorageService.addFolder(folder);
     this.router.navigate(['app', 'folder', folder.id]);

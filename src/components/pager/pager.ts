@@ -8,6 +8,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 })
 export class Pager {
   readonly currentPage = input.required<string>();
+  readonly showTitle = input<boolean>(true);
   readonly placement = input('bottom-17');
   readonly rounding = input('rounded-t-lg');
   readonly justify = input('justify-evenly');

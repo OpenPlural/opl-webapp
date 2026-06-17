@@ -17,6 +17,12 @@ import { CustomFields } from '../pages/app/custom-fields/custom-fields';
 import { CustomFieldPage } from '../pages/app/custom-field-page/custom-field-page';
 import { Options } from '../pages/app/options/options';
 import { AccountSettings } from '../pages/app/account-settings/account-settings';
+import {Legal} from '../pages/app/legal/legal';
+import {Setup} from '../pages/app/setup/setup';
+import {Sessions} from '../pages/app/sessions/sessions';
+import {FrontHistoryPage} from '../pages/app/front-history-page/front-history-page';
+import {ApiKeys} from '../pages/app/api-keys/api-keys';
+import {DataImport} from '../pages/app/data-import/data-import';
 
 export const appRoutes: Routes = [
   {
@@ -41,6 +47,10 @@ export const appRoutes: Routes = [
   }, {
     path: 'member/:id',
     component: MemberPage
+  }, {
+    path: 'front-history',
+    component: FrontHistoryPage,
+    data: { name: 'front history', navigable: true }
   }, {
     path: 'friends',
     component: Friends,
@@ -69,13 +79,32 @@ export const appRoutes: Routes = [
     path: 'custom-field/:id',
     component: CustomFieldPage
   }, {
+    path: 'api-keys',
+    component: ApiKeys,
+    data: { name: 'api keys' }
+  }, {
+    path: 'sessions',
+    component: Sessions,
+    data: { name: 'sessions' }
+  }, {
     path: 'account-settings',
     component: AccountSettings,
-    data: { name: 'account settings', navigable: true }
+    data: { name: 'account settings' }
   }, {
     path: 'options',
     component: Options,
-    data: { name: 'options', navigable: true }
+    data: { name: 'options' }
+  }, {
+    path: 'data-import',
+    component: DataImport,
+    data: { name: 'data import' }
+  }, {
+    path: 'legal',
+    component: Legal,
+    data: { name: 'legal' }
+  }, {
+    path: 'setup',
+    component: Setup
   }
 ];
 export const routes: Routes = [

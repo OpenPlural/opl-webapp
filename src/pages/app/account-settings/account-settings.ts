@@ -18,6 +18,7 @@ import { LocalStorageService } from '../../../services/LocalStorageService';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { ColorInput } from '../../../components/color-input/color-input';
+import {MarkdownBox} from '../../../components/markdown-box/markdown-box';
 
 @Component({
   selector: 'app-account-settings',
@@ -30,6 +31,7 @@ import { ColorInput } from '../../../components/color-input/color-input';
     ProfilePicture,
     ToggleSetting,
     ColorInput,
+    MarkdownBox,
   ],
   templateUrl: './account-settings.html',
 })
@@ -49,11 +51,21 @@ export class AccountSettings {
     }
     return null;
   });
+  protected readonly memberCounts = computed(() => {
+    const members = this.localStorageService
+      .members()
+      .filter((m) => !m.custom);
+    const count = members.filter((m) => !m.archived).length;
+    const archivedCount = members.filter((m) => m.archived).length;
+    return { count, archivedCount };
+  });
 
   protected readonly avatarUrl = signal<string | null>(null);
+  protected readonly description = signal<string>('');
   protected readonly color = signal<bigint | null>(null);
   protected readonly updatedAccount = signal<UserInfo | null>(null);
   protected readonly showCreationDate = signal<boolean>(false);
+  protected readonly showTotalMemberCount = signal<boolean>(false);
   protected readonly showFriendCode = signal<boolean>(false);
   protected readonly accountError = signal<string | null>(null);
 
@@ -64,21 +76,24 @@ export class AccountSettings {
     const form = document.getElementById('accountForm') as HTMLFormElement;
     const formData = new FormData(form);
     const name = formData.get('name')?.toString();
-    const description = formData.get('description')?.toString();
+    const email = formData.get('email')?.toString();
 
-    if (name) {
+    if (name && name.length > 0) {
       const updated = Object.assign({}, account.user);
       updated.name = name;
-      updated.description = nullableField(description);
+      updated.email = nullableField(email);
 
-      const newAvatar = this.avatarUrl();
-      if (newAvatar != null) {
-        updated.avatar = nullableField(newAvatar);
-      }
+      const newDescription = this.description();
+      updated.description = nullableField(newDescription);
 
       const newColor = this.color();
       if (newColor != null) {
         updated.color = newColor;
+      }
+
+      const newAvatar = this.avatarUrl();
+      if (newAvatar != null) {
+        updated.avatar = nullableField(newAvatar);
       }
 
       this.updatedAccount.set(updated);
@@ -104,6 +119,11 @@ export class AccountSettings {
     this.onUpdate();
   }
 
+  protected descriptionChanged(description: string) {
+    this.description.set(description);
+    this.onUpdate();
+  }
+
   protected colorSelected(color: bigint) {
     this.color.set(color);
     this.onUpdate();
@@ -116,6 +136,11 @@ export class AccountSettings {
       this.accountService.updateAccountLocally(updatedUser);
     }
     this.location.back();
+  }
+
+  protected async changeFriendCode() {
+    const newFriendCode = await this.webService.changeFriendCode();
+    this.accountService.updateFriendCodeLocally(newFriendCode);
   }
 
   protected async deleteAccount(password: string) {

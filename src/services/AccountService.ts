@@ -1,14 +1,8 @@
-import { inject, Injectable, signal, WritableSignal } from '@angular/core';
-import { UserId, UserInfo } from './model/User';
-import { catchError, EMPTY, Observable, tap, throwError } from 'rxjs';
-import { HttpEvent, HttpEventType, HttpHandlerFn, HttpRequest } from '@angular/common/http';
-import { Router } from '@angular/router';
-import { WebService } from './WebService';
-import { Folder } from './model/Folder';
-import { Member } from './model/Member';
-import { FrontEntry } from './model/Front';
-import { AccountInfo } from './model/Auth';
-import { fromJson } from '../util/FixedJson';
+import {inject, Injectable, signal, WritableSignal} from '@angular/core';
+import {UserInfo} from './model/User';
+import {WebService} from './WebService';
+import {AccountInfo} from './model/Auth';
+import {fromJson, toJson} from '../util/FixedJson';
 
 @Injectable({ providedIn: 'root' })
 export class AccountService {
@@ -23,14 +17,14 @@ export class AccountService {
   constructor() {
     const accountInfo = localStorage.getItem('account');
     if (accountInfo) {
-      this._account.set(JSON.parse(accountInfo));
+      this._account.set(fromJson(accountInfo));
     }
     this._ready.set(true);
   }
 
   async login(username: string, password: string): Promise<void> {
     const accountInfo = await this.webService.login(username, password);
-    localStorage.setItem('account', JSON.stringify(accountInfo));
+    localStorage.setItem('account', toJson(accountInfo));
     this._account.set(accountInfo);
   }
 
@@ -53,7 +47,7 @@ export class AccountService {
 
     const account = this._account();
     if (account) {
-      localStorage.setItem('account', JSON.stringify(account));
+      localStorage.setItem('account', toJson(account));
     }
   }
 
@@ -67,30 +61,27 @@ export class AccountService {
       }
       return account;
     });
-  }
-}
 
-export function authenticatedInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> {
-  const accountService = inject(AccountService);
-  const account = accountService.account();
-  if (account) {
-    req = req.clone({
-      headers: req.headers.set('Authorization', `Bearer ${account.session.token}`)
-    })
+    const account = this._account();
+    if (account) {
+      localStorage.setItem('account', toJson(account));
+    }
   }
 
-  const router = inject(Router);
-  return next(req).pipe(
-    catchError(error => {
-      if (error.status === 401 && !req.url.endsWith('/auth/delete-account') && !req.url.endsWith('/auth/change-password')) {
-        if (router.url !== '/auth/login') {
-          accountService.logout();
-          router.navigate(['auth', 'login']);
-          return EMPTY;
-        }
+  updateFriendCodeLocally(friendCode: string) {
+    this._account.update((account) => {
+      if (account) {
+        return {
+          ...account,
+          friendCode,
+        };
       }
+      return account;
+    });
 
-      return throwError(() => error);
-    })
-  );
+    const account = this._account();
+    if (account) {
+      localStorage.setItem('account', toJson(account));
+    }
+  }
 }

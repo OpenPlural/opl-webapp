@@ -3,3 +3,12 @@
 :host {
   @apply w-full;
 }
+
+.inactive {
+  @apply cursor-default translate-0;
+  background-color: color-mix(
+    in oklab,
+    var(--btn-color, var(--color-base-content) /* var(--color-base-content) */) 8%,
+    var(--color-base-100) /* var(--color-base-100) */
+  );
+}

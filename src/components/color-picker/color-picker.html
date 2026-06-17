@@ -5,7 +5,7 @@
   <div class="modal-box">
     <h3 class="text-lg font-bold">{{'select color' | translate}}</h3>
     <form method="dialog" class="w-full" (submit)="submitForm()">
-      <canvas [id]="canvasId()" class="w-full" width="600" height="200" (mousedown)="mouseState.set(true)" (click)="canvasClicked($event)">
+      <canvas [id]="canvasId()" class="w-full" width="600" height="200" (mousedown)="mouseState.set(true)" (click)="canvasClicked($event)" (touchmove)="canvasTouched($event)">
       </canvas>
       <input class="hue range w-full appearance-none rounded-full my-2" [style]="'accent-color: hsl(' + hsl().h + ', 100%, 50%)'"
              type="range" min="0" max="360" step="1" [value]="hsl().h" (input)="hueChanged($event)">

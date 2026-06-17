@@ -14,10 +14,11 @@ import { SettingsService } from '../../services/SettingsService';
 import { nullableField } from '../../util/NullString';
 import { IconButton } from '../icon-button/icon-button';
 import { VerticalCenter } from '../vertical-center/vertical-center';
+import {MarkdownBox} from '../markdown-box/markdown-box';
 
 @Component({
   selector: 'app-custom-field-value',
-  imports: [ColorInput, IconButton, VerticalCenter],
+  imports: [ColorInput, IconButton, VerticalCenter, MarkdownBox],
   templateUrl: './custom-field-value.html',
 })
 export class CustomFieldValue {
@@ -81,10 +82,23 @@ export class CustomFieldValue {
     const date = new Date(parseInt(value.value));
     return this.settingsService.formatDate(date, field.dataType);
   });
+  protected readonly timeFormatted = computed(() => {
+    const field = this.field();
+    if (field.dataType != CUSTOM_FIELD_DATA_TYPE_TIME) return null;
+
+    const value = this.value();
+    if (!value) return null;
+
+    return this.settingsService.formatTime(value.value);
+  });
 
   protected textChanged(event: Event) {
     const input = event.target as HTMLInputElement;
-    const value = nullableField(input.value);
+    this.textChangedRaw(input.value);
+  }
+
+  protected textChangedRaw(text: string | null | undefined) {
+    const value = nullableField(text);
     if (value) {
       this.changeValue.emit(value);
       this.valueCleared.set(false);

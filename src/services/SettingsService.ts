@@ -1,14 +1,22 @@
 import { computed, inject, Injectable, Signal, signal, WritableSignal } from '@angular/core';
-import { fromJson } from '../util/FixedJson';
+import {fromJson, toJson} from '../util/FixedJson';
 import { format } from 'date-fns';
-import { TranslateService } from '@ngx-translate/core';
+import {TranslateService} from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import { hookOnDataDeletion } from '../util/LocalDataDeletion';
+import {toSignal} from '@angular/core/rxjs-interop';
 
 @Injectable({providedIn: 'root'})
 export class SettingsService {
   private readonly translateService = inject(TranslateService);
   private readonly router = inject(Router);
+
+  private readonly timeAm = toSignal<string>(this.translateService.getStreamOnTranslationChange('12 hour time am'), {
+    initialValue: null,
+  });
+  private readonly timePm = toSignal<string>(this.translateService.getStreamOnTranslationChange('12 hour time pm'), {
+    initialValue: null,
+  });
 
   private readonly storage: WritableSignal<Settings>;
 
@@ -20,6 +28,7 @@ export class SettingsService {
     let settings: Settings;
     if (storage) {
       settings = fromJson(storage);
+      this.insertDefaultSettings(settings);
     } else {
       settings = makeDefaultSettings();
     }
@@ -35,13 +44,53 @@ export class SettingsService {
     });
   }
 
+  private insertDefaultSettings(settings: any) {
+    const defaults = makeDefaultSettings();
+    for (const key in defaults) {
+      if (!(key in settings)) {
+        settings[key] = defaults[key as keyof Settings];
+      }
+    }
+  }
+
   formatDate(date: Date, type: 'Date' | 'DateTime'): string {
     const settings = this.storage();
-    switch (type) {
-      case 'Date':
-        return format(new Date(date), settings.dateFormat);
-      case 'DateTime':
-        return format(new Date(date), settings.dateFormat + " HH:mm");
+
+    const formattedDate = format(date, settings.dateFormat);
+    if (type === 'DateTime') {
+      return formattedDate + " " + this.formatTimeFromValues(date.getHours(), date.getMinutes());
+    } else {
+      return formattedDate;
+    }
+  }
+
+  formatTime(time: string): string {
+    const parts = time.split(':');
+    if (parts.length !== 2) {
+      return time;
+    }
+
+    const hour = parseInt(parts[0]);
+    const minute = parseInt(parts[1]);
+
+    return this.formatTimeFromValues(hour, minute);
+  }
+
+  formatTimeFromValues(hour: number, minute: number): string {
+    const settings = this.storage();
+    if (settings.time24Hours) {
+      return `${hour.toString().padStart(2, "0")}:${minute.toString().padStart(2, "0")}`;
+    } else if (hour === 0) {
+      return `12:${minute.toString().padStart(2, "0")} ${this.timeAm()}`;
+    } else if (hour >= 1 && hour < 12) {
+      return `${hour}:${minute.toString().padStart(2, "0")} ${this.timeAm()}`;
+    } else if (hour === 12) {
+      return `12:${minute.toString().padStart(2, "0")} ${this.timePm()}`;
+    } else if (hour >= 13 && hour < 24) {
+      return `${hour - 12}:${minute.toString().padStart(2, "0")} ${this.timePm()}`;
+    } else {
+      // Fallback to 24 hour time
+      return `${hour}:${minute}`;
     }
   }
 
@@ -50,14 +99,14 @@ export class SettingsService {
     this.changeSettings(settings => settings.language = id);
   }
 
-  changeStringSetting(name: string, value: string) {
+  changeStringSetting(name: keyof Settings, value: string) {
     this.changeSettings(settings => {
       // @ts-ignore
       settings[name] = value;
     });
   }
 
-  changeBooleanSetting(name: string, state: boolean) {
+  changeBooleanSetting(name: keyof Settings, state: boolean) {
     this.changeSettings(settings => {
       // @ts-ignore
       settings[name] = state;
@@ -70,16 +119,18 @@ export class SettingsService {
       updater(updatedSettings);
       return updatedSettings;
     });
-    localStorage.setItem("settings", JSON.stringify(this.storage()));
+    localStorage.setItem("settings", toJson(this.storage()));
   }
 }
 
 export interface Settings {
   language: string;
   dateFormat: string;
+  time24Hours: boolean;
   defaultRoute: string;
   loadAvatars: boolean;
   useNativeColorPicker: boolean;
+  showSyncToast: boolean;
   hideRootMembers: boolean;
 }
 
@@ -87,9 +138,11 @@ function makeDefaultSettings(): Settings {
   return {
     language: 'en',
     dateFormat: 'yyyy-MM-dd',
+    time24Hours: true,
     defaultRoute: '',
     loadAvatars: true,
     useNativeColorPicker: false,
+    showSyncToast: false,
     hideRootMembers: false,
   }
 }

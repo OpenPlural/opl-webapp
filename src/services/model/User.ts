@@ -7,6 +7,7 @@ export type UserId = bigint;
 export interface UserInfo {
   id: UserId;
   name: string;
+  email: string | null;
   avatar: string | null;
   description: string | null;
   color: bigint;

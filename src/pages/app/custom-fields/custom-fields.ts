@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core';
+import {Component, computed, inject, signal} from '@angular/core';
 import { LocalStorageService } from '../../../services/LocalStorageService';
 import { Router } from '@angular/router';
 import { NavPageContainer } from '../../../components/container/nav-page-container/nav-page-container';
@@ -12,6 +12,8 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
 import { SyncService } from '../../../services/SyncService';
 import { openDialog } from '../../../util/CommonFunctions';
+import { ErrorService } from '../../../services/ErrorService';
+import {ToggleIconButton} from '../../../components/toggle-icon-button/toggle-icon-button';
 
 @Component({
   selector: 'app-custom-fields',
@@ -23,18 +25,26 @@ import { openDialog } from '../../../util/CommonFunctions';
     PopupInput,
     VerticalCenter,
     TranslatePipe,
+    ToggleIconButton,
   ],
   templateUrl: './custom-fields.html',
   styleUrl: './custom-fields.css',
 })
 export class CustomFields {
   private readonly router = inject(Router);
+  private readonly errorService = inject(ErrorService);
   private readonly localStorageService = inject(LocalStorageService);
   private readonly syncService = inject(SyncService);
+
+  protected readonly reorder = signal<boolean>(false);
 
   protected readonly customFields = computed(() =>
     [...this.localStorageService.customFields()].sort(compareCustomSort),
   );
+
+  protected toggleReorder() {
+    this.reorder.update(b => !b);
+  }
 
   protected gotoCustomField(id: CustomFieldId) {
     this.router.navigate(['app', 'custom-field', id]);
@@ -71,7 +81,7 @@ export class CustomFields {
     try {
       await this.syncService.fullSync();
     } catch (e) {
-      console.error('Failed to sync at custom field reorder', e);
+      this.errorService.logError(e);
     }
   }
 

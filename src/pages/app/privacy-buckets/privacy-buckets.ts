@@ -9,10 +9,12 @@ import { PrivacyBucketListItem } from '../../../components/list-item/privacy-buc
 import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { compareCustomSort } from '../../../util/CustomSort';
 import { openDialog } from '../../../util/CommonFunctions';
+import {ToggleIconButton} from '../../../components/toggle-icon-button/toggle-icon-button';
+import {VerticalCenter} from '../../../components/vertical-center/vertical-center';
 
 @Component({
   selector: 'app-privacy-buckets',
-  imports: [Loading, NavPageContainer, PopupInput, PrivacyBucketListItem, CdkDropList, CdkDrag],
+  imports: [Loading, NavPageContainer, PopupInput, PrivacyBucketListItem, CdkDropList, CdkDrag, ToggleIconButton, VerticalCenter],
   templateUrl: './privacy-buckets.html',
   styleUrl: './privacy-buckets.css',
 })
@@ -20,6 +22,7 @@ export class PrivacyBuckets implements OnInit {
   private readonly router = inject(Router);
   private readonly webService = inject(WebService);
 
+  protected readonly reorder = signal<boolean>(false);
   protected readonly buckets = signal<PrivacyBucket[] | null>(null);
 
   ngOnInit() {
@@ -30,6 +33,10 @@ export class PrivacyBuckets implements OnInit {
 
   protected gotoPrivacyBucket(id: PrivacyBucketId) {
     this.router.navigate(['app', 'privacy-bucket', id]);
+  }
+
+  protected toggleReorder() {
+    this.reorder.update(b => !b);
   }
 
   protected async reorderBuckets(event: CdkDragDrop<any, any>) {
@@ -46,6 +53,10 @@ export class PrivacyBuckets implements OnInit {
   }
 
   protected async createBucket(name: string) {
+    if (name.length === 0) {
+      return;
+    }
+
     const buckets = this.buckets();
     if (!buckets) return;
 

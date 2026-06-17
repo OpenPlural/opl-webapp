@@ -1,5 +1,5 @@
 <div class="w-full h-full">
-  <img src="/icons/icon512.png" class="mx-auto py-5 md:py-10 w-1/4 sm:w-1/5 md:w-1/6" alt="Open Plural" />
+  <img src="/icons/icon-transparent.png" class="mx-auto py-5 md:py-10 w-1/4 sm:w-1/5 md:w-1/6" alt="Open Plural" />
   <form (submit)="login($event)">
     <div class="sm:w-2/3 sm:mx-auto mx-2">
       <div class="w-full join join-vertical">
@@ -19,7 +19,11 @@
         </div>
       }
       <div class="w-full mt-4 text-center">
-        <button type="submit" class="btn btn-primary btn-lg">
+        @let loading = this.loading();
+        <button type="submit" class="btn btn-primary btn-lg" [disabled]="loading">
+          @if (loading) {
+            <span class="loading loading-spinner"></span>
+          }
           {{'login' | translate}}
         </button>
         <br>
@@ -29,4 +33,5 @@
       </div>
     </div>
   </form>
+  <app-legal-footer />
 </div>

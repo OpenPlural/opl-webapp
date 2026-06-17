@@ -9,11 +9,11 @@
         </fieldset>
         <fieldset class="fieldset">
           <legend class="fieldset-legend">{{'description' | translate}}</legend>
-          <textarea name="description" class="w-full textarea" [value]="bucket.description"></textarea>
+          <app-markdown-box class="w-full" textareaName="description" [(markdown)]="description" [editable]="true" />
         </fieldset>
         <fieldset class="fieldset">
           <legend class="fieldset-legend">{{'emoji' | translate}}</legend>
-          <input name="emoji" type="text" class="w-full input" maxlength="3" [value]="bucket.emoji" />
+          <input name="emoji" type="text" class="w-full input" maxlength="4" [value]="bucket.emoji" />
         </fieldset>
       </form>
     </div>

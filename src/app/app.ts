@@ -7,6 +7,8 @@ import { AccountService } from '../services/AccountService';
 import { getLanguages } from './app.config';
 import { SettingsService } from '../services/SettingsService';
 import { hookOnDataDeletion } from '../util/LocalDataDeletion';
+import { ErrorService } from '../services/ErrorService';
+import { ToastService } from '../services/ToastService';
 
 @Component({
   selector: 'app-root',
@@ -16,16 +18,18 @@ import { hookOnDataDeletion } from '../util/LocalDataDeletion';
 })
 export class App implements OnInit {
   private readonly accountService = inject(AccountService);
+  private readonly errorService = inject(ErrorService);
   private readonly localStorageService = inject(LocalStorageService);
   private readonly settingsService = inject(SettingsService);
   private readonly syncService = inject(SyncService);
+  private readonly toastService = inject(ToastService);
 
   private readonly storagePersistRequested = signal(false);
   private readonly initialSyncDone = signal(false);
-  protected readonly initialSyncFailedToast = signal(false);
   protected readonly languageSelected = signal(false);
 
   protected readonly ready = computed(() => this.storagePersistRequested() && this.initialSyncDone() && this.localStorageService.ready());
+  protected readonly toasts = computed(() => this.toastService.toasts());
 
   constructor() {
     hookOnDataDeletion(async () => {
@@ -66,12 +70,8 @@ export class App implements OnInit {
         this.initialSyncDone.set(true);
       })
       .catch(err => {
-        console.error("Initial sync failed", err);
-
-        this.initialSyncFailedToast.set(true);
+        this.errorService.logError(err);
         this.initialSyncDone.set(true);
-
-        setTimeout(() => this.initialSyncFailedToast.set(false), 3000);
       });
   }
 

@@ -15,6 +15,7 @@ import { MemberListItem } from '../../../components/list-item/member-list-item/m
 import { MemberFolderView } from '../../../components/member-folder-view/member-folder-view';
 import { IconButton } from '../../../components/icon-button/icon-button';
 import { Loading } from '../../../components/loading/loading';
+import {MarkdownBox} from '../../../components/markdown-box/markdown-box';
 
 @Component({
   selector: 'app-friend-page',
@@ -29,6 +30,7 @@ import { Loading } from '../../../components/loading/loading';
     MemberFolderView,
     IconButton,
     Loading,
+    MarkdownBox,
   ],
   templateUrl: './friend-page.html',
 })

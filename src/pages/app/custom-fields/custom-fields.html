@@ -1,8 +1,11 @@
-<app-nav-page-container [fab]="true" (fabAction)="openDialog('fieldNamePrompt')">
+<app-nav-page-container [fab]="true" [headerButtons]="true" (fabAction)="openDialog('fieldNamePrompt')">
+  <app-vertical-center class="header-buttons">
+    <app-toggle-icon-button name="start reorder" toggledName="stop reorder" icon="fa-sort" [toggled]="reorder()" (toggle)="toggleReorder()" />
+  </app-vertical-center>
   <main>
     @let fields = this.customFields();
     @if (fields) {
-      <ul cdkDropList (cdkDropListDropped)="reorderFields($event)">
+      <ul cdkDropList [cdkDropListDisabled]="!reorder()" (cdkDropListDropped)="reorderFields($event)">
         @for (field of fields; track field.id) {
           <li cdkDrag class="flex mx-2 mt-2">
             <button type="button" class="grow flex justify-start btn btn-soft font-medium transition-none h-auto" (click)="gotoCustomField(field.id)">

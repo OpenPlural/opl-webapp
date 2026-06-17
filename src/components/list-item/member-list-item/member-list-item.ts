@@ -21,6 +21,7 @@ export class MemberListItem {
 
   readonly member = input.required<Member>();
   readonly editable = input.required<boolean>();
+  readonly inactive = input<boolean>(false);
   readonly action = output();
 
   protected readonly cssColor = computed(() => toColor(this.member().color));
@@ -42,10 +43,6 @@ export class MemberListItem {
     } else {
       await this.localStorageService.addFrontEntry(makeFrontEntry(this.member().id));
     }
-    try {
-      await this.syncService.fullSync();
-    } catch (e) {
-      console.error('Failed to sync at toggle front', e);
-    }
+    this.syncService.fullSync();
   }
 }

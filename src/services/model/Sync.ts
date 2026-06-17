@@ -19,7 +19,3 @@ export interface SyncData {
   updatedFieldValues: CustomFieldDataValue[];
   front: FrontEntry[];
 }
-
-export interface ServerTimeResponse {
-  time: string;
-}

@@ -58,7 +58,10 @@ export class MemberCustomFieldsPage {
     }
   }
 
-  protected changeValue(field: CustomField, oldValue: CustomFieldDataValue | null, value: string) {
+  protected changeValue(field: CustomField, value: string) {
+    const memberId = this.member().id;
+    const oldValue = this.localStorageService.customFieldValues()
+      .find((fv) => fv.memberId === memberId && fv.fieldId === field.id) || null;
     let newValue: CustomFieldDataValue;
     if (oldValue) {
       newValue = { ...oldValue, value };

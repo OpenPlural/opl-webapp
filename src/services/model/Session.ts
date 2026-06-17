@@ -1,8 +1,8 @@
-export type TokenId = bigint;
+export type SessionId = bigint;
 
-export interface SessionToken {
-  id: TokenId;
+export interface Session {
+  id: SessionId;
   name: string;
   createdAt: string;
-  expiresAt: string;
+  lastUsedAt: string;
 }

@@ -16,8 +16,7 @@ import { MemberProfilePage } from '../member-profile-page/member-profile-page';
 import { MemberOptionsPage } from '../member-options-page/member-options-page';
 import { openDialog } from '../../../util/CommonFunctions';
 import { CustomFieldDataUpdate, MemberCustomFieldsPage } from '../member-custom-fields-page/member-custom-fields-page';
-import { CustomField, CustomFieldDataValue } from '../../../services/model/Field';
-import { Folder, FolderId } from '../../../services/model/Folder';
+import { FolderId } from '../../../services/model/Folder';
 import { truncateCurrentDate } from '../../../util/DateTruncate';
 import { MemberFrontHistoryPage } from '../member-front-history-page/member-front-history-page';
 
@@ -79,11 +78,7 @@ export class MemberPage {
     if (!member) return;
 
     await this.localStorageService.removeMember(member.id, member.remoteId);
-    try {
-      await this.syncService.fullSync();
-    } catch (e) {
-      console.error('Failed to sync at member delete', e);
-    }
+    this.syncService.fullSync();
     this.location.back();
   }
 
@@ -138,11 +133,7 @@ export class MemberPage {
     }
 
     if (syncRequired) {
-      try {
-        await this.syncService.fullSync();
-      } catch (e) {
-        console.error('Failed to sync at member save', e);
-      }
+      this.syncService.fullSync();
     }
 
     this.location.back();

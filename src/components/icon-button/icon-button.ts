@@ -11,6 +11,7 @@ export class IconButton {
   readonly icon = input.required<string | string[]>();
   readonly stack = input<boolean>(false);
   readonly size = input<string>('fa-lg');
+  readonly buttonSize = input<string>('btn-lg');
   readonly buttonClass = input<string>('');
   readonly action = output();
 }

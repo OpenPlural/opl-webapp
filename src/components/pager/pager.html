@@ -1,6 +1,8 @@
 <div class="w-full bg-base-100 flex {{justify()}}">
   <ng-content></ng-content>
 </div>
-<div class="text-center absolute left-0 right-0 {{placement()}}">
-  <span class="bg-base-100 text-accent p-2 {{rounding()}}">{{currentPage() | translate}}</span>
-</div>
+@if (showTitle()) {
+  <div class="text-center absolute left-0 right-0 z-10 {{placement()}}">
+    <span class="bg-base-100 text-accent p-2 {{rounding()}}">{{currentPage() | translate}}</span>
+  </div>
+}

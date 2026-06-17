@@ -13,6 +13,7 @@ export class ListItem implements OnInit {
   readonly color = input.required<bigint>();
   readonly containerClass = input<string>('');
   readonly buttonClass = input<string>('');
+  readonly inactive = input<boolean>(false);
   readonly selectable = input<boolean>(false);
   readonly selected = input<boolean>(false);
   readonly selectionStatus = output<boolean>();

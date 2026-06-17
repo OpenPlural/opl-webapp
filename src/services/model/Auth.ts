@@ -1,14 +1,9 @@
 import { UserInfo } from './User';
-import { TokenId } from './Session';
+import { SessionId } from './Session';
 
 export interface AccountInfo {
-  session: SessionData;
+  session: SessionId;
   createdAt: string;
   friendCode: string;
   user: UserInfo;
-}
-
-export interface SessionData {
-  id: TokenId;
-  token: string;
 }

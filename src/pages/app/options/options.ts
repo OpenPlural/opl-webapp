@@ -3,9 +3,10 @@ import { NavPageContainer } from '../../../components/container/nav-page-contain
 import { TranslatePipe } from '@ngx-translate/core';
 import { appRoutes } from '../../../app/app.routes';
 import { Route } from '@angular/router';
-import { SettingsService } from '../../../services/SettingsService';
+import {Settings, SettingsService} from '../../../services/SettingsService';
 import { ToggleSetting } from '../../../components/toggle-setting/toggle-setting';
 import { getLanguages } from '../../../app/app.config';
+import {NotificationService} from '../../../services/NotificationService';
 
 @Component({
   selector: 'app-options',
@@ -13,6 +14,7 @@ import { getLanguages } from '../../../app/app.config';
   templateUrl: './options.html',
 })
 export class Options {
+  private readonly notificationService = inject(NotificationService);
   private readonly settingsService = inject(SettingsService);
 
   protected readonly settings = computed(() => this.settingsService.settings());
@@ -23,7 +25,7 @@ export class Options {
 
   protected updateDefaultPage(event: Event) {
     const select = event.target as HTMLSelectElement;
-    this.settingsService.changeStringSetting('language', select.value);
+    this.settingsService.changeStringSetting('defaultRoute', select.value);
   }
 
   protected updateLanguage(event: Event) {
@@ -36,9 +38,14 @@ export class Options {
     this.settingsService.changeStringSetting('dateFormat', select.value);
   }
 
-  protected toggleSetting(name: string, state: boolean) {
+  protected toggleSetting(name: keyof Settings, state: boolean) {
     this.settingsService.changeBooleanSetting(name, state);
   }
 
+  protected requestNotificationPermissions() {
+    this.notificationService.requestPermissions();
+  }
+
   protected readonly getLanguages = getLanguages;
+  protected readonly Notification = Notification;
 }

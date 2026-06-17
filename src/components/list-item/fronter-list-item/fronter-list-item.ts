@@ -75,10 +75,6 @@ export class FronterListItem implements AfterViewInit, OnDestroy {
       comment,
       updatedAt: truncateCurrentDate()
     });
-    try {
-      await this.syncService.fullSync();
-    } catch (e) {
-      console.error('Failed to sync at update front comment', e);
-    }
+    this.syncService.fullSync();
   }
 }

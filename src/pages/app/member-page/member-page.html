@@ -15,7 +15,7 @@
       <app-toggle-icon-button name="options" icon="fa-cog" size="fa-lg" [toggled]="tab === 'options'" (toggle)="selectedTab.set('options')" />
     </app-pager>
     <div class="scroll-container flex flex-col">
-      <div class="mt-5 p-5 overflow-y-auto">
+      <div class="pt-10 p-5 overflow-y-auto">
         @switch (tab) {
           @case ('profile') {
             <app-member-profile-page [member]="member" [folders]="folders()" [editable]="true" [editSelectableFolders]="allFolders()"

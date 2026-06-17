@@ -1,0 +1,32 @@
+<app-nav-page-container>
+  <main>
+    @let sessions = this.sessions();
+    @if (sessions) {
+      <div class="mx-4 mt-4">
+        <ul class="list bg-base-100 rounded-xl">
+          <li class="p-4 pb-2 tracking-wide text-center text-xl">{{'sessions' | translate}}</li>
+          @let currentSessionId = this.currentSessionId();
+          @for (session of sessions; track session.id) {
+            <li class="list-row flex flex-row justify-between">
+              <div>
+                <span>{{'session creation' | translate:{date: formatDate(session.createdAt)} }}</span>
+                <span class="hidden sm:inline"> | </span>
+                <br class="sm:hidden">
+                <span>{{'session last usage' | translate:{date: formatDate(session.lastUsedAt)} }}</span>
+                <br>
+                <span class="italic text-xs">{{session.name}}</span>
+              </div>
+              <app-vertical-center>
+                @if (session.id !== currentSessionId) {
+                  <app-icon-button name="invalidate session" icon="fa-times" size="fa-lg" buttonClass="btn-error" (action)="invalidateSession(session.id)" />
+                }
+              </app-vertical-center>
+            </li>
+          }
+        </ul>
+      </div>
+    } @else {
+      <app-loading />
+    }
+  </main>
+</app-nav-page-container>

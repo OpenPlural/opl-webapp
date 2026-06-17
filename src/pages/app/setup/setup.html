@@ -1,0 +1,22 @@
+<div class="m-auto sm:px-4">
+  <div class="text-center">
+    <div>{{ 'setup email' | translate }}</div>
+    <div>{{ 'setup email identity' | translate }}</div>
+    <div class="italic text-warning">{{ 'setup email optional' | translate }}</div>
+    <br><br>
+  </div>
+
+  <fieldset class="fieldset sm:w-3/4 mx-auto">
+    <legend class="fieldset-legend">{{'email' | translate}}</legend>
+    <input id="setup-email" name="email" type="email" class="w-full input" (input)="updateEmail($event)" />
+  </fieldset>
+
+  <div class="flex flex-col space-y-2 sm:w-3/4 mx-auto mt-4">
+    <button class="btn btn-primary" [disabled]="!hasEmail()" (click)="continueWithEmail()">
+      {{ 'confirm' | translate }}
+    </button>
+    <button class="btn btn-ghost" (click)="continueWithoutEmail()">
+      {{ 'continue without email' | translate }}
+    </button>
+  </div>
+</div>

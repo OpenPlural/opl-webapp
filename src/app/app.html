@@ -28,10 +28,10 @@
   </div>
 </div>
 
-@if (initialSyncFailedToast()) {
-  <div class="toast">
-    <div class="alert alert-warning">
-      <span>{{'sync failed' | translate}}</span>
+<div class="toast">
+  @for (toast of toasts(); track toast.id) {
+    <div class="alert {{toast.type}} w-80">
+      {{toast.message}}
     </div>
-  </div>
-}
+  }
+</div>

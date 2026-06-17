@@ -11,14 +11,15 @@ import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateMessageFormatCompiler } from 'ngx-translate-messageformat-compiler';
 import { provideServiceWorker } from '@angular/service-worker';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { authenticatedInterceptor } from '../services/AccountService';
 import { LoggingMissingTranslationHandler } from '../handlers/missing-translations.handler';
+import {jsonHttpInterceptor} from '../handlers/json-parser.interceptor.handler';
+import {authenticatedInterceptor} from '../handlers/authenticator.interceptor.handler';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
-    provideHttpClient(withInterceptors([authenticatedInterceptor])),
+    provideHttpClient(withInterceptors([authenticatedInterceptor, jsonHttpInterceptor])),
     provideTranslateService({
       loader: provideTranslateHttpLoader({
         prefix: '/i18n/',
@@ -27,7 +28,7 @@ export const appConfig: ApplicationConfig = {
       compiler: provideTranslateCompiler(TranslateMessageFormatCompiler),
       missingTranslationHandler: provideMissingTranslationHandler(LoggingMissingTranslationHandler),
     }),
-    provideServiceWorker('ngsw-worker.js', {
+    provideServiceWorker('ext-sw.js', {
       enabled: !isDevMode(),
       registrationStrategy: 'registerWhenStable:30000',
     }),
@@ -42,6 +43,15 @@ const languages = [
   }, {
     id: 'en',
     name: 'English'
+  }, {
+    id: 'de',
+    name: 'Deutsch'
+  }, {
+    id: 'sr-Latn',
+    name: 'Srpski (Latinica)'
+  }, {
+    id: 'sr-Cyrl',
+    name: 'Српски (Ћирилица)'
   }
 ];
 

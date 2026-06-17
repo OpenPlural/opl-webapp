@@ -88,11 +88,7 @@ export class CustomFieldPage {
       updated.updatedAt = truncateCurrentDate();
 
       await this.localStorageService.updateCustomField(updated);
-      try {
-        await this.syncService.fullSync();
-      } catch (e) {
-        console.error('Failed to sync at custom field save', e);
-      }
+      this.syncService.fullSync();
       this.location.back();
     }
   }
@@ -102,11 +98,7 @@ export class CustomFieldPage {
     if (!field) return;
 
     await this.localStorageService.removeCustomField(field.id, field.remoteId);
-    try {
-      await this.syncService.fullSync();
-    } catch (e) {
-      console.error('Failed to sync at custom field delete', e);
-    }
+    this.syncService.fullSync();
     this.location.back();
   }
 

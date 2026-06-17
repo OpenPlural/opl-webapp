@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import {Component, computed, inject, OnInit, signal} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
@@ -6,7 +6,7 @@ import { EditPageContainer } from '../../../components/container/edit-page-conta
 import { LocalStorageService } from '../../../services/LocalStorageService';
 import { Misrouted } from '../../../components/misrouted/misrouted';
 import { TranslatePipe } from '@ngx-translate/core';
-import { toColor, toColorInt } from '../../../util/ColorConvert';
+import { toColor } from '../../../util/ColorConvert';
 import { SyncService } from '../../../services/SyncService';
 import { Location } from '@angular/common';
 import { PopupConfirm } from '../../../components/popup-confirm/popup-confirm';
@@ -18,21 +18,23 @@ import { openDialog } from '../../../util/CommonFunctions';
 import { SettingsService } from '../../../services/SettingsService';
 import { truncateCurrentDate } from '../../../util/DateTruncate';
 import { ColorInput } from '../../../components/color-input/color-input';
+import {MarkdownBox} from "../../../components/markdown-box/markdown-box";
 
 @Component({
   selector: 'app-folder-page',
-  imports: [
-    EditPageContainer,
-    Misrouted,
-    TranslatePipe,
-    PopupConfirm,
-    PrivacyBucketList,
-    ColorInput,
-  ],
+    imports: [
+        EditPageContainer,
+        Misrouted,
+        TranslatePipe,
+        PopupConfirm,
+        PrivacyBucketList,
+        ColorInput,
+        MarkdownBox,
+    ],
   templateUrl: './folder-page.html',
   styleUrl: './folder-page.css',
 })
-export class FolderPage {
+export class FolderPage implements OnInit {
   private readonly location = inject(Location);
   private readonly route = inject(ActivatedRoute);
   private readonly localStorageService = inject(LocalStorageService);
@@ -65,6 +67,7 @@ export class FolderPage {
     const archivedCount = members.filter((m) => m.archived).length;
     return { count, archivedCount };
   });
+  protected readonly description = signal<string>('');
   protected readonly color = signal<bigint | null>(null);
   protected readonly privacyIds = computed(() => this.privacy()?.map((bucket) => bucket.id) || []);
   protected readonly privacy = signal<SimplePrivacyBucket[] | null>(null);
@@ -76,6 +79,10 @@ export class FolderPage {
   });
   protected readonly showCreationDate = signal<boolean>(false);
   protected readonly showMemberCount = signal<boolean>(false);
+
+  ngOnInit() {
+    this.description.set(this.folder()?.description || '');
+  }
 
   protected async loadPrivacy() {
     const folder = this.folder();
@@ -115,15 +122,18 @@ export class FolderPage {
     const form = document.getElementById('folderForm') as HTMLFormElement;
     const formData = new FormData(form);
     const name = formData.get('name')?.toString();
-    const description = formData.get('description')?.toString();
     const emoji = formData.get('emoji')?.toString();
 
-    if (name) {
+    if (name && name.length > 0) {
       const updated = Object.assign({}, folder);
       updated.name = name;
-      updated.description = nullableField(description);
       updated.emoji = nullableField(emoji);
       updated.updatedAt = truncateCurrentDate();
+
+      const newDescription = this.description();
+      if (newDescription != null) {
+        updated.description = nullableField(newDescription);
+      }
 
       const newColor = this.color();
       if (newColor != null) {
@@ -131,11 +141,7 @@ export class FolderPage {
       }
 
       await this.localStorageService.updateFolder(updated);
-      try {
-        await this.syncService.fullSync();
-      } catch (e) {
-        console.error('Failed to sync at folder save', e);
-      }
+      this.syncService.fullSync();
       this.location.back();
     }
   }
@@ -145,11 +151,7 @@ export class FolderPage {
     if (!folder) return;
 
     await this.localStorageService.removeFolder(folder.id, folder.remoteId);
-    try {
-      await this.syncService.fullSync();
-    } catch (e) {
-      console.error('Failed to sync at folder delete', e);
-    }
+    this.syncService.fullSync();
     this.location.back();
   }
 
