@@ -16,10 +16,10 @@ export class NotificationService {
         return;
       }
     }
-    this.setup();
+    this.setupSubscription();
   }
 
-  async setup() {
+  private async setupSubscription() {
     try {
       if (Notification.permission !== 'granted') {
         return;
@@ -42,12 +42,5 @@ export class NotificationService {
     } catch (e) {
       console.error("Can't subscribe to notifications", e);
     }
-  }
-
-  private async showNotification(registration: ServiceWorkerRegistration, title: string, body: string) {
-    await registration.showNotification(title, {
-      body,
-      icon: '/icons/icon-192.png',
-    });
   }
 }

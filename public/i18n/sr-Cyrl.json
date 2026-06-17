@@ -143,6 +143,7 @@
   "hide root members": "Сакриј чланове из корена ако су део фасцикле",
   "hide root members description": "Када је активирано, чланови који се налазе у било којој фасцикли се не појављују у корену",
   "notification request permissions": "Захтевај дозволе за обавести",
+  "notification unsupported": "Овај прегледач не подржава обавести",
   "create api key": "Креирај API кључ",
   "api key read only": "Само сме да чита",
   "api key write and delete": "Сме да пише и избрише",

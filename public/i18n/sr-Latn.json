@@ -143,6 +143,7 @@
   "hide root members": "Sakrij članove iz korena ako su deo fascikle",
   "hide root members description": "Kada je aktivirano, članovi koji se nalaze u bilo kojoj fascikli se ne pojavljuju u korenu",
   "notification request permissions": "Zahtevaj dozvole za obavesti",
+  "notification unsupported": "Ovaj pregledač ne podržava obavesti",
   "create api key": "Kreiraj API ključ",
   "api key read only": "Samo sme da čita",
   "api key write and delete": "Sme da piše i izbriše",

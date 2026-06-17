@@ -56,21 +56,30 @@
       <app-toggle-setting name="hide root members" [toggled]="settings.hideRootMembers" (toggle)="toggleSetting('hideRootMembers', $event)" />
 
       <div class="divider">{{'notification settings' | translate}}</div>
-      <button class="btn btn-accent w-full" (click)="requestNotificationPermissions()">
-        {{'notification request permissions' | translate}}
-        @switch (Notification.permission) {
-          @case ('granted') {
-            <div class="badge badge-soft badge-success btn-circle">
-              <i class="fa fa-check"></i>
-            </div>
+      @if (Notification) {
+        <button class="btn btn-accent w-full" (click)="requestNotificationPermissions()">
+          {{'notification request permissions' | translate}}
+          @switch (Notification.permission) {
+            @case ('granted') {
+              <div class="badge badge-soft badge-success btn-circle">
+                <i class="fa fa-check"></i>
+              </div>
+            }
+            @case ('denied') {
+              <div class="badge badge-soft badge-error btn-circle">
+                <i class="fa fa-times"></i>
+              </div>
+            }
           }
-          @case ('denied') {
-            <div class="badge badge-soft badge-error btn-circle">
-              <i class="fa fa-times"></i>
-            </div>
-          }
-        }
-      </button>
+        </button>
+      } @else {
+        <div class="text-center">
+          <div class="h-fit badge badge-soft badge-error">
+            <i class="fa fa-exclamation-triangle"></i>
+            {{'notification unsupported' | translate}}
+          </div>
+        </div>
+      }
     </div>
   </main>
 </app-nav-page-container>
