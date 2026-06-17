@@ -1,5 +1,5 @@
 @let f = folder();
-<app-list-item containerClass="mx-2 mt-2" buttonClass="py-2" [color]="f.color" (action)="action.emit()">
+<app-list-item containerClass="mx-2 mt-2" buttonClass="py-2" [color]="f.color" [selectable]="selectable()" [selected]="selected()" (selectionStatus)="selectionStatus.emit($event)" (action)="action.emit()">
   <app-vertical-center>
     @if (f.emoji) {
       <span class="mx-1 text-2xl">{{f.emoji}}</span>
@@ -10,9 +10,4 @@
   <app-vertical-center class="grow">
     <span class="ml-3">{{f.name}}</span>
   </app-vertical-center>
-  @if (selectable()) {
-    <app-vertical-center>
-      <input type="checkbox" class="checkbox" [checked]="selected()" readonly />
-    </app-vertical-center>
-  }
 </app-list-item>

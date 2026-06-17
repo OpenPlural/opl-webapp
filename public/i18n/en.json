@@ -18,6 +18,7 @@
   "unhide": "Click to show",
   "load more": "Load more",
   "copy to clipboard": "Copy to clipboard",
+  "select all": "Select all",
 
   "name": "Name",
   "pronouns": "Pronouns",
@@ -49,6 +50,7 @@
   "account settings": "Account Settings",
   "options": "Options",
   "data import": "Import",
+  "mass delete": "Mass delete",
   "legal": "Legal",
   "setup": "Setup",
 
@@ -170,6 +172,8 @@
   "data import custom front": "Import custom front",
   "data import custom fields": "Import custom fields",
   "data import privacy buckets": "Import privacy buckets",
+  "mass delete selected": "Delete selected",
+  "mass delete selected prompt": "Do you really want to delete {folderCount, plural, one {1 folder} other {# folders}} and {memberCount, plural, one {1 member} other {# members}}?",
 
   "username": "Username",
   "password": "Password",

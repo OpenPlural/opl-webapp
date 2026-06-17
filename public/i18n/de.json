@@ -18,6 +18,7 @@
   "unhide": "Klicke zum Anzeigen",
   "load more": "Mehr laden",
   "copy to clipboard": "In die Zwischenablage kopieren",
+  "select all": "Alle auswählen",
 
   "name": "Name",
   "pronouns": "Pronomen",
@@ -49,6 +50,7 @@
   "account settings": "Kontoeinstellungen",
   "options": "Optionen",
   "data import": "Importieren",
+  "mass delete": "Massenlöschung",
   "legal": "Legales",
   "setup": "Einrichtung",
 
@@ -170,6 +172,8 @@
   "data import custom front": "Benutzerdefinierte Front importieren",
   "data import custom fields": "Benutzerdefinierte Felder importieren",
   "data import privacy buckets": "Privatsphäre-Buckets importieren",
+  "mass delete selected": "Ausgewählte löschen",
+  "mass delete selected prompt": "Willst du wirklich {folderCount} Ordner und {memberCount, plural, one {1 Mitglied} other {# Mitglieder}} löschen?",
 
   "username": "Nutzername",
   "password": "Passwort",

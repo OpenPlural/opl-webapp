@@ -22,6 +22,9 @@ export class MemberListItem {
   readonly member = input.required<Member>();
   readonly editable = input.required<boolean>();
   readonly inactive = input<boolean>(false);
+  readonly selectable = input<boolean>(false);
+  readonly selected = input<boolean>(false);
+  readonly selectionStatus = output<boolean>();
   readonly action = output();
 
   protected readonly cssColor = computed(() => toColor(this.member().color));

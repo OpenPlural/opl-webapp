@@ -1,0 +1,27 @@
+<app-nav-page-container>
+  <main>
+    <div class="mx-2">
+      <button class="btn btn-error my-2 w-full" (click)="openDialog('massDeletePrompt')">
+        <i class="fa fa-trash"></i>
+        {{'mass delete selected' | translate}}
+      </button>
+    </div>
+    <div class="mr-6">
+      <label class="w-full label">
+        <span class="grow"></span>
+        {{'select all' | translate}}
+        <input type="checkbox" class="checkbox" name="write" (change)="toggleSelectAll($event)">
+      </label>
+    </div>
+    @let selectAll = this.selectAll();
+    @for (folder of folders(); track folder.id) {
+      <app-folder-list-item [folder]="folder" [selectable]="true" [selected]="selectAll" (selectionStatus)="setFolderSelected(folder, $event)" />
+    }
+    @for (member of members(); track member.id) {
+      <app-member-list-item [member]="member" [editable]="false" [selectable]="true" [selected]="selectAll" (selectionStatus)="setMemberSelected(member, $event)" />
+    }
+  </main>
+</app-nav-page-container>
+<app-popup-confirm dialogId="massDeletePrompt" title="mass delete" (confirm)="deleteSelected()">
+  {{'mass delete selected prompt' | translate:{ folderCount: selectedFolderCount(), memberCount: selectedMemberCount() } }}
+</app-popup-confirm>

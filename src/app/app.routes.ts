@@ -23,6 +23,7 @@ import {Sessions} from '../pages/app/sessions/sessions';
 import {FrontHistoryPage} from '../pages/app/front-history-page/front-history-page';
 import {ApiKeys} from '../pages/app/api-keys/api-keys';
 import {DataImport} from '../pages/app/data-import/data-import';
+import {MassDelete} from '../pages/app/mass-delete/mass-delete';
 
 export const appRoutes: Routes = [
   {
@@ -98,6 +99,10 @@ export const appRoutes: Routes = [
     path: 'data-import',
     component: DataImport,
     data: { name: 'data import' }
+  }, {
+    path: 'mass-delete',
+    component: MassDelete,
+    data: { name: 'mass delete' }
   }, {
     path: 'legal',
     component: Legal,
