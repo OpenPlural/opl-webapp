@@ -4,8 +4,11 @@ import { App } from './app/app';
 
 // @ts-ignore
 BigInt.prototype.toJSON = function () {
-  // @ts-ignore
-  return JSON.rawJSON(this.toString());
+  if ('rawJSON' in JSON && typeof JSON.rawJSON === 'function') {
+    return JSON.rawJSON(this.toString());
+  } else {
+    return this.toString();
+  }
 };
 
 bootstrapApplication(App, appConfig)
