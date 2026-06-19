@@ -67,10 +67,6 @@ export class WebService {
     return firstValueFrom(this.http.get<SyncData>(`${BASE_URL}/api/v1/sync/?since=${since.toISOString()}`));
   }
 
-  async createFolderRaw(folder: Folder): Promise<FolderId> {
-    return firstValueFrom(this.http.put<IdResponse>(`${BASE_URL}/api/v1/folder/`, folder)).then(res => res.id);
-  }
-
   async createFolder(folder: Folder): Promise<FolderId> {
     folder = translateFolder(this.localStorageService, folder, 'remoteId');
     return firstValueFrom(this.http.put<IdResponse>(`${BASE_URL}/api/v1/folder/`, folder)).then(res => res.id);
@@ -80,17 +76,9 @@ export class WebService {
     await firstValueFrom(this.http.delete(`${BASE_URL}/api/v1/folder/${remoteId}`));
   }
 
-  async updateFolderRaw(folder: Folder): Promise<void> {
-    await firstValueFrom(this.http.patch(`${BASE_URL}/api/v1/folder/${folder.id}`, folder));
-  }
-
   async updateFolder(folder: Folder): Promise<void> {
     folder = translateFolder(this.localStorageService, folder, 'remoteId');
     await firstValueFrom(this.http.patch(`${BASE_URL}/api/v1/folder/${folder.remoteId}`, folder));
-  }
-
-  async createMemberRaw(member: Member): Promise<MemberId> {
-    return firstValueFrom(this.http.put<IdResponse>(`${BASE_URL}/api/v1/member/`, member)).then(res => res.id);
   }
 
   async createMember(member: Member): Promise<MemberId> {
@@ -105,10 +93,6 @@ export class WebService {
   async updateMember(member: Member): Promise<void> {
     member = translateMember(this.localStorageService, member, 'remoteId');
     await firstValueFrom(this.http.patch(`${BASE_URL}/api/v1/member/${member.remoteId}`, member));
-  }
-
-  async updateMemberFoldersRaw(memberId: MemberId, folders: FolderId[]): Promise<void> {
-    await firstValueFrom(this.http.patch(`${BASE_URL}/api/v1/member/${memberId}/folders`, folders));
   }
 
   async updateMemberFolders(member: Member): Promise<void> {
@@ -144,10 +128,6 @@ export class WebService {
 
   async reorderCustomFields(ids: CustomFieldId[]): Promise<void> {
     await firstValueFrom(this.http.post(`${BASE_URL}/api/v1/field/reorder`, ids));
-  }
-
-  async createCustomFieldValueRaw(customFieldValue: CustomFieldDataValue): Promise<CustomFieldDataId> {
-    return firstValueFrom(this.http.put<IdResponse>(`${BASE_URL}/api/v1/field/value/`, customFieldValue)).then(res => res.id);
   }
 
   async createCustomFieldValue(customFieldValue: CustomFieldDataValue): Promise<CustomFieldDataId> {
@@ -327,6 +307,10 @@ export class WebService {
 
   async subscribeToNotifications(subscription: PushSubscription) {
     await firstValueFrom(this.http.post(`${BASE_URL}/api/v1/notification/subscribe`, subscription.toJSON()));
+  }
+
+  async import(data: any) {
+    await firstValueFrom(this.http.post(`${BASE_URL}/api/v1/import/`, data));
   }
 }
 
