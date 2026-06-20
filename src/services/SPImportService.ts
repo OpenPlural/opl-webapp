@@ -128,13 +128,18 @@ export class SPImportService {
         }
       }
 
+      let archived = member.archived;
+      if (archived === null || archived === undefined) {
+        archived = false;
+      }
+
       newMembers.push({
         name: member.name,
         pronouns: nullableField(member.pronouns),
         avatar: nullableField(member.avatarUrl),
         description: nullableField(member.desc),
         color: toColorInt(member.color),
-        archived: member.archived,
+        archived,
         custom: false,
         folders,
         fields,
