@@ -5,6 +5,7 @@
   "sync finished": "Successfully synced with the server",
   "misrouted": "The resource with this ID could not be found.",
   "choose language": "Choose your language",
+  "version": "Version {version}",
 
   "go back": "Go back",
   "close": "Close",

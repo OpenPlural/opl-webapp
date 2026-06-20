@@ -7,10 +7,12 @@ import { VerticalCenter } from '../../../components/vertical-center/vertical-cen
 import { LocalStorageService } from '../../../services/LocalStorageService';
 import { SyncService } from '../../../services/SyncService';
 import { IconButton } from '../../../components/icon-button/icon-button';
+import {VERSION} from '../../../environment';
+import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [NavPageContainer, ProfilePicture, DashboardButton, VerticalCenter, IconButton],
+  imports: [NavPageContainer, ProfilePicture, DashboardButton, VerticalCenter, IconButton, TranslatePipe],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })
@@ -30,4 +32,6 @@ export class Dashboard {
 
     await this.syncService.fullSync();
   }
+
+  protected readonly VERSION = VERSION;
 }
