@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import {Component, computed, inject, OnInit, signal} from '@angular/core';
 import { EditPageContainer } from '../../../components/container/edit-page-container/edit-page-container';
 import { AccountService } from '../../../services/AccountService';
 import { Loading } from '../../../components/loading/loading';
@@ -35,7 +35,7 @@ import {MarkdownBox} from '../../../components/markdown-box/markdown-box';
   ],
   templateUrl: './account-settings.html',
 })
-export class AccountSettings {
+export class AccountSettings implements OnInit {
   private readonly location = inject(Location);
   private readonly router = inject(Router);
   private readonly accountService = inject(AccountService);
@@ -68,6 +68,10 @@ export class AccountSettings {
   protected readonly showTotalMemberCount = signal<boolean>(false);
   protected readonly showFriendCode = signal<boolean>(false);
   protected readonly accountError = signal<string | null>(null);
+
+  ngOnInit() {
+    this.description.set(this.account()?.user.description || '');
+  }
 
   protected onUpdate() {
     const account = this.account();
