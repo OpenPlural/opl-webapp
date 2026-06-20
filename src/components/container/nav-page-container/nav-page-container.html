@@ -1,5 +1,5 @@
 <app-page-container [footer]="footer()" [fab]="fab()" (fabAction)="fabAction.emit()">
-  <header class="navbar">
+  <header class="navbar overflow-x-auto">
     @let searchable = this.searchable();
     @let headerButtons = this.headerButtons();
     @let headerHasEnding = searchable || headerButtons;
