@@ -5,6 +5,7 @@
   "sync finished": "Uspešno sinhronizovano",
   "misrouted": "Resurs sa ovim ID-om nije pronađen.",
   "choose language": "Izaberite svoj jezik",
+  "version": "Verzija {version}",
 
   "go back": "Nazad",
   "close": "Zatvori",
