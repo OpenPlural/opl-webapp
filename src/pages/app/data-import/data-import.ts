@@ -2,7 +2,6 @@ import {Component, inject, signal} from '@angular/core';
 import {NavPageContainer} from '../../../components/container/nav-page-container/nav-page-container';
 import {TranslatePipe} from '@ngx-translate/core';
 import {ImportFlags, SPImportService} from '../../../services/SPImportService';
-import {SyncService} from '../../../services/SyncService';
 
 @Component({
   selector: 'app-data-import',
@@ -11,7 +10,6 @@ import {SyncService} from '../../../services/SyncService';
     TranslatePipe
   ],
   templateUrl: './data-import.html',
-  styleUrl: './data-import.css',
 })
 export class DataImport {
   private readonly importService = inject(SPImportService);
@@ -29,6 +27,7 @@ export class DataImport {
     const customFront = formData.get('customFront')?.toString() === 'on';
     const customFields = formData.get('customFields')?.toString() === 'on';
     const privacyBuckets = formData.get('privacyBuckets')?.toString() === 'on';
+    const truncate = formData.get('truncate')?.toString() === 'on';
 
     if (file instanceof File) {
       const reader = new FileReader();
@@ -38,6 +37,7 @@ export class DataImport {
         customFront,
         customFields,
         privacyBuckets,
+        truncate,
       });
       reader.readAsText(file);
     }

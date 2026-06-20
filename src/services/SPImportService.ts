@@ -46,6 +46,7 @@ export class SPImportService {
       fields,
       folders,
       members,
+      truncate: flags.truncate,
     });
   }
 
@@ -82,7 +83,7 @@ export class SPImportService {
         sort: customField.order,
         name: customField.name,
         dataType,
-        privacy: customField.buckets,
+        privacy: customField.buckets || [],
       });
     }
     newFields.sort((a, b) => a.sort.toString().localeCompare(b.sort.toString()));
@@ -102,7 +103,7 @@ export class SPImportService {
         description: nullableField(group.desc),
         emoji: nullableField(group.emoji),
         color: toColorInt(group.color),
-        privacy: group.buckets,
+        privacy: group.buckets || [],
       });
     }
     return newFolders;
@@ -143,7 +144,7 @@ export class SPImportService {
         custom: false,
         folders,
         fields,
-        privacy: member.buckets,
+        privacy: member.buckets || [],
       });
     }
     return newMembers;
@@ -162,7 +163,7 @@ export class SPImportService {
         custom: true,
         folders: [],
         fields: {},
-        privacy: frontStatus.buckets,
+        privacy: frontStatus.buckets || [],
       });
     }
     return newMembers;
@@ -175,4 +176,5 @@ export interface ImportFlags {
   customFront: boolean;
   customFields: boolean;
   privacyBuckets: boolean;
+  truncate: boolean;
 }
