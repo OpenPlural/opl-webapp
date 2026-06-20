@@ -30,14 +30,11 @@
     </div>
     <div class="flex-1"></div>
     @if (headerHasEnding) {
-      <div class="flex-none">
+      <div class="flex-none inline-flex items-center">
         @if (searchable) {
           @if (searching()) {
             <ng-content select=".search-options"></ng-content>
-            <label class="input">
-              <i class="fa fa-search" aria-hidden="true"></i>
-              <input type="search" class="grow" (input)="search.emit($any($event).target.value)">
-            </label>
+            <input type="search" class="grow input" (input)="search.emit($any($event).target.value)">
           }
           <app-toggle-icon-button name="search" icon="fa-search" size="" [toggled]="searching()" (toggle)="toggleSearch()"/>
         } @else if (headerButtons) {
