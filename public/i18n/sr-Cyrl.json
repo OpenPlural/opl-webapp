@@ -173,6 +173,7 @@
   "data import custom front": "Увези прилагођен фронт",
   "data import custom fields": "Увези прилагођена поља",
   "data import privacy buckets": "Увези канте за приватност",
+  "data import truncate": "Скрати све што је предуго",
   "mass delete selected": "Избриши изабрано",
   "mass delete selected prompt": "Да ли заиста желите да избришете {folderCount, plural, one {# фасциклу} few {# фасцикле} other {# фасцикла}} и {memberCount, plural, one {# члан} few {# члана} other {# чланова}}?",
 

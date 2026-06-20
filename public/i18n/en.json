@@ -173,6 +173,7 @@
   "data import custom front": "Import custom front",
   "data import custom fields": "Import custom fields",
   "data import privacy buckets": "Import privacy buckets",
+  "data import truncate": "Truncate everything that is too long",
   "mass delete selected": "Delete selected",
   "mass delete selected prompt": "Do you really want to delete {folderCount, plural, one {1 folder} other {# folders}} and {memberCount, plural, one {1 member} other {# members}}?",
 

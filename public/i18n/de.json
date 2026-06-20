@@ -173,6 +173,7 @@
   "data import custom front": "Benutzerdefinierte Front importieren",
   "data import custom fields": "Benutzerdefinierte Felder importieren",
   "data import privacy buckets": "Privatsphäre-Buckets importieren",
+  "data import truncate": "Alles kürzen, was zu lang ist",
   "mass delete selected": "Ausgewählte löschen",
   "mass delete selected prompt": "Willst du wirklich {folderCount} Ordner und {memberCount, plural, one {1 Mitglied} other {# Mitglieder}} löschen?",
 
