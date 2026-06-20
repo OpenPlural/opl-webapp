@@ -10,10 +10,11 @@ import { deleteLocalData } from '../../../util/LocalDataDeletion';
 import { PopupConfirm } from '../../popup-confirm/popup-confirm';
 import { openDialog } from '../../../util/CommonFunctions';
 import { LocalStorageService } from '../../../services/LocalStorageService';
+import {NgClass} from '@angular/common';
 
 @Component({
   selector: 'app-nav-page-container',
-  imports: [PageContainer, TranslatePipe, ToggleIconButton, PopupConfirm],
+  imports: [PageContainer, TranslatePipe, ToggleIconButton, PopupConfirm, NgClass],
   templateUrl: './nav-page-container.html',
 })
 export class NavPageContainer {

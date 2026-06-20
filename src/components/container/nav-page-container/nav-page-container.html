@@ -1,5 +1,5 @@
 <app-page-container [footer]="footer()" [fab]="fab()" (fabAction)="fabAction.emit()">
-  <header class="navbar overflow-x-auto">
+  <header class="navbar">
     @let searchable = this.searchable();
     @let headerButtons = this.headerButtons();
     @let headerHasEnding = searchable || headerButtons;
@@ -30,13 +30,14 @@
     </div>
     <div class="flex-1"></div>
     @if (headerHasEnding) {
-      <div class="flex-none inline-flex items-center">
+      @let searching = this.searching();
+      <div class="flex-none flex items-center md:left-auto md:right-auto md:relative" [ngClass]="{'left-1/2': searching, 'right-0': searching, 'absolute': searching}">
         @if (searchable) {
-          @if (searching()) {
+          @if (searching) {
             <ng-content select=".search-options"></ng-content>
             <input type="search" class="grow input" (input)="search.emit($any($event).target.value)">
           }
-          <app-toggle-icon-button name="search" icon="fa-search" size="" [toggled]="searching()" (toggle)="toggleSearch()"/>
+          <app-toggle-icon-button name="search" icon="fa-search" size="" [toggled]="searching" (toggle)="toggleSearch()"/>
         } @else if (headerButtons) {
           <ng-content select=".header-buttons"></ng-content>
         }
