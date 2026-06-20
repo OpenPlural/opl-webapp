@@ -8,7 +8,7 @@ let content = '';
 const environment = makeEnvironment();
 for (const key of Object.keys(environment)) {
   const value = environment[key];
-  content += `export const ${key}: string = '${value}';`;
+  content += `export const ${key}: string = '${value}';\n`;
 }
 fs.writeFileSync(environmentPath, content);
 
