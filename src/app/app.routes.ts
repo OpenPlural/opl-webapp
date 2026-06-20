@@ -33,7 +33,7 @@ export const appRoutes: Routes = [
   }, {
     path: 'members',
     component: Members,
-    data: { name: 'members', custom: false, navigable: true }
+    data: { name: 'members', custom: false, systemNavigable: true }
   }, {
     path: 'fronters',
     component: Fronters,
@@ -51,7 +51,7 @@ export const appRoutes: Routes = [
   }, {
     path: 'front-history',
     component: FrontHistoryPage,
-    data: { name: 'front history', navigable: true }
+    data: { name: 'front history', systemNavigable: true }
   }, {
     path: 'friends',
     component: Friends,
@@ -68,14 +68,14 @@ export const appRoutes: Routes = [
   }, {
     path: 'privacy-buckets',
     component: PrivacyBuckets,
-    data: { name: 'privacy buckets', navigable: true }
+    data: { name: 'privacy buckets', systemNavigable: true }
   }, {
     path: 'privacy-bucket/:id',
     component: PrivacyBucketPage
   }, {
     path: 'custom-fields',
     component: CustomFields,
-    data: { name: 'custom fields', navigable: true }
+    data: { name: 'custom fields', systemNavigable: true }
   }, {
     path: 'custom-field/:id',
     component: CustomFieldPage

@@ -1,4 +1,4 @@
-import { Component, inject, input, output, signal } from '@angular/core';
+import {Component, computed, inject, input, output, signal} from '@angular/core';
 import { PageContainer } from '../page-container/page-container';
 import { appRoutes } from '../../../app/app.routes';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -25,6 +25,21 @@ export class NavPageContainer {
 
   protected readonly searching = signal(false);
 
+  protected readonly appRoutes = computed(() => {
+    const system = this.accountService.account()?.user.system;
+    return appRoutes.filter((route) => {
+      if (route.data && route.data['name']) {
+        if (route.data['navigable']) {
+          return true;
+        }
+        if (system && route.data['systemNavigable']) {
+          return true;
+        }
+      }
+      return false;
+    });
+  });
+
   readonly footer = input<boolean>(false);
   readonly fab = input<boolean>(false);
   readonly searchable = input<boolean>(false);
@@ -41,10 +56,6 @@ export class NavPageContainer {
       return titleName;
     }
     return data['name'];
-  }
-
-  protected getAppRoutes(): Route[] {
-    return appRoutes.filter((route) => route.data && route.data['name'] && route.data['navigable']);
   }
 
   protected getRouteName(route: Route): string {
