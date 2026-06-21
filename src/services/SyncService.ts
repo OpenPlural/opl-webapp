@@ -112,7 +112,7 @@ export class SyncService {
       async (remoteId) => await this.webService.deleteFolder(remoteId),
       async (folder) => await this.localStorageService.addFolder(folder),
       async (folder) => await this.localStorageService.updateFolder(folder),
-      async (folderId) => await this.localStorageService.removeFolder(folderId, null),
+      async (folderId) => await this.localStorageService.removeFolderRecursively(folderId, null),
     );
   }
 

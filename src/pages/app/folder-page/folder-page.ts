@@ -150,7 +150,7 @@ export class FolderPage implements OnInit {
     const folder = this.folder();
     if (!folder) return;
 
-    await this.localStorageService.removeFolder(folder.id, folder.remoteId);
+    await this.localStorageService.removeFolderRecursively(folder.id, folder.remoteId);
     this.syncService.fullSync();
     this.location.back();
   }

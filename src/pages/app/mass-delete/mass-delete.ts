@@ -70,7 +70,7 @@ export class MassDelete {
   protected async deleteSelected() {
     const foldersToDelete = this.selectedFolders();
     for (const folder of foldersToDelete) {
-      await this.localStorageService.removeFolder(folder.id, folder.remoteId);
+      await this.localStorageService.removeFolderRecursively(folder.id, folder.remoteId);
     }
 
     const membersToDelete = this.selectedMembers();

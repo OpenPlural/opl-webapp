@@ -187,6 +187,33 @@ export class LocalStorageService {
     this.ngZone.run(() => this._customFieldValues.update((values) => values.map((fv) => fv.id === value.id ? value : fv)));
   }
 
+  async removeFolderRecursively(folderId: FolderId, remoteId: bigint | null): Promise<void> {
+    const folderIds = [{id: folderId, remoteId}];
+    do {
+      let foundChild = false;
+      for (const {id} of folderIds) {
+        const childFolders = this.folders().filter((f) => f.parentId === id);
+        const newChildFolders = childFolders.filter((f) => !folderIds.some(({id}) => id === f.id));
+        if (newChildFolders.length > 0) {
+          folderIds.push(...newChildFolders.map((f) => {
+            return {
+              id: f.id,
+              remoteId: f.remoteId
+            };
+          }));
+          foundChild = true;
+        }
+      }
+      if (!foundChild) {
+        break;
+      }
+    } while (true);
+
+    for (const {id, remoteId} of folderIds) {
+      await this.removeFolder(id, remoteId);
+    }
+  }
+
   async removeFolder(folderId: FolderId, remoteId: FolderId | null): Promise<void> {
     await this.deleteValue(IDB_FOLDERS, folderId.toString());
     if (remoteId) {
