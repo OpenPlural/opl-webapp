@@ -147,6 +147,8 @@
   "show sync toast description": "When enabled, a toast will pop up when a sync has finished successfully",
   "hide root members": "Hide members from the root folder if they are part of a folder",
   "hide root members description": "When enabled, members who are in folders will not show up in the root folder",
+  "current front notify": "Show a permanent \"Current fronters\" notification",
+  "current front notify description": "When enabled, you will see a permanent notification with your current fronters.",
   "notification request permissions": "Request notification permissions",
   "notification unsupported": "Notifications are not supported by this browser",
   "create api key": "Create API key",

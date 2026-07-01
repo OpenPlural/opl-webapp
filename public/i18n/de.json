@@ -147,6 +147,8 @@
   "show sync toast description": "Wenn diese Option aktiviert ist, wird eine Toast-Nachricht angezeigt, nachdem erfolgreich synchronisiert wurde",
   "hide root members": "Mitglieder eines Ordners nicht im Stammordner anzeigen",
   "hide root members description": "Wenn diese Option aktiviert ist, werden Mitglieder, die Teil eines Ordners sind, nicht mehr im Stammordner angezeigt",
+  "current front notify": "Zeige eine permanente \"Aktuelle Fronter\" Benachrichtigung",
+  "current front notify description": "Wenn diese Option aktiviert ist, wird eine permanente Benachrichtigung zu den aktuellen Frontern angezeigt.",
   "notification request permissions": "Benachrichtigungsberechtigungen anfragen",
   "notification unsupported": "Benachrichtungen werden von diesem Browser nicht unterstützt",
   "create api key": "API Schlüssel erstellen",

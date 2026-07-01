@@ -147,6 +147,8 @@
   "show sync toast description": "Kada je aktivirano, videćete tost-obavest o uspešnim sinhronizacijama",
   "hide root members": "Sakrij članove iz korena ako su deo fascikle",
   "hide root members description": "Kada je aktivirano, članovi koji se nalaze u bilo kojoj fascikli se ne pojavljuju u korenu",
+  "current front notify": "Prikaži stalnu obavest o aktuelnim frontom",
+  "current front notify description": "Kada je aktivirano, videćete stalnu obavest sa Vašim aktuelnim fronterima.",
   "notification request permissions": "Zahtevaj dozvole za obavesti",
   "notification unsupported": "Ovaj pregledač ne podržava obavesti",
   "create api key": "Kreiraj API ključ",
