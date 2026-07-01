@@ -106,6 +106,7 @@
   "friend permissions front": "They can see who is fronting",
   "friend permissions notify": "They can receive notifications about front changes",
   "friend notify me": "Get notifications as they change front",
+  "friend notify replacing": "Replace older front notifications",
   "unfriend": "Unfriend",
   "unfriend prompt": "Do you really want to unfriend {friendName}?",
   "account": "Account",

@@ -106,6 +106,7 @@
   "friend permissions front": "Mogu da vide ko je na frontu",
   "friend permissions notify": "Mogu da primaju obavesti o promenama na frontu",
   "friend notify me": "Dobijajte obavesti čim se promene fronteri",
+  "friend notify replacing": "Zameni starije obavesti o frontu",
   "unfriend": "Ukloni prijatelja",
   "unfriend prompt": "Da li zaista želite da ukloni prijatelja {friendName}?",
   "account": "Nalog",

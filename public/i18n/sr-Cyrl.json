@@ -106,6 +106,7 @@
   "friend permissions front": "Могу да виде ко је на фронту",
   "friend permissions notify": "Могу да примају обавести о променама на фронту",
   "friend notify me": "Добијајте обавести чим се промене фронтери",
+  "friend notify replacing": "Замени старије обавести о фронту",
   "unfriend": "Уклони пријатеља",
   "unfriend prompt": "Да ли заиста желите да уклони пријатеља {friendName}?",
   "account": "Налог",

@@ -106,6 +106,7 @@
   "friend permissions front": "Freund kann sehen, wer frontet",
   "friend permissions notify": "Freund kann Benachrichtungen über Frontänderungen erhalten",
   "friend notify me": "Erhalte Benachrichtungen, wenn sicher die Front ändert",
+  "friend notify replacing": "Ältere Front-Benachrichtigungen ersetzen",
   "unfriend": "Freund entfernen",
   "unfriend prompt": "Willst du {friendName} wirklich als Freund entfernen?",
   "account": "Konto",

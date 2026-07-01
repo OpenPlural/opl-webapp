@@ -6,7 +6,7 @@ import { Route } from '@angular/router';
 import {Settings, SettingsService} from '../../../services/SettingsService';
 import { ToggleSetting } from '../../../components/toggle-setting/toggle-setting';
 import { getLanguages } from '../../../app/app.config';
-import {NotificationService} from '../../../services/NotificationService';
+import {PushService} from '../../../services/PushService';
 
 @Component({
   selector: 'app-options',
@@ -14,7 +14,7 @@ import {NotificationService} from '../../../services/NotificationService';
   templateUrl: './options.html',
 })
 export class Options {
-  private readonly notificationService = inject(NotificationService);
+  private readonly pushService = inject(PushService);
   private readonly settingsService = inject(SettingsService);
 
   protected readonly settings = computed(() => this.settingsService.settings());
@@ -43,7 +43,7 @@ export class Options {
   }
 
   protected requestNotificationPermissions() {
-    this.notificationService.requestPermissions();
+    this.pushService.requestPermissions();
   }
 
   protected readonly getLanguages = getLanguages;
