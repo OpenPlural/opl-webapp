@@ -59,6 +59,7 @@
     "color": "Farbe",
     "avatarUrl": "Avatar URL",
     "info": "Info",
+    "sort": "Sortierwert",
     "language": "Sprache",
     "creationDate": "Erstellungsdatum (auf Open Plural)",
     "email": "E-Mail",
@@ -292,6 +293,10 @@
       "loadAvatars": {
         "name": "Avatare laden",
         "description": "Wenn diese Option aktiviert ist, siehst du die Avatare von Ordnern, Mitgliedern und Freunden"
+      },
+      "customSortEditor": {
+        "name": "Sortierwert Editor anzeigen",
+        "description": "Wenn diese Option aktiviert ist, kannst du Ordner und Mitglieder beliebig ordnen, indem du deren Sortierwerte änderst"
       },
       "useNativeColorPicker": {
         "name": "Nativen Farbwähler verwenden",

@@ -80,7 +80,13 @@ export class MemberFolderView implements OnInit {
         allMembers = allMembers.filter((member) => member.folders.length === 0);
       }
     }
-    return allMembers.sort((a, b) => a.name.localeCompare(b.name));
+    return allMembers.sort((a, b) => {
+      if (a.sort === b.sort) {
+        return a.name.localeCompare(b.name);
+      } else {
+        return Number(a.sort - b.sort);
+      }
+    });
   });
   protected readonly shownFolders = computed(() => {
     if (this.showFolders()) {
@@ -100,7 +106,13 @@ export class MemberFolderView implements OnInit {
       } else {
         allFolders = allFolders.filter((folder) => !folder.parentId);
       }
-      return allFolders.sort((a, b) => a.name.localeCompare(b.name));
+      return allFolders.sort((a, b) => {
+        if (a.sort === b.sort) {
+          return a.name.localeCompare(b.name);
+        } else {
+          return Number(a.sort - b.sort);
+        }
+      });
     } else {
       return [];
     }

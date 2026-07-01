@@ -103,6 +103,7 @@ export class SPImportService {
         description: nullableField(group.desc),
         emoji: nullableField(group.emoji),
         color: toColorInt(group.color),
+        sort: 0n,
         privacy: group.buckets || [],
       });
     }
@@ -142,6 +143,7 @@ export class SPImportService {
         color: toColorInt(member.color),
         archived,
         custom: false,
+        sort: 0n,
         folders,
         fields,
         privacy: member.buckets || [],
@@ -161,6 +163,7 @@ export class SPImportService {
         color: toColorInt(frontStatus.color),
         archived: false,
         custom: true,
+        sort: 0n,
         folders: [],
         fields: {},
         privacy: frontStatus.buckets || [],

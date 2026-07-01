@@ -150,6 +150,7 @@ export interface Settings {
   time24Hours: boolean;
   defaultRoute: string;
   loadAvatars: boolean;
+  customSortEditor: boolean;
   useNativeColorPicker: boolean;
   showSyncToast: boolean;
   hideRootMembers: boolean;
@@ -163,6 +164,7 @@ function makeDefaultSettings(): Settings {
     time24Hours: true,
     defaultRoute: '',
     loadAvatars: true,
+    customSortEditor: false,
     useNativeColorPicker: false,
     showSyncToast: false,
     hideRootMembers: false,

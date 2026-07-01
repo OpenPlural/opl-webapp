@@ -1,4 +1,4 @@
-import {Component, computed, input, OnInit, output, signal} from '@angular/core';
+import {Component, computed, inject, input, OnInit, output, signal} from '@angular/core';
 import { ProfilePicture } from '../../../components/profile-picture/profile-picture';
 import { TranslatePipe } from '@ngx-translate/core';
 import { toColor } from '../../../util/ColorConvert';
@@ -11,6 +11,7 @@ import { ColorInput } from '../../../components/color-input/color-input';
 import { Folder, FolderId } from '../../../services/model/Folder';
 import { FolderTree } from '../../../components/folder-tree/folder-tree';
 import {MarkdownBox} from '../../../components/markdown-box/markdown-box';
+import {SettingsService} from '../../../services/SettingsService';
 
 @Component({
   selector: 'app-member-profile-page',
@@ -18,6 +19,8 @@ import {MarkdownBox} from '../../../components/markdown-box/markdown-box';
   templateUrl: './member-profile-page.html',
 })
 export class MemberProfilePage implements OnInit {
+  private readonly settingsService = inject(SettingsService);
+
   readonly member = input.required<Member>();
   readonly folders = input.required<Folder[] | null>();
   readonly editable = input.required<boolean>();
@@ -26,6 +29,7 @@ export class MemberProfilePage implements OnInit {
   readonly updateFolders = output<FolderId[]>();
 
   protected readonly rootFolders = computed(() => this.editSelectableFolders().filter((f) => !f.parentId));
+  protected readonly customSortEditor = computed(() => this.settingsService.settings().customSortEditor);
 
   protected readonly avatarUrl = signal<string | null>(null);
   protected readonly description = signal<string>('');
@@ -44,12 +48,17 @@ export class MemberProfilePage implements OnInit {
     const formData = new FormData(form);
     const name = formData.get('name')?.toString();
     const pronouns = formData.get('pronouns')?.toString();
+    const sort = formData.get('sort')?.toString();
 
     if (name && name.length > 0) {
       const updated = Object.assign({}, member);
       updated.name = name;
       updated.pronouns = nullableField(pronouns);
       updated.updatedAt = truncateCurrentDate();
+
+      if (sort !== undefined && sort !== null) {
+        updated.sort = BigInt(sort);
+      }
 
       const newDescription = this.description();
       if (newDescription != null) {

@@ -32,7 +32,6 @@ import {MarkdownBox} from "../../../components/markdown-box/markdown-box";
         MarkdownBox,
     ],
   templateUrl: './folder-page.html',
-  styleUrl: './folder-page.css',
 })
 export class FolderPage implements OnInit {
   private readonly location = inject(Location);
@@ -67,6 +66,7 @@ export class FolderPage implements OnInit {
     const archivedCount = members.filter((m) => m.archived).length;
     return { count, archivedCount };
   });
+  protected readonly customSortEditor = computed(() => this.settingsService.settings().customSortEditor);
   protected readonly description = signal<string>('');
   protected readonly color = signal<bigint | null>(null);
   protected readonly privacyIds = computed(() => this.privacy()?.map((bucket) => bucket.id) || []);
@@ -123,12 +123,17 @@ export class FolderPage implements OnInit {
     const formData = new FormData(form);
     const name = formData.get('name')?.toString();
     const emoji = formData.get('emoji')?.toString();
+    const sort = formData.get('sort')?.toString();
 
     if (name && name.length > 0) {
       const updated = Object.assign({}, folder);
       updated.name = name;
       updated.emoji = nullableField(emoji);
       updated.updatedAt = truncateCurrentDate();
+
+      if (sort !== undefined && sort !== null) {
+        updated.sort = BigInt(sort);
+      }
 
       const newDescription = this.description();
       if (newDescription != null) {
