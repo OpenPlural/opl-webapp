@@ -72,6 +72,9 @@
             }
           }
         </button>
+        @if (Notification.permission === 'granted') {
+          <app-toggle-setting name="current front notify" [toggled]="settings.currentFrontNotify" (toggle)="toggleSetting('currentFrontNotify', $event)" />
+        }
       } @else {
         <div class="text-center">
           <div class="h-fit badge badge-soft badge-error">

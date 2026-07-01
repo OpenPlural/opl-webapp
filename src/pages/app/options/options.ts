@@ -5,7 +5,7 @@ import { appRoutes } from '../../../app/app.routes';
 import {Settings, SettingsService} from '../../../services/SettingsService';
 import { ToggleSetting } from '../../../components/toggle-setting/toggle-setting';
 import { getLanguages } from '../../../app/app.config';
-import {NotificationService} from '../../../services/NotificationService';
+import {PushService} from '../../../services/PushService';
 import {AccountService} from '../../../services/AccountService';
 
 @Component({
@@ -15,7 +15,7 @@ import {AccountService} from '../../../services/AccountService';
 })
 export class Options {
   private readonly accountService = inject(AccountService);
-  private readonly notificationService = inject(NotificationService);
+  private readonly pushService = inject(PushService);
   private readonly settingsService = inject(SettingsService);
 
   protected readonly settings = computed(() => this.settingsService.settings());
@@ -55,7 +55,7 @@ export class Options {
   }
 
   protected requestNotificationPermissions() {
-    this.notificationService.requestPermissions();
+    this.pushService.requestPermissions();
   }
 
   protected readonly getLanguages = getLanguages;

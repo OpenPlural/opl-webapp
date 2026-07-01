@@ -9,6 +9,7 @@ import { SettingsService } from '../services/SettingsService';
 import { hookOnDataDeletion } from '../util/LocalDataDeletion';
 import { ErrorService } from '../services/ErrorService';
 import { ToastService } from '../services/ToastService';
+import {CurrentFrontNotifyService} from '../services/CurrentFrontNotifyService';
 import {forgetRememberedPath} from '../util/RememberPath';
 
 @Component({
@@ -20,6 +21,7 @@ import {forgetRememberedPath} from '../util/RememberPath';
 export class App implements OnInit {
   private readonly router = inject(Router);
   private readonly accountService = inject(AccountService);
+  private readonly currentFrontNotifyService = inject(CurrentFrontNotifyService);
   private readonly errorService = inject(ErrorService);
   private readonly localStorageService = inject(LocalStorageService);
   private readonly settingsService = inject(SettingsService);
@@ -44,6 +46,7 @@ export class App implements OnInit {
       const accountReady = this.accountService.ready();
       const settingsReady = this.settingsService.ready();
       if (storagePersistRequested && localStorageReady && accountReady && settingsReady) {
+        this.currentFrontNotifyService.triggerNotificationUpdate();
         this.initialSync();
       }
     });
