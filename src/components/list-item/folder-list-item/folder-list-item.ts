@@ -1,7 +1,6 @@
-import { Component, computed, input, output } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { Folder } from '../../../services/model/Folder';
 import { ListItem } from '../list-item/list-item';
-import { toColor } from '../../../util/ColorConvert';
 import { VerticalCenter } from '../../vertical-center/vertical-center';
 
 @Component({
