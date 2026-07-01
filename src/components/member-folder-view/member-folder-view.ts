@@ -116,8 +116,8 @@ export class MemberFolderView implements OnInit {
     } else {
       rememberedPath = getRememberedLocalPath();
     }
-    if (rememberedPath !== null) {
-      this.currentFolder.set(rememberedPath == 0n ? null : rememberedPath);
+    if (rememberedPath !== null && (rememberedPath === 0n || this.folders().find((folder) => folder.id === rememberedPath))) {
+      this.currentFolder.set(rememberedPath === 0n ? null : rememberedPath);
     } else if (friendId) {
       rememberFriendPath(friendId, 0n);
     } else {
