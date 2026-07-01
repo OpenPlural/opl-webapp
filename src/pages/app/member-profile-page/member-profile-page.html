@@ -21,6 +21,12 @@
     <legend class="fieldset-legend">{{'fields.color' | translate}}</legend>
     <app-color-input dialogId="memberColorPicker" [initialValue]="member.color" [editable]="editable" (selectColor)="colorSelected($event)" />
   </fieldset>
+  @if (editable && customSortEditor()) {
+    <fieldset class="fieldset">
+      <legend class="fieldset-legend">{{'fields.sort' | translate}}</legend>
+      <input name="sort" type="number" class="w-full input" min="0" max="65535" [value]="member.sort" (input)="onUpdate()" />
+    </fieldset>
+  }
 </form>
 <app-popup-input dialogId="memberAvatarPrompt" title="actions.changeAvatar" label="fields.avatarUrl" [initialValue]="avatarUrl || member.avatar || ''" (submitValue)="editAvatar($event)" />
 

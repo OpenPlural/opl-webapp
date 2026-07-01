@@ -7,6 +7,7 @@ export interface Folder {
   id: FolderId;
   remoteId: FolderId | null;
   parentId: FolderId | null;
+  sort: bigint;
   name: string;
   description: string | null;
   emoji: string | null;
@@ -20,6 +21,7 @@ export function makeFolder(name: string, parentId: FolderId | null): Folder {
   return {
     id: generateLocalId(),
     remoteId: null,
+    sort: 0n,
     parentId,
     name,
     description: null,

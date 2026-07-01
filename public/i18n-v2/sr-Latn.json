@@ -59,6 +59,7 @@
     "color": "Boja",
     "avatarUrl": "URL avatara",
     "info": "Info",
+    "sort": "Broj za sortiranje",
     "language": "Jezik",
     "creationDate": "Datum kreiranja (na Open Plural)",
     "email": "Email",
@@ -292,6 +293,10 @@
       "loadAvatars": {
         "name": "Učitaj avatare",
         "description": "Kada je aktivirano, moći ćete da videte avatare fascikla, članova i prijatelja"
+      },
+      "customSortEditor": {
+        "name": "Prikaži uređivač za sortiranje",
+        "description": "Kada je aktivirano, moći ćete da promenite redosled fascikla i članova promenom njihovih brojeva za sortiranje"
       },
       "useNativeColorPicker": {
         "name": "Koristi nativni odabirač boja",

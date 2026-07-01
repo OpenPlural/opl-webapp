@@ -313,6 +313,7 @@ export class LocalStorageService {
       id: folder.id.toString(),
       remoteId: folder.remoteId?.toString() || null,
       parentId: folder.parentId?.toString() || null,
+      sort: folder.sort.toString(),
     };
   }
 
@@ -322,6 +323,7 @@ export class LocalStorageService {
       id: BigInt(folder.id),
       remoteId: folder.remoteId ? BigInt(folder.remoteId) : null,
       parentId: folder.parentId ? BigInt(folder.parentId) : null,
+      sort: folder.sort ? BigInt(folder.sort) : 0n,
     };
   }
 
@@ -331,6 +333,7 @@ export class LocalStorageService {
       id: member.id.toString(),
       remoteId: member.remoteId?.toString() || null,
       folders: member.folders.map((f) => f.toString()),
+      sort: member.sort.toString(),
     };
   }
 
@@ -340,6 +343,7 @@ export class LocalStorageService {
       id: BigInt(member.id),
       remoteId: member.remoteId ? BigInt(member.remoteId) : null,
       folders: member.folders.map((f: string) => BigInt(f)),
+      sort: member.sort ? BigInt(member.sort) : 0n,
     };
   }
 

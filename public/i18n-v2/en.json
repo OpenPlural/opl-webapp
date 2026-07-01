@@ -59,6 +59,7 @@
     "color": "Color",
     "avatarUrl": "Avatar URL",
     "info": "Info",
+    "sort": "Sorting Value",
     "language": "Language",
     "creationDate": "Creation date (on Open Plural)",
     "email": "Email",
@@ -292,6 +293,10 @@
       "loadAvatars": {
         "name": "Load Avatars",
         "description": "When enabled, you will be able to see avatars of folders, members and friends"
+      },
+      "customSortEditor": {
+        "name": "Show custom sort editor",
+        "description": "When enabled, you will be able to reorder folders and members by changing their sorting values"
       },
       "useNativeColorPicker": {
         "name": "Use native color picker",

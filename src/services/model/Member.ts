@@ -7,6 +7,7 @@ export type MemberId = bigint;
 export interface Member {
   id: MemberId;
   remoteId: MemberId | null;
+  sort: bigint;
   name: string;
   pronouns: string | null;
   avatar: string | null;
@@ -29,6 +30,7 @@ export function makeMember(name: string, custom: boolean): Member {
   return {
     id: generateLocalId(),
     remoteId: null,
+    sort: 0n,
     name,
     pronouns: null,
     avatar: null,
