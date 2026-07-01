@@ -81,6 +81,7 @@
   "front comment": "Benutzerdefinierter Status (z.B. Co-fronting)",
   "front history entry ongoing": "Aktuell",
   "no more front history entries": "Keine weiteren Einträge",
+  "current front": "Aktuelle Fronter",
   "change avatar": "Avatar ändern",
   "privacy bucket assigned friends": "{count, plural, one {1 Freund} other {# Freunden}} zugewiesen",
   "create privacy bucket": "Privatsphäre-Bucket erstellen",

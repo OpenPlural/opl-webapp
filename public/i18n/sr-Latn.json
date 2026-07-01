@@ -81,6 +81,7 @@
   "front comment": "Prilagođen status (npr. Co-fronting)",
   "front history entry ongoing": "Aktuelno",
   "no more front history entries": "Nema više unosa u istoriji",
+  "current front": "Aktuelni fronteri",
   "change avatar": "Promeni avatara",
   "privacy bucket assigned friends": "Dodeljeno {count, plural, one {# prijatelju} other {# prijateljima}}",
   "create privacy bucket": "Kreiraj kantu za privatnost",

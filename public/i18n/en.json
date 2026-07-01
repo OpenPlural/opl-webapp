@@ -81,6 +81,7 @@
   "front comment": "Custom status (e.g. Co-fronting)",
   "front history entry ongoing": "Current",
   "no more front history entries": "No more history entries",
+  "current front": "Current fronters",
   "change avatar": "Change avatar",
   "privacy bucket assigned friends": "Assigned to {count, plural, one {1 friend} other {# friends}}",
   "create privacy bucket": "Create privacy bucket",

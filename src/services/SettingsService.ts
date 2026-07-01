@@ -153,6 +153,7 @@ export interface Settings {
   useNativeColorPicker: boolean;
   showSyncToast: boolean;
   hideRootMembers: boolean;
+  currentFrontNotify: boolean;
 }
 
 function makeDefaultSettings(): Settings {
@@ -165,5 +166,6 @@ function makeDefaultSettings(): Settings {
     useNativeColorPicker: false,
     showSyncToast: false,
     hideRootMembers: false,
+    currentFrontNotify: false,
   }
 }
