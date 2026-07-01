@@ -2,11 +2,21 @@
 @if (member) {
   <app-member-list-item [member]="member" [editable]="true" (action)="gotoMemberPage()" />
   <div class="mx-4 py-2 bg-base-100 rounded-tl-none rounded-xl">
-    <span class="bg-base-300 p-2 rounded-b-xl">
-      {{elapsedTime()}}
-    </span>
+    <div class="flex justify-between">
+      <div>
+        <span class="bg-base-300 p-2 rounded-b-xl">
+          {{elapsedTime()}}
+        </span>
+      </div>
+      <div class="flex flex-row">
+        <app-vertical-center>
+          <app-icon-button name="front.actions.changeTime" icon="fa-clock-o" (action)="openDialog('frontTimePrompt-' + member.id)" />
+        </app-vertical-center>
+      </div>
+    </div>
     <div class="flex flex-row mt-3 mx-2">
       <input type="text" class="input grow" [placeholder]="'front.labels.comment' | translate" [value]="frontEntry().comment || ''" (focusout)="updateFrontComment($event)">
     </div>
   </div>
+  <app-popup-input [dialogId]="'frontTimePrompt-' + member.id" title="front.actions.changeTime" label="front.labels.time" inputType="datetime-local" (submitValue)="updateFrontTime($event)" />
 }
