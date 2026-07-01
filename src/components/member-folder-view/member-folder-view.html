@@ -30,7 +30,7 @@
 @if (showingFolders) {
   <p class="ml-2 text-md font-medium">{{currentPath()}}</p>
 }
-<div class="grow overflow-y-auto">
+<div class="grow overflow-y-auto pb-10">
   @if (showingFolders) {
     @for (folder of shownFolders(); track folder.id) {
       <app-folder-list-item [folder]="folder" (action)="changeCurrentFolder(folder.id)" />
