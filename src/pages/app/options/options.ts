@@ -15,6 +15,7 @@ import {AccountService} from '../../../services/AccountService';
 })
 export class Options {
   private readonly accountService = inject(AccountService);
+  private readonly notificationService = inject(NotificationService);
   private readonly settingsService = inject(SettingsService);
 
   protected readonly settings = computed(() => this.settingsService.settings());
