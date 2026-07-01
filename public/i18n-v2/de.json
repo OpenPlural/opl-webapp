@@ -301,7 +301,7 @@
       },
       "currentFrontNotify": {
         "name": "Zeige eine permanente \"Aktuelle Fronter\" Benachrichtigung",
-        "description": "Wenn diese Option aktiviert ist, wird eine permanente Benachrichtigung zu den aktuellen Frontern angezeigt."
+        "description": "Wenn diese Option aktiviert ist, wird eine permanente Benachrichtigung zu den aktuellen Frontern angezeigt"
       }
     }
   },

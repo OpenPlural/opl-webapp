@@ -301,7 +301,7 @@
       },
       "currentFrontNotify": {
         "name": "Show a permanent \"Current fronters\" notification",
-        "description": "When enabled, you will see a permanent notification with your current fronters."
+        "description": "When enabled, you will see a permanent notification with your current fronters"
       }
     }
   },
