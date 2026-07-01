@@ -1,5 +1,5 @@
 import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import {NavigationEnd, Router, RouterOutlet} from '@angular/router';
 import { LocalStorageService } from '../services/LocalStorageService';
 import { TranslatePipe } from '@ngx-translate/core';
 import { SyncService } from '../services/SyncService';
@@ -10,6 +10,7 @@ import { hookOnDataDeletion } from '../util/LocalDataDeletion';
 import { ErrorService } from '../services/ErrorService';
 import { ToastService } from '../services/ToastService';
 import {CurrentFrontNotifyService} from '../services/CurrentFrontNotifyService';
+import {forgetRememberedPath} from '../util/RememberPath';
 
 @Component({
   selector: 'app-root',
@@ -18,6 +19,7 @@ import {CurrentFrontNotifyService} from '../services/CurrentFrontNotifyService';
   styleUrl: './app.css',
 })
 export class App implements OnInit {
+  private readonly router = inject(Router);
   private readonly accountService = inject(AccountService);
   private readonly currentFrontNotifyService = inject(CurrentFrontNotifyService);
   private readonly errorService = inject(ErrorService);
@@ -48,6 +50,16 @@ export class App implements OnInit {
         this.initialSync();
       }
     });
+
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        if (event.url !== '/app/members' && event.url !== '/app/fronters' && event.url !== '/app/custom-front' &&
+          !event.url.startsWith('/app/member/') && !event.url.startsWith('/app/folder/') &&
+          !event.url.startsWith('/app/friend/')) {
+          forgetRememberedPath();
+        }
+      }
+    })
   }
 
   ngOnInit() {

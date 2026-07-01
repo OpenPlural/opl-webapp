@@ -2,11 +2,12 @@ import { Component, computed, inject } from '@angular/core';
 import { NavPageContainer } from '../../../components/container/nav-page-container/nav-page-container';
 import { TranslatePipe } from '@ngx-translate/core';
 import { appRoutes } from '../../../app/app.routes';
-import { Route } from '@angular/router';
 import {Settings, SettingsService} from '../../../services/SettingsService';
 import { ToggleSetting } from '../../../components/toggle-setting/toggle-setting';
 import { getLanguages } from '../../../app/app.config';
 import {PushService} from '../../../services/PushService';
+import {NotificationService} from '../../../services/NotificationService';
+import {AccountService} from '../../../services/AccountService';
 
 @Component({
   selector: 'app-options',
@@ -15,13 +16,26 @@ import {PushService} from '../../../services/PushService';
 })
 export class Options {
   private readonly pushService = inject(PushService);
+  private readonly accountService = inject(AccountService);
+  private readonly notificationService = inject(NotificationService);
   private readonly settingsService = inject(SettingsService);
 
   protected readonly settings = computed(() => this.settingsService.settings());
 
-  protected getAppRoutes(): Route[] {
-    return appRoutes.filter((route) => route.data && route.data['name'] && route.data['navigable']);
-  }
+  protected readonly appRoutes = computed(() => {
+    const system = this.accountService.account()?.user.system;
+    return appRoutes.filter((route) => {
+      if (route.data && route.data['name']) {
+        if (route.data['navigable']) {
+          return true;
+        }
+        if (system && route.data['systemNavigable']) {
+          return true;
+        }
+      }
+      return false;
+    });
+  });
 
   protected updateDefaultPage(event: Event) {
     const select = event.target as HTMLSelectElement;

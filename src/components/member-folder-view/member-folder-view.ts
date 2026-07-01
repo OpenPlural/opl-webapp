@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, output, signal } from '@angular/core';
+import {Component, computed, inject, input, OnInit, output, signal} from '@angular/core';
 import { Folder, FolderId, makeFolder } from '../../services/model/Folder';
 import { FolderListItem } from '../list-item/folder-list-item/folder-list-item';
 import { IconButton } from '../icon-button/icon-button';
@@ -12,6 +12,13 @@ import { TranslateService } from '@ngx-translate/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { SettingsService } from '../../services/SettingsService';
 import { openDialog } from '../../util/CommonFunctions';
+import {UserId} from '../../services/model/User';
+import {
+  getRememberedFriendPath,
+  getRememberedLocalPath,
+  rememberFriendPath,
+  rememberLocalPath
+} from '../../util/RememberPath';
 
 @Component({
   selector: 'app-member-folder-view',
@@ -19,7 +26,7 @@ import { openDialog } from '../../util/CommonFunctions';
   templateUrl: './member-folder-view.html',
   styleUrl: './member-folder-view.css',
 })
-export class MemberFolderView {
+export class MemberFolderView implements OnInit {
   private readonly translate = inject(TranslateService);
   private readonly router = inject(Router);
   private readonly localStorageService = inject(LocalStorageService);
@@ -31,6 +38,7 @@ export class MemberFolderView {
   readonly archived = input.required<boolean>();
   readonly editable = input.required<boolean>();
   readonly custom = input.required<boolean>();
+  readonly friendId = input.required<UserId | null>();
   readonly selectMember = output<MemberId>();
 
   private readonly folderRoot = toSignal<string>(this.translate.get('folder root'), {
@@ -98,6 +106,25 @@ export class MemberFolderView {
     }
   });
 
+  ngOnInit() {
+    if (this.custom()) return;
+
+    const friendId = this.friendId();
+    let rememberedPath: FolderId | null;
+    if (friendId) {
+      rememberedPath = getRememberedFriendPath(friendId);
+    } else {
+      rememberedPath = getRememberedLocalPath();
+    }
+    if (rememberedPath !== null && (rememberedPath === 0n || this.folders().find((folder) => folder.id === rememberedPath))) {
+      this.currentFolder.set(rememberedPath === 0n ? null : rememberedPath);
+    } else if (friendId) {
+      rememberFriendPath(friendId, 0n);
+    } else {
+      rememberLocalPath(0n);
+    }
+  }
+
   protected toggleShowFolders() {
     this.showFolders.update((b) => !b);
   }
@@ -107,15 +134,28 @@ export class MemberFolderView {
       if (folderId) {
         const currentFolder = this.folders().find((folder) => folder.id === folderId);
         if (currentFolder) {
-          return currentFolder.parentId || null;
+          const nextFolderId = currentFolder.parentId || null;
+          this.rememberCurrentFolder(nextFolderId);
+          return nextFolderId;
         }
       }
+      this.rememberCurrentFolder(null);
       return null;
     });
   }
 
   protected changeCurrentFolder(folderId: FolderId | null) {
     this.currentFolder.set(folderId);
+    this.rememberCurrentFolder(folderId);
+  }
+
+  private rememberCurrentFolder(folderId: FolderId | null) {
+    const friendId = this.friendId();
+    if (friendId) {
+      rememberFriendPath(friendId, folderId || 0n);
+    } else {
+      rememberLocalPath(folderId || 0n);
+    }
   }
 
   protected async createMember(name: string) {
