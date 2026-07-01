@@ -279,6 +279,7 @@
     },
     "titles": {
       "general": "Allgemeine Einstellungen",
+      "member": "Mitgliedereinstellungen",
       "group": "Gruppeneinstellungen",
       "notification": "Benachrichtigungseinstellungen"
     },
@@ -294,10 +295,6 @@
         "name": "Avatare laden",
         "description": "Wenn diese Option aktiviert ist, siehst du die Avatare von Ordnern, Mitgliedern und Freunden"
       },
-      "customSortEditor": {
-        "name": "Sortierwert Editor anzeigen",
-        "description": "Wenn diese Option aktiviert ist, kannst du Ordner und Mitglieder beliebig ordnen, indem du deren Sortierwerte änderst"
-      },
       "useNativeColorPicker": {
         "name": "Nativen Farbwähler verwenden",
         "description": "Wenn diese Option aktiviert ist, nutzt die App den nativen Farbwähler deines Systems"
@@ -305,6 +302,14 @@
       "showSyncToast": {
         "name": "Zeige Toast bei erfolgreicher Synchronisation",
         "description": "Wenn diese Option aktiviert ist, wird eine Toast-Nachricht angezeigt, nachdem erfolgreich synchronisiert wurde"
+      },
+      "useNavMenu": {
+        "name": "Navigationsmenü nutzen",
+        "description": "Wenn diese Option aktiviert ist, öffnet der Knopf in der oberen Navigationleiste das Navigationsmenü"
+      },
+      "customSortEditor": {
+        "name": "Sortierwert Editor anzeigen",
+        "description": "Wenn diese Option aktiviert ist, kannst du Ordner und Mitglieder beliebig ordnen, indem du deren Sortierwerte änderst"
       },
       "hideRootMembers": {
         "name": "Mitglieder eines Ordners nicht im Stammordner anzeigen",

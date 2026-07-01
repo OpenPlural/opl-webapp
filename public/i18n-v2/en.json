@@ -279,6 +279,7 @@
     },
     "titles": {
       "general": "General Settings",
+      "member": "Member Settings",
       "group": "Group Settings",
       "notification": "Notification Settings"
     },
@@ -294,10 +295,6 @@
         "name": "Load Avatars",
         "description": "When enabled, you will be able to see avatars of folders, members and friends"
       },
-      "customSortEditor": {
-        "name": "Show custom sort editor",
-        "description": "When enabled, you will be able to reorder folders and members by changing their sorting values"
-      },
       "useNativeColorPicker": {
         "name": "Use native color picker",
         "description": "When enabled, the app will use your system's native color picker instead of the built-in one"
@@ -305,6 +302,14 @@
       "showSyncToast": {
         "name": "Show toast on successful sync",
         "description": "When enabled, a toast will pop up when a sync has finished successfully"
+      },
+      "useNavMenu": {
+        "name": "Use navigation menu",
+        "description": "When enabled, the button in the navigation top bar opens the navigation menu"
+      },
+      "customSortEditor": {
+        "name": "Show custom sort editor",
+        "description": "When enabled, you will be able to reorder folders and members by changing their sorting values"
       },
       "hideRootMembers": {
         "name": "Hide members from the root folder if they are part of a folder",
