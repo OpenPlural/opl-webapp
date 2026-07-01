@@ -5,7 +5,7 @@
       <fieldset class="fieldset">
         <legend class="fieldset-legend">{{'default page' | translate}}</legend>
         <select class="w-full select" (change)="updateDefaultPage($event)">
-          @for (route of getAppRoutes(); track route.path) {
+          @for (route of appRoutes(); track route.path) {
             <option [value]="route.path" [selected]="route.path === settings.defaultRoute">{{route.data!['name'] | translate}}</option>
           }
         </select>
