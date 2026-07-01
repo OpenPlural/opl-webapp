@@ -6,7 +6,6 @@ import {Settings, SettingsService} from '../../../services/SettingsService';
 import { ToggleSetting } from '../../../components/toggle-setting/toggle-setting';
 import { getLanguages } from '../../../app/app.config';
 import {PushService} from '../../../services/PushService';
-import {NotificationService} from '../../../services/NotificationService';
 import {AccountService} from '../../../services/AccountService';
 
 @Component({
@@ -15,9 +14,8 @@ import {AccountService} from '../../../services/AccountService';
   templateUrl: './options.html',
 })
 export class Options {
-  private readonly pushService = inject(PushService);
   private readonly accountService = inject(AccountService);
-  private readonly notificationService = inject(NotificationService);
+  private readonly pushService = inject(PushService);
   private readonly settingsService = inject(SettingsService);
 
   protected readonly settings = computed(() => this.settingsService.settings());
