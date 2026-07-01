@@ -203,12 +203,12 @@
     },
     "labels": {
       "code": "Freunde-Code",
-      "notifyMe": "Erhalte Benachrichtungen, wenn sicher die Front ändert",
+      "notifyMe": "Erhalte Benachrichtigungen, wenn sich die Front ändert",
       "permissions": {
         "select": {
           "members": "Freund kann geteilte Mitglieder sehen",
           "front": "Freund kann sehen, wer frontet",
-          "notify": "Freund kann Benachrichtungen über Frontänderungen erhalten"
+          "notify": "Freund kann Benachrichtigungen über Frontänderungen erhalten"
         },
         "denied": {
           "members": "Du hast keine Berechtigung, die Mitglieder zu sehen",
@@ -280,7 +280,7 @@
       "timeFormat": "Uhrzeitformat",
       "timeFormat12": "12 Stunden",
       "timeFormat24": "24 Stunden",
-      "notificationsUnsupported": "Benachrichtungen werden von diesem Browser nicht unterstützt",
+      "notificationsUnsupported": "Benachrichtigungen werden von diesem Browser nicht unterstützt",
       "loadAvatars": {
         "name": "Avatare laden",
         "description": "Wenn diese Option aktiviert ist, siehst du die Avatare von Ordnern, Mitgliedern und Freunden"
