@@ -1,4 +1,4 @@
-import { Component, effect, inject, signal } from '@angular/core';
+import {Component, computed, effect, inject, signal} from '@angular/core';
 import { PopupPageContainer } from '../../../components/container/popup-page-container/popup-page-container';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
@@ -17,6 +17,7 @@ import { IconButton } from '../../../components/icon-button/icon-button';
 import { Loading } from '../../../components/loading/loading';
 import {MarkdownBox} from '../../../components/markdown-box/markdown-box';
 import {forgetRememberedPath, getRememberedFriendPath} from '../../../util/RememberPath';
+import {compareCustomSort} from '../../../util/CustomSort';
 
 @Component({
   selector: 'app-friend-page',
@@ -43,6 +44,20 @@ export class FriendPage {
   protected readonly user = signal<ExtendedUserInfo | null>(null);
   protected readonly selectedTab = signal<'account' | 'members'>('account');
   protected readonly searchQuery = signal<string | null>(null);
+
+  protected readonly fronters = computed(() => {
+    const user = this.user();
+    if (!user || !user.members || !user.front) return [];
+
+    return user.front.map((f) => {
+      const member = user.members!.find((m) => m.id === f.member);
+      return {
+        ...f,
+        sort: member?.sort || 0n,
+        name: member?.name || '',
+      };
+    }).sort(compareCustomSort);
+  });
 
   readonly id = toSignal(
     this.route.paramMap.pipe(

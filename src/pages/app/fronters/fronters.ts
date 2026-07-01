@@ -6,6 +6,7 @@ import { VerticalCenter } from '../../../components/vertical-center/vertical-cen
 import { Router } from '@angular/router';
 import { LocalStorageService } from '../../../services/LocalStorageService';
 import { FronterListItem } from '../../../components/list-item/fronter-list-item/fronter-list-item';
+import {compareCustomSort} from '../../../util/CustomSort';
 
 @Component({
   selector: 'app-fronters',
@@ -16,7 +17,17 @@ export class Fronters {
   private readonly router = inject(Router);
   private readonly localStorageService = inject(LocalStorageService);
 
-  protected readonly ongoingFront = computed(() => this.localStorageService.ongoingFront());
+  protected readonly ongoingFront = computed(() => {
+    const members = this.localStorageService.members();
+    return this.localStorageService.ongoingFront().map((f) => {
+      const member = members.find((m) => m.id === f.member);
+      return {
+        ...f,
+        sort: member?.sort || 0n,
+        name: member?.name || '',
+      };
+    }).sort(compareCustomSort);
+  });
 
   protected gotoMembers() {
     this.router.navigate(['app', 'members']);

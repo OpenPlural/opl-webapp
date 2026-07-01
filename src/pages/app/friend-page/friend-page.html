@@ -22,7 +22,7 @@
                   {{'front.labels.empty' | translate}}
                 </div>
               } @else {
-                @for (frontEntry of user.front; track frontEntry.id) {
+                @for (frontEntry of fronters(); track frontEntry.id) {
                   @let member = findMember(user, frontEntry.member);
                   @if (member) {
                     <app-member-list-item [member]="member" [editable]="false" (action)="gotoMemberPage(member.id)" />
