@@ -28,7 +28,7 @@ export class NavPageContainer {
 
   protected readonly searching = signal(false);
 
-  protected readonly useNavMenu = computed(() => this.settingsService.settings().useNavMenu);
+  protected readonly useNavMenu = computed(() => this.forceNavMenu() || this.settingsService.settings().useNavMenu);
   protected readonly appRoutes = computed(() => {
     const system = this.accountService.account()?.user.system;
     return appRoutes.filter((route) => {
@@ -48,6 +48,7 @@ export class NavPageContainer {
   readonly fab = input<boolean>(false);
   readonly searchable = input<boolean>(false);
   readonly headerButtons = input<boolean>(false);
+  readonly forceNavMenu = input<boolean>(false);
   readonly search = output<string | null>();
   readonly fabAction = output();
 
