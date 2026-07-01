@@ -6,7 +6,7 @@
   </div>
   @let customFront = custom();
   <main>
-    <app-member-folder-view [folders]="localFolders()" [members]="localMembers()" [searchQuery]="searchQuery()"
+    <app-member-folder-view [friendId]="null" [folders]="localFolders()" [members]="localMembers()" [searchQuery]="searchQuery()"
                             [archived]="searchArchived()" [editable]="true" [custom]="customFront" (selectMember)="gotoMemberPage($event)" />
   </main>
   <footer class="h-16">

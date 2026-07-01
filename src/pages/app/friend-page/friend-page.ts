@@ -16,6 +16,7 @@ import { MemberFolderView } from '../../../components/member-folder-view/member-
 import { IconButton } from '../../../components/icon-button/icon-button';
 import { Loading } from '../../../components/loading/loading';
 import {MarkdownBox} from '../../../components/markdown-box/markdown-box';
+import {forgetRememberedPath, getRememberedFriendPath} from '../../../util/RememberPath';
 
 @Component({
   selector: 'app-friend-page',
@@ -58,6 +59,10 @@ export class FriendPage {
       const id = this.id();
       if (id) {
         this.webService.getUser(id).then((user) => {
+          const rememberedPath = getRememberedFriendPath(id);
+          if (rememberedPath !== null) {
+            this.selectedTab.set('members');
+          }
           this.user.set(user);
         });
       } else {
@@ -67,6 +72,7 @@ export class FriendPage {
   }
 
   protected gotoTab(tab: 'account' | 'members') {
+    forgetRememberedPath();
     this.selectedTab.set(tab);
   }
 
