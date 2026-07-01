@@ -57,7 +57,7 @@
     "description": "Description",
     "emoji": "Emoji",
     "color": "Color",
-    "avatar url": "Avatar URL",
+    "avatarUrl": "Avatar URL",
     "info": "Info",
     "language": "Language",
     "creationDate": "Creation date (on Open Plural)",
