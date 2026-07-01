@@ -45,7 +45,7 @@ export class MemberPage {
   private readonly syncService = inject(SyncService);
 
   protected readonly selectedTab = signal<
-    'profile' | 'custom fields' | 'message board' | 'front history' | 'notes' | 'options'
+    'profile' | 'customFields' | 'messageBoard' | 'frontHistory' | 'notes' | 'options'
   >('profile');
   protected readonly updatedMemberProfile = signal<Member | null>(null);
   protected readonly updatedMemberFolders = signal<FolderId[] | null>(null);

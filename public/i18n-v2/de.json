@@ -76,7 +76,7 @@
     "profile": "Profil",
     "messageBoard": "Messageboard",
     "notes": "Notizen",
-    "fronters": "Fronters",
+    "fronters": "Fronter",
     "customFront": "Benutzerdefinierte Front",
     "frontHistory": "Frontverlauf",
     "analytics": "Analysen",
@@ -132,6 +132,7 @@
     },
     "labels": {
       "folders": "Ordner",
+      "archived": "Archiviert",
       "options": {
         "archived": {
           "name": "Archiviert",
@@ -146,6 +147,8 @@
       "unfront": "Von der Front entfernen"
     },
     "labels": {
+      "graphical": "Grafisch",
+      "textual": "Textuell",
       "empty": "Aktuell frontet niemand.",
       "comment": "Benutzerdefinierter Status (z.B. Co-fronting)",
       "current": "Aktuelle Fronter",
@@ -206,6 +209,7 @@
       "code": "Freunde-Code",
       "notifyMe": "Erhalte Benachrichtigungen, wenn sich die Front ändert",
       "notifyReplacing": "Ältere Front-Benachrichtigungen ersetzen",
+      "fronters": "Fronter",
       "permissions": {
         "select": {
           "members": "Freund kann geteilte Mitglieder sehen",
@@ -231,6 +235,7 @@
       "delete": "API Schlüssel löschen"
     },
     "labels": {
+      "title": "API Schlüssel",
       "readOnly": "Darf nur lesen",
       "writeDelete": "Darf schreiben und löschen",
       "onlyOnce": "Du kannst diesen Schlüssel nur einmalig sehen"
@@ -241,6 +246,7 @@
       "invalidate": "Sitzung beenden"
     },
     "labels": {
+      "title": "Sitzungen",
       "expired": "Deine Sitzung ist abgelaufen. Bitte melde dich erneut an.",
       "lastUsage": "Zuletzt benutzt am {date}"
     }

@@ -132,6 +132,7 @@
     },
     "labels": {
       "folders": "Folders",
+      "archived": "Archived",
       "options": {
         "archived": {
           "name": "Archived",
@@ -150,6 +151,8 @@
       "comment": "Custom status (e.g. Co-fronting)",
       "current": "Current fronters",
       "history": {
+        "graphical": "Graphical",
+        "textual": "Textual",
         "ongoing": "Current",
         "noMoreEntries": "No more history entries"
       }
@@ -206,6 +209,7 @@
       "code": "Friend Code",
       "notifyMe": "Get notifications as they change front",
       "notifyReplacing": "Replace older front notifications",
+      "fronters": "Fronters",
       "permissions": {
         "select": {
           "members": "They can see your shared members",
@@ -231,6 +235,7 @@
       "delete": "Delete API key"
     },
     "labels": {
+      "title": "API Keys",
       "readOnly": "May only read",
       "writeDelete": "May write and delete",
       "onlyOnce": "You can only see this key once"
@@ -241,6 +246,7 @@
       "invalidate": "Invalidate session"
     },
     "labels": {
+      "title": "Sessions",
       "expired": "Session has expired. Please log in again.",
       "lastUsage": "Last used at {date}"
     }

@@ -41,7 +41,7 @@ export class MemberFolderView implements OnInit {
   readonly friendId = input.required<UserId | null>();
   readonly selectMember = output<MemberId>();
 
-  private readonly folderRoot = toSignal<string>(this.translate.get('folder root'), {
+  private readonly folderRoot = toSignal<string>(this.translate.get('folders.labels.root'), {
     initialValue: null,
   });
   protected readonly showFolders = signal(true);

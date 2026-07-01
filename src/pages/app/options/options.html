@@ -3,7 +3,7 @@
     <div class="p-5">
       @let settings = this.settings();
       <fieldset class="fieldset">
-        <legend class="fieldset-legend">{{'default page' | translate}}</legend>
+        <legend class="fieldset-legend">{{'options.labels.defaultPage' | translate}}</legend>
         <select class="w-full select" (change)="updateDefaultPage($event)">
           @for (route of appRoutes(); track route.path) {
             <option [value]="route.path" [selected]="route.path === settings.defaultRoute">{{route.data!['name'] | translate}}</option>
@@ -12,7 +12,7 @@
       </fieldset>
 
       <fieldset class="fieldset">
-        <legend class="fieldset-legend">{{'language' | translate}}</legend>
+        <legend class="fieldset-legend">{{'fields.language' | translate}}</legend>
         <select class="w-full select" (change)="updateLanguage($event)">
           @for (lang of getLanguages(); track lang.id) {
             <option [value]="lang.id" [selected]="lang.id === settings.language">{{lang.name}}</option>
@@ -21,8 +21,8 @@
       </fieldset>
 
       <fieldset class="fieldset">
-        <legend class="fieldset-legend">{{'date format' | translate}}</legend>
-        <span class="text-base-content/60">{{'date format example 01nov24' | translate}}</span>
+        <legend class="fieldset-legend">{{'options.labels.dateFormat' | translate}}</legend>
+        <span class="text-base-content/60">{{'options.labels.dateFormatExample' | translate}}</span>
         <select class="w-full select" (change)="updateDateFormat($event)">
           <option value="yyyy-MM-dd" [selected]="settings.dateFormat === 'yyyy-MM-dd'">2024-11-01</option>
           <option value="yyyy/MM/dd" [selected]="settings.dateFormat === 'yyyy/MM/dd'">2024/11/01</option>
@@ -34,31 +34,31 @@
       </fieldset>
 
       <fieldset class="fieldset">
-        <legend class="fieldset-legend">{{'time format' | translate}}</legend>
+        <legend class="fieldset-legend">{{'options.labels.timeFormat' | translate}}</legend>
         <div class="join flex flex-row">
           <button class="btn join-item flex-1" [class.btn-outline]="settings.time24Hours" [class.btn-accent]="!settings.time24Hours"
                   (click)="toggleSetting('time24Hours', false)">
-            {{'12 hour time' | translate}}
+            {{'options.labels.timeFormat12' | translate}}
           </button>
           <button class="btn join-item flex-1" [class.btn-outline]="!settings.time24Hours" [class.btn-accent]="settings.time24Hours"
                   (click)="toggleSetting('time24Hours', true)">
-            {{'24 hour time' | translate}}
+            {{'options.labels.timeFormat24' | translate}}
           </button>
         </div>
       </fieldset>
 
-      <div class="divider">{{'general settings' | translate}}</div>
-      <app-toggle-setting name="load avatars" [toggled]="settings.loadAvatars" (toggle)="toggleSetting('loadAvatars', $event)" />
-      <app-toggle-setting name="use native color picker" [toggled]="settings.useNativeColorPicker" (toggle)="toggleSetting('useNativeColorPicker', $event)" />
-      <app-toggle-setting name="show sync toast" [toggled]="settings.showSyncToast" (toggle)="toggleSetting('showSyncToast', $event)" />
+      <div class="divider">{{'options.titles.general' | translate}}</div>
+      <app-toggle-setting name="options.labels.loadAvatars" [toggled]="settings.loadAvatars" (toggle)="toggleSetting('loadAvatars', $event)" />
+      <app-toggle-setting name="options.labels.useNativeColorPicker" [toggled]="settings.useNativeColorPicker" (toggle)="toggleSetting('useNativeColorPicker', $event)" />
+      <app-toggle-setting name="options.labels.showSyncToast" [toggled]="settings.showSyncToast" (toggle)="toggleSetting('showSyncToast', $event)" />
 
-      <div class="divider">{{'group settings' | translate}}</div>
-      <app-toggle-setting name="hide root members" [toggled]="settings.hideRootMembers" (toggle)="toggleSetting('hideRootMembers', $event)" />
+      <div class="divider">{{'options.titles.group' | translate}}</div>
+      <app-toggle-setting name="options.labels.hideRootMembers" [toggled]="settings.hideRootMembers" (toggle)="toggleSetting('hideRootMembers', $event)" />
 
-      <div class="divider">{{'notification settings' | translate}}</div>
+      <div class="divider">{{'options.titles.notification' | translate}}</div>
       @if (Notification) {
         <button class="btn btn-accent w-full" (click)="requestNotificationPermissions()">
-          {{'notification request permissions' | translate}}
+          {{'options.actions.requestNotificationPermissions' | translate}}
           @switch (Notification.permission) {
             @case ('granted') {
               <div class="badge badge-soft badge-success btn-circle">
@@ -73,13 +73,13 @@
           }
         </button>
         @if (Notification.permission === 'granted') {
-          <app-toggle-setting name="current front notify" [toggled]="settings.currentFrontNotify" (toggle)="toggleSetting('currentFrontNotify', $event)" />
+          <app-toggle-setting name="options.labels.currentFrontNotify" [toggled]="settings.currentFrontNotify" (toggle)="toggleSetting('currentFrontNotify', $event)" />
         }
       } @else {
         <div class="text-center">
           <div class="h-fit badge badge-soft badge-error">
             <i class="fa fa-exclamation-triangle"></i>
-            {{'notification unsupported' | translate}}
+            {{'options.labels.notificationsUnsupported' | translate}}
           </div>
         </div>
       }

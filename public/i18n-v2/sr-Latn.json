@@ -132,6 +132,7 @@
     },
     "labels": {
       "folders": "Fascikle",
+      "archived": "Arhiviran",
       "options": {
         "archived": {
           "name": "Arhiviran",
@@ -150,6 +151,8 @@
       "comment": "Prilagođen status (npr. Co-fronting)",
       "current": "Aktuelni fronteri",
       "history": {
+        "graphical": "Grafičko",
+        "textual": "Tekstualno",
         "ongoing": "Aktuelno",
         "noMoreEntries": "Nema više unosa u istoriji"
       }
@@ -206,6 +209,7 @@
       "code": "Kod prijateljstva",
       "notifyMe": "Dobijajte obavesti čim se promene fronteri",
       "notifyReplacing": "Zameni starije obavesti o frontu",
+      "fronters": "Fronteri",
       "permissions": {
         "select": {
           "members": "Mogu da vide Vaše deljene članove",
@@ -231,6 +235,7 @@
       "delete": "Izbriši API ključ"
     },
     "labels": {
+      "title": "API Ključevi",
       "readOnly": "Samo sme da čita",
       "writeDelete": "Sme da piše i izbriše",
       "onlyOnce": "Ključ možete videti samo jednom"
@@ -241,6 +246,7 @@
       "invalidate": "Poništi sesiju"
     },
     "labels": {
+      "title": "Sesije",
       "expired": "Sesija je istekla. Molim Vas da se ponovo prijavite.",
       "lastUsage": "Zadnje korišćeno u {date}"
     }

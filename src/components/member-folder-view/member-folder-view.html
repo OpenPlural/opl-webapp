@@ -2,10 +2,10 @@
 @let custom = this.custom();
 <div>
   @if (!custom) {
-    <app-toggle-icon-button name="show folders" toggledName="hide folders" icon="fa-folder" [toggled]="showFolders()" (toggle)="toggleShowFolders()" />
+    <app-toggle-icon-button name="folders.actions.show" toggledName="folders.actions.hide" icon="fa-folder" [toggled]="showFolders()" (toggle)="toggleShowFolders()" />
   }
   @if (editable) {
-    <app-icon-button name="create member" icon="fa-user-plus" (action)="openDialog('memberNamePrompt')" />
+    <app-icon-button name="members.actions.create" icon="fa-user-plus" (action)="openDialog('memberNamePrompt')" />
   }
 </div>
 @let showingFolders = showFolders() && !custom;
@@ -14,15 +14,15 @@
   <div class="flex justify-between">
     <span>
       @if (editable) {
-        <app-icon-button name="create folder" [icon]="['fa-folder-o fa-stack-2x', 'fa-plus fa-stack-1x']" size="text-xs" [stack]="true" (action)="openDialog('folderNamePrompt')" />
+        <app-icon-button name="folders.actions.create" [icon]="['fa-folder-o fa-stack-2x', 'fa-plus fa-stack-1x']" size="text-xs" [stack]="true" (action)="openDialog('folderNamePrompt')" />
       }
       @if (inFolder) {
-        <app-icon-button name="go to root folder" icon="fa-arrow-up" (action)="changeCurrentFolder(null)" />
-        <app-icon-button name="go to parent folder" icon="fa-arrow-left" (action)="gotoParentFolder()" />
+        <app-icon-button name="folders.actions.goToRoot" icon="fa-arrow-up" (action)="changeCurrentFolder(null)" />
+        <app-icon-button name="folders.actions.goToParent" icon="fa-arrow-left" (action)="gotoParentFolder()" />
       }
     </span>
     @if (inFolder && editable) {
-      <app-icon-button name="edit folder" icon="fa-cog" (action)="editFolder()" />
+      <app-icon-button name="folders.actions.edit" icon="fa-cog" (action)="editFolder()" />
     }
   </div>
 }
@@ -42,6 +42,6 @@
 </div>
 
 @if (editable) {
-  <app-popup-input dialogId="memberNamePrompt" title="create member" label="name" (submitValue)="createMember($event)" />
-  <app-popup-input dialogId="folderNamePrompt" title="create folder" label="name" (submitValue)="createFolder($event)" />
+  <app-popup-input dialogId="memberNamePrompt" title="members.actions.create" label="fields.name" (submitValue)="createMember($event)" />
+  <app-popup-input dialogId="folderNamePrompt" title="folders.actions.create" label="fields.name" (submitValue)="createFolder($event)" />
 }

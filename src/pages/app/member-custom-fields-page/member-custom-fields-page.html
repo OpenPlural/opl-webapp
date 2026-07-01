@@ -1,7 +1,7 @@
 @let editing = this.editing();
 
 <div class="text-right -mt-5">
-  <app-icon-button name="edit custom fields" [icon]="editing ? 'fa-check' : 'fa-pencil'" buttonClass="btn-accent" (click)="toggleEdit()" />
+  <app-icon-button name="members.actions.editCustomFields" [icon]="editing ? 'fa-check' : 'fa-pencil'" buttonClass="btn-accent" (click)="toggleEdit()" />
 </div>
 
 @for (fieldValue of customFieldValuePairs(); track fieldValue.field.id) {

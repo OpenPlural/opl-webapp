@@ -155,7 +155,7 @@ export class AccountSettings implements OnInit {
       await this.webService.deleteAccount(account.user.id, password);
     } catch (e) {
       console.error('Failed to delete account', e);
-      this.accountError.set('delete account failed');
+      this.accountError.set('account.prompts.error.delete');
       openDialog('accountError');
       return;
     }
@@ -186,7 +186,7 @@ export class AccountSettings implements OnInit {
         await this.webService.changePassword(account.user.id, oldPassword, newPassword);
       } catch (e) {
         console.error('Failed to change password', e);
-        this.accountError.set('change password failed');
+        this.accountError.set('account.prompts.error.changePassword');
         openDialog('accountError');
       }
     }

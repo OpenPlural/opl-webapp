@@ -29,19 +29,19 @@ export const appRoutes: Routes = [
   {
     path: '',
     component: Dashboard,
-    data: { name: 'dashboard', titleName: 'opl', navigable: true }
+    data: { name: 'navigation.dashboard', titleName: 'app.name', navigable: true }
   }, {
     path: 'members',
     component: Members,
-    data: { name: 'members', custom: false, systemNavigable: true }
+    data: { name: 'navigation.members', custom: false, systemNavigable: true }
   }, {
     path: 'fronters',
     component: Fronters,
-    data: { name: 'fronters' }
+    data: { name: 'navigation.fronters' }
   }, {
     path: 'custom-front',
     component: Members,
-    data: { name: 'custom front', custom: true }
+    data: { name: 'navigation.customFront', custom: true }
   }, {
     path: 'folder/:id',
     component: FolderPage
@@ -51,11 +51,11 @@ export const appRoutes: Routes = [
   }, {
     path: 'front-history',
     component: FrontHistoryPage,
-    data: { name: 'front history', systemNavigable: true }
+    data: { name: 'navigation.frontHistory', systemNavigable: true }
   }, {
     path: 'friends',
     component: Friends,
-    data: { name: 'friends', navigable: true }
+    data: { name: 'navigation.friends', navigable: true }
   }, {
     path: 'friend/:id',
     component: FriendPage
@@ -68,45 +68,45 @@ export const appRoutes: Routes = [
   }, {
     path: 'privacy-buckets',
     component: PrivacyBuckets,
-    data: { name: 'privacy buckets', systemNavigable: true }
+    data: { name: 'navigation.privacyBuckets', systemNavigable: true }
   }, {
     path: 'privacy-bucket/:id',
     component: PrivacyBucketPage
   }, {
     path: 'custom-fields',
     component: CustomFields,
-    data: { name: 'custom fields', systemNavigable: true }
+    data: { name: 'navigation.customFields', systemNavigable: true }
   }, {
     path: 'custom-field/:id',
     component: CustomFieldPage
   }, {
     path: 'api-keys',
     component: ApiKeys,
-    data: { name: 'api keys' }
+    data: { name: 'navigation.apiKeys' }
   }, {
     path: 'sessions',
     component: Sessions,
-    data: { name: 'sessions' }
+    data: { name: 'navigation.sessions' }
   }, {
     path: 'account-settings',
     component: AccountSettings,
-    data: { name: 'account settings' }
+    data: { name: 'navigation.accountSettings' }
   }, {
     path: 'options',
     component: Options,
-    data: { name: 'options' }
+    data: { name: 'navigation.options' }
   }, {
     path: 'data-import',
     component: DataImport,
-    data: { name: 'data import' }
+    data: { name: 'navigation.dataImport' }
   }, {
     path: 'mass-delete',
     component: MassDelete,
-    data: { name: 'mass delete' }
+    data: { name: 'navigation.massDelete' }
   }, {
     path: 'legal',
     component: Legal,
-    data: { name: 'legal' }
+    data: { name: 'navigation.legal' }
   }, {
     path: 'setup',
     component: Setup

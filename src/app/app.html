@@ -6,7 +6,7 @@
       } @else {
         <dialog class="modal modal-open">
           <div class="modal-box flex flex-col items-center">
-            <p class="mb-2 text-xl font-bold">{{'choose language' | translate}}</p>
+            <p class="mb-2 text-xl font-bold">{{'app.language' | translate}}</p>
             <div class="overflow-auto w-full flex flex-col space-y-1">
               @for (lang of getLanguages(); track lang.id) {
                 <button type="button" class="w-full btn btn-soft" (click)="chooseLanguage(lang.id)">
@@ -20,7 +20,7 @@
     } @else {
       <dialog class="modal modal-open">
         <div class="modal-box flex justify-between items-center">
-          <span>{{'loading app' | translate}}</span>
+          <span>{{'app.loading' | translate}}</span>
           <span class="loading loading-spinner loading-xl"></span>
         </div>
       </dialog>

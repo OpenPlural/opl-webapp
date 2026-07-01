@@ -4,15 +4,15 @@
     <div class="p-5 pb-0">
       <form id="privacyBucketForm">
         <fieldset class="fieldset">
-          <legend class="fieldset-legend">{{'name' | translate}}</legend>
+          <legend class="fieldset-legend">{{'fields.name' | translate}}</legend>
           <input name="name" type="text" class="w-full input" [value]="bucket.name" />
         </fieldset>
         <fieldset class="fieldset">
-          <legend class="fieldset-legend">{{'description' | translate}}</legend>
+          <legend class="fieldset-legend">{{'fields.description' | translate}}</legend>
           <app-markdown-box class="w-full" textareaName="description" [(markdown)]="description" [editable]="true" />
         </fieldset>
         <fieldset class="fieldset">
-          <legend class="fieldset-legend">{{'emoji' | translate}}</legend>
+          <legend class="fieldset-legend">{{'fields.emoji' | translate}}</legend>
           <input name="emoji" type="text" class="w-full input" maxlength="4" [value]="bucket.emoji" />
         </fieldset>
       </form>
@@ -28,8 +28,8 @@
   }
 </app-edit-page-container>
 
-<app-popup-confirm dialogId="bucketDeletePrompt" title="delete privacy bucket" (confirm)="delete()">
+<app-popup-confirm dialogId="bucketDeletePrompt" title="privacyBuckets.actions.delete" (confirm)="delete()">
   @if (bucket) {
-    {{'delete privacy bucket prompt' | translate:{ bucketName: bucket.name } }}
+    {{'privacyBuckets.prompts.delete' | translate:{ bucketName: bucket.name } }}
   }
 </app-popup-confirm>

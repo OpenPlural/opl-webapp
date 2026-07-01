@@ -6,7 +6,7 @@
       {{elapsedTime()}}
     </span>
     <div class="flex flex-row mt-3 mx-2">
-      <input type="text" class="input grow" [placeholder]="'front comment' | translate" [value]="frontEntry().comment || ''" (focusout)="updateFrontComment($event)">
+      <input type="text" class="input grow" [placeholder]="'front.labels.comment' | translate" [value]="frontEntry().comment || ''" (focusout)="updateFrontComment($event)">
     </div>
   </div>
 }

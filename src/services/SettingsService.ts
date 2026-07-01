@@ -9,13 +9,13 @@ import {UTCDate} from '@date-fns/utc';
 
 @Injectable({providedIn: 'root'})
 export class SettingsService {
-  private readonly translateService = inject(TranslateService);
+  private readonly translate = inject(TranslateService);
   private readonly router = inject(Router);
 
-  private readonly timeAm = toSignal<string>(this.translateService.getStreamOnTranslationChange('12 hour time am'), {
+  private readonly timeAm = toSignal<string>(this.translate.getStreamOnTranslationChange('format.time.am'), {
     initialValue: null,
   });
-  private readonly timePm = toSignal<string>(this.translateService.getStreamOnTranslationChange('12 hour time pm'), {
+  private readonly timePm = toSignal<string>(this.translate.getStreamOnTranslationChange('format.time.pm'), {
     initialValue: null,
   });
 
@@ -35,7 +35,7 @@ export class SettingsService {
     }
     this.storage = signal(settings);
     this.settings = this.storage.asReadonly();
-    this.translateService.use(settings.language);
+    this.translate.use(settings.language);
     if (settings.defaultRoute !== '') {
       this.router.navigate(['app', settings.defaultRoute]);
     }
@@ -116,7 +116,7 @@ export class SettingsService {
   }
 
   changeLanguage(id: string) {
-    this.translateService.use(id);
+    this.translate.use(id);
     this.changeSettings(settings => settings.language = id);
   }
 
