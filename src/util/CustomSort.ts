@@ -1,7 +1,10 @@
 import {Folder, FolderId} from '../services/model/Folder';
 
-export function compareCustomSort(a: {sort: bigint}, b: {sort: bigint}): number {
-  return parseInt((a.sort - b.sort).toString());
+export function compareCustomSort(a: {sort: bigint; name: string}, b: {sort: bigint; name: string}): number {
+  if (a.sort === b.sort) {
+    return a.name.localeCompare(b.name);
+  }
+  return Number(a.sort - b.sort);
 }
 
 export function sortNestedFolders(folders: Folder[]): Folder[] {
