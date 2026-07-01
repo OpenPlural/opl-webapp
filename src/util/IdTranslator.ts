@@ -1,4 +1,4 @@
-import { Folder, FolderId } from '../services/model/Folder';
+import { Folder } from '../services/model/Folder';
 import { LocalStorageService } from '../services/LocalStorageService';
 import { Member } from '../services/model/Member';
 import { FrontEntry } from '../services/model/Front';

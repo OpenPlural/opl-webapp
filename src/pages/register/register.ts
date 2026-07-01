@@ -9,7 +9,6 @@ import { SyncService } from '../../services/SyncService';
 import { LegalFooter } from '../../components/legal-footer/legal-footer';
 import { ErrorService } from '../../services/ErrorService';
 import {LocalStorageService} from '../../services/LocalStorageService';
-import {deleteLocalData} from '../../util/LocalDataDeletion';
 
 @Component({
   selector: 'app-register',

@@ -1,4 +1,4 @@
-import { Component, effect, inject, input, OnInit, signal } from '@angular/core';
+import { Component, inject, input, OnInit, signal } from '@angular/core';
 import { Member } from '../../../services/model/Member';
 import { FrontEntry } from '../../../services/model/Front';
 import { WebService } from '../../../services/WebService';

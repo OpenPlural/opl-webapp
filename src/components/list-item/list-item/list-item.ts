@@ -1,7 +1,6 @@
 import { Component, computed, input, OnInit, output, signal } from '@angular/core';
 import { toColor } from '../../../util/ColorConvert';
 import { VerticalCenter } from '../../vertical-center/vertical-center';
-import { IconButton } from '../../icon-button/icon-button';
 
 @Component({
   selector: 'app-list-item',

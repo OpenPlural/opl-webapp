@@ -13,13 +13,17 @@ import { Router } from '@angular/router';
 import { MemberListItem } from '../member-list-item/member-list-item';
 import { formatDuration } from '../../../util/Duration';
 import { TranslatePipe } from '@ngx-translate/core';
-import { truncateCurrentDate } from '../../../util/DateTruncate';
+import {truncateCurrentDate, truncateDate} from '../../../util/DateTruncate';
 import { SyncService } from '../../../services/SyncService';
 import { nullableField } from '../../../util/NullString';
+import {IconButton} from '../../icon-button/icon-button';
+import {VerticalCenter} from '../../vertical-center/vertical-center';
+import {PopupInput} from '../../popup-input/popup-input';
+import {openDialog} from '../../../util/CommonFunctions';
 
 @Component({
   selector: 'app-fronter-list-item',
-  imports: [MemberListItem, TranslatePipe],
+  imports: [MemberListItem, TranslatePipe, IconButton, VerticalCenter, PopupInput],
   templateUrl: './fronter-list-item.html',
 })
 export class FronterListItem implements AfterViewInit, OnDestroy {
@@ -77,4 +81,22 @@ export class FronterListItem implements AfterViewInit, OnDestroy {
     });
     this.syncService.fullSync();
   }
+
+  protected async updateFrontTime(event: string) {
+    if (Date.parse(event) > Date.now()) {
+      return;
+    }
+
+    const timestamp = truncateDate(new Date(Date.parse(event)));
+    const frontEntry = this.frontEntry();
+    await this.localStorageService.updateFrontEntry({
+      ...frontEntry,
+      startedAt: timestamp,
+      updatedAt: truncateCurrentDate()
+    });
+    this.syncService.fullSync();
+  }
+
+  protected readonly openDialog = openDialog;
+  protected readonly truncateCurrentDate = truncateCurrentDate;
 }
