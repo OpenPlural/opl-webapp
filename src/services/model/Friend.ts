@@ -14,4 +14,5 @@ export interface FriendRequest {
 export interface FriendSettings {
   permissionLevel: bigint;
   notifyMe: boolean;
+  notifyWithTag: boolean;
 }

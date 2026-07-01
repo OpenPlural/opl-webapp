@@ -4,11 +4,14 @@ import {WebService} from './WebService';
 import {firstValueFrom} from 'rxjs';
 
 @Injectable({providedIn: 'root'})
-export class NotificationService {
+export class PushService {
   private readonly swPush = inject(SwPush);
   private readonly webService = inject(WebService);
 
   async requestPermissions() {
+    if (!Notification) {
+      return;
+    }
     if (Notification.permission === 'default') {
       const permission = await Notification.requestPermission();
       if (permission !== 'granted') {
@@ -21,7 +24,7 @@ export class NotificationService {
 
   private async setupSubscription() {
     try {
-      if (Notification.permission !== 'granted') {
+      if (!Notification || Notification.permission !== 'granted') {
         return;
       }
 

@@ -2,7 +2,8 @@
 <app-edit-page-container [title]="username || ''" (delete)="open('unfriendPrompt')" (save)="save()">
   @let permissionLevel = this.permissionLevel();
   @let notifyMe = this.notifyMe();
-  @if (permissionLevel !== null && notifyMe !== null) {
+  @let notifyWithTag = this.notifyWithTag();
+  @if (permissionLevel !== null && notifyMe !== null && notifyWithTag !== null) {
     <div class="md:px-32 md:pt-5 p-5 pb-0">
       <div class="grid text-left">
         <span>
@@ -27,9 +28,15 @@
       <input type="range" class="range w-full text-accent" id="permissionLevel" min="0" max="3" step="1" [value]="permissionLevel" (change)="permissionLevelChanged($event)">
     </div>
     <div class="divider"></div>
-    <div class="md:px-32 px-5 py-0">
-      <input type="checkbox" class="checkbox text-accent" name="3" [checked]="notifyMe" (change)="notifyMeChanged($event)">
-      {{'friend notify me' | translate}}
+    <div class="grid text-left md:px-32 px-5 py-0">
+      <span>
+        <input type="checkbox" class="checkbox text-accent" name="3" [checked]="notifyMe" (change)="notifyMeChanged($event)">
+        {{'friend notify me' | translate}}
+      </span>
+      <span>
+        <input type="checkbox" class="checkbox text-accent" name="3" [checked]="notifyWithTag" (change)="notifyWithTagChanged($event)">
+        {{'friend notify replacing' | translate}}
+      </span>
     </div>
     <div class="divider"></div>
     <div class="md:px-32 p-5 pt-0">

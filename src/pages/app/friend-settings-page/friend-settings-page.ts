@@ -28,6 +28,7 @@ export class FriendSettingsPage {
 
   protected readonly permissionLevel = signal<number | null>(null);
   protected readonly notifyMe = signal<boolean | null>(null);
+  protected readonly notifyWithTag = signal<boolean | null>(null);
 
   readonly privacy = signal<SimplePrivacyBucket[] | null>(null);
 
@@ -51,6 +52,7 @@ export class FriendSettingsPage {
         this.webService.getFriendSettings(id).then((settings: FriendSettings) => {
           this.permissionLevel.set(parseInt(settings.permissionLevel.toString()));
           this.notifyMe.set(settings.notifyMe);
+          this.notifyWithTag.set(settings.notifyWithTag);
         });
         this.loadPrivacy();
       } else {
@@ -59,6 +61,7 @@ export class FriendSettingsPage {
 
         this.permissionLevel.set(null);
         this.notifyMe.set(null);
+        this.notifyWithTag.set(null);
       }
     });
   }
@@ -99,9 +102,13 @@ export class FriendSettingsPage {
     const notifyMe = this.notifyMe();
     if (notifyMe === null) return;
 
+    const notifyWithTag = this.notifyWithTag();
+    if (notifyWithTag === null) return;
+
     const settings: FriendSettings = {
       permissionLevel: BigInt(permissionLevel),
       notifyMe,
+      notifyWithTag,
     };
     await this.webService.updateFriendSettings(id, settings);
     this.location.back();
@@ -124,6 +131,17 @@ export class FriendSettingsPage {
   protected notifyMeChanged(event: Event) {
     const input = event.target as HTMLInputElement;
     this.notifyMe.set(input.checked);
+    if (!input.checked) {
+      this.notifyWithTag.set(false);
+    }
+  }
+
+  protected notifyWithTagChanged(event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.notifyWithTag.set(input.checked);
+    if (input.checked) {
+      this.notifyMe.set(true);
+    }
   }
 
   protected async unfriend() {

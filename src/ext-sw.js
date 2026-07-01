@@ -8,13 +8,16 @@ importScripts('./ngsw-worker.js');
   self.addEventListener('push', (event) => {
     if (event.data) {
       const data = event.data.json();
+      const options = {
+        body: data.body,
+        icon: '/icons/icon192.png',
+        badge: '/icons/icon-transparent.png',
+      };
+      if (data.tag) {
+        options.tag = data.tag;
+      }
       event.waitUntil(
-        self.registration.showNotification(data.title, {
-          body: data.body,
-          tag: data.tag,
-          icon: '/icons/icon192.png',
-          badge: '/icons/icon-transparent.png',
-        })
+        self.registration.showNotification(data.title, options)
       );
     }
   });

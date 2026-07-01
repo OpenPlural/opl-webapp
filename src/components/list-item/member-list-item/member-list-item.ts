@@ -9,6 +9,7 @@ import { VerticalCenter } from '../../vertical-center/vertical-center';
 import { makeFrontEntry } from '../../../services/model/Front';
 import { SyncService } from '../../../services/SyncService';
 import { truncateCurrentDate } from '../../../util/DateTruncate';
+import {CurrentFrontNotifyService} from '../../../services/CurrentFrontNotifyService';
 
 @Component({
   selector: 'app-member-list-item',
@@ -16,6 +17,7 @@ import { truncateCurrentDate } from '../../../util/DateTruncate';
   templateUrl: './member-list-item.html',
 })
 export class MemberListItem {
+  private readonly currentFrontNotifyService = inject(CurrentFrontNotifyService);
   private readonly localStorageService = inject(LocalStorageService);
   private readonly syncService = inject(SyncService);
 
@@ -46,6 +48,7 @@ export class MemberListItem {
     } else {
       await this.localStorageService.addFrontEntry(makeFrontEntry(this.member().id));
     }
+    this.currentFrontNotifyService.triggerNotificationUpdate();
     this.syncService.fullSync();
   }
 }
