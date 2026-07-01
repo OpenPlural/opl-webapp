@@ -148,6 +148,7 @@
     "labels": {
       "empty": "No one is fronting right now.",
       "comment": "Custom status (e.g. Co-fronting)",
+      "current": "Aktuelle Fronter",
       "history": {
         "ongoing": "Current",
         "noMoreEntries": "No more history entries"
@@ -204,6 +205,7 @@
     "labels": {
       "code": "Friend Code",
       "notifyMe": "Get notifications as they change front",
+      "notifyReplacing": "Ältere Front-Benachrichtigungen ersetzen",
       "permissions": {
         "select": {
           "members": "They can see your shared members",
@@ -296,6 +298,10 @@
       "hideRootMembers": {
         "name": "Hide members from the root folder if they are part of a folder",
         "description": "When enabled, members who are in folders will not show up in the root folder"
+      },
+      "currentFrontNotify": {
+        "name": "Zeige eine permanente \"Aktuelle Fronter\" Benachrichtigung",
+        "description": "Wenn diese Option aktiviert ist, wird eine permanente Benachrichtigung zu den aktuellen Frontern angezeigt."
       }
     }
   },
