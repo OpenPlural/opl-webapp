@@ -1,0 +1,367 @@
+{
+  "app": {
+    "name": "Open Plural",
+    "loading": "Open Plural lädt, bitte warten…",
+    "language": "Wähle deine Sprache",
+    "version": "Version {version}"
+  },
+  "sync": {
+    "failed": "Synchronisation fehlgeschlagen",
+    "finished": "Erfolgreich synchronisiert",
+    "trigger": "Jetzt synchronisieren"
+  },
+  "error": {
+    "misrouted": "Die Ressource mit dieser ID konnte nicht gefunden werden."
+  },
+  "format": {
+    "time": {
+      "am": "AM",
+      "pm": "PM"
+    }
+  },
+  "actions": {
+    "goBack": "Zurück",
+    "close": "Schließen",
+    "cancel": "Abbrechen",
+    "delete": "Löschen",
+    "save": "Speichern",
+    "confirm": "Bestätigen",
+    "search": "Suchen",
+    "unhide": "Klicke zum Anzeigen",
+    "loadMore": "Mehr laden",
+    "copy": "In die Zwischenablage kopieren",
+    "selectAll": "Alle auswählen",
+    "changeAvatar": "Avatar ändern",
+    "selectColor": "Wähle deine Farbe",
+    "privacy": {
+      "load": "Privatsphäre-Buckets laden",
+      "change": "Privatsphäre-Buckets ändern"
+    },
+    "reorder": {
+      "start": "Beginne Umsortierung",
+      "stop": "Beende Umsortierung"
+    }
+  },
+  "confirm": {
+    "no": "Nein",
+    "yes": "Ja",
+    "yesCounted": "Ja ({count} / {total})"
+  },
+  "labels": {
+    "error": "Fehler",
+    "createdAt": "Erstellt am {date}"
+  },
+  "fields": {
+    "name": "Name",
+    "pronouns": "Pronomen",
+    "description": "Beschreibung",
+    "emoji": "Emoji",
+    "color": "Farbe",
+    "avatarUrl": "Avatar URL",
+    "info": "Info",
+    "language": "Sprache",
+    "creationDate": "Erstellungsdatum (auf Open Plural)",
+    "email": "E-Mail",
+    "username": "Nutzername",
+    "password": {
+      "password": "Passwort",
+      "old": "Altes Passwort",
+      "new": "Neues Passwort",
+      "confirm": "Passwort wiederholen"
+    }
+  },
+  "navigation": {
+    "dashboard": "Übersicht",
+    "members": "Mitglieder",
+    "profile": "Profil",
+    "messageBoard": "Messageboard",
+    "notes": "Notizen",
+    "fronters": "Fronter",
+    "customFront": "Benutzerdefinierte Front",
+    "frontHistory": "Frontverlauf",
+    "analytics": "Analysen",
+    "chat": "Chat",
+    "polls": "Umfragen",
+    "friends": "Freunde",
+    "friendRequests": "Freundschaftsanfragen",
+    "friendSettings": "Freundeeinstellungen",
+    "account": "Konto",
+    "privacyBuckets": "Privatsphäre-Buckets",
+    "customFields": "Benutzerdefinierte Felder",
+    "apiKeys": "API Schlüssel",
+    "sessions": "Sitzungen",
+    "accountSettings": "Kontoeinstellungen",
+    "options": "Optionen",
+    "dataImport": "Importieren",
+    "massDelete": "Massenlöschung",
+    "legal": "Legales",
+    "setup": "Einrichtung"
+  },
+  "folders": {
+    "actions": {
+      "create": "Ordner erstellen",
+      "edit": "Ordner bearbeiten",
+      "delete": "Ordner löschen",
+      "show": "Ordner einblenden",
+      "hide": "Ordner ausblenden",
+      "goToParent": "Zum übergeordneten Ordner",
+      "goToRoot": "Zum Stammordner"
+    },
+    "prompts": {
+      "changePrivacy": "Wähle Privatsphäre-Buckets für diesen Ordner",
+      "delete": "Willst du den Ordner {folderName} und dessen Unterordner wirklich löschen?"
+    },
+    "labels": {
+      "root": "Stamm",
+      "totalMembers": {
+        "header": "Anzahl der Mitglieder",
+        "value": "{count, plural, one {# member} other {# members}} and {archivedCount, plural, one {# archived member} other {# archived members}}"
+      }
+    }
+  },
+  "members": {
+    "actions": {
+      "create": "Mitglied erstellen",
+      "delete": "Mitglied löschen",
+      "changeFolders": "Ordnerzugehörigkeit ändern",
+      "editCustomFields": "Benutzerdefinierte Felder bearbeiten"
+    },
+    "prompts": {
+      "changePrivacy": "Wähle Privatsphäre-Buckets für dieses Mitglied",
+      "delete": "Willst du das Mitglied {memberName} wirklich löschen?"
+    },
+    "labels": {
+      "folders": "Ordner",
+      "archived": "Archiviert",
+      "options": {
+        "archived": {
+          "name": "Archiviert",
+          "description": "Archivierte Mitglieder werden nicht in der normalen Mitgliederliste angezeigt, außer bei Verwendung der Suchfunktion."
+        }
+      }
+    }
+  },
+  "front": {
+    "actions": {
+      "front": "Zur Front hinzufügen",
+      "unfront": "Von der Front entfernen"
+    },
+    "labels": {
+      "graphical": "Grafisch",
+      "textual": "Textuell",
+      "empty": "Aktuell frontet niemand.",
+      "comment": "Benutzerdefinierter Status (z.B. Co-fronting)",
+      "current": "Aktuelle Fronter",
+      "history": {
+        "ongoing": "Aktuell",
+        "noMoreEntries": "Keine weiteren Einträge"
+      }
+    }
+  },
+  "customFields": {
+    "actions": {
+      "create": "Benutzerdefiniertes Feld erstellen",
+      "delete": "Benutzerdefiniertes Feld löschen"
+    },
+    "prompts": {
+      "changePrivacy": "Wähle Privatsphäre-Buckets für dieses Feld",
+      "delete": "Willst du wirklich das Feld {fieldName} und dessen Werte löschen?"
+    },
+    "labels": {
+      "type": {
+        "type": "Typ",
+        "text": "Text",
+        "color": "Farbe",
+        "date": "Datum",
+        "time": "Uhrzeit",
+        "datetime": "Datum & Uhrzeit"
+      }
+    }
+  },
+  "privacyBuckets": {
+    "actions": {
+      "create": "Privatsphäre-Bucket erstellen",
+      "delete": "Privatsphäre-Bucket löschen"
+    },
+    "prompts": {
+      "delete": "Willst du den Privatsphäre-Bucket {bucketName} wirklich löschen?"
+    },
+    "labels": {
+      "assignedFriends": "{count, plural, one {1 Freund} other {# Freunden}} zugewiesen"
+    }
+  },
+  "friends": {
+    "actions": {
+      "changeCode": "Freunde-Code ändern",
+      "unfriend": "Freund entfernen",
+      "requests": {
+        "send": "Freundschaftanfrage senden",
+        "cancel": "Freundschaftanfrage zurückziehen",
+        "accept": "Freundschaftanfrage akzeptieren",
+        "decline": "Freundschaftanfrage ablehnen"
+      }
+    },
+    "prompts": {
+      "changePrivacy": "Wähle, welche Privatsphäre-Buckets dieser Freund sehen kann",
+      "unfriend": "Willst du {friendName} wirklich als Freund entfernen?"
+    },
+    "labels": {
+      "code": "Freunde-Code",
+      "notifyMe": "Erhalte Benachrichtigungen, wenn sich die Front ändert",
+      "notifyReplacing": "Ältere Front-Benachrichtigungen ersetzen",
+      "fronters": "Fronter",
+      "permissions": {
+        "select": {
+          "members": "Freund kann geteilte Mitglieder sehen",
+          "front": "Freund kann sehen, wer frontet",
+          "notify": "Freund kann Benachrichtigungen über Frontänderungen erhalten"
+        },
+        "denied": {
+          "members": "Du hast keine Berechtigung, die Mitglieder zu sehen",
+          "front": "Du hast keine Berechtigung, die Front zu sehen"
+        }
+      },
+      "requests": {
+        "incoming": "Eingehend",
+        "incomingCounted": "Eingehend ({count})",
+        "outgoing": "Ausgehend",
+        "outgoingCounted": "Eingehend ({count})"
+      }
+    }
+  },
+  "apiKeys": {
+    "actions": {
+      "create": "API Schlüssel erstellen",
+      "delete": "API Schlüssel löschen"
+    },
+    "labels": {
+      "title": "API Schlüssel",
+      "readOnly": "Darf nur lesen",
+      "writeDelete": "Darf schreiben und löschen",
+      "onlyOnce": "Du kannst diesen Schlüssel nur einmalig sehen"
+    }
+  },
+  "sessions": {
+    "actions": {
+      "invalidate": "Sitzung beenden"
+    },
+    "labels": {
+      "title": "Sitzungen",
+      "expired": "Deine Sitzung ist abgelaufen. Bitte melde dich erneut an.",
+      "lastUsage": "Zuletzt benutzt am {date}"
+    }
+  },
+  "account": {
+    "actions": {
+      "delete": "Konto löschen",
+      "changePassword": "Passwort ändern"
+    },
+    "prompts": {
+      "delete": "Willst du das Konto {accountName} und alle dessen Daten wirklich löschen?",
+      "error": {
+        "delete": "Konto konnte nicht gelöscht werden! Bitte überprüfe dein Passwort.",
+        "changePassword": "Passwort konnte nicht geändert werden! Bitte überprüfe dein altes Passwort."
+      }
+    },
+    "labels": {
+      "options": {
+        "system": {
+          "name": "Dieses Konto ist ein System",
+          "description": "Wenn diese Option deaktiviert ist, werden Funktionen wie Ordner, Mitglieder, Umfragen, usw. in der App versteckt. Die Daten werden nicht gelöscht und sind nach Aktivierung dieser Option wieder verfügbar."
+        }
+      }
+    }
+  },
+  "options": {
+    "actions": {
+      "requestNotificationPermissions": "Benachrichtigungsberechtigungen anfragen"
+    },
+    "titles": {
+      "general": "Allgemeine Einstellungen",
+      "group": "Gruppeneinstellungen",
+      "notification": "Benachrichtigungseinstellungen"
+    },
+    "labels": {
+      "defaultPage": "Standardseite",
+      "dateFormat": "Datumsformat",
+      "dateFormatExample": "Das Beispieldatum ist der 1. November 2024",
+      "timeFormat": "Uhrzeitformat",
+      "timeFormat12": "12 Stunden",
+      "timeFormat24": "24 Stunden",
+      "notificationsUnsupported": "Benachrichtigungen werden von diesem Browser nicht unterstützt",
+      "loadAvatars": {
+        "name": "Avatare laden",
+        "description": "Wenn diese Option aktiviert ist, siehst du die Avatare von Ordnern, Mitgliedern und Freunden"
+      },
+      "useNativeColorPicker": {
+        "name": "Nativen Farbwähler verwenden",
+        "description": "Wenn diese Option aktiviert ist, nutzt die App den nativen Farbwähler deines Systems"
+      },
+      "showSyncToast": {
+        "name": "Zeige Toast bei erfolgreicher Synchronisation",
+        "description": "Wenn diese Option aktiviert ist, wird eine Toast-Nachricht angezeigt, nachdem erfolgreich synchronisiert wurde"
+      },
+      "hideRootMembers": {
+        "name": "Mitglieder eines Ordners nicht im Stammordner anzeigen",
+        "description": "Wenn diese Option aktiviert ist, werden Mitglieder, die Teil eines Ordners sind, nicht mehr im Stammordner angezeigt"
+      },
+      "currentFrontNotify": {
+        "name": "Zeige eine permanente \"Aktuelle Fronter\" Benachrichtigung",
+        "description": "Wenn diese Option aktiviert ist, wird eine permanente Benachrichtigung zu den aktuellen Frontern angezeigt"
+      }
+    }
+  },
+  "setup": {
+    "actions": {
+      "continueWithoutEmail": "Ohne E-Mail fortfahren"
+    },
+    "labels": {
+      "email": {
+        "prompt": "Setze eine E-Mail-Adresse, damit du dein Passwort zurücksetzen kannst, wenn du es vergessen solltest.",
+        "identity": "Wenn du Support benötigst, verwenden wir die E-Mail, um zu verifizieren, dass das Konto wirklich dir gehört.",
+        "optional": "Wenn du ohne E-Mail fortfährst, kannst du dein Konto nicht wiederherstellen, solltest du ausgesperrt werden!"
+      }
+    }
+  },
+  "dataImport": {
+    "labels": {
+      "simplyPlural": "Von Simply Plural importieren",
+      "file": "Datei (.json)",
+      "flags": "Optionen",
+      "folders": "Ordner importieren",
+      "members": "Mitglieder importieren",
+      "customFront": "Benutzerdefinierte Front importieren",
+      "customFields": "Benutzerdefinierte Felder importieren",
+      "privacyBuckets": "Privatsphäre-Buckets importieren",
+      "truncate": "Alles kürzen, was zu lang ist"
+    }
+  },
+  "massDelete": {
+    "actions": {
+      "delete": "Ausgewählte löschen"
+    },
+    "prompts": {
+      "delete": "Willst du wirklich {folderCount} Ordner und {memberCount, plural, one {1 Mitglied} other {# Mitglieder}} löschen?"
+    }
+  },
+  "legal": {
+    "labels": {
+      "title": "Links zu offiziellen Dokumenten"
+    }
+  },
+  "auth": {
+    "actions": {
+      "login": "Anmelden",
+      "logout": "Abmelden",
+      "register": "Registrieren",
+      "registerInstead": "Neues Konto registrieren",
+      "loginInstead": "Ich habe bereits ein Konto"
+    },
+    "prompts": {
+      "logout": "Willst du dich wirklich abmelden? Alle lokalen Daten werden gelöscht!"
+    },
+    "labels": {
+      "system": "Als System registrieren"
+    }
+  }
+}

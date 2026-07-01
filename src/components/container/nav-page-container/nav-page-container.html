@@ -17,7 +17,7 @@
           }
           <div class="divider"></div>
           <button class="btn btn-ghost btn-md" (click)="openDialog('logoutPrompt')">
-            <span class="w-full text-left text-nowrap text-error">{{'logout' | translate}}</span>
+            <span class="w-full text-left text-nowrap text-error">{{'auth.actions.logout' | translate}}</span>
           </button>
         </ul>
       </div>
@@ -37,7 +37,7 @@
             <ng-content select=".search-options"></ng-content>
             <input type="search" class="grow input" (input)="search.emit($any($event).target.value)">
           }
-          <app-toggle-icon-button name="search" icon="fa-search" size="" [toggled]="searching" (toggle)="toggleSearch()"/>
+          <app-toggle-icon-button name="actions.search" icon="fa-search" size="" [toggled]="searching" (toggle)="toggleSearch()"/>
         } @else if (headerButtons) {
           <ng-content select=".header-buttons"></ng-content>
         }
@@ -54,6 +54,6 @@
     <ng-content select="i"></ng-content>
   </div>
 </app-page-container>
-<app-popup-confirm dialogId="logoutPrompt" title="logout" [confirmations]="3" (confirm)="logout()">
-  {{'logout prompt' | translate }}
+<app-popup-confirm dialogId="logoutPrompt" title="auth.actions.logout" [confirmations]="3" (confirm)="logout()">
+  {{'auth.prompts.logout' | translate }}
 </app-popup-confirm>

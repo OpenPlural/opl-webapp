@@ -1,11 +1,11 @@
 <label class="w-full label flex justify-between py-2">
   <app-vertical-center>
     @let name = this.name();
-    <span class="font-medium text-wrap text-neutral-content">{{name | translate}}</span>
-    <span class="font-light text-wrap">{{name + ' description' | translate}}</span>
+    <span class="font-medium text-wrap text-neutral-content">{{name + '.name' | translate}}</span>
+    <span class="font-light text-wrap">{{name + '.description' | translate}}</span>
   </app-vertical-center>
   <app-vertical-center>
     @let toggleStatus = this.toggleStatus();
-    <input type="checkbox" class="toggle" [class.text-success]="toggleStatus" name="archived" [checked]="toggleStatus" (change)="changeStatus()">
+    <input type="checkbox" class="toggle" [class.text-success]="toggleStatus" [checked]="toggleStatus" (change)="changeStatus()">
   </app-vertical-center>
 </label>

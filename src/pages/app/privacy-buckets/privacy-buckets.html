@@ -1,6 +1,6 @@
 <app-nav-page-container [fab]="true" [headerButtons]="true" (fabAction)="openDialog('bucketNamePrompt')">
   <app-vertical-center class="header-buttons">
-    <app-toggle-icon-button name="start reorder" toggledName="stop reorder" icon="fa-sort" [toggled]="reorder()" (toggle)="toggleReorder()" />
+    <app-toggle-icon-button name="actions.reorder.start" toggledName="actions.reorder.stop" icon="fa-sort" [toggled]="reorder()" (toggle)="toggleReorder()" />
   </app-vertical-center>
   <main>
     @let buckets = this.buckets();
@@ -19,4 +19,4 @@
   <i class="fa fa-plus"></i>
 </app-nav-page-container>
 
-<app-popup-input dialogId="bucketNamePrompt" title="create privacy bucket" label="name" (submitValue)="createBucket($event)" />
+<app-popup-input dialogId="bucketNamePrompt" title="privacyBuckets.actions.create" label="fields.name" (submitValue)="createBucket($event)" />

@@ -17,7 +17,7 @@
         @if (frontEntry.endedAt) {
           {{getDuration(frontEntry.startedAt, frontEntry.endedAt)}}
         } @else {
-          {{'front history entry ongoing' | translate}}
+          {{'front.labels.history.ongoing' | translate}}
         }
       </div>
       @if (frontEntry.comment) {
@@ -35,9 +35,9 @@
       <span class="loading loading-spinner"></span>
     }
     @if (canLoadMore) {
-      {{'load more' | translate}}
+      {{'actions.loadMore' | translate}}
     } @else {
-      {{'no more front history entries' | translate}}
+      {{'front.labels.history.noMoreEntries' | translate}}
     }
   </button>
 } @else {

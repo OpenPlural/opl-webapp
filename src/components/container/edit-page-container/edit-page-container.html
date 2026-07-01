@@ -2,7 +2,7 @@
   <header class="h-full flex justify-between">
     <div class="flex justify-start">
       <app-vertical-center>
-        <app-icon-button name="save" icon="fa-floppy-o" buttonClass="btn-success" (action)="save.emit()" />
+        <app-icon-button name="actions.save" icon="fa-floppy-o" buttonClass="btn-success" (action)="save.emit()" />
       </app-vertical-center>
       <app-vertical-center>
         {{title()}}
@@ -10,10 +10,10 @@
     </div>
     <div class="flex justify-end">
       <app-vertical-center>
-        <app-icon-button name="delete" icon="fa-trash" size="fa-lg" buttonClass="btn-error" (action)="delete.emit()" />
+        <app-icon-button name="actions.delete" icon="fa-trash" size="fa-lg" buttonClass="btn-error" (action)="delete.emit()" />
       </app-vertical-center>
       <app-vertical-center>
-        <app-icon-button name="cancel" icon="fa-times" size="fa-lg" (action)="goBack()" />
+        <app-icon-button name="actions.cancel" icon="fa-times" size="fa-lg" (action)="goBack()" />
       </app-vertical-center>
     </div>
   </header>

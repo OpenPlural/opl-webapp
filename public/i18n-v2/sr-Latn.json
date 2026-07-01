@@ -1,0 +1,367 @@
+{
+  "app": {
+    "name": "Open Plural",
+    "loading": "Open Plural se učitava, molim Vas da čekajte…",
+    "language": "Izaberite svoj jezik",
+    "version": "Verzija {version}"
+  },
+  "sync": {
+    "failed": "Sinhronizacija nije uspela",
+    "finished": "Uspešno sinhronizovano",
+    "trigger": "Sinhronizuj"
+  },
+  "error": {
+    "misrouted": "Resurs sa ovim ID-om nije pronađen."
+  },
+  "format": {
+    "time": {
+      "am": "AM",
+      "pm": "PM"
+    }
+  },
+  "actions": {
+    "goBack": "Nazad",
+    "close": "Zatvori",
+    "cancel": "Otkaži",
+    "delete": "Izbriši",
+    "save": "Spremi",
+    "confirm": "Potvrdi",
+    "search": "Traži",
+    "unhide": "Kliknite da vidite",
+    "loadMore": "Učitaj više",
+    "copy": "Kopiraj u međuspremnik",
+    "selectAll": "Izaberi sve",
+    "changeAvatar": "Promeni avatara",
+    "selectColor": "Izaberite svoju boju",
+    "privacy": {
+      "load": "Učitaj kante za privatnost",
+      "change": "Promeni kante za privatnost"
+    },
+    "reorder": {
+      "start": "Počni preurediti",
+      "stop": "Zaustavi preurediti"
+    }
+  },
+  "confirm": {
+    "no": "Ne",
+    "yes": "Da",
+    "yesCounted": "Da ({count} / {total})"
+  },
+  "labels": {
+    "error": "Greška",
+    "createdAt": "Kreirano u {date}"
+  },
+  "fields": {
+    "name": "Ime",
+    "pronouns": "Zamenice",
+    "description": "Opis",
+    "emoji": "Emotikon",
+    "color": "Boja",
+    "avatarUrl": "URL avatara",
+    "info": "Info",
+    "language": "Jezik",
+    "creationDate": "Datum kreiranja (na Open Plural)",
+    "email": "Email",
+    "username": "Korisničko ime",
+    "password": {
+      "password": "Šifra",
+      "old": "Stara šifra",
+      "new": "Nova šifra",
+      "confirm": "Ponovite šifru"
+    }
+  },
+  "navigation": {
+    "dashboard": "Glavna stranica",
+    "members": "Članovi",
+    "profile": "Profil",
+    "messageBoard": "Ploča za poruke",
+    "notes": "Beleške",
+    "fronters": "Fronteri",
+    "customFront": "Prilagođen front",
+    "frontHistory": "Istorija fronta",
+    "analytics": "Analitika",
+    "chat": "Razgovor",
+    "polls": "Ankete",
+    "friends": "Prijatelji",
+    "friendRequests": "Zahtevi za prijateljstvo",
+    "friendSettings": "Podešavanja za prijatelja",
+    "account": "Nalog",
+    "privacyBuckets": "Kante za privatnost",
+    "customFields": "Prilagođena polja",
+    "apiKeys": "API Ključevi",
+    "sessions": "Sesije",
+    "accountSettings": "Podešavanja za nalog",
+    "options": "Opcije",
+    "dataImport": "Uvoz",
+    "massDelete": "Masovno brisanje",
+    "legal": "Pravno",
+    "setup": "Podešavanje"
+  },
+  "folders": {
+    "actions": {
+      "create": "Kreiraj fasciklu",
+      "edit": "Uredi fasciklu",
+      "delete": "Izbriši fasciklu",
+      "show": "Pokaži fascikle",
+      "hide": "Sakrij fascikle",
+      "goToParent": "Idi u nadređenu fasciklu",
+      "goToRoot": "Idi u koren"
+    },
+    "prompts": {
+      "changePrivacy": "Izaberite kante za ovu fasciklu",
+      "delete": "Da li zaista želite da izbrišete fasciklu {folderName} i njezine potfascikle?"
+    },
+    "labels": {
+      "root": "Koren",
+      "totalMembers": {
+        "header": "Broj članova",
+        "value": "{count, plural, one {# član} few {# člana} other {# članova}} i {archivedCount, plural, one {# arhiviran član} few {# arhivirana člana} other {# arhiviranih članova}}"
+      }
+    }
+  },
+  "members": {
+    "actions": {
+      "create": "Kreiraj člana",
+      "delete": "Izbriši člana",
+      "changeFolders": "Promeni fascikle",
+      "editCustomFields": "Uredi prilagođena polja"
+    },
+    "prompts": {
+      "changePrivacy": "Izaberite kante za ovog člana",
+      "delete": "Da li zaista želite da izbrišete člana {memberName}?"
+    },
+    "labels": {
+      "folders": "Fascikle",
+      "archived": "Arhiviran",
+      "options": {
+        "archived": {
+          "name": "Arhiviran",
+          "description": "Ne videte arhivirane članove u normalnoj listi članova, osim kada ih tražite"
+        }
+      }
+    }
+  },
+  "front": {
+    "actions": {
+      "front": "Dodaj na front",
+      "unfront": "Ukloni sa fronta"
+    },
+    "labels": {
+      "empty": "Trenutno niko nije na frontu.",
+      "comment": "Prilagođen status (npr. Co-fronting)",
+      "current": "Aktuelni fronteri",
+      "history": {
+        "graphical": "Grafičko",
+        "textual": "Tekstualno",
+        "ongoing": "Aktuelno",
+        "noMoreEntries": "Nema više unosa u istoriji"
+      }
+    }
+  },
+  "customFields": {
+    "actions": {
+      "create": "Kreiraj prilagođeno polje",
+      "delete": "Izbriši prilagođeno polje"
+    },
+    "prompts": {
+      "changePrivacy": "Izaberite kante za ovo polje",
+      "delete": "Da li zaista želite da izbrišete polje {fieldName} i njegove vrednosti?"
+    },
+    "labels": {
+      "type": {
+        "type": "Vrsta",
+        "text": "Tekst",
+        "color": "Boja",
+        "date": "Datum",
+        "time": "Doba dana",
+        "datetime": "Datum & Doba dana"
+      }
+    }
+  },
+  "privacyBuckets": {
+    "actions": {
+      "create": "Kreiraj kantu za privatnost",
+      "delete": "Izbriši kantu za privatnost"
+    },
+    "prompts": {
+      "delete": "Da li zaista želite da izbrišete kantu {bucketName}?"
+    },
+    "labels": {
+      "assignedFriends": "Dodeljeno {count, plural, one {# prijatelju} other {# prijateljima}}"
+    }
+  },
+  "friends": {
+    "actions": {
+      "changeCode": "Promeni kod prijateljstva",
+      "unfriend": "Ukloni prijatelja",
+      "requests": {
+        "send": "Pošalji zahtev za prijateljstvo",
+        "cancel": "Otkaži zahtev za prijateljstvo",
+        "accept": "Prihvati zahtev za prijateljstvo",
+        "decline": "Odbijaj zahtev za prijateljstvo"
+      }
+    },
+    "prompts": {
+      "changePrivacy": "Izaberite koje kante ovi prijatelj može da vidi",
+      "unfriend": "Da li zaista želite da ukloni prijatelja {friendName}?"
+    },
+    "labels": {
+      "code": "Kod prijateljstva",
+      "notifyMe": "Dobijajte obavesti čim se promene fronteri",
+      "notifyReplacing": "Zameni starije obavesti o frontu",
+      "fronters": "Fronteri",
+      "permissions": {
+        "select": {
+          "members": "Mogu da vide Vaše deljene članove",
+          "front": "Mogu da vide ko je na frontu",
+          "notify": "Mogu da primaju obavesti o promenama na frontu"
+        },
+        "denied": {
+          "members": "Nemate dozvolu da vidite članove",
+          "front": "Nemate dozvolu da vidite front"
+        }
+      },
+      "requests": {
+        "incoming": "Dolazni",
+        "incomingCounted": "Dolazni ({count})",
+        "outgoing": "Odlazni",
+        "outgoingCounted": "Odlazni ({count})"
+      }
+    }
+  },
+  "apiKeys": {
+    "actions": {
+      "create": "Kreiraj API ključ",
+      "delete": "Izbriši API ključ"
+    },
+    "labels": {
+      "title": "API Ključevi",
+      "readOnly": "Samo sme da čita",
+      "writeDelete": "Sme da piše i izbriše",
+      "onlyOnce": "Ključ možete videti samo jednom"
+    }
+  },
+  "sessions": {
+    "actions": {
+      "invalidate": "Poništi sesiju"
+    },
+    "labels": {
+      "title": "Sesije",
+      "expired": "Sesija je istekla. Molim Vas da se ponovo prijavite.",
+      "lastUsage": "Zadnje korišćeno u {date}"
+    }
+  },
+  "account": {
+    "actions": {
+      "delete": "Izbriši nalog",
+      "changePassword": "Promena šifre"
+    },
+    "prompts": {
+      "delete": "Da li zaista želite da izbrišete nalog {accountName} i sve njegove podatke?",
+      "error": {
+        "delete": "Nalog nije izbrisan! Molim Vas da proverite da li je Vaša šifra ispravna.",
+        "changePassword": "Šifra nije promenjena! Molim Vas da proverite da li je Vaša stara šifra ispravna."
+      }
+    },
+    "labels": {
+      "options": {
+        "system": {
+          "name": "Ovaj nalog je sistem",
+          "description": "Kada nije aktivirano, fascikle, članovi, ankete, itd. su kriveni u aplikaciji. Vaši podaci će se vratiti kada ovo ponovo aktivišete."
+        }
+      }
+    }
+  },
+  "options": {
+    "actions": {
+      "requestNotificationPermissions": "Zahtevaj dozvole za obavesti"
+    },
+    "titles": {
+      "general": "Opšta podešavanja",
+      "group": "Podešavanja grupe",
+      "notification": "Podešavanja obavesti"
+    },
+    "labels": {
+      "defaultPage": "Zadana stranica",
+      "dateFormat": "Format datuma",
+      "dateFormatExample": "Primer datuma je 1. novembar 2024",
+      "timeFormat": "Format vremena",
+      "timeFormat12": "12 sata",
+      "timeFormat24": "24 sata",
+      "notificationsUnsupported": "Ovaj pregledač ne podržava obavesti",
+      "loadAvatars": {
+        "name": "Učitaj avatare",
+        "description": "Kada je aktivirano, moći ćete da videte avatare fascikla, članova i prijatelja"
+      },
+      "useNativeColorPicker": {
+        "name": "Koristi nativni odabirač boja",
+        "description": "Kada je aktivirano, aplikacija koristi odabirač boja Vašog sistema"
+      },
+      "showSyncToast": {
+        "name": "Prikaži tost-obavest nakon uspešne sinhronizacije",
+        "description": "Kada je aktivirano, videćete tost-obavest o uspešnim sinhronizacijama"
+      },
+      "hideRootMembers": {
+        "name": "Sakrij članove iz korena ako su deo fascikle",
+        "description": "Kada je aktivirano, članovi koji se nalaze u bilo kojoj fascikli se ne pojavljuju u korenu"
+      },
+      "currentFrontNotify": {
+        "name": "Prikaži stalnu obavest o aktuelnim frontom",
+        "description": "Kada je aktivirano, videćete stalnu obavest sa Vašim aktuelnim fronterima"
+      }
+    }
+  },
+  "setup": {
+    "actions": {
+      "continueWithoutEmail": "Nastavi bez email-a"
+    },
+    "labels": {
+      "email": {
+        "prompt": "Postavite email adresu da biste mogli da resetujete šifru ako je zaboravite.",
+        "identity": "Kada Vam treba podrška, koristimo Vašu email da bismo potvrdili da ste Vi vlasnik ovog naloga.",
+        "optional": "Ako nastavite bez email-a, nećete moći da povratite pristup nalogu ako ne možete da se prijavite!"
+      }
+    }
+  },
+  "dataImport": {
+    "labels": {
+      "simplyPlural": "Uvezi iz Simply Plural",
+      "file": "Fajl (.json)",
+      "flags": "Opcije",
+      "folders": "Uvezi fascikle",
+      "members": "Uvezi članove",
+      "customFront": "Uvezi prilagođen front",
+      "customFields": "Uvezi prilagođena polja",
+      "privacyBuckets": "Uvezi kante za privatnost",
+      "truncate": "Skrati sve što je predugo"
+    }
+  },
+  "massDelete": {
+    "actions": {
+      "delete": "Izbriši izabrano"
+    },
+    "prompts": {
+      "delete": "Da li zaista želite da izbrišete {folderCount, plural, one {# fasciklu} few {# fascikle} other {# fascikla}} i {memberCount, plural, one {# član} few {# člana} other {# članova}}?"
+    }
+  },
+  "legal": {
+    "labels": {
+      "title": "Linkovi na pravne dokumente"
+    }
+  },
+  "auth": {
+    "actions": {
+      "login": "Prijava",
+      "logout": "Odjava",
+      "register": "Registruj me",
+      "registerInstead": "Napravite novi nalog",
+      "loginInstead": "Već imam nalog"
+    },
+    "prompts": {
+      "logout": "Da li zaista želite da se odjavite? Ovo će obrisati sve lokalne podatke!"
+    },
+    "labels": {
+      "system": "Registruj me kao sistem"
+    }
+  }
+}

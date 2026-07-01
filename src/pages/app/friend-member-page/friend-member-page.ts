@@ -52,7 +52,7 @@ export class FriendMemberPage {
   protected readonly member = signal<Member | null>(null);
   protected readonly folders = signal<Folder[] | null>(null);
   protected readonly customFields = signal<ViewedCustomFieldDataValue[] | null>(null);
-  protected readonly selectedTab = signal<'profile' | 'custom fields'>('profile');
+  protected readonly selectedTab = signal<'profile' | 'customFields'>('profile');
 
   constructor() {
     effect(() => {
@@ -71,7 +71,7 @@ export class FriendMemberPage {
   }
 
   protected async showCustomFields() {
-    this.selectedTab.set('custom fields');
+    this.selectedTab.set('customFields');
 
     const userId = this.userId();
     const memberId = this.memberId();

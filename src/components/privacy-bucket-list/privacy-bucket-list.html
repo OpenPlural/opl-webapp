@@ -16,7 +16,7 @@
 </ul>
 <button class="w-full btn btn-soft" (click)="change.set(true)">
   <i class="fa fa-shield fa-lg"></i>
-  {{'change privacy' | translate}}
+  {{'actions.privacy.change' | translate}}
 </button>
 @if (change()) {
   <app-privacy-bucket-selector dialogId="privacySelector" [title]="title()" [selection]="bucketIds()" (submitSelection)="submit($event)" (forceClose)="change.set(false)" />

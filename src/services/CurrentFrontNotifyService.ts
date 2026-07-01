@@ -10,7 +10,7 @@ export class CurrentFrontNotifyService {
   private readonly localStorageService = inject(LocalStorageService);
   private readonly settingsService = inject(SettingsService);
 
-  private readonly currentFront = toSignal<string>(this.translate.getStreamOnTranslationChange('current front'), {
+  private readonly currentFront = toSignal<string>(this.translate.getStreamOnTranslationChange('front.labels.current'), {
     initialValue: null,
   });
 

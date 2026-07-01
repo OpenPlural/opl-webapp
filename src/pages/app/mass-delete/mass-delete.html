@@ -3,13 +3,13 @@
     <div class="mx-2">
       <button class="btn btn-error my-2 w-full" (click)="openDialog('massDeletePrompt')">
         <i class="fa fa-trash"></i>
-        {{'mass delete selected' | translate}}
+        {{'massDelete.actions.delete' | translate}}
       </button>
     </div>
     <div class="mr-6">
       <label class="w-full label">
         <span class="grow"></span>
-        {{'select all' | translate}}
+        {{'actions.selectAll' | translate}}
         <input type="checkbox" class="checkbox" name="write" (change)="toggleSelectAll($event)">
       </label>
     </div>
@@ -22,6 +22,6 @@
     }
   </main>
 </app-nav-page-container>
-<app-popup-confirm dialogId="massDeletePrompt" title="mass delete" (confirm)="deleteSelected()">
-  {{'mass delete selected prompt' | translate:{ folderCount: selectedFolderCount(), memberCount: selectedMemberCount() } }}
+<app-popup-confirm dialogId="massDeletePrompt" title="massDelete.actions.delete" (confirm)="deleteSelected()">
+  {{'massDelete.prompts.delete' | translate:{ folderCount: selectedFolderCount(), memberCount: selectedMemberCount() } }}
 </app-popup-confirm>

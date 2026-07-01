@@ -1,0 +1,367 @@
+{
+  "app": {
+    "name": "Open Plural",
+    "loading": "Open Plural is loading, please wait…",
+    "language": "Choose your language",
+    "version": "Version {version}"
+  },
+  "sync": {
+    "failed": "Failed to sync with the server",
+    "finished": "Successfully synced with the server",
+    "trigger": "Sync now"
+  },
+  "error": {
+    "misrouted": "The resource with this ID could not be found."
+  },
+  "format": {
+    "time": {
+      "am": "AM",
+      "pm": "PM"
+    }
+  },
+  "actions": {
+    "goBack": "Go back",
+    "close": "Close",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "save": "Save",
+    "confirm": "Confirm",
+    "search": "Search",
+    "unhide": "Click to show",
+    "loadMore": "Load more",
+    "copy": "Copy to clipboard",
+    "selectAll": "Select all",
+    "changeAvatar": "Change avatar",
+    "selectColor": "Select your color",
+    "privacy": {
+      "load": "Load privacy buckets",
+      "change": "Change privacy buckets"
+    },
+    "reorder": {
+      "start": "Start reordering",
+      "stop": "Stop reordering"
+    }
+  },
+  "confirm": {
+    "no": "No",
+    "yes": "Yes",
+    "yesCounted": "Yes ({count} / {total})"
+  },
+  "labels": {
+    "error": "Error",
+    "createdAt": "Created at {date}"
+  },
+  "fields": {
+    "name": "Name",
+    "pronouns": "Pronouns",
+    "description": "Description",
+    "emoji": "Emoji",
+    "color": "Color",
+    "avatarUrl": "Avatar URL",
+    "info": "Info",
+    "language": "Language",
+    "creationDate": "Creation date (on Open Plural)",
+    "email": "Email",
+    "username": "Username",
+    "password": {
+      "password": "Password",
+      "old": "Old Password",
+      "new": "New Password",
+      "confirm": "Confirm Password"
+    }
+  },
+  "navigation": {
+    "dashboard": "Dashboard",
+    "members": "Members",
+    "profile": "Profile",
+    "messageBoard": "Message Board",
+    "notes": "Notes",
+    "fronters": "Fronters",
+    "customFront": "Custom front",
+    "frontHistory": "Front History",
+    "analytics": "Analytics",
+    "chat": "Chat",
+    "polls": "Polls",
+    "friends": "Friends",
+    "friendRequests": "Friend Requests",
+    "friendSettings": "Friend Settings",
+    "account": "Account",
+    "privacyBuckets": "Privacy Buckets",
+    "customFields": "Custom Fields",
+    "apiKeys": "API Keys",
+    "sessions": "Sessions",
+    "accountSettings": "Account Settings",
+    "options": "Options",
+    "dataImport": "Import",
+    "massDelete": "Mass delete",
+    "legal": "Legal",
+    "setup": "Setup"
+  },
+  "folders": {
+    "actions": {
+      "create": "Create folder",
+      "edit": "Edit folder",
+      "delete": "Delete folder",
+      "show": "Show folders",
+      "hide": "Hide folders",
+      "goToParent": "Go to parent folder",
+      "goToRoot": "Go to root folder"
+    },
+    "prompts": {
+      "changePrivacy": "Select privacy buckets for this folder",
+      "delete": "Do you really want to delete the folder {folderName} and its subfolders?"
+    },
+    "labels": {
+      "root": "Root",
+      "totalMembers": {
+        "header": "Member count",
+        "value": "{count, plural, one {# member} other {# members}} and {archivedCount, plural, one {# archived member} other {# archived members}}"
+      }
+    }
+  },
+  "members": {
+    "actions": {
+      "create": "Create member",
+      "delete": "Delete member",
+      "changeFolders": "Change folders",
+      "editCustomFields": "Edit custom fields"
+    },
+    "prompts": {
+      "changePrivacy": "Select privacy buckets for this member",
+      "delete": "Do you really want to delete the member {memberName}?"
+    },
+    "labels": {
+      "folders": "Folders",
+      "archived": "Archived",
+      "options": {
+        "archived": {
+          "name": "Archived",
+          "description": "Marking a member as archived will hide them from the normal member list unless you use the search tool"
+        }
+      }
+    }
+  },
+  "front": {
+    "actions": {
+      "front": "Add to front",
+      "unfront": "Remove from front"
+    },
+    "labels": {
+      "empty": "No one is fronting right now.",
+      "comment": "Custom status (e.g. Co-fronting)",
+      "current": "Current fronters",
+      "history": {
+        "graphical": "Graphical",
+        "textual": "Textual",
+        "ongoing": "Current",
+        "noMoreEntries": "No more history entries"
+      }
+    }
+  },
+  "customFields": {
+    "actions": {
+      "create": "Create custom field",
+      "delete": "Delete custom field"
+    },
+    "prompts": {
+      "changePrivacy": "Select privacy buckets for this custom field",
+      "delete": "Do you really want to delete the custom field {fieldName} and its values?"
+    },
+    "labels": {
+      "type": {
+        "type": "Type",
+        "text": "Text",
+        "color": "Color",
+        "date": "Date",
+        "time": "Time",
+        "datetime": "Date & Time"
+      }
+    }
+  },
+  "privacyBuckets": {
+    "actions": {
+      "create": "Create privacy bucket",
+      "delete": "Delete privacy bucket"
+    },
+    "prompts": {
+      "delete": "Do you really want to delete the privacy bucket {bucketName}?"
+    },
+    "labels": {
+      "assignedFriends": "Assigned to {count, plural, one {# friend} other {# friends}}"
+    }
+  },
+  "friends": {
+    "actions": {
+      "changeCode": "Change friend code",
+      "unfriend": "Unfriend",
+      "requests": {
+        "send": "Send friend request",
+        "cancel": "Cancel friend request",
+        "accept": "Accept friend request",
+        "decline": "Reject friend request"
+      }
+    },
+    "prompts": {
+      "changePrivacy": "Select which privacy buckets this friend can see",
+      "unfriend": "Do you really want to unfriend {friendName}?"
+    },
+    "labels": {
+      "code": "Friend Code",
+      "notifyMe": "Get notifications as they change front",
+      "notifyReplacing": "Replace older front notifications",
+      "fronters": "Fronters",
+      "permissions": {
+        "select": {
+          "members": "They can see your shared members",
+          "front": "They can see who is fronting",
+          "notify": "They can receive notifications about front changes"
+        },
+        "denied": {
+          "members": "You don't have permission to view members",
+          "front": "You don't have permission to view front"
+        }
+      },
+      "requests": {
+        "incoming": "Incoming",
+        "incomingCounted": "Incoming ({count})",
+        "outgoing": "Outgoing",
+        "outgoingCounted": "Outgoing ({count})"
+      }
+    }
+  },
+  "apiKeys": {
+    "actions": {
+      "create": "Create API key",
+      "delete": "Delete API key"
+    },
+    "labels": {
+      "title": "API Keys",
+      "readOnly": "May only read",
+      "writeDelete": "May write and delete",
+      "onlyOnce": "You can only see this key once"
+    }
+  },
+  "sessions": {
+    "actions": {
+      "invalidate": "Invalidate session"
+    },
+    "labels": {
+      "title": "Sessions",
+      "expired": "Session has expired. Please log in again.",
+      "lastUsage": "Last used at {date}"
+    }
+  },
+  "account": {
+    "actions": {
+      "delete": "Delete Account",
+      "changePassword": "Change Password"
+    },
+    "prompts": {
+      "delete": "Do you really want to delete the account {accountName} and all its data?",
+      "error": {
+        "delete": "Failed to delete account! Please check whether your password was correct.",
+        "changePassword": "Failed to change password! Please check whether your old password was correct."
+      }
+    },
+    "labels": {
+      "options": {
+        "system": {
+          "name": "This account is a system",
+          "description": "When unchecked, folders, members, polls, etc. will be hidden in the app. Your data can be restored by turning this back on."
+        }
+      }
+    }
+  },
+  "options": {
+    "actions": {
+      "requestNotificationPermissions": "Request notification permissions"
+    },
+    "titles": {
+      "general": "General Settings",
+      "group": "Group Settings",
+      "notification": "Notification Settings"
+    },
+    "labels": {
+      "defaultPage": "Default Page",
+      "dateFormat": "Date Format",
+      "dateFormatExample": "The example date is the 1st of November 2024",
+      "timeFormat": "Time Format",
+      "timeFormat12": "12 hours",
+      "timeFormat24": "24 hours",
+      "notificationsUnsupported": "Notifications are not supported by this browser",
+      "loadAvatars": {
+        "name": "Load Avatars",
+        "description": "When enabled, you will be able to see avatars of folders, members and friends"
+      },
+      "useNativeColorPicker": {
+        "name": "Use native color picker",
+        "description": "When enabled, the app will use your system's native color picker instead of the built-in one"
+      },
+      "showSyncToast": {
+        "name": "Show toast on successful sync",
+        "description": "When enabled, a toast will pop up when a sync has finished successfully"
+      },
+      "hideRootMembers": {
+        "name": "Hide members from the root folder if they are part of a folder",
+        "description": "When enabled, members who are in folders will not show up in the root folder"
+      },
+      "currentFrontNotify": {
+        "name": "Show a permanent \"Current fronters\" notification",
+        "description": "When enabled, you will see a permanent notification with your current fronters"
+      }
+    }
+  },
+  "setup": {
+    "actions": {
+      "continueWithoutEmail": "Continue without email"
+    },
+    "labels": {
+      "email": {
+        "prompt": "Set an email address to be able to reset your password in case you forget it.",
+        "identity": "When you ask for support, we will use your email to verify that you own this account.",
+        "optional": "If you continue without an email, you won't be able to recover your account if you get locked out!"
+      }
+    }
+  },
+  "dataImport": {
+    "labels": {
+      "simplyPlural": "Import from Simply Plural",
+      "file": "File (.json)",
+      "flags": "Options",
+      "folders": "Import folders",
+      "members": "Import members",
+      "customFront": "Import custom front",
+      "customFields": "Import custom fields",
+      "privacyBuckets": "Import privacy buckets",
+      "truncate": "Truncate everything that is too long"
+    }
+  },
+  "massDelete": {
+    "actions": {
+      "delete": "Delete selected"
+    },
+    "prompts": {
+      "delete": "Do you really want to delete {folderCount, plural, one {# folder} other {# folders}} and {memberCount, plural, one {# member} other {# members}}?"
+    }
+  },
+  "legal": {
+    "labels": {
+      "title": "Links to legal documents"
+    }
+  },
+  "auth": {
+    "actions": {
+      "login": "Login",
+      "logout": "Logout",
+      "register": "Register",
+      "registerInstead": "Register instead",
+      "loginInstead": "I already have an account"
+    },
+    "prompts": {
+      "logout": "Do you really want to log out? This will delete all local data!"
+    },
+    "labels": {
+      "system": "Register as a system"
+    }
+  }
+}

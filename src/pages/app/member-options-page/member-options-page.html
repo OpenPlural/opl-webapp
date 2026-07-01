@@ -1,16 +1,16 @@
 @let member = this.member();
-<app-toggle-setting name="archived" [toggled]="member.archived" (toggle)="updateArchived.emit($event)" />
+<app-toggle-setting name="members.labels.options.archived" [toggled]="member.archived" (toggle)="updateArchived.emit($event)" />
 @if (member.remoteId) {
   <div class="divider"></div>
   <div class="p-5 pt-0">
     @let privacy = this.privacy();
     @if (privacy) {
-      <app-privacy-bucket-list title="change member privacy" [buckets]="privacy" (submitSelection)="updatePrivacy($event)" />
+      <app-privacy-bucket-list title="members.prompts.changePrivacy" [buckets]="privacy" (submitSelection)="updatePrivacy($event)" />
     } @else {
       <div class="text-center">
         @let loading = this.loadingPrivacy();
         <button type="button" class="btn btn-soft" [class.btn-disabled]="loading" (click)="loadPrivacy()">
-          {{'load privacy' | translate}}
+          {{'actions.privacy.load' | translate}}
           @if (loading) {
             <span class="loading loading-spinner"></span>
           }
@@ -20,16 +20,16 @@
   </div>
 }
 
-<div class="divider">{{'info' | translate}}</div>
+<div class="divider">{{'fields.info' | translate}}</div>
 <div class="text-center">
-  <span class="font-bold">{{'member creation date' | translate}}</span>
+  <span class="font-bold">{{'fields.creationDate' | translate}}</span>
   <div class="mt-2">
     @if (showCreationDate()) {
       <span>{{memberCreationDate()}}</span>
     } @else {
       <button class="btn btn-soft" (click)="showCreationDate.set(true)">
         <i class="fa fa-eye"></i>
-        {{'unhide' | translate}}
+        {{'actions.unhide' | translate}}
       </button>
     }
   </div>

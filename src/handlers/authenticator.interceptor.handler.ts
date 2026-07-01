@@ -20,7 +20,7 @@ export function authenticatedInterceptor(req: HttpRequest<unknown>, next: HttpHa
     catchError(error => {
       if (error.status === 401 && !req.url.endsWith('/auth/delete-account') && !req.url.endsWith('/auth/change-password')) {
         if (router.url !== '/auth/login') {
-          const sessionExpiredMessage = translate.instant('session expired');
+          const sessionExpiredMessage = translate.instant('sessions.labels.expired');
           toastService.sendToast(sessionExpiredMessage, "alert-warning");
 
           accountService.logout();

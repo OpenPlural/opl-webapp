@@ -3,7 +3,7 @@
     @if (syncRunning()) {
       <span class="loading loading-spinner loading-xl"></span>
     } @else if (syncPending()) {
-      <app-icon-button name="sync now" icon="fa-cloud-upload" buttonClass="btn-danger" (action)="sync()" />
+      <app-icon-button name="sync.trigger" icon="fa-cloud-upload" buttonClass="btn-danger" (action)="sync()" />
     }
   </app-vertical-center>
   <main>
@@ -17,29 +17,29 @@
     <div class="divider m-0"></div>
     <div class="w-full p-2 grid dynamic-grid gap-1">
       @if (system) {
-        <app-dashboard-button name="members" icon="fa-users" link="members" />
-        <app-dashboard-button name="front history" icon="fa-history" link="front-history" />
-        <app-dashboard-button name="analytics" icon="fa-bar-chart" link="analytics" [disabled]="true" />
-        <app-dashboard-button name="chat" icon="fa-commenting" link="chat" [disabled]="true" />
-        <app-dashboard-button name="polls" icon="fa-check-square-o" link="polls" [disabled]="true" />
+        <app-dashboard-button name="navigation.members" icon="fa-users" link="members" />
+        <app-dashboard-button name="navigation.frontHistory" icon="fa-history" link="front-history" />
+        <app-dashboard-button name="navigation.analytics" icon="fa-bar-chart" link="analytics" [disabled]="true" />
+        <app-dashboard-button name="navigation.chat" icon="fa-commenting" link="chat" [disabled]="true" />
+        <app-dashboard-button name="navigation.polls" icon="fa-check-square-o" link="polls" [disabled]="true" />
       }
-      <app-dashboard-button name="friends" icon="fa-address-book" link="friends" />
+      <app-dashboard-button name="navigation.friends" icon="fa-address-book" link="friends" />
       @if (system) {
-        <app-dashboard-button name="privacy buckets" icon="fa-shield" link="privacy-buckets" />
-        <app-dashboard-button name="custom fields" icon="fa-list-ul" link="custom-fields" />
+        <app-dashboard-button name="navigation.privacyBuckets" icon="fa-shield" link="privacy-buckets" />
+        <app-dashboard-button name="navigation.customFields" icon="fa-list-ul" link="custom-fields" />
       }
-      <app-dashboard-button name="api keys" icon="fa-key" link="api-keys" />
-      <app-dashboard-button name="sessions" icon="fa-laptop" link="sessions" />
-      <app-dashboard-button name="account settings" icon="fa-cog" link="account-settings" />
-      <app-dashboard-button name="options" icon="fa-cogs" link="options" />
+      <app-dashboard-button name="navigation.apiKeys" icon="fa-key" link="api-keys" />
+      <app-dashboard-button name="navigation.sessions" icon="fa-laptop" link="sessions" />
+      <app-dashboard-button name="navigation.accountSettings" icon="fa-cog" link="account-settings" />
+      <app-dashboard-button name="navigation.options" icon="fa-cogs" link="options" />
       @if (system) {
-        <app-dashboard-button name="data import" icon="fa-download" link="data-import" />
-        <app-dashboard-button name="mass delete" icon="fa-trash" link="mass-delete" />
+        <app-dashboard-button name="navigation.dataImport" icon="fa-download" link="data-import" />
+        <app-dashboard-button name="navigation.massDelete" icon="fa-trash" link="mass-delete" />
       }
-      <app-dashboard-button name="legal" icon="fa-gavel" link="legal" />
+      <app-dashboard-button name="navigation.legal" icon="fa-gavel" link="legal" />
     </div>
     <div class="text-base-content/70 text-center">
-      {{'version' | translate:{version: VERSION} }}
+      {{'app.version' | translate:{version: VERSION} }}
     </div>
   </main>
 </app-nav-page-container>

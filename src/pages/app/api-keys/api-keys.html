@@ -4,7 +4,7 @@
     @if (apiKeys) {
       <div class="mx-4 mt-4">
         <ul class="list bg-base-100 rounded-xl">
-          <li class="p-4 pb-2 tracking-wide text-center text-xl">{{'api keys' | translate}}</li>
+          <li class="p-4 pb-2 tracking-wide text-center text-xl">{{'apiKeys.labels.title' | translate}}</li>
           @for (apiKey of apiKeys; track apiKey.id) {
             <li class="list-row flex flex-row">
               <div class="flex-1">
@@ -12,19 +12,19 @@
                 <div class="mt-2 sm:flex justify-between">
                   <div class="badge badge-soft" [class.badge-success]="!apiKey.write" [class.badge-warning]="apiKey.write">
                     @if (apiKey.write) {
-                      {{'api key write and delete' | translate}}
+                      {{'apiKeys.labels.writeDelete' | translate}}
                     } @else {
-                      {{'api key read only' | translate}}
+                      {{'apiKeys.labels.readOnly' | translate}}
                     }
                   </div>
                   <br class="sm:hidden">
                   @if (apiKey.createdAt) {
-                    <span>{{'api key creation' | translate:{date: formatDate(apiKey.createdAt)} }}</span>
+                    <span>{{'labels.createdAt' | translate:{date: formatDate(apiKey.createdAt)} }}</span>
                   }
                 </div>
               </div>
               <app-vertical-center>
-                <app-icon-button name="delete api key" icon="fa-times" size="fa-lg" buttonClass="btn-error" (action)="deleteApiKey(apiKey.id)" />
+                <app-icon-button name="apiKeys.actions.delete" icon="fa-times" size="fa-lg" buttonClass="btn-error" (action)="deleteApiKey(apiKey.id)" />
               </app-vertical-center>
             </li>
           }
@@ -39,17 +39,17 @@
 
 <dialog id="createApiKeyPrompt" class="modal">
   <div class="modal-box">
-    <h3 class="text-lg font-bold">{{'create api key' | translate}}</h3>
+    <h3 class="text-lg font-bold">{{'apiKeys.actions.create' | translate}}</h3>
     <form method="dialog" class="w-full" (submit)="createApiKey($event)">
       <fieldset class="fieldset">
-        <legend class="fieldset-legend">{{'name' | translate}}</legend>
+        <legend class="fieldset-legend">{{'fields.name' | translate}}</legend>
         <input name="name" type="text" class="input w-full">
       </fieldset>
       <label class="w-full label my-2">
         <input type="checkbox" class="toggle" name="write">
-        {{'api key write and delete' | translate}}
+        {{'apiKeys.labels.writeDelete' | translate}}
       </label>
-      <button type="submit" class="mx-auto mt-5 block btn btn-success">{{'confirm' | translate}}</button>
+      <button type="submit" class="mx-auto mt-5 block btn btn-success">{{'actions.confirm' | translate}}</button>
     </form>
   </div>
   <form method="dialog" class="modal-backdrop">
@@ -59,14 +59,14 @@
 <dialog id="apiKeyTokenPopup" class="modal" (close)="unloadCreatedApiKey()">
   <div class="modal-box">
     <h3 class="text-lg font-bold">{{apiKeyName()}}</h3>
-    <span>{{'api key token only once' | translate}}</span>
+    <span>{{'apiKeys.labels.onlyOnce' | translate}}</span>
     <div class="join w-full mt-2">
       <div class="flex-1">
         <label class="w-full input join-item">
           <input id="createdApiKeyToken" readonly [value]="apiKeyToken()">
         </label>
       </div>
-      <app-icon-button name="copy to clipboard" [icon]="apiKeyCopied() ? 'fa-check' : 'fa-clipboard'"
+      <app-icon-button name="actions.copy" [icon]="apiKeyCopied() ? 'fa-check' : 'fa-clipboard'"
                        buttonSize="" buttonClass="btn-outline join-item" (action)="copyCreatedApiKey()" />
     </div>
   </div>

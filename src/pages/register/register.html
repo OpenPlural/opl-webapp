@@ -5,20 +5,20 @@
       <div class="w-full join join-vertical">
         <label class="w-full input input-lg join-item">
           <i class="fa fa-user" aria-hidden="true"></i>
-          <input type="text" name="username" [placeholder]="'username' | translate" required>
+          <input type="text" name="username" [placeholder]="'fields.username' | translate" required>
         </label>
         <label class="w-full input input-lg join-item">
           <i class="fa fa-lock" aria-hidden="true"></i>
-          <input type="password" name="password" [placeholder]="'password' | translate" required>
+          <input type="password" name="password" [placeholder]="'fields.password.password' | translate" required>
         </label>
         <label class="w-full input input-lg join-item">
           <i class="fa fa-lock" aria-hidden="true"></i>
-          <input id="passwordConfirmation" type="password" name="confirmPassword" [placeholder]="'confirm password' | translate" required>
+          <input id="passwordConfirmation" type="password" name="confirmPassword" [placeholder]="'fields.password.confirm' | translate" required>
         </label>
       </div>
       <label class="w-full label my-2">
         <input type="checkbox" class="toggle" name="system" checked>
-        {{'register system toggle' | translate}}
+        {{'auth.labels.system' | translate}}
       </label>
       @let error = errorMessage();
       @if (error) {
@@ -32,11 +32,11 @@
           @if (loading) {
             <span class="loading loading-spinner"></span>
           }
-          {{'register' | translate}}
+          {{'auth.actions.register' | translate}}
         </button>
         <br>
         <button type="submit" class="btn btn-ghost btn-md" (click)="goToLogin()">
-          {{'login instead' | translate}}
+          {{'auth.actions.login' | translate}}
         </button>
       </div>
     </div>

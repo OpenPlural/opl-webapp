@@ -5,11 +5,11 @@
       <div class="w-full join join-vertical">
         <label class="w-full input input-lg join-item">
           <i class="fa fa-user" aria-hidden="true"></i>
-          <input type="text" name="username" [placeholder]="'username' | translate" required>
+          <input type="text" name="username" [placeholder]="'fields.username' | translate" required>
         </label>
         <label class="w-full input input-lg join-item">
           <i class="fa fa-lock" aria-hidden="true"></i>
-          <input type="password" name="password" [placeholder]="'password' | translate" required>
+          <input type="password" name="password" [placeholder]="'fields.password.password' | translate" required>
         </label>
       </div>
       @let error = errorMessage();
@@ -24,11 +24,11 @@
           @if (loading) {
             <span class="loading loading-spinner"></span>
           }
-          {{'login' | translate}}
+          {{'auth.actions.login' | translate}}
         </button>
         <br>
         <button type="button" class="btn btn-ghost btn-md" (click)="goToRegister()">
-          {{'register instead' | translate}}
+          {{'auth.actions.registerInstead' | translate}}
         </button>
       </div>
     </div>

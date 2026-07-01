@@ -22,10 +22,10 @@
         <button class="btn btn-outline btn-lg px-7 border-2 delay-0" [style]="fronting() ? 'border-color: ' + cssColor() : ''" (click)="toggleFronting()">
           @if (fronting()) {
             <i class="fa fa-lg fa-arrow-down" aria-hidden="true"></i>
-            <span class="sr-only">{{'unfront' | translate}}</span>
+            <span class="sr-only">{{'front.actions.unfront' | translate}}</span>
           } @else {
             <i class="fa fa-lg fa-plus" aria-hidden="true"></i>
-            <span class="sr-only">{{'front' | translate}}</span>
+            <span class="sr-only">{{'front.actions.front' | translate}}</span>
           }
         </button>
       </app-vertical-center>

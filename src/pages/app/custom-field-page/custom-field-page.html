@@ -4,14 +4,14 @@
     <div class="p-5 pb-0">
       <form id="customFieldForm">
         <fieldset class="fieldset">
-          <legend class="fieldset-legend">{{'name' | translate}}</legend>
+          <legend class="fieldset-legend">{{'fields.name' | translate}}</legend>
           <input name="name" type="text" class="w-full input" [value]="field.name" />
         </fieldset>
         <fieldset class="fieldset">
-          <legend class="fieldset-legend">{{'custom field type' | translate}}</legend>
+          <legend class="fieldset-legend">{{'customFields.labels.type.type' | translate}}</legend>
           <select name="type" class="w-full select">
             @for (dataType of CUSTOM_FIELD_DATA_TYPES; track dataType) {
-              <option [value]="dataType" [selected]="dataType === field.dataType">{{'custom field type ' + dataType.toLowerCase() | translate}}</option>
+              <option [value]="dataType" [selected]="dataType === field.dataType">{{'customFields.labels.type.' + dataType.toLowerCase() | translate}}</option>
             }
           </select>
         </fieldset>
@@ -22,12 +22,12 @@
       <div class="p-5 pt-0">
         @let privacy = this.privacy();
         @if (privacy) {
-          <app-privacy-bucket-list title="change custom field privacy" [buckets]="privacy" (submitSelection)="updatePrivacy($event)" />
+          <app-privacy-bucket-list title="customFields.prompts.changePrivacy" [buckets]="privacy" (submitSelection)="updatePrivacy($event)" />
         } @else {
           <div class="text-center">
             @let loading = this.loadingPrivacy();
             <button type="button" class="btn btn-soft" [class.btn-disabled]="loading" (click)="loadPrivacy()">
-              {{'load privacy' | translate}}
+              {{'actions.privacy.load' | translate}}
               @if (loading) {
                 <span class="loading loading-spinner"></span>
               }
@@ -37,8 +37,8 @@
       </div>
     }
   </app-edit-page-container>
-  <app-popup-confirm dialogId="fieldDeletePrompt" title="delete custom field" (confirm)="delete()">
-    {{'delete custom field prompt' | translate:{ fieldName: field.name } }}
+  <app-popup-confirm dialogId="fieldDeletePrompt" title="customFields.actions.delete" (confirm)="delete()">
+    {{'customFields.prompts.delete' | translate:{ fieldName: field.name } }}
   </app-popup-confirm>
 } @else {
   <app-misrouted />

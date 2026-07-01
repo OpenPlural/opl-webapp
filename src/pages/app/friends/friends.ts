@@ -36,12 +36,12 @@ export class Friends implements OnInit {
   protected readonly friends = signal<Friend[] | null>(null);
   protected readonly incomingRequests = signal<FriendRequest[] | null>(null);
   protected readonly outgoingRequests = signal<FriendRequest[] | null>(null);
-  protected readonly selectedTab = signal<'friends' | 'friend requests'>('friends');
+  protected readonly selectedTab = signal<'friends' | 'friendRequests'>('friends');
 
   constructor() {
     effect(() => {
       const tab = this.selectedTab();
-      if (tab === 'friend requests') {
+      if (tab === 'friendRequests') {
         this.loadIncomingFriendRequests();
         this.loadOutgoingFriendRequests();
       } else {

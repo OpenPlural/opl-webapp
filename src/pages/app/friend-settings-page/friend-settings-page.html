@@ -8,15 +8,15 @@
       <div class="grid text-left">
         <span>
           <input type="checkbox" class="checkbox text-accent" name="1" [checked]="permissionLevel >= 1" (change)="permissionLevelChanged($event)">
-          {{'friend permissions members' | translate}}
+          {{'friends.labels.permissions.select.members' | translate}}
         </span>
         <span>
           <input type="checkbox" class="checkbox text-accent" name="2" [checked]="permissionLevel >= 2" (change)="permissionLevelChanged($event)">
-          {{'friend permissions front' | translate}}
+          {{'friends.labels.permissions.select.front' | translate}}
         </span>
         <span>
           <input type="checkbox" class="checkbox text-accent" name="3" [checked]="permissionLevel >= 3" (change)="permissionLevelChanged($event)">
-          {{'friend permissions notify' | translate}}
+          {{'friends.labels.permissions.select.notify' | translate}}
         </span>
       </div>
       <div class="flex justify-between px-2.5 mt-2 text-xs">
@@ -31,18 +31,18 @@
     <div class="grid text-left md:px-32 px-5 py-0">
       <span>
         <input type="checkbox" class="checkbox text-accent" name="3" [checked]="notifyMe" (change)="notifyMeChanged($event)">
-        {{'friend notify me' | translate}}
+        {{'friends.labels.notifyMe' | translate}}
       </span>
       <span>
         <input type="checkbox" class="checkbox text-accent" name="3" [checked]="notifyWithTag" (change)="notifyWithTagChanged($event)">
-        {{'friend notify replacing' | translate}}
+        {{'friends.labels.notifyReplacing' | translate}}
       </span>
     </div>
     <div class="divider"></div>
     <div class="md:px-32 p-5 pt-0">
       @let privacy = this.privacy();
       @if (privacy) {
-        <app-privacy-bucket-list title="change friend privacy" [buckets]="privacy" (submitSelection)="updatePrivacy($event)" />
+        <app-privacy-bucket-list title="friends.prompts.changePrivacy" [buckets]="privacy" (submitSelection)="updatePrivacy($event)" />
       } @else {
         <app-loading />
       }
@@ -51,6 +51,6 @@
     <app-loading />
   }
 </app-edit-page-container>
-<app-popup-confirm dialogId="unfriendPrompt" title="unfriend" (confirm)="unfriend()">
-  {{'unfriend prompt' | translate:{ friendName: username } }}
+<app-popup-confirm dialogId="unfriendPrompt" title="friends.actions.unfriend" (confirm)="unfriend()">
+  {{'friends.prompts.unfriend' | translate:{ friendName: username } }}
 </app-popup-confirm>

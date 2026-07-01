@@ -9,18 +9,18 @@
       <form method="dialog">
         <button class="btn btn-ghost btn-error text-lg">
           <i class="fa fa-times-circle" aria-hidden="true"></i>
-          {{'no' | translate}}
+          {{'confirm.no' | translate}}
         </button>
         @if (confirmations > 1) {
           @let count = this.count();
           <button [type]="count + 1 < confirmations ? 'button' : 'submit'" class="btn btn-ghost btn-success text-lg" (click)="increaseCount()">
             <i class="fa fa-check-circle" aria-hidden="true"></i>
-            {{(count === 0 ? 'yes' : 'yes with count') | translate:{count, total: confirmations} }}
+            {{(count === 0 ? 'confirm.yes' : 'confirm.yesCounted') | translate:{count, total: confirmations} }}
           </button>
         } @else {
           <button class="btn btn-ghost btn-success text-lg" (click)="confirm.emit()">
             <i class="fa fa-check-circle" aria-hidden="true"></i>
-            {{'yes' | translate}}
+            {{'confirm.yes' | translate}}
           </button>
         }
       </form>

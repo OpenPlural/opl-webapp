@@ -7,9 +7,9 @@
   <footer class="h-16">
     <app-vertical-center>
       <app-pager currentPage="fronters">
-        <app-toggle-icon-button name="members" icon="fa-users" size="fa-lg" [toggled]="false" (toggle)="gotoMembers()" />
-        <app-toggle-icon-button name="fronters" icon="fa-tag" size="fa-lg" [toggled]="true" />
-        <app-toggle-icon-button name="custom front" icon="fa-user-circle-o" size="fa-lg" [toggled]="false" (toggle)="gotoCustom()" />
+        <app-toggle-icon-button name="navigation.members" icon="fa-users" size="fa-lg" [toggled]="false" (toggle)="gotoMembers()" />
+        <app-toggle-icon-button name="navigation.fronters" icon="fa-tag" size="fa-lg" [toggled]="true" />
+        <app-toggle-icon-button name="navigation.customFront" icon="fa-user-circle-o" size="fa-lg" [toggled]="false" (toggle)="gotoCustom()" />
       </app-pager>
     </app-vertical-center>
   </footer>

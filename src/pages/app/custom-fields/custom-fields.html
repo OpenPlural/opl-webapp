@@ -1,6 +1,6 @@
 <app-nav-page-container [fab]="true" [headerButtons]="true" (fabAction)="openDialog('fieldNamePrompt')">
   <app-vertical-center class="header-buttons">
-    <app-toggle-icon-button name="start reorder" toggledName="stop reorder" icon="fa-sort" [toggled]="reorder()" (toggle)="toggleReorder()" />
+    <app-toggle-icon-button name="actions.reorder.start" toggledName="actions.reorder.stop" icon="fa-sort" [toggled]="reorder()" (toggle)="toggleReorder()" />
   </app-vertical-center>
   <main>
     @let fields = this.customFields();
@@ -12,7 +12,7 @@
               <app-vertical-center>
                 <span class="text-left ml-1">
                   <p class="wrap-anywhere">{{field.name}}</p>
-                  <p class="wrap-anywhere font-light text-base-content/60">{{'custom field type ' + field.dataType.toLowerCase() | translate}}</p>
+                  <p class="wrap-anywhere font-light text-base-content/60">{{'customFields.labels.type.' + field.dataType.toLowerCase() | translate}}</p>
                 </span>
               </app-vertical-center>
             </button>
@@ -26,4 +26,4 @@
   <i class="fa fa-plus"></i>
 </app-nav-page-container>
 
-<app-popup-input dialogId="fieldNamePrompt" title="create custom field" label="name" (submitValue)="createCustomField($event)" />
+<app-popup-input dialogId="fieldNamePrompt" title="customFields.actions.create" label="fields.name" (submitValue)="createCustomField($event)" />
