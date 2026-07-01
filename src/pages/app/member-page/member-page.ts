@@ -19,6 +19,7 @@ import { CustomFieldDataUpdate, MemberCustomFieldsPage } from '../member-custom-
 import { FolderId } from '../../../services/model/Folder';
 import { truncateCurrentDate } from '../../../util/DateTruncate';
 import { MemberFrontHistoryPage } from '../member-front-history-page/member-front-history-page';
+import {sortNestedFolders} from '../../../util/CustomSort';
 
 @Component({
   selector: 'app-member-page',
@@ -69,9 +70,13 @@ export class MemberPage {
     const member = this.member();
     if (!member) return [];
 
-    return this.localStorageService.folders().filter((f) => member.folders.includes(f.id));
+    const folders = this.localStorageService.folders().filter((f) => member.folders.includes(f.id));
+    return sortNestedFolders(folders);
   });
-  protected readonly allFolders = computed(() => this.localStorageService.folders());
+  protected readonly allFolders = computed(() => {
+    const folders = this.localStorageService.folders();
+    return sortNestedFolders(folders);
+  });
 
   protected async delete() {
     const member = this.member();

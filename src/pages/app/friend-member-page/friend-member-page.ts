@@ -12,7 +12,7 @@ import { Loading } from '../../../components/loading/loading';
 import { Folder } from '../../../services/model/Folder';
 import { ViewedCustomFieldDataValue } from '../../../services/model/Field';
 import { FriendMemberCustomFieldsPage } from '../friend-member-custom-fields-page/friend-member-custom-fields-page';
-import { compareCustomSort } from '../../../util/CustomSort';
+import {compareCustomSort, sortNestedFolders} from '../../../util/CustomSort';
 
 @Component({
   selector: 'app-friend-member-page',
@@ -61,7 +61,7 @@ export class FriendMemberPage {
       if (userId && memberId) {
         this.webService.getMemberWithFolders(userId, memberId).then((ext) => {
           this.member.set(ext.member);
-          this.folders.set(ext.folders);
+          this.folders.set(sortNestedFolders(ext.folders));
         });
       } else {
         this.member.set(null);
