@@ -145,7 +145,8 @@
   "front": {
     "actions": {
       "front": "Zur Front hinzufügen",
-      "unfront": "Von der Front entfernen"
+      "unfront": "Von der Front entfernen",
+      "changeTime": "Frontzeit ändern"
     },
     "labels": {
       "graphical": "Grafisch",
@@ -153,6 +154,7 @@
       "empty": "Aktuell frontet niemand.",
       "comment": "Benutzerdefinierter Status (z.B. Co-fronting)",
       "current": "Aktuelle Fronter",
+      "time": "Zeit",
       "history": {
         "ongoing": "Aktuell",
         "noMoreEntries": "Keine weiteren Einträge"

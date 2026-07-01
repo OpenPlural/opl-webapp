@@ -145,12 +145,14 @@
   "front": {
     "actions": {
       "front": "Dodaj na front",
-      "unfront": "Ukloni sa fronta"
+      "unfront": "Ukloni sa fronta",
+      "changeTime": "Promeni vreme fronta"
     },
     "labels": {
       "empty": "Trenutno niko nije na frontu.",
       "comment": "Prilagođen status (npr. Co-fronting)",
       "current": "Aktuelni fronteri",
+      "time": "Vreme",
       "history": {
         "graphical": "Grafičko",
         "textual": "Tekstualno",

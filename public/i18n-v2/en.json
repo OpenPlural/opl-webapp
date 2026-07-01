@@ -145,12 +145,14 @@
   "front": {
     "actions": {
       "front": "Add to front",
-      "unfront": "Remove from front"
+      "unfront": "Remove from front",
+      "changeTime": "Change front time"
     },
     "labels": {
       "empty": "No one is fronting right now.",
       "comment": "Custom status (e.g. Co-fronting)",
       "current": "Current fronters",
+      "time": "Time",
       "history": {
         "graphical": "Graphical",
         "textual": "Textual",
