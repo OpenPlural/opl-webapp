@@ -279,6 +279,7 @@
     },
     "titles": {
       "general": "Opšta podešavanja",
+      "member": "Podešavanja članova",
       "group": "Podešavanja grupe",
       "notification": "Podešavanja obavesti"
     },
@@ -294,10 +295,6 @@
         "name": "Učitaj avatare",
         "description": "Kada je aktivirano, moći ćete da videte avatare fascikla, članova i prijatelja"
       },
-      "customSortEditor": {
-        "name": "Prikaži uređivač za sortiranje",
-        "description": "Kada je aktivirano, moći ćete da promenite redosled fascikla i članova promenom njihovih brojeva za sortiranje"
-      },
       "useNativeColorPicker": {
         "name": "Koristi nativni odabirač boja",
         "description": "Kada je aktivirano, aplikacija koristi odabirač boja Vašog sistema"
@@ -305,6 +302,14 @@
       "showSyncToast": {
         "name": "Prikaži tost-obavest nakon uspešne sinhronizacije",
         "description": "Kada je aktivirano, videćete tost-obavest o uspešnim sinhronizacijama"
+      },
+      "useNavMenu": {
+        "name": "Koristi meni za navigaciju",
+        "description": "Kada je aktivirano, dugme u gornjoj traci otvara meni za navigaciju"
+      },
+      "customSortEditor": {
+        "name": "Prikaži uređivač za sortiranje",
+        "description": "Kada je aktivirano, moći ćete da promenite redosled fascikla i članova promenom njihovih brojeva za sortiranje"
       },
       "hideRootMembers": {
         "name": "Sakrij članove iz korena ako su deo fascikle",

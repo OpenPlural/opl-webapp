@@ -11,6 +11,7 @@ import { PopupConfirm } from '../../popup-confirm/popup-confirm';
 import { openDialog } from '../../../util/CommonFunctions';
 import { LocalStorageService } from '../../../services/LocalStorageService';
 import {NgClass} from '@angular/common';
+import {SettingsService} from '../../../services/SettingsService';
 
 @Component({
   selector: 'app-nav-page-container',
@@ -22,10 +23,12 @@ export class NavPageContainer {
   private readonly route = inject(ActivatedRoute);
   private readonly accountService = inject(AccountService);
   private readonly localStorageService = inject(LocalStorageService);
+  private readonly settingsService = inject(SettingsService);
   private readonly webService = inject(WebService);
 
   protected readonly searching = signal(false);
 
+  protected readonly useNavMenu = computed(() => this.settingsService.settings().useNavMenu);
   protected readonly appRoutes = computed(() => {
     const system = this.accountService.account()?.user.system;
     return appRoutes.filter((route) => {
@@ -63,8 +66,8 @@ export class NavPageContainer {
     return route.data!['name'];
   }
 
-  protected gotoRoute(route: Route) {
-    if (route.path === '') {
+  protected gotoRoute(route: Route | null) {
+    if (route === null || route.path === '') {
       this.router.navigate(['app']);
     } else {
       this.router.navigate(['app', route.path]);

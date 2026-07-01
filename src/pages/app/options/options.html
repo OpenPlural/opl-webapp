@@ -49,9 +49,12 @@
 
       <div class="divider">{{'options.titles.general' | translate}}</div>
       <app-toggle-setting name="options.labels.loadAvatars" [toggled]="settings.loadAvatars" (toggle)="toggleSetting('loadAvatars', $event)" />
-      <app-toggle-setting name="options.labels.customSortEditor" [toggled]="settings.customSortEditor" (toggle)="toggleSetting('customSortEditor', $event)" />
       <app-toggle-setting name="options.labels.useNativeColorPicker" [toggled]="settings.useNativeColorPicker" (toggle)="toggleSetting('useNativeColorPicker', $event)" />
       <app-toggle-setting name="options.labels.showSyncToast" [toggled]="settings.showSyncToast" (toggle)="toggleSetting('showSyncToast', $event)" />
+      <app-toggle-setting name="options.labels.useNavMenu" [toggled]="settings.useNavMenu" (toggle)="toggleSetting('useNavMenu', $event)" />
+
+      <div class="divider">{{'options.titles.member' | translate}}</div>
+      <app-toggle-setting name="options.labels.customSortEditor" [toggled]="settings.customSortEditor" (toggle)="toggleSetting('customSortEditor', $event)" />
 
       <div class="divider">{{'options.titles.group' | translate}}</div>
       <app-toggle-setting name="options.labels.hideRootMembers" [toggled]="settings.hideRootMembers" (toggle)="toggleSetting('hideRootMembers', $event)" />
