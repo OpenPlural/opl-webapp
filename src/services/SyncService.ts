@@ -19,6 +19,8 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { ToastService } from './ToastService';
 import {SettingsService} from './SettingsService';
 
+const ABSOLUTE_SYNC_INTERVAL = 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
+
 @Injectable({providedIn: 'root'})
 export class SyncService {
   private readonly translate = inject(TranslateService);
@@ -39,7 +41,7 @@ export class SyncService {
 
   readonly syncInProgress = this._syncInProgress.asReadonly();
 
-  async fullSync(): Promise<void> {
+  async fullSync(forceAbsoluteSync: boolean = false): Promise<void> {
     if (!this.localStorageService.ready() || !this.localStorageService.dirty() || this.syncInProgress()) return;
 
     try {
@@ -51,7 +53,14 @@ export class SyncService {
       if (!lastSyncTime) {
         lastSyncTime = 0;
       }
-      const syncData = await this.webService.sync(new Date(lastSyncTime));
+
+      let lastAbsSyncTime = this.localStorageService.getLastAbsoluteSyncTime();
+      if (!lastAbsSyncTime) {
+        lastAbsSyncTime = 0;
+      }
+      const absolute = forceAbsoluteSync || Date.now() - lastAbsSyncTime >= ABSOLUTE_SYNC_INTERVAL;
+
+      const syncData = await this.webService.sync(new Date(lastSyncTime), absolute);
 
       this.accountService.updateAccountFromSync(syncData.user, syncData.friendCode);
 
@@ -61,7 +70,7 @@ export class SyncService {
       await this.syncCustomFieldValues(syncData.updatedFieldValues, syncData.fieldValueIds, syncData.deletionDelta);
       await this.syncFrontEntries(syncData.front);
 
-      await this.localStorageService.updateSyncTime(Date.parse(syncData.time));
+      await this.localStorageService.updateSyncTime(Date.parse(syncData.time), !syncData.deletionDelta);
 
       console.log('[SyncService] Sync complete');
 

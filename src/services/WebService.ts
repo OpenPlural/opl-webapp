@@ -63,8 +63,8 @@ export class WebService {
     await firstValueFrom(this.http.delete(`${BASE_URL}/api/v1/session/self`));
   }
 
-  async sync(since: Date): Promise<SyncData> {
-    return firstValueFrom(this.http.get<SyncData>(`${BASE_URL}/api/v1/sync/?since=${since.toISOString()}`));
+  async sync(since: Date, absolute: boolean): Promise<SyncData> {
+    return firstValueFrom(this.http.get<SyncData>(`${BASE_URL}/api/v1/sync/?since=${since.toISOString()}&absolute=${absolute}`));
   }
 
   async createFolder(folder: Folder): Promise<FolderId> {
