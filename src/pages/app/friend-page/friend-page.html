@@ -37,7 +37,7 @@
             </div>
           } @else {
             <div class="text-center">
-              {{'friends.labels.permission.denied.front' | translate}}
+              {{'friends.labels.permissions.denied.front' | translate}}
             </div>
           }
         }
@@ -46,7 +46,7 @@
           <app-member-folder-view [friendId]="user.user.id" [folders]="user.folders" [members]="user.members" [searchQuery]="searchQuery()" [archived]="false" [editable]="false" [custom]="false" (selectMember)="gotoMemberPage($event)" />
         } @else {
           <div class="text-center mt-5">
-            {{'friends.labels.permission.denied.members' | translate}}
+            {{'friends.labels.permissions.denied.members' | translate}}
           </div>
         }
       }
