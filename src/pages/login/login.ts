@@ -37,7 +37,7 @@ export class Login {
       this.loading.set(true);
       try {
         await this.accountService.login(username, password);
-        await this.syncService.fullSync();
+        await this.syncService.fullSync(true);
       } catch (e) {
         this.errorService.logError(e);
         if (e instanceof HttpErrorResponse) {

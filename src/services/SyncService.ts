@@ -41,7 +41,7 @@ export class SyncService {
 
   readonly syncInProgress = this._syncInProgress.asReadonly();
 
-  async fullSync(): Promise<void> {
+  async fullSync(forceAbsoluteSync: boolean = false): Promise<void> {
     if (!this.localStorageService.ready() || !this.localStorageService.dirty() || this.syncInProgress()) return;
 
     try {
@@ -58,7 +58,7 @@ export class SyncService {
       if (!lastAbsSyncTime) {
         lastAbsSyncTime = 0;
       }
-      const absolute = Date.now() - lastAbsSyncTime >= ABSOLUTE_SYNC_INTERVAL;
+      const absolute = forceAbsoluteSync || Date.now() - lastAbsSyncTime >= ABSOLUTE_SYNC_INTERVAL;
 
       const syncData = await this.webService.sync(new Date(lastSyncTime), absolute);
 
