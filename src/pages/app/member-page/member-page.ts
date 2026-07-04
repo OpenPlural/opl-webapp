@@ -112,11 +112,11 @@ export class MemberPage {
         updatedMember = member;
       }
       updatedMember.folders = folderUpdates;
-      updatedMember.updatedAt = truncateCurrentDate();
     }
 
     let syncRequired = false;
     if (updatedMember) {
+      updatedMember.updatedAt = truncateCurrentDate();
       await this.localStorageService.updateMember(updatedMember);
       syncRequired = true;
     }
