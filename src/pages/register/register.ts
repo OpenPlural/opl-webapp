@@ -51,6 +51,7 @@ export class Register {
         await this.localStorageService.clear();
         await this.webService.register(username, password, system === 'on');
         await this.accountService.login(username, password);
+        this.localStorageService.markDirty();
         await this.syncService.fullSync(true);
       } catch (e) {
         this.errorService.logError(e);

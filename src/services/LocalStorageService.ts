@@ -133,6 +133,10 @@ export class LocalStorageService {
     await this.clearAll(IDB_DELETIONS);
   }
 
+  markDirty() {
+    this._dirty.set(true);
+  }
+
   async addFolder(folder: Folder): Promise<void> {
     await this.writeValue(IDB_FOLDERS, this.serializeFolder(folder));
     this._dirty.set(true);
