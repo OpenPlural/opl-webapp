@@ -7,6 +7,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { SyncService } from '../../services/SyncService';
 import {LegalFooter} from '../../components/legal-footer/legal-footer';
 import {ErrorService} from '../../services/ErrorService';
+import {LocalStorageService} from '../../services/LocalStorageService';
 
 @Component({
   selector: 'app-login',
@@ -17,6 +18,7 @@ export class Login {
   private readonly router = inject(Router);
   private readonly accountService = inject(AccountService);
   private readonly errorService = inject(ErrorService);
+  private readonly localStorageService = inject(LocalStorageService);
   private readonly syncService = inject(SyncService);
 
   protected readonly errorMessage = signal<string | null>(null);
@@ -41,6 +43,7 @@ export class Login {
       this.loading.set(true);
       try {
         await this.accountService.login(username, password);
+        this.localStorageService.markDirty();
         await this.syncService.fullSync(true);
       } catch (e) {
         this.errorService.logError(e);
