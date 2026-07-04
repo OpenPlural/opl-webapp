@@ -367,13 +367,17 @@
       "logout": "Abmelden",
       "register": "Registrieren",
       "registerInstead": "Neues Konto registrieren",
-      "loginInstead": "Ich habe bereits ein Konto"
+      "loginInstead": "Ich habe bereits ein Konto",
+      "forgotPassword": "Ich habe mein Passwort vergessen",
+      "resetPassword": "Passwort zurücksetzen"
     },
     "prompts": {
       "logout": "Willst du dich wirklich abmelden? Alle lokalen Daten werden gelöscht!"
     },
     "labels": {
-      "system": "Als System registrieren"
+      "system": "Als System registrieren",
+      "resetToken": "Token zum Zurücksetzen des Passworts",
+      "noResetToken": "Wenn du keinen Token zum Zurücksetzen hast, sende eine Email an openplural@webbiii.cc von der Email Adresse, die du für das Konto verwendet hast."
     }
   }
 }

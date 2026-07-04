@@ -24,6 +24,7 @@ import {FrontHistoryPage} from '../pages/app/front-history-page/front-history-pa
 import {ApiKeys} from '../pages/app/api-keys/api-keys';
 import {DataImport} from '../pages/app/data-import/data-import';
 import {MassDelete} from '../pages/app/mass-delete/mass-delete';
+import {ResetPassword} from '../pages/reset-password/reset-password';
 
 export const appRoutes: Routes = [
   {
@@ -132,6 +133,9 @@ export const routes: Routes = [
       }, {
         path: 'register',
         component: Register
+      }, {
+        path: 'reset-password',
+        component: ResetPassword
       }
     ]
   }

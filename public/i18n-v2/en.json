@@ -367,13 +367,17 @@
       "logout": "Logout",
       "register": "Register",
       "registerInstead": "Register instead",
-      "loginInstead": "I already have an account"
+      "loginInstead": "I already have an account",
+      "forgotPassword": "I forgot my password",
+      "resetPassword": "Reset Password"
     },
     "prompts": {
       "logout": "Do you really want to log out? This will delete all local data!"
     },
     "labels": {
-      "system": "Register as a system"
+      "system": "Register as a system",
+      "resetToken": "Password Reset Token",
+      "noResetToken": "If you don't have a reset token, please send an email to openplural@webbiii.cc from the email address you used for the account."
     }
   }
 }

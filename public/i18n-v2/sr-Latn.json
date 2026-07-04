@@ -367,13 +367,17 @@
       "logout": "Odjava",
       "register": "Registruj me",
       "registerInstead": "Napravite novi nalog",
-      "loginInstead": "Već imam nalog"
+      "loginInstead": "Već imam nalog",
+      "forgotPassword": "Zaboravljena šifra",
+      "resetPassword": "Resetuj šifru"
     },
     "prompts": {
       "logout": "Da li zaista želite da se odjavite? Ovo će obrisati sve lokalne podatke!"
     },
     "labels": {
-      "system": "Registruj me kao sistem"
+      "system": "Registruj me kao sistem",
+      "resetToken": "Token za resetovanje šifre",
+      "noResetToken": "Ako nemate token za resetovanje, pošaljite email na openplural@webbiii.cc sa email adrese koju ste koristili za nalog."
     }
   }
 }
