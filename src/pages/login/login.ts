@@ -26,6 +26,10 @@ export class Login {
     this.router.navigate(['auth', 'register']);
   }
 
+  protected goToPasswordReset() {
+    this.router.navigate(['auth', 'reset-password']);
+  }
+
   protected async login(event: SubmitEvent) {
     event.preventDefault();
 

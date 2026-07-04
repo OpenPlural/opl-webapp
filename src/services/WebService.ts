@@ -51,6 +51,10 @@ export class WebService {
     await firstValueFrom(this.http.post(`${BASE_URL}/auth/change-password`, { id, oldPassword, newPassword }));
   }
 
+  async resetPassword(username: string, resetToken: string, newPassword: string): Promise<void> {
+    await firstValueFrom(this.http.post(`${BASE_URL}/auth/reset-password`, { name: username, resetToken, newPassword }));
+  }
+
   async getSessions(): Promise<Session[]> {
     return firstValueFrom(this.http.get<Session[]>(`${BASE_URL}/api/v1/session/`));
   }
