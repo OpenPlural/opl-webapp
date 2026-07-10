@@ -110,7 +110,8 @@
     },
     "prompts": {
       "changePrivacy": "Izaberite kante za ovu fasciklu",
-      "delete": "Da li zaista želite da izbrišete fasciklu {folderName} i njezine potfascikle?"
+      "recursivePrivacy": "Da li želite da koristite iste kante za privatnost za sve podfascikle?",
+      "delete": "Da li zaista želite da izbrišete fasciklu {folderName} i njezine podfascikle?"
     },
     "labels": {
       "root": "Koren",

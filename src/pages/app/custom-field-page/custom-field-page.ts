@@ -15,6 +15,7 @@ import { CUSTOM_FIELD_DATA_TYPES } from '../../../services/model/Field';
 import { PrivacyBucketId, SimplePrivacyBucket } from '../../../services/model/Privacy';
 import { openDialog } from '../../../util/CommonFunctions';
 import { truncateCurrentDate } from '../../../util/DateTruncate';
+import {compareCustomSort} from '../../../util/CustomSort';
 
 @Component({
   selector: 'app-custom-field-page',
@@ -61,12 +62,26 @@ export class CustomFieldPage {
     const privacyIds = this.privacyIds();
     for (const id of ids) {
       if (!privacyIds.includes(id)) {
-        await this.webService.addPrivacyBucketCustomField(id, customField);
+        const bucket = await this.webService.addPrivacyBucketCustomField(id, customField);
+        this.privacy.update(buckets => {
+          if (buckets) {
+            return [...buckets, bucket].sort(compareCustomSort);
+          } else {
+            return [bucket];
+          }
+        });
       }
     }
     for (const id of privacyIds) {
       if (!ids.includes(id)) {
         await this.webService.removePrivacyBucketCustomField(id, customField);
+        this.privacy.update(buckets => {
+          if (buckets) {
+            return buckets.filter((b) => b.id !== id);
+          } else {
+            return null;
+          }
+        });
       }
     }
     await this.loadPrivacy();

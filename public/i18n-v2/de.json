@@ -110,6 +110,7 @@
     },
     "prompts": {
       "changePrivacy": "Wähle Privatsphäre-Buckets für diesen Ordner",
+      "recursivePrivacy": "Willst du die gleichen Privatsphäre-Buckets für alle Unterordner nutzen?",
       "delete": "Willst du den Ordner {folderName} und dessen Unterordner wirklich löschen?"
     },
     "labels": {

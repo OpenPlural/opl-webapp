@@ -19,6 +19,8 @@ import { SettingsService } from '../../../services/SettingsService';
 import { truncateCurrentDate } from '../../../util/DateTruncate';
 import { ColorInput } from '../../../components/color-input/color-input';
 import {MarkdownBox} from "../../../components/markdown-box/markdown-box";
+import {Folder, FolderId} from '../../../services/model/Folder';
+import {compareCustomSort} from '../../../util/CustomSort';
 
 @Component({
   selector: 'app-folder-page',
@@ -100,15 +102,49 @@ export class FolderPage implements OnInit {
     const privacyIds = this.privacyIds();
     for (const id of ids) {
       if (!privacyIds.includes(id)) {
-        await this.webService.addPrivacyBucketFolder(id, folder);
+        const bucket = await this.webService.addPrivacyBucketFolder(id, folder);
+        this.privacy.update(buckets => {
+          if (buckets) {
+            return [...buckets, bucket].sort(compareCustomSort);
+          } else {
+            return [bucket];
+          }
+        });
       }
     }
     for (const id of privacyIds) {
       if (!ids.includes(id)) {
         await this.webService.removePrivacyBucketFolder(id, folder);
+        this.privacy.update(buckets => {
+          if (buckets) {
+            return buckets.filter((b) => b.id !== id);
+          } else {
+            return null;
+          }
+        });
       }
     }
-    await this.loadPrivacy();
+
+    if (this.localStorageService.folders().find((f) => f.parentId === folder.id)) {
+      openDialog('folderPrivacyRecursive');
+    }
+  }
+
+  protected async updateRecursivePrivacy(): Promise<void> {
+    const folder = this.folder();
+    if (!folder) return;
+
+    await this.updateRecursivePrivacy0(this.privacyIds(), folder);
+  }
+
+  private async updateRecursivePrivacy0(ids: PrivacyBucketId[], folder: Folder): Promise<void> {
+    if (!folder.remoteId) return;
+
+    const childFolders = this.localStorageService.folders().filter((f) => f.parentId === folder.id);
+    for (const childFolder of childFolders) {
+      await this.webService.setFolderPrivacy(ids, childFolder);
+      await this.updateRecursivePrivacy0(ids, childFolder);
+    }
   }
 
   protected colorSelected(color: bigint) {

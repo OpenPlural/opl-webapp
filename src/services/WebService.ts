@@ -176,20 +176,24 @@ export class WebService {
     return translatePrivacyBucket(this.localStorageService, bucket, 'id');
   }
 
-  async addPrivacyBucketFolder(privacyBucketId: PrivacyBucketId, folder: Folder): Promise<void> {
-    await firstValueFrom(this.http.put(`${BASE_URL}/api/v1/privacy/${privacyBucketId}/folder/${folder.remoteId}`, {}));
+  async setFolderPrivacy(ids: PrivacyBucketId[], folder: Folder): Promise<void> {
+    await firstValueFrom(this.http.post(`${BASE_URL}/api/v1/folder/${folder.remoteId}/privacy`, ids));
   }
 
-  async addPrivacyBucketMember(privacyBucketId: PrivacyBucketId, member: Member): Promise<void> {
-    await firstValueFrom(this.http.put(`${BASE_URL}/api/v1/privacy/${privacyBucketId}/member/${member.remoteId}`, {}));
+  async addPrivacyBucketFolder(privacyBucketId: PrivacyBucketId, folder: Folder): Promise<SimplePrivacyBucket> {
+    return firstValueFrom(this.http.put<SimplePrivacyBucket>(`${BASE_URL}/api/v1/privacy/${privacyBucketId}/folder/${folder.remoteId}`, {}));
   }
 
-  async addPrivacyBucketCustomField(privacyBucketId: PrivacyBucketId, field: CustomField): Promise<void> {
-    await firstValueFrom(this.http.put(`${BASE_URL}/api/v1/privacy/${privacyBucketId}/field/${field.remoteId}`, {}));
+  async addPrivacyBucketMember(privacyBucketId: PrivacyBucketId, member: Member): Promise<SimplePrivacyBucket> {
+    return firstValueFrom(this.http.put<SimplePrivacyBucket>(`${BASE_URL}/api/v1/privacy/${privacyBucketId}/member/${member.remoteId}`, {}));
   }
 
-  async addPrivacyBucketFriend(privacyBucketId: PrivacyBucketId, friendId: UserId): Promise<void> {
-    await firstValueFrom(this.http.put(`${BASE_URL}/api/v1/privacy/${privacyBucketId}/friend/${friendId}`, {}));
+  async addPrivacyBucketCustomField(privacyBucketId: PrivacyBucketId, field: CustomField): Promise<SimplePrivacyBucket> {
+    return firstValueFrom(this.http.put<SimplePrivacyBucket>(`${BASE_URL}/api/v1/privacy/${privacyBucketId}/field/${field.remoteId}`, {}));
+  }
+
+  async addPrivacyBucketFriend(privacyBucketId: PrivacyBucketId, friendId: UserId): Promise<SimplePrivacyBucket> {
+    return firstValueFrom(this.http.put<SimplePrivacyBucket>(`${BASE_URL}/api/v1/privacy/${privacyBucketId}/friend/${friendId}`, {}));
   }
 
   async removePrivacyBucketFolder(privacyBucketId: PrivacyBucketId, folder: Folder): Promise<void> {
