@@ -6,6 +6,7 @@ import { WebService } from '../../../services/WebService';
 import { PrivacyBucketList } from '../../../components/privacy-bucket-list/privacy-bucket-list';
 import { TranslatePipe } from '@ngx-translate/core';
 import { SettingsService } from '../../../services/SettingsService';
+import {compareCustomSort} from '../../../util/CustomSort';
 
 @Component({
   selector: 'app-member-options-page',
@@ -32,7 +33,7 @@ export class MemberOptionsPage {
 
     this.loadingPrivacy.set(true);
     const privacy = await this.webService.getMemberPrivacy(member);
-    this.privacy.set(privacy);
+    this.privacy.set(privacy.sort(compareCustomSort));
   }
 
   protected async updatePrivacy(ids: PrivacyBucketId[]) {
