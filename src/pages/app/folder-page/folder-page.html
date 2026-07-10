@@ -75,6 +75,9 @@
       </div>
     }
   </app-edit-page-container>
+  <app-popup-confirm dialogId="folderPrivacyRecursive" title="actions.privacy.change" (confirm)="updateRecursivePrivacy()">
+    {{'folders.prompts.recursivePrivacy' | translate }}
+  </app-popup-confirm>
   <app-popup-confirm dialogId="folderDeletePrompt" title="folders.actions.delete" (confirm)="delete()">
     {{'folders.prompts.delete' | translate:{ folderName: folder.name } }}
   </app-popup-confirm>

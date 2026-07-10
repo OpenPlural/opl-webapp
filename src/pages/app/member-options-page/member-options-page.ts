@@ -43,12 +43,26 @@ export class MemberOptionsPage {
     const privacyIds = this.privacyIds();
     for (const id of ids) {
       if (!privacyIds.includes(id)) {
-        await this.webService.addPrivacyBucketMember(id, member);
+        const bucket = await this.webService.addPrivacyBucketMember(id, member);
+        this.privacy.update(buckets => {
+          if (buckets) {
+            return [...buckets, bucket].sort(compareCustomSort);
+          } else {
+            return [bucket];
+          }
+        });
       }
     }
     for (const id of privacyIds) {
       if (!ids.includes(id)) {
         await this.webService.removePrivacyBucketMember(id, member);
+        this.privacy.update(buckets => {
+          if (buckets) {
+            return buckets.filter((b) => b.id !== id);
+          } else {
+            return null;
+          }
+        });
       }
     }
     await this.loadPrivacy();

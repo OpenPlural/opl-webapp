@@ -3,6 +3,7 @@
     "name": "Open Plural",
     "loading": "Open Plural is loading, please wait…",
     "language": "Choose your language",
+    "update": "Update to {version}",
     "version": "Version {version}"
   },
   "sync": {
@@ -110,6 +111,7 @@
     },
     "prompts": {
       "changePrivacy": "Select privacy buckets for this folder",
+      "recursivePrivacy": "Do you want to use the same privacy buckets for all subfolders?",
       "delete": "Do you really want to delete the folder {folderName} and its subfolders?"
     },
     "labels": {
