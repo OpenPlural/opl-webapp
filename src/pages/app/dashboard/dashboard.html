@@ -40,15 +40,15 @@
     </div>
     @let update = this.update();
     <div class="text-base-content/70 text-center">
+      {{'app.version' | translate:{version: VERSION} }}
       @if (update) {
+        <br>
         <button class="btn btn-primary" (click)="triggerUpdate()">
           @if (updating()) {
             <i class="loading loading-spinner"></i>
           }
           {{'app.update' | translate:{version: update} }}
         </button>
-      } @else {
-        {{'app.version' | translate:{version: VERSION} }}
       }
     </div>
   </main>
