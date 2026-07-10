@@ -325,6 +325,10 @@ export class WebService {
   async import(data: any) {
     await firstValueFrom(this.http.post(`${BASE_URL}/api/v1/import/`, data));
   }
+
+  async export(): Promise<any> {
+    return firstValueFrom(this.http.post(`${BASE_URL}/api/v1/export/`, {}));
+  }
 }
 
 interface IdResponse {

@@ -95,6 +95,8 @@
     "accountSettings": "Подешавања за налог",
     "options": "Опције",
     "dataImport": "Увоз",
+    "dataExport": "Извоз",
+    "dataImportExport": "Увоз & Извоз",
     "massDelete": "Масовно брисање",
     "legal": "Правно",
     "setup": "Подешавање"
@@ -338,8 +340,12 @@
     }
   },
   "dataImport": {
+    "actions": {
+      "import": "Увези податке"
+    },
     "labels": {
       "simplyPlural": "Увези из Simply Plural",
+      "openPlural": "Увези из Open Plural",
       "file": "Фајл (.json)",
       "flags": "Опције",
       "folders": "Увези фасцикле",
@@ -348,6 +354,16 @@
       "customFields": "Увези прилагођена поља",
       "privacyBuckets": "Увези канте за приватност",
       "truncate": "Скрати све што је предуго"
+    }
+  },
+  "dataExport": {
+    "actions": {
+      "export": "Извези"
+    },
+    "labels": {
+      "openPlural": "Извези у Open Plural",
+      "text": "Извоз података је намењен да имате копију својих података. Можете их поново увести у Open Plural или користити у другим апликацијама.",
+      "cooldown": "Можете извести своје податке једном сваких 6 сати."
     }
   },
   "massDelete": {

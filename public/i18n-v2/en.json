@@ -95,6 +95,8 @@
     "accountSettings": "Account Settings",
     "options": "Options",
     "dataImport": "Import",
+    "dataExport": "Export",
+    "dataImportExport": "Import & Export",
     "massDelete": "Mass delete",
     "legal": "Legal",
     "setup": "Setup"
@@ -338,8 +340,12 @@
     }
   },
   "dataImport": {
+    "actions": {
+      "import": "Import"
+    },
     "labels": {
       "simplyPlural": "Import from Simply Plural",
+      "openPlural": "Import from Open Plural",
       "file": "File (.json)",
       "flags": "Options",
       "folders": "Import folders",
@@ -348,6 +354,16 @@
       "customFields": "Import custom fields",
       "privacyBuckets": "Import privacy buckets",
       "truncate": "Truncate everything that is too long"
+    }
+  },
+  "dataExport": {
+    "actions": {
+      "export": "Export"
+    },
+    "labels": {
+      "openPlural": "Export to Open Plural",
+      "text": "The data export is meant for you to have a copy of your data. You can import it back into Open Plural or use it in other applications.",
+      "cooldown": "You can export your data once every 6 hours."
     }
   },
   "massDelete": {

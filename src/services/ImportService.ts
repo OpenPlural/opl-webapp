@@ -5,33 +5,65 @@ import {WebService} from './WebService';
 import {CUSTOM_FIELD_DATA_TYPE_DATETIME, CUSTOM_FIELD_DATA_TYPE_TEXT} from './model/Field';
 
 @Injectable({ providedIn: 'root' })
-export class SPImportService {
+export class ImportService {
   private readonly webService = inject(WebService);
+
+  async importFromOpenPlural(input: string, flags: ImportFlags) {
+    const obj = JSON.parse(input);
+
+    let privacy: any[] | null = null;
+    if (flags.privacyBuckets && 'privacyBuckets' in obj) {
+      privacy = obj.privacyBuckets;
+    }
+
+    let fields: any[] | null = null;
+    if (flags.customFields && 'customFields' in obj) {
+      fields = obj.customFields;
+    }
+
+    let folders: any[] | null = null;
+    if (flags.folders && 'folders' in obj) {
+      folders = obj.folders;
+    }
+
+    let members: any[] | null = null;
+    if (flags.members && 'members' in obj) {
+      members = obj.members;
+    }
+
+    await this.webService.import({
+      privacy,
+      fields,
+      folders,
+      members,
+      truncate: flags.truncate,
+    });
+  }
 
   async importFromSimplyPlural(input: string, flags: ImportFlags) {
     const obj = JSON.parse(input);
 
     let privacy: any[] | null = null;
-    if (flags.privacyBuckets) {
+    if (flags.privacyBuckets && 'privacyBuckets' in obj) {
       privacy = await this.importPrivacyBuckets(obj.privacyBuckets);
     }
 
     let fields: any[] | null = null;
-    if (flags.customFields) {
+    if (flags.customFields && 'customFields' in obj) {
       fields = await this.importCustomFields(obj.customFields);
     }
 
     let folders: any[] | null = null;
-    if (flags.folders) {
+    if (flags.folders && 'groups' in obj) {
       folders = await this.importFolders(obj.groups);
     }
 
     let members: any[] | null = null;
-    if (flags.members) {
+    if (flags.members && 'members' in obj && 'groups' in obj) {
       members = await this.importMembers(obj.members, obj.groups, flags);
     }
 
-    if (flags.customFront) {
+    if (flags.customFront && 'frontStatuses' in obj) {
       const customFront = await this.importCustomFront(obj.frontStatuses);
 
       if (members) {
