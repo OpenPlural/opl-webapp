@@ -47,6 +47,9 @@ export class CurrentFrontNotifyService {
       tag: 'current-front',
       icon: '/icons/icon192.png',
       badge: '/icons/icon-transparent.png',
+      data: {
+        kind: 'current-front'
+      },
       silent: true,
       // @ts-ignore
       renotify: false,
