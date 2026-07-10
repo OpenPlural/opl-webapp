@@ -19,7 +19,7 @@ import { SettingsService } from '../../../services/SettingsService';
 import { truncateCurrentDate } from '../../../util/DateTruncate';
 import { ColorInput } from '../../../components/color-input/color-input';
 import {MarkdownBox} from "../../../components/markdown-box/markdown-box";
-import {Folder, FolderId} from '../../../services/model/Folder';
+import {Folder} from '../../../services/model/Folder';
 import {compareCustomSort} from '../../../util/CustomSort';
 
 @Component({
