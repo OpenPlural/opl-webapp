@@ -24,6 +24,7 @@ export class Dashboard implements OnInit {
   private readonly webService = inject(WebService);
 
   protected readonly update = signal<string | null>(null);
+  protected readonly updating = signal<boolean>(false);
 
   protected readonly username = computed(() => this.accountService.account()?.user.name || null);
   protected readonly avatarUrl = computed(() => this.accountService.account()?.user.avatar || null);
@@ -45,6 +46,18 @@ export class Dashboard implements OnInit {
     //if (!this.syncPending() || this.syncRunning()) return;
 
     await this.syncService.fullSync();
+  }
+
+  protected async triggerUpdate() {
+    this.updating.set(true);
+    if ('serviceWorker' in navigator) {
+      const registration = await navigator.serviceWorker.getRegistration();
+
+      if (registration) {
+        await registration.update();
+      }
+    }
+    window.location.reload();
   }
 
   protected readonly VERSION = VERSION;
