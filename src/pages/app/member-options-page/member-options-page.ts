@@ -6,6 +6,7 @@ import { WebService } from '../../../services/WebService';
 import { PrivacyBucketList } from '../../../components/privacy-bucket-list/privacy-bucket-list';
 import { TranslatePipe } from '@ngx-translate/core';
 import { SettingsService } from '../../../services/SettingsService';
+import {compareCustomSort} from '../../../util/CustomSort';
 
 @Component({
   selector: 'app-member-options-page',
@@ -42,12 +43,26 @@ export class MemberOptionsPage {
     const privacyIds = this.privacyIds();
     for (const id of ids) {
       if (!privacyIds.includes(id)) {
-        await this.webService.addPrivacyBucketMember(id, member);
+        const bucket = await this.webService.addPrivacyBucketMember(id, member);
+        this.privacy.update(buckets => {
+          if (buckets) {
+            return [...buckets, bucket].sort(compareCustomSort);
+          } else {
+            return [bucket];
+          }
+        });
       }
     }
     for (const id of privacyIds) {
       if (!ids.includes(id)) {
         await this.webService.removePrivacyBucketMember(id, member);
+        this.privacy.update(buckets => {
+          if (buckets) {
+            return buckets.filter((b) => b.id !== id);
+          } else {
+            return null;
+          }
+        });
       }
     }
     await this.loadPrivacy();

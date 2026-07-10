@@ -12,6 +12,7 @@ import { EditPageContainer } from '../../../components/container/edit-page-conta
 import { Location } from '@angular/common';
 import { toColor } from '../../../util/ColorConvert';
 import { PrivacyBucketList } from '../../../components/privacy-bucket-list/privacy-bucket-list';
+import {compareCustomSort} from '../../../util/CustomSort';
 
 @Component({
   selector: 'app-friend-settings-page',
@@ -75,18 +76,32 @@ export class FriendSettingsPage {
   }
 
   protected async updatePrivacy(ids: PrivacyBucketId[]) {
-    const folderId = this.id();
-    if (!folderId) return;
+    const friendId = this.id();
+    if (!friendId) return;
 
     const privacyIds = this.privacy()?.map((bucket) => bucket.id) || [];
     for (const id of ids) {
       if (!privacyIds.includes(id)) {
-        await this.webService.addPrivacyBucketFriend(id, folderId);
+        const bucket = await this.webService.addPrivacyBucketFriend(id, friendId);
+        this.privacy.update(buckets => {
+          if (buckets) {
+            return [...buckets, bucket].sort(compareCustomSort);
+          } else {
+            return [bucket];
+          }
+        });
       }
     }
     for (const id of privacyIds) {
       if (!ids.includes(id)) {
-        await this.webService.removePrivacyBucketFriend(id, folderId);
+        await this.webService.removePrivacyBucketFriend(id, friendId);
+        this.privacy.update(buckets => {
+          if (buckets) {
+            return buckets.filter((b) => b.id !== id);
+          } else {
+            return null;
+          }
+        });
       }
     }
     await this.loadPrivacy();

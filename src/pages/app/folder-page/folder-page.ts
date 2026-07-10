@@ -19,6 +19,7 @@ import { SettingsService } from '../../../services/SettingsService';
 import { truncateCurrentDate } from '../../../util/DateTruncate';
 import { ColorInput } from '../../../components/color-input/color-input';
 import {MarkdownBox} from "../../../components/markdown-box/markdown-box";
+import {compareCustomSort} from '../../../util/CustomSort';
 
 @Component({
   selector: 'app-folder-page',
@@ -100,12 +101,26 @@ export class FolderPage implements OnInit {
     const privacyIds = this.privacyIds();
     for (const id of ids) {
       if (!privacyIds.includes(id)) {
-        await this.webService.addPrivacyBucketFolder(id, folder);
+        const bucket = await this.webService.addPrivacyBucketFolder(id, folder);
+        this.privacy.update(buckets => {
+          if (buckets) {
+            return [...buckets, bucket].sort(compareCustomSort);
+          } else {
+            return [bucket];
+          }
+        });
       }
     }
     for (const id of privacyIds) {
       if (!ids.includes(id)) {
         await this.webService.removePrivacyBucketFolder(id, folder);
+        this.privacy.update(buckets => {
+          if (buckets) {
+            return buckets.filter((b) => b.id !== id);
+          } else {
+            return null;
+          }
+        });
       }
     }
     await this.loadPrivacy();
