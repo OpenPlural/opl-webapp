@@ -41,7 +41,7 @@
     @let update = this.update();
     <div class="text-base-content/70 text-center">
       @if (update) {
-        <button class="btn btn-primary">
+        <button class="btn btn-primary" (click)="triggerUpdate()">
           @if (updating()) {
             <i class="loading loading-spinner"></i>
           }
