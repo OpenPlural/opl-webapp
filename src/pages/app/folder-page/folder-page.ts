@@ -92,7 +92,7 @@ export class FolderPage implements OnInit {
 
     this.loadingPrivacy.set(true);
     const privacy = await this.webService.getFolderPrivacy(folder);
-    this.privacy.set(privacy);
+    this.privacy.set(privacy.sort(compareCustomSort));
   }
 
   protected async updatePrivacy(ids: PrivacyBucketId[]) {

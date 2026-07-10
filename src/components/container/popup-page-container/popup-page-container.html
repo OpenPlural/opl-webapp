@@ -1,6 +1,6 @@
 <app-page-container [footer]="footer()">
-  <header class="h-full flex justify-between">
-    <div class="flex justify-start">
+  <header class="navbar">
+    <div class="flex-none inline-flex justify-start">
       <app-vertical-center>
         <app-icon-button name="actions.close" icon="fa-times" (action)="goBack()" />
       </app-vertical-center>
@@ -8,8 +8,17 @@
         {{title()}}
       </app-vertical-center>
     </div>
-    <div class="flex justify-end">
+    <div class="flex-1"></div>
+    @let searching = this.searching();
+    <div class="flex-none flex items-center md:left-auto md:right-auto md:relative" [ngClass]="{'left-1/2': searching, 'right-0': searching, 'absolute': searching}">
       <ng-content select=".header-buttons"></ng-content>
+      @if (searchable()) {
+        @if (searching) {
+          <ng-content select=".search-options"></ng-content>
+          <input type="search" class="grow input" (input)="search.emit($any($event).target.value)">
+        }
+        <app-toggle-icon-button name="actions.search" icon="fa-search" size="" [toggled]="searching" (toggle)="toggleSearch()"/>
+      }
     </div>
   </header>
   <div ngProjectAs="main">
