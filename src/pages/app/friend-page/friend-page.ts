@@ -44,6 +44,7 @@ export class FriendPage {
   protected readonly user = signal<ExtendedUserInfo | null>(null);
   protected readonly selectedTab = signal<'account' | 'members'>('account');
   protected readonly searchQuery = signal<string | null>(null);
+  protected readonly searchArchived = signal<boolean>(false);
 
   protected readonly members = computed(() => this.user()?.members?.filter((m) => !m.custom) || []);
   protected readonly fronters = computed(() => {
@@ -102,5 +103,9 @@ export class FriendPage {
 
   protected gotoFriendSettings() {
     this.router.navigate(['app', 'friend', this.id(), 'settings']);
+  }
+
+  protected toggleSearchArchived() {
+    this.searchArchived.update((b) => !b);
   }
 }

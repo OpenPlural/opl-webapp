@@ -1,9 +1,16 @@
 @let user = this.user();
-<app-popup-page-container [footer]="user ? user.user.system : false" [title]="user ? user.user.name : ''">
-  <app-vertical-center class="header-buttons">
-    <app-icon-button name="navigation.friendSettings" icon="fa-cog" (click)="gotoFriendSettings()" />
-  </app-vertical-center>
-  @let tab = selectedTab();
+@let tab = this.selectedTab();
+<app-popup-page-container [footer]="user ? user.user.system : false" [title]="user ? user.user.name : ''" [searchable]="tab === 'members'" (search)="searchQuery.set($event)">
+  @if (tab === 'account') {
+    <app-vertical-center class="header-buttons">
+      <app-icon-button name="navigation.friendSettings" icon="fa-cog" (click)="gotoFriendSettings()" />
+    </app-vertical-center>
+  }
+  <div class="search-options">
+    <app-vertical-center>
+      <app-toggle-icon-button name="members.labels.archived" icon="fa-archive" [toggled]="searchArchived()" (toggle)="toggleSearchArchived()" />
+    </app-vertical-center>
+  </div>
   <main>
     @if (user) {
       @if (tab === 'account') {
@@ -43,7 +50,8 @@
         }
       } @else if (tab === 'members') {
         @if (user.folders && user.members) {
-          <app-member-folder-view [friendId]="user.user.id" [folders]="user.folders" [members]="members()" [searchQuery]="searchQuery()" [archived]="false" [editable]="false" [custom]="false" (selectMember)="gotoMemberPage($event)" />
+          <app-member-folder-view [friendId]="user.user.id" [folders]="user.folders" [members]="members()" [searchQuery]="searchQuery()"
+                                  [archived]="searchArchived()" [editable]="false" [custom]="false" (selectMember)="gotoMemberPage($event)" />
         } @else {
           <div class="text-center mt-5">
             {{'friends.labels.permissions.denied.members' | translate}}
