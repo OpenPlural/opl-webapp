@@ -12,6 +12,7 @@ import { EditPageContainer } from '../../../components/container/edit-page-conta
 import { Location } from '@angular/common';
 import { toColor } from '../../../util/ColorConvert';
 import { PrivacyBucketList } from '../../../components/privacy-bucket-list/privacy-bucket-list';
+import {compareCustomSort} from '../../../util/CustomSort';
 
 @Component({
   selector: 'app-friend-settings-page',
@@ -71,7 +72,7 @@ export class FriendSettingsPage {
     if (!id) return;
 
     const privacy = await this.webService.getFriendPrivacy(id);
-    this.privacy.set(privacy);
+    this.privacy.set(privacy.sort(compareCustomSort));
   }
 
   protected async updatePrivacy(ids: PrivacyBucketId[]) {

@@ -15,6 +15,7 @@ import { CUSTOM_FIELD_DATA_TYPES } from '../../../services/model/Field';
 import { PrivacyBucketId, SimplePrivacyBucket } from '../../../services/model/Privacy';
 import { openDialog } from '../../../util/CommonFunctions';
 import { truncateCurrentDate } from '../../../util/DateTruncate';
+import {compareCustomSort} from '../../../util/CustomSort';
 
 @Component({
   selector: 'app-custom-field-page',
@@ -51,7 +52,7 @@ export class CustomFieldPage {
 
     this.loadingPrivacy.set(true);
     const privacy = await this.webService.getCustomFieldPrivacy(customField);
-    this.privacy.set(privacy);
+    this.privacy.set(privacy.sort(compareCustomSort));
   }
 
   protected async updatePrivacy(ids: PrivacyBucketId[]) {

@@ -19,6 +19,7 @@ import { SettingsService } from '../../../services/SettingsService';
 import { truncateCurrentDate } from '../../../util/DateTruncate';
 import { ColorInput } from '../../../components/color-input/color-input';
 import {MarkdownBox} from "../../../components/markdown-box/markdown-box";
+import {compareCustomSort} from '../../../util/CustomSort';
 
 @Component({
   selector: 'app-folder-page',
@@ -90,7 +91,7 @@ export class FolderPage implements OnInit {
 
     this.loadingPrivacy.set(true);
     const privacy = await this.webService.getFolderPrivacy(folder);
-    this.privacy.set(privacy);
+    this.privacy.set(privacy.sort(compareCustomSort));
   }
 
   protected async updatePrivacy(ids: PrivacyBucketId[]) {

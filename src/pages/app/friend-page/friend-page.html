@@ -50,8 +50,8 @@
         }
       } @else if (tab === 'members') {
         @if (user.folders && user.members) {
-          <app-member-folder-view [friendId]="user.user.id" [folders]="user.folders" [members]="user.members" [searchQuery]="searchQuery()"
-                                  [archived]="searchArchived()"  [editable]="false" [custom]="false" (selectMember)="gotoMemberPage($event)" />
+          <app-member-folder-view [friendId]="user.user.id" [folders]="user.folders" [members]="members()" [searchQuery]="searchQuery()"
+                                  [archived]="searchArchived()" [editable]="false" [custom]="false" (selectMember)="gotoMemberPage($event)" />
         } @else {
           <div class="text-center mt-5">
             {{'friends.labels.permissions.denied.members' | translate}}

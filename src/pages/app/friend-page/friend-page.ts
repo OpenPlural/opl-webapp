@@ -46,6 +46,7 @@ export class FriendPage {
   protected readonly searchQuery = signal<string | null>(null);
   protected readonly searchArchived = signal<boolean>(false);
 
+  protected readonly members = computed(() => this.user()?.members?.filter((m) => !m.custom) || []);
   protected readonly fronters = computed(() => {
     const user = this.user();
     if (!user || !user.members || !user.front) return [];
