@@ -94,7 +94,9 @@
     "sessions": "Sitzungen",
     "accountSettings": "Kontoeinstellungen",
     "options": "Optionen",
-    "dataImport": "Importieren",
+    "dataImport": "Import",
+    "dataExport": "Export",
+    "dataImportExport": "Import & Export",
     "massDelete": "Massenlöschung",
     "legal": "Legales",
     "setup": "Einrichtung"
@@ -338,8 +340,12 @@
     }
   },
   "dataImport": {
+    "actions": {
+      "import": "Importieren"
+    },
     "labels": {
       "simplyPlural": "Von Simply Plural importieren",
+      "openPlural": "Von Open Plural importieren",
       "file": "Datei (.json)",
       "flags": "Optionen",
       "folders": "Ordner importieren",
@@ -348,6 +354,16 @@
       "customFields": "Benutzerdefinierte Felder importieren",
       "privacyBuckets": "Privatsphäre-Buckets importieren",
       "truncate": "Alles kürzen, was zu lang ist"
+    }
+  },
+  "dataExport": {
+    "actions": {
+      "export": "Exportieren"
+    },
+    "labels": {
+      "openPlural": "Nach Open Plural exportieren",
+      "text": "Der Datenexport ist dafür gedacht, dass du eine Kopie deiner Daten hast. Du kannst sie zurück nach Open Plural importieren oder in anderen Applikationen verwenden.",
+      "cooldown": "Du kannst deine Daten einmal alle 6 Stunden exportieren."
     }
   },
   "massDelete": {
