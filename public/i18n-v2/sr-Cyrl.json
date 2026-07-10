@@ -3,6 +3,7 @@
     "name": "Open Plural",
     "loading": "Open Plural се учитава, молим Вас да чекајте…",
     "language": "Изаберите свој језик",
+    "update": "Ажурирај на {version}",
     "version": "Верзија {version}"
   },
   "sync": {

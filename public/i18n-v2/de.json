@@ -3,6 +3,7 @@
     "name": "Open Plural",
     "loading": "Open Plural lädt, bitte warten…",
     "language": "Wähle deine Sprache",
+    "update": "Aktualisiere auf {version}",
     "version": "Version {version}"
   },
   "sync": {

@@ -38,8 +38,16 @@
       }
       <app-dashboard-button name="navigation.legal" icon="fa-gavel" link="legal" />
     </div>
+    @let update = this.update();
     <div class="text-base-content/70 text-center">
       {{'app.version' | translate:{version: VERSION} }}
+      @if (update) {
+        <button class="btn btn-primary">
+          {{'app.update' | translate:{version: update} }}
+        </button>
+      } @else {
+        {{'app.version' | translate:{version: VERSION} }}
+      }
     </div>
   </main>
 </app-nav-page-container>
