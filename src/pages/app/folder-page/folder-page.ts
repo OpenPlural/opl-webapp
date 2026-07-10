@@ -19,6 +19,7 @@ import { SettingsService } from '../../../services/SettingsService';
 import { truncateCurrentDate } from '../../../util/DateTruncate';
 import { ColorInput } from '../../../components/color-input/color-input';
 import {MarkdownBox} from "../../../components/markdown-box/markdown-box";
+import {Folder, FolderId} from '../../../services/model/Folder';
 import {compareCustomSort} from '../../../util/CustomSort';
 
 @Component({
@@ -123,7 +124,27 @@ export class FolderPage implements OnInit {
         });
       }
     }
-    await this.loadPrivacy();
+
+    if (this.localStorageService.folders().find((f) => f.parentId === folder.id)) {
+      openDialog('folderPrivacyRecursive');
+    }
+  }
+
+  protected async updateRecursivePrivacy(): Promise<void> {
+    const folder = this.folder();
+    if (!folder) return;
+
+    await this.updateRecursivePrivacy0(this.privacyIds(), folder);
+  }
+
+  private async updateRecursivePrivacy0(ids: PrivacyBucketId[], folder: Folder): Promise<void> {
+    if (!folder.remoteId) return;
+
+    const childFolders = this.localStorageService.folders().filter((f) => f.parentId === folder.id);
+    for (const childFolder of childFolders) {
+      await this.webService.setFolderPrivacy(ids, childFolder);
+      await this.updateRecursivePrivacy0(ids, childFolder);
+    }
   }
 
   protected colorSelected(color: bigint) {

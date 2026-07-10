@@ -176,6 +176,10 @@ export class WebService {
     return translatePrivacyBucket(this.localStorageService, bucket, 'id');
   }
 
+  async setFolderPrivacy(ids: PrivacyBucketId[], folder: Folder): Promise<void> {
+    await firstValueFrom(this.http.post(`${BASE_URL}/api/v1/folder/${folder.remoteId}/privacy`, ids));
+  }
+
   async addPrivacyBucketFolder(privacyBucketId: PrivacyBucketId, folder: Folder): Promise<SimplePrivacyBucket> {
     return firstValueFrom(this.http.put<SimplePrivacyBucket>(`${BASE_URL}/api/v1/privacy/${privacyBucketId}/folder/${folder.remoteId}`, {}));
   }
