@@ -3,6 +3,7 @@
     "name": "Open Plural",
     "loading": "Open Plural se učitava, molim Vas da čekajte…",
     "language": "Izaberite svoj jezik",
+    "update": "Ažuriraj na {version}",
     "version": "Verzija {version}"
   },
   "sync": {
@@ -94,6 +95,8 @@
     "accountSettings": "Podešavanja za nalog",
     "options": "Opcije",
     "dataImport": "Uvoz",
+    "dataExport": "Izvoz",
+    "dataImportExport": "Uvoz & Izvoz",
     "massDelete": "Masovno brisanje",
     "legal": "Pravno",
     "setup": "Podešavanje"
@@ -337,8 +340,12 @@
     }
   },
   "dataImport": {
+    "actions": {
+      "import": "Uvezi"
+    },
     "labels": {
       "simplyPlural": "Uvezi iz Simply Plural",
+      "openPlural": "Uvezi iz Open Plural",
       "file": "Fajl (.json)",
       "flags": "Opcije",
       "folders": "Uvezi fascikle",
@@ -347,6 +354,16 @@
       "customFields": "Uvezi prilagođena polja",
       "privacyBuckets": "Uvezi kante za privatnost",
       "truncate": "Skrati sve što je predugo"
+    }
+  },
+  "dataExport": {
+    "actions": {
+      "export": "Izvezi"
+    },
+    "labels": {
+      "openPlural": "Izvezi u Open Plural",
+      "text": "Izvoz podataka je namenjen da imate kopiju svojih podataka. Možete ih ponovo uvesti u Open Plural ili koristiti u drugim aplikacijama.",
+      "cooldown": "Možete izvesti svoje podatke jednom svakih 6 sati."
     }
   },
   "massDelete": {

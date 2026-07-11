@@ -1,7 +1,9 @@
-import {Component, inject, signal} from '@angular/core';
+import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
 import {NavPageContainer} from '../../../components/container/nav-page-container/nav-page-container';
 import {TranslatePipe} from '@ngx-translate/core';
-import {ImportFlags, SPImportService} from '../../../services/SPImportService';
+import {ImportFlags, ImportService} from '../../../services/ImportService';
+import {Subscription} from 'rxjs';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-data-import',
@@ -11,10 +13,25 @@ import {ImportFlags, SPImportService} from '../../../services/SPImportService';
   ],
   templateUrl: './data-import.html',
 })
-export class DataImport {
-  private readonly importService = inject(SPImportService);
+export class DataImport implements OnInit, OnDestroy {
+  private readonly route = inject(ActivatedRoute);
+  private readonly importService = inject(ImportService);
 
+  private readonly subscription = signal<Subscription | null>(null);
+  protected readonly importFormat = signal<string | null>(null);
   protected readonly importing = signal<boolean>(false);
+
+  ngOnInit() {
+    this.subscription.set(
+      this.route.data.subscribe((data) => {
+        this.importFormat.set(data['format']);
+      }),
+    );
+  }
+
+  ngOnDestroy() {
+    this.subscription()?.unsubscribe();
+  }
 
   protected importData(event: SubmitEvent) {
     event.preventDefault();
@@ -50,7 +67,14 @@ export class DataImport {
 
     try {
       this.importing.set(true);
-      await this.importService.importFromSimplyPlural(fileContent, flags);
+      switch (this.importFormat()) {
+        case 'simplyPlural':
+          await this.importService.importFromSimplyPlural(fileContent, flags);
+          break;
+        case 'openPlural':
+          await this.importService.importFromOpenPlural(fileContent, flags);
+          break;
+      }
       location.reload();
     } finally {
       this.importing.set(false);

@@ -1,0 +1,22 @@
+<app-nav-page-container>
+  <main>
+    <div class="divider">{{'navigation.dataImport' | translate}}</div>
+    <div class="grid md:grid-cols-2 grid-cols-1 gap-2 m-2">
+      <button class="btn btn-soft text-xl" (click)="import('openPlural')">
+        <i class="fa fa-download"></i>
+        {{'dataImport.labels.openPlural' | translate}}
+      </button>
+      <button class="btn btn-soft text-xl" (click)="import('simplyPlural')">
+        <i class="fa fa-download"></i>
+        {{'dataImport.labels.simplyPlural' | translate}}
+      </button>
+    </div>
+    <div class="divider">{{'navigation.dataExport' | translate}}</div>
+    <div class="grid md:grid-cols-2 grid-cols-1 gap-2 m-2">
+      <button class="btn btn-soft text-xl" (click)="export('openPlural')">
+        <i class="fa fa-download"></i>
+        {{'dataExport.labels.openPlural' | translate}}
+      </button>
+    </div>
+  </main>
+</app-nav-page-container>

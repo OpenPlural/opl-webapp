@@ -4,6 +4,7 @@ import { PrivacyBucket, PrivacyBucketId } from '../../../services/model/Privacy'
 import { PrivacyBucketListItem } from '../../list-item/privacy-bucket-list-item/privacy-bucket-list-item';
 import { WebService } from '../../../services/WebService';
 import { Loading } from '../../loading/loading';
+import {compareCustomSort} from '../../../util/CustomSort';
 
 @Component({
   selector: 'app-privacy-bucket-selector',
@@ -24,7 +25,7 @@ export class PrivacyBucketSelector implements OnInit {
 
   ngOnInit() {
     this.webService.getPrivacyBuckets().then((buckets) => {
-      this.buckets.set(buckets);
+      this.buckets.set(buckets.sort(compareCustomSort));
     });
 
     this.updatedSelection.set(this.selection());

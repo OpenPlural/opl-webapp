@@ -52,7 +52,7 @@ export class CustomFieldPage {
 
     this.loadingPrivacy.set(true);
     const privacy = await this.webService.getCustomFieldPrivacy(customField);
-    this.privacy.set(privacy);
+    this.privacy.set(privacy.sort(compareCustomSort));
   }
 
   protected async updatePrivacy(ids: PrivacyBucketId[]) {

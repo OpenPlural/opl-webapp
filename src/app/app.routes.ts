@@ -22,7 +22,9 @@ import {Setup} from '../pages/app/setup/setup';
 import {Sessions} from '../pages/app/sessions/sessions';
 import {FrontHistoryPage} from '../pages/app/front-history-page/front-history-page';
 import {ApiKeys} from '../pages/app/api-keys/api-keys';
+import {DataImportExport} from '../pages/app/data-import-export/data-import-export';
 import {DataImport} from '../pages/app/data-import/data-import';
+import {DataExport} from '../pages/app/data-export/data-export';
 import {MassDelete} from '../pages/app/mass-delete/mass-delete';
 import {ResetPassword} from '../pages/reset-password/reset-password';
 
@@ -97,9 +99,21 @@ export const appRoutes: Routes = [
     component: Options,
     data: { name: 'navigation.options' }
   }, {
-    path: 'data-import',
+    path: 'data-import-export',
+    component: DataImportExport,
+    data: { name: 'navigation.dataImportExport' }
+  }, {
+    path: 'data-import/simplyPlural',
     component: DataImport,
-    data: { name: 'navigation.dataImport' }
+    data: { name: 'navigation.dataImport', format: 'simplyPlural' }
+  }, {
+    path: 'data-import/openPlural',
+    component: DataImport,
+    data: { name: 'navigation.dataImport', format: 'openPlural' }
+  }, {
+    path: 'data-export/openPlural',
+    component: DataExport,
+    data: { name: 'navigation.dataExport', format: 'openPlural' }
   }, {
     path: 'mass-delete',
     component: MassDelete,

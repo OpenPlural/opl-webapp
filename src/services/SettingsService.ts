@@ -6,10 +6,12 @@ import { Router } from '@angular/router';
 import { hookOnDataDeletion } from '../util/LocalDataDeletion';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {UTCDate} from '@date-fns/utc';
+import {Location} from '@angular/common';
 
 @Injectable({providedIn: 'root'})
 export class SettingsService {
   private readonly translate = inject(TranslateService);
+  private readonly location = inject(Location);
   private readonly router = inject(Router);
 
   private readonly timeAm = toSignal<string>(this.translate.getStreamOnTranslationChange('format.time.am'), {
@@ -36,7 +38,7 @@ export class SettingsService {
     this.storage = signal(settings);
     this.settings = this.storage.asReadonly();
     this.translate.use(settings.language);
-    if (settings.defaultRoute !== '') {
+    if (settings.defaultRoute !== '' && this.location.path() === '') {
       this.router.navigate(['app', settings.defaultRoute]);
     }
 

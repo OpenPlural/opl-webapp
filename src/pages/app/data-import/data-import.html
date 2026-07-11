@@ -1,7 +1,7 @@
 <app-nav-page-container>
   <main>
-    <form id="importSPForm" class="mx-2 mt-2" (submit)="importData($event)">
-      <h3 class="text-center text-lg font-bold">{{'dataImport.labels.simplyPlural' | translate}}</h3>
+    <form id="importForm" class="mx-2 mt-2" (submit)="importData($event)">
+      <h3 class="text-center text-lg font-bold">{{'dataImport.labels.' + importFormat() | translate}}</h3>
       <fieldset class="fieldset">
         <legend class="fieldset-legend">{{'dataImport.labels.file' | translate}}</legend>
         <input name="file" type="file" accept="application/json" class="w-full file-input" />

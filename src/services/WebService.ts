@@ -33,6 +33,11 @@ export class WebService {
   private readonly http = inject(HttpClient);
   private readonly localStorageService = inject(LocalStorageService);
 
+  async getNewestVersion(): Promise<string> {
+    const update = await firstValueFrom(this.http.get<{version: string}>(`${BASE_URL}/app-update`));
+    return update.version;
+  }
+
   async register(username: string, password: string, system: boolean): Promise<void> {
     await firstValueFrom(this.http.post(`${BASE_URL}/auth/register`, { name: username, password, system }));
   }
@@ -319,6 +324,10 @@ export class WebService {
 
   async import(data: any) {
     await firstValueFrom(this.http.post(`${BASE_URL}/api/v1/import/`, data));
+  }
+
+  async export(): Promise<any> {
+    return firstValueFrom(this.http.post(`${BASE_URL}/api/v1/export/`, {}));
   }
 }
 
