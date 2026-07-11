@@ -5,6 +5,20 @@ importScripts('./ngsw-worker.js');
 (function () {
   'use strict';
 
+  self.addEventListener('message', (event) => {
+    if (event.data?.type === 'SKIP_WAITING') {
+      self.skipWaiting();
+    }
+  });
+
+  self.addEventListener('activate', (event) => {
+    if (caches) {
+      event.waitUntil(
+        caches.keys().then((keys) => Promise.all(keys.map((key) => caches.delete(key))))
+      );
+    }
+  });
+
   self.addEventListener('push', (event) => {
     if (event.data) {
       const data = event.data.json();

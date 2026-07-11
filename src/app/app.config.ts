@@ -31,6 +31,7 @@ export const appConfig: ApplicationConfig = {
     provideServiceWorker('ext-sw.js', {
       enabled: !isDevMode(),
       registrationStrategy: 'registerWhenStable:30000',
+      updateViaCache: 'none',
     }),
   ],
 };
