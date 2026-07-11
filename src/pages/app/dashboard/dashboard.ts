@@ -49,15 +49,41 @@ export class Dashboard implements OnInit {
   }
 
   protected async triggerUpdate() {
-    this.updating.set(true);
-    if ('serviceWorker' in navigator) {
-      const registration = await navigator.serviceWorker.getRegistration();
+    try {
+      this.updating.set(true);
+      if ('serviceWorker' in navigator) {
+        const registration = await navigator.serviceWorker.getRegistration();
 
-      if (registration) {
-        await registration.update();
+        if (registration) {
+          await registration.update();
+
+          await new Promise<void>((resolve) => {
+            const onControllerChange = () => {
+              navigator.serviceWorker.removeEventListener('controllerchange', onControllerChange);
+              resolve();
+            };
+
+            navigator.serviceWorker.addEventListener('controllerchange', onControllerChange);
+
+            if (registration.waiting) {
+              registration.waiting.postMessage({
+                type: 'SKIP_WAITING',
+              })
+            }
+
+            setTimeout(() => {
+              navigator.serviceWorker.removeEventListener('controllerchange', onControllerChange);
+              resolve();
+            }, 10000);
+          });
+
+          await navigator.serviceWorker.ready;
+          window.location.reload();
+        }
       }
+    } finally {
+      this.updating.set(false);
     }
-    window.location.reload();
   }
 
   protected readonly VERSION = VERSION;
