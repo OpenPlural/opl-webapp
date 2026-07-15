@@ -4,6 +4,8 @@ import {Location, NgClass} from '@angular/common';
 import { IconButton } from '../../icon-button/icon-button';
 import { VerticalCenter } from '../../vertical-center/vertical-center';
 import {ToggleIconButton} from '../../toggle-icon-button/toggle-icon-button';
+import { RouteHistoryService } from '../../../services/RouteHistoryService';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-popup-page-container',
@@ -12,6 +14,8 @@ import {ToggleIconButton} from '../../toggle-icon-button/toggle-icon-button';
 })
 export class PopupPageContainer {
   private readonly location = inject(Location);
+  private readonly router = inject(Router);
+  private readonly routeHistoryService = inject(RouteHistoryService);
 
   readonly title = input.required<string>();
   readonly footer = input<boolean>(false);
@@ -30,6 +34,10 @@ export class PopupPageContainer {
   }
 
   protected goBack() {
-    this.location.back();
+    if (this.routeHistoryService.getPreviousUrl()) {
+      this.location.back();
+    } else {
+      this.router.navigate(['app'], {replaceUrl: true});
+    }
   }
 }
