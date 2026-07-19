@@ -34,6 +34,15 @@ export class App implements OnInit {
 
   protected readonly ready = computed(() => this.storagePersistRequested() && this.initialSyncDone() && this.localStorageService.ready());
   protected readonly toasts = computed(() => this.toastService.toasts());
+  protected readonly languageCode = computed(() => {
+    const lang = this.settingsService.settings().language;
+    const languages = getLanguages();
+    const language = languages.find((l) => l.id === lang);
+    if (language && 'code' in language) {
+      return language.code as string;
+    }
+    return;
+  });
 
   constructor() {
     hookOnDataDeletion(async () => {
