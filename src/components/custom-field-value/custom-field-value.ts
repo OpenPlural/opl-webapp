@@ -15,6 +15,7 @@ import { nullableField } from '../../util/NullString';
 import { IconButton } from '../icon-button/icon-button';
 import { VerticalCenter } from '../vertical-center/vertical-center';
 import {MarkdownBox} from '../markdown-box/markdown-box';
+import { truncateDateToInputValue } from '../../util/DateTruncate';
 
 @Component({
   selector: 'app-custom-field-value',
@@ -66,7 +67,7 @@ export class CustomFieldValue {
     const value = this.value();
     if (!value) return null;
 
-    return new Date(parseInt(value.value)).toISOString().substring(0, 16);
+    return truncateDateToInputValue(new Date(parseInt(value.value)));
   });
   protected readonly dateTimeFormatted = computed(() => {
     const field = this.field();
