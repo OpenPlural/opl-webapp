@@ -3,24 +3,7 @@
 @if (frontHistory) {
   @for (frontEntry of frontHistory; track frontEntry.id) {
     <div class="border rounded-lg bg-base-100 p-2 mb-2">
-      <div class="flex flex-row justify-between w-full">
-        <span>{{formatDate(frontEntry.startedAt)}}</span>
-        @if (frontEntry.endedAt) {
-          <span>{{formatDate(frontEntry.endedAt)}}</span>
-        }
-      </div>
-      <div class="mt-1.5 text-center">
-        @if (frontEntry.endedAt) {
-          {{getDuration(frontEntry.startedAt, frontEntry.endedAt)}}
-        } @else {
-          {{'front.labels.history.ongoing' | translate}}
-        }
-      </div>
-      @if (frontEntry.comment) {
-        <div class="text-center">
-          {{frontEntry.comment}}
-        </div>
-      }
+      <app-historic-front-entry [frontEntry]="frontEntry" />
     </div>
   }
 

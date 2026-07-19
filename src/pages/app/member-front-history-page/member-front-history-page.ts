@@ -3,17 +3,15 @@ import { Member } from '../../../services/model/Member';
 import { FrontEntry } from '../../../services/model/Front';
 import { WebService } from '../../../services/WebService';
 import { Loading } from '../../../components/loading/loading';
-import { SettingsService } from '../../../services/SettingsService';
 import { TranslatePipe } from '@ngx-translate/core';
-import { formatDuration } from '../../../util/Duration';
+import { HistoricFrontEntry } from '../../../components/historic-front-entry/historic-front-entry.component';
 
 @Component({
   selector: 'app-member-front-history-page',
-  imports: [Loading, TranslatePipe],
+  imports: [Loading, TranslatePipe, HistoricFrontEntry],
   templateUrl: './member-front-history-page.html',
 })
 export class MemberFrontHistoryPage implements OnInit {
-  private readonly settingsService = inject(SettingsService);
   private readonly webService = inject(WebService);
 
   readonly member = input.required<Member>();
@@ -48,16 +46,5 @@ export class MemberFrontHistoryPage implements OnInit {
     } finally {
       this.loadingMore.set(false);
     }
-  }
-
-  protected formatDate(date: string): string {
-    return this.settingsService.formatDate(Date.parse(date), 'DateTime');
-  }
-
-  protected getDuration(startedAt: string, endedAt: string): string {
-    const start = Date.parse(startedAt);
-    const end = Date.parse(endedAt);
-    const duration = end - start;
-    return formatDuration(duration);
   }
 }

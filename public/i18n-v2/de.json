@@ -159,6 +159,8 @@
       "comment": "Benutzerdefinierter Status (z.B. Co-fronting)",
       "current": "Aktuelle Fronter",
       "time": "Zeit",
+      "startTime": "Startzeit",
+      "endTime": "Endzeit",
       "history": {
         "ongoing": "Aktuell",
         "noMoreEntries": "Keine weiteren Einträge"

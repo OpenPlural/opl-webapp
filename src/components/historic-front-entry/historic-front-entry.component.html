@@ -1,0 +1,43 @@
+@let frontEntry = this.frontEntry();
+<div class="flex flex-row justify-between w-full">
+  <span>{{formatDate(frontEntry.startedAt)}}</span>
+  <app-icon-button name="front.actions.changeTime" icon="fa-clock-o" (action)="openDialog('historicFrontTimePrompt-' + frontEntry.id)" />
+  @if (frontEntry.endedAt) {
+    <span>{{formatDate(frontEntry.endedAt)}}</span>
+  }
+</div>
+<div class="text-center">
+  @if (frontEntry.endedAt) {
+    {{getDuration(frontEntry.startedAt, frontEntry.endedAt)}}
+  } @else {
+    {{'front.labels.history.ongoing' | translate}}
+  }
+</div>
+@if (frontEntry.comment) {
+  <div class="text-center">
+    {{frontEntry.comment}}
+  </div>
+}
+
+<dialog [id]="'historicFrontTimePrompt-' + frontEntry.id" class="modal">
+  <div class="modal-box">
+    <h3 class="text-lg font-bold">{{'front.actions.changeTime' | translate}}</h3>
+    <form method="dialog" class="w-full" (submit)="updateFrontTime($event)">
+      <fieldset class="fieldset">
+        <legend class="fieldset-legend">{{'front.labels.startTime' | translate}}</legend>
+        <input name="startTime" type="datetime-local" class="input w-full" [value]="startTimeValue()">
+      </fieldset>
+      @let endTimeValue = this.endTimeValue();
+      @if (endTimeValue) {
+        <fieldset class="fieldset">
+          <legend class="fieldset-legend">{{'front.labels.endTime' | translate}}</legend>
+          <input name="endTime" type="datetime-local" class="input w-full" [value]="endTimeValue">
+        </fieldset>
+      }
+      <button type="submit" class="mx-auto mt-5 block btn btn-success">{{'actions.confirm' | translate}}</button>
+    </form>
+  </div>
+  <form method="dialog" class="modal-backdrop">
+    <button></button>
+  </form>
+</dialog>
