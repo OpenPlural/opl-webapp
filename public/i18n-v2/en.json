@@ -98,6 +98,7 @@
     "dataExport": "Export",
     "dataImportExport": "Import & Export",
     "massDelete": "Mass delete",
+    "social": "Social Media",
     "legal": "Legal",
     "setup": "Setup"
   },
@@ -374,6 +375,13 @@
     },
     "prompts": {
       "delete": "Do you really want to delete {folderCount, plural, one {# folder} other {# folders}} and {memberCount, plural, one {# member} other {# members}}?"
+    }
+  },
+  "social": {
+    "text": {
+      "discord": "This is our main community where you can ask questions, give us feedback, and chat with other users. We also post update changelogs, downtimes, and other important information here.",
+      "stoat": "This is an alternative to Discord. Most channels on this server are linked to the Discord server.",
+      "github": "This is where we host the source code of Open Plural. If you're a developer, you can contribute to the project here."
     }
   },
   "legal": {

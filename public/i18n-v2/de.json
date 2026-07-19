@@ -98,6 +98,7 @@
     "dataExport": "Export",
     "dataImportExport": "Import & Export",
     "massDelete": "Massenlöschung",
+    "social": "Soziale Medien",
     "legal": "Legales",
     "setup": "Einrichtung"
   },
@@ -374,6 +375,13 @@
     },
     "prompts": {
       "delete": "Willst du wirklich {folderCount} Ordner und {memberCount, plural, one {1 Mitglied} other {# Mitglieder}} löschen?"
+    }
+  },
+  "social": {
+    "text": {
+      "discord": "Dies ist unsere Haupt-Community. Du kannst hier Fragen stellen, Feedback geben und mit anderen Nutzern chatten. Weiterhin senden wir hier Update-Changelogs, Infos zu Serverausfällen und andere wichtige Informationen.",
+      "stoat": "Dies ist eine Alternative zu Discord. Die meisten Kanäle dieses Servers sind mit dem Discord Server verknüpft.",
+      "github": "Hier hosten wir den Quellcode von Open Plural. Wenn du Entwickler bist, kannst du hier zum Projekt beitragen."
     }
   },
   "legal": {
