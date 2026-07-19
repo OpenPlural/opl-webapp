@@ -98,6 +98,7 @@
     "dataExport": "Izvoz",
     "dataImportExport": "Uvoz & Izvoz",
     "massDelete": "Masovno brisanje",
+    "social": "Društvene mreže",
     "legal": "Pravno",
     "setup": "Podešavanje"
   },
@@ -374,6 +375,13 @@
     },
     "prompts": {
       "delete": "Da li zaista želite da izbrišete {folderCount, plural, one {# fasciklu} few {# fascikle} other {# fascikla}} i {memberCount, plural, one {# član} few {# člana} other {# članova}}?"
+    }
+  },
+  "social": {
+    "text": {
+      "discord": "Ovo je naša glavna zajednica. Ovde možete postavljati pitanja, davati povratne informacije i ćaskati sa drugim ljudima. Takođe objavljujemo evidenciju promena ažuriranja, informacije o prekide rada servera i druge važne informacije.",
+      "stoat": "Ovo je alternativa Diskordu. Većina kanala na ovom serveru je povezana sa Diskord serverom.",
+      "github": "Ovde se nalazi kod za Open Plural. Ako ste programer, možete doprineti projektu ovde."
     }
   },
   "legal": {
