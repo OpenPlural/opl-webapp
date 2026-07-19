@@ -157,6 +157,8 @@
       "comment": "Custom status (e.g. Co-fronting)",
       "current": "Current fronters",
       "time": "Time",
+      "startTime": "Start Time",
+      "endTime": "End Time",
       "history": {
         "graphical": "Graphical",
         "textual": "Textual",

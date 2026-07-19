@@ -157,6 +157,8 @@
       "comment": "Прилагођен статус (нпр. Co-fronting)",
       "current": "Актуелни фронтери",
       "time": "Време",
+      "startTime": "Време почетка",
+      "endTime": "Време завршетка",
       "history": {
         "graphical": "Графичко",
         "textual": "Текстуално",
