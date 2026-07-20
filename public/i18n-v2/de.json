@@ -107,6 +107,7 @@
       "create": "Ordner erstellen",
       "edit": "Ordner bearbeiten",
       "delete": "Ordner löschen",
+      "assignMembers": "Mitglieder zuweisen",
       "show": "Ordner einblenden",
       "hide": "Ordner ausblenden",
       "goToParent": "Zum übergeordneten Ordner",

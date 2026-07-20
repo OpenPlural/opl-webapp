@@ -107,6 +107,7 @@
       "create": "Create folder",
       "edit": "Edit folder",
       "delete": "Delete folder",
+      "assignMembers": "Assign members",
       "show": "Show folders",
       "hide": "Hide folders",
       "goToParent": "Go to parent folder",

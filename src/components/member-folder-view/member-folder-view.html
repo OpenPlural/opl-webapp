@@ -8,9 +8,9 @@
     <app-icon-button name="members.actions.create" icon="fa-user-plus" (action)="openDialog('memberNamePrompt')" />
   }
 </div>
+@let inFolder = currentFolder();
 @let showingFolders = showFolders() && !custom;
 @if (showingFolders) {
-  @let inFolder = currentFolder();
   <div class="flex justify-between">
     <span>
       @if (editable) {
@@ -22,7 +22,10 @@
       }
     </span>
     @if (inFolder && editable) {
-      <app-icon-button name="folders.actions.edit" icon="fa-cog" (action)="editFolder()" />
+      <span>
+        <app-icon-button name="folders.actions.assignMembers" [icon]="['fa-folder-o fa-stack-2x', 'fa-users fa-stack-1x']" size="text-xs" [stack]="true" (action)="assignMembers.set(true)" />
+        <app-icon-button name="folders.actions.edit" icon="fa-cog" (action)="editFolder()" />
+      </span>
     }
   </div>
 }
@@ -44,4 +47,9 @@
 @if (editable) {
   <app-popup-input dialogId="memberNamePrompt" title="members.actions.create" label="fields.name" (submitValue)="createMember($event)" />
   <app-popup-input dialogId="folderNamePrompt" title="folders.actions.create" label="fields.name" (submitValue)="createFolder($event)" />
+
+  @if (assignMembers() && inFolder) {
+    <app-member-selector dialogId="folderAssignMembers" title="folders.actions.assignMembers" [selection]="folderMembers()"
+                         [custom]="false" (submitSelection)="assignFolderMembers($event)" (forceClose)="assignMembers.set(false)" />
+  }
 }
