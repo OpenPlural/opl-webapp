@@ -107,6 +107,7 @@
       "create": "Kreiraj fasciklu",
       "edit": "Uredi fasciklu",
       "delete": "Izbriši fasciklu",
+      "assignMembers": "Dodeli članove",
       "show": "Pokaži fascikle",
       "hide": "Sakrij fascikle",
       "goToParent": "Idi u nadređenu fasciklu",
