@@ -7,3 +7,7 @@ div.markdown ::ng-deep ul {
 div.markdown ::ng-deep ol {
   @apply list-decimal list-inside;
 }
+
+div.markdown ::ng-deep a {
+  @apply text-accent font-bold;
+}
