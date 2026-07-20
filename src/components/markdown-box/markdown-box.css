@@ -1,0 +1,13 @@
+@import '../../styles.css';
+
+div.markdown ::ng-deep ul {
+  @apply list-disc list-inside;
+}
+
+div.markdown ::ng-deep ol {
+  @apply list-decimal list-inside;
+}
+
+div.markdown ::ng-deep a {
+  @apply text-accent font-bold;
+}

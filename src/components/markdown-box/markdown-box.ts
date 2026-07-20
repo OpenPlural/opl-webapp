@@ -5,6 +5,7 @@ import {parseMarkdown} from '../../util/Markdown';
   selector: 'app-markdown-box',
   imports: [],
   templateUrl: './markdown-box.html',
+  styleUrl: './markdown-box.css',
 })
 export class MarkdownBox {
   readonly textareaName = input.required<string>();
