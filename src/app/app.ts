@@ -154,8 +154,6 @@ export class App implements OnInit {
           return;
         }
       }
-
-      openDialog('appUpdateCantRun');
     } finally {
       this.updating.set(false);
     }
