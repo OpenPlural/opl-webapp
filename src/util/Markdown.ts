@@ -11,7 +11,6 @@ marked.use({
       tokenizer(src) {
         const match = src.match(/^__([^_]*)__/);
         if (match) {
-          console.log(match);
           return {
             type: 'underline',
             raw: match[0],
