@@ -108,6 +108,8 @@
       "edit": "Edit folder",
       "delete": "Delete folder",
       "assignMembers": "Assign members",
+      "move": "Move folder",
+      "moveToRoot": "Move into root",
       "show": "Show folders",
       "hide": "Hide folders",
       "goToParent": "Go to parent folder",

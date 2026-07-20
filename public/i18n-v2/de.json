@@ -108,6 +108,8 @@
       "edit": "Ordner bearbeiten",
       "delete": "Ordner löschen",
       "assignMembers": "Mitglieder zuweisen",
+      "move": "Ordner verschieben",
+      "moveToRoot": "In den Stamm verschieben",
       "show": "Ordner einblenden",
       "hide": "Ordner ausblenden",
       "goToParent": "Zum übergeordneten Ordner",

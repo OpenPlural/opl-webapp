@@ -57,7 +57,7 @@
     }
     @if (folder.remoteId) {
       <div class="divider"></div>
-      <div class="p-5 pt-0">
+      <div class="px-5 py-0">
         @let privacy = this.privacy();
         @if (privacy) {
           <app-privacy-bucket-list title="folders.prompts.changePrivacy" [buckets]="privacy" (submitSelection)="updatePrivacy($event)" />
@@ -74,6 +74,25 @@
         }
       </div>
     }
+    <div class="divider"></div>
+    <div class="px-5 py-0 text-center">
+      @if (moving()) {
+        <div>
+          <p class="font-bold">{{'folders.actions.move' | translate}}</p>
+          <button class="btn btn-soft" (click)="moveFolder(null)">
+            {{'folders.actions.moveToRoot' | translate}}
+          </button>
+          @let allFolders = this.allFolders();
+          @for (folder of rootFolders(); track folder.id) {
+            <app-folder-tree [folder]="folder" [folders]="allFolders" [selector]="false" (toggleSelected)="moveFolder($event)" />
+          }
+        </div>
+      } @else {
+        <button class="btn btn-soft" (click)="moving.set(true)">
+          {{'folders.actions.move' | translate}}
+        </button>
+      }
+    </div>
   </app-edit-page-container>
   <app-popup-confirm dialogId="folderPrivacyRecursive" title="actions.privacy.change" (confirm)="updateRecursivePrivacy()">
     {{'folders.prompts.recursivePrivacy' | translate }}
