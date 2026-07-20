@@ -18,10 +18,17 @@
       </form>
     </div>
     <div class="divider"></div>
-    <div class="p-5 pt-0">
+    <div class="px-5 py-0">
       @for (friend of friends(); track friend.user.id) {
         <app-user-list-item [user]="friend.user" [selectable]="true" [selected]="bucket.friends.includes(friend.user.id)" (selectionStatus)="setFriendSelected(friend.user.id, $event)" />
       }
+    </div>
+    <div class="divider"></div>
+    <div class="px-5 py-0 text-center">
+      <button class="w-full btn btn-soft" (click)="assignMembers.set(true)">
+        <i class="fa fa-users"></i>
+        {{'privacyBuckets.actions.assignMembers' | translate}}
+      </button>
     </div>
   } @else {
     <app-loading />
@@ -33,3 +40,8 @@
     {{'privacyBuckets.prompts.delete' | translate:{ bucketName: bucket.name } }}
   }
 </app-popup-confirm>
+
+@if (bucket && assignMembers()) {
+  <app-member-selector dialogId="privacyAssignMembers" title="privacyBuckets.actions.assignMembers" [selection]="bucket.members"
+                       [custom]="false" (submitSelection)="assignBucketMembers($event)" (forceClose)="assignMembers.set(false)" />
+}

@@ -192,7 +192,8 @@
   "privacyBuckets": {
     "actions": {
       "create": "Privatsphäre-Bucket erstellen",
-      "delete": "Privatsphäre-Bucket löschen"
+      "delete": "Privatsphäre-Bucket löschen",
+      "assignMembers": "Mitglieder zuweisen"
     },
     "prompts": {
       "delete": "Willst du den Privatsphäre-Bucket {bucketName} wirklich löschen?"

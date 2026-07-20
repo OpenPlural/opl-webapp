@@ -15,7 +15,7 @@ export class MemberSelector implements OnInit {
 
   readonly dialogId = input.required<string>();
   readonly title = input.required<string>();
-  readonly custom = input.required<boolean>();
+  readonly custom = input<boolean>();
   readonly selection = input<MemberId[]>([]);
   readonly submitSelection = output<MemberId[]>();
   readonly forceClose = output();
@@ -24,9 +24,17 @@ export class MemberSelector implements OnInit {
 
   readonly members = computed(() => {
     const custom = this.custom();
-    return this.localStorageService.members()
-      .filter(member => member.custom === custom)
-      .sort(compareCustomSort);
+    if (custom === undefined) {
+      return this.localStorageService.members().sort((a, b) => {
+        if (!a.custom && b.custom) return -1;
+        if (a.custom && !b.custom) return 1;
+        return compareCustomSort(a, b);
+      });
+    } else {
+      return this.localStorageService.members()
+        .filter(member => member.custom === custom)
+        .sort(compareCustomSort);
+    }
   });
 
   ngOnInit() {
