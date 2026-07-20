@@ -192,7 +192,8 @@
   "privacyBuckets": {
     "actions": {
       "create": "Kreiraj kantu za privatnost",
-      "delete": "Izbriši kantu za privatnost"
+      "delete": "Izbriši kantu za privatnost",
+      "assignMembers": "Dodeli članove"
     },
     "prompts": {
       "delete": "Da li zaista želite da izbrišete kantu {bucketName}?"

@@ -1,4 +1,4 @@
-import { Component, effect, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
 import { EditPageContainer } from '../../../components/container/edit-page-container/edit-page-container';
 import { PopupConfirm } from '../../../components/popup-confirm/popup-confirm';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -16,21 +16,44 @@ import { UserId } from '../../../services/model/User';
 import { openDialog } from '../../../util/CommonFunctions';
 import { ErrorService } from '../../../services/ErrorService';
 import {MarkdownBox} from '../../../components/markdown-box/markdown-box';
+import { MemberSelector } from '../../../components/selector/member-selector/member-selector';
+import { MemberId } from '../../../services/model/Member';
+import { LocalStorageService } from '../../../services/LocalStorageService';
 
 @Component({
   selector: 'app-privacy-bucket-page',
-  imports: [EditPageContainer, PopupConfirm, TranslatePipe, Loading, UserListItem, MarkdownBox],
+  imports: [
+    EditPageContainer,
+    PopupConfirm,
+    TranslatePipe,
+    Loading,
+    UserListItem,
+    MarkdownBox,
+    MemberSelector,
+  ],
   templateUrl: './privacy-bucket-page.html',
 })
 export class PrivacyBucketPage implements OnInit {
   private readonly location = inject(Location);
   private readonly route = inject(ActivatedRoute);
   private readonly errorService = inject(ErrorService);
+  private readonly localStorageService = inject(LocalStorageService);
   private readonly webService = inject(WebService);
 
   protected readonly bucket = signal<PrivacyBucket | null>(null);
   protected readonly friends = signal<Friend[] | null>(null);
   protected readonly description = signal<string>('');
+  protected readonly assignMembers = signal<boolean>(false);
+
+  protected readonly bucketMembers = computed(() => {
+    const bucket = this.bucket();
+    if (bucket) {
+      return this.localStorageService.members()
+        .filter((member) => member.remoteId && bucket.members.includes(member.remoteId))
+        .map((member) => member.id);
+    }
+    return [];
+  });
 
   readonly id = toSignal(
     this.route.paramMap.pipe(
@@ -114,6 +137,32 @@ export class PrivacyBucketPage implements OnInit {
       return;
     }
     this.location.back();
+  }
+
+  protected async assignBucketMembers(selection: MemberId[]) {
+    const bucket = this.bucket();
+    if (!bucket) return;
+
+    const currentBucketMembers = this.bucketMembers();
+    const addMembers = selection.filter((id) => !currentBucketMembers.includes(id));
+    const removeMembers = currentBucketMembers.filter((id) => !selection.includes(id));
+    const members = this.localStorageService.members();
+
+    for (const memberId of addMembers) {
+      const member = members.find((member) => member.id === memberId);
+      if (member) {
+        await this.webService.addPrivacyBucketMember(bucket.id, member);
+      }
+    }
+
+    for (const memberId of removeMembers) {
+      const member = members.find((member) => member.id === memberId);
+      if (member) {
+        await this.webService.removePrivacyBucketMember(bucket.id, member);
+      }
+    }
+
+    this.assignMembers.set(false);
   }
 
   protected readonly openDialog = openDialog;

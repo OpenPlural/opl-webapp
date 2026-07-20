@@ -220,9 +220,10 @@ export class MemberFolderView implements OnInit {
     const currentFolderMembers = this.folderMembers();
     const addMembers = selection.filter((id) => !currentFolderMembers.includes(id));
     const removeMembers = currentFolderMembers.filter((id) => !selection.includes(id));
+    const members = this.members();
 
     for (const memberId of addMembers) {
-      const member = this.members().find((member) => member.id === memberId);
+      const member = members.find((member) => member.id === memberId);
       if (member) {
         await this.localStorageService.updateMember({
           ...member,
@@ -233,7 +234,7 @@ export class MemberFolderView implements OnInit {
     }
 
     for (const memberId of removeMembers) {
-      const member = this.members().find((member) => member.id === memberId);
+      const member = members.find((member) => member.id === memberId);
       if (member) {
         await this.localStorageService.updateMember({
           ...member,

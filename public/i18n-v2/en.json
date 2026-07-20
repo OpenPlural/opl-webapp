@@ -192,7 +192,8 @@
   "privacyBuckets": {
     "actions": {
       "create": "Create privacy bucket",
-      "delete": "Delete privacy bucket"
+      "delete": "Delete privacy bucket",
+      "assignMembers": "Assign members"
     },
     "prompts": {
       "delete": "Do you really want to delete the privacy bucket {bucketName}?"
