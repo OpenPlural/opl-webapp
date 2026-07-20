@@ -108,6 +108,8 @@
       "edit": "Uredi fasciklu",
       "delete": "Izbriši fasciklu",
       "assignMembers": "Dodeli članove",
+      "move": "Premesti fasciklu",
+      "moveToRoot": "Premesti u koren",
       "show": "Pokaži fascikle",
       "hide": "Sakrij fascikle",
       "goToParent": "Idi u nadređenu fasciklu",

@@ -19,20 +19,22 @@ import { SettingsService } from '../../../services/SettingsService';
 import { truncateCurrentDate } from '../../../util/DateTruncate';
 import { ColorInput } from '../../../components/color-input/color-input';
 import {MarkdownBox} from "../../../components/markdown-box/markdown-box";
-import {Folder} from '../../../services/model/Folder';
-import {compareCustomSort} from '../../../util/CustomSort';
+import { Folder, FolderId } from '../../../services/model/Folder';
+import { compareCustomSort, sortNestedFolders } from '../../../util/CustomSort';
+import { FolderTree } from '../../../components/folder-tree/folder-tree';
 
 @Component({
   selector: 'app-folder-page',
-    imports: [
-        EditPageContainer,
-        Misrouted,
-        TranslatePipe,
-        PopupConfirm,
-        PrivacyBucketList,
-        ColorInput,
-        MarkdownBox,
-    ],
+  imports: [
+    EditPageContainer,
+    Misrouted,
+    TranslatePipe,
+    PopupConfirm,
+    PrivacyBucketList,
+    ColorInput,
+    MarkdownBox,
+    FolderTree,
+  ],
   templateUrl: './folder-page.html',
 })
 export class FolderPage implements OnInit {
@@ -52,6 +54,11 @@ export class FolderPage implements OnInit {
     ),
     { initialValue: null },
   );
+  protected readonly allFolders = computed(() => {
+    const folders = this.localStorageService.folders();
+    return sortNestedFolders(folders);
+  });
+  protected readonly rootFolders = computed(() => this.allFolders().filter((f) => !f.parentId));
   protected readonly folder = computed(() => {
     const id = this.id();
     return this.localStorageService.folders().find((f) => f.id === id);
@@ -68,7 +75,9 @@ export class FolderPage implements OnInit {
     const archivedCount = members.filter((m) => m.archived).length;
     return { count, archivedCount };
   });
-  protected readonly customSortEditor = computed(() => this.settingsService.settings().customSortEditor);
+  protected readonly customSortEditor = computed(
+    () => this.settingsService.settings().customSortEditor,
+  );
   protected readonly description = signal<string>('');
   protected readonly color = signal<bigint | null>(null);
   protected readonly privacyIds = computed(() => this.privacy()?.map((bucket) => bucket.id) || []);
@@ -81,6 +90,7 @@ export class FolderPage implements OnInit {
   });
   protected readonly showCreationDate = signal<boolean>(false);
   protected readonly showMemberCount = signal<boolean>(false);
+  protected readonly moving = signal<boolean>(false);
 
   ngOnInit() {
     this.description.set(this.folder()?.description || '');
@@ -103,7 +113,7 @@ export class FolderPage implements OnInit {
     for (const id of ids) {
       if (!privacyIds.includes(id)) {
         const bucket = await this.webService.addPrivacyBucketFolder(id, folder);
-        this.privacy.update(buckets => {
+        this.privacy.update((buckets) => {
           if (buckets) {
             return [...buckets, bucket].sort(compareCustomSort);
           } else {
@@ -115,7 +125,7 @@ export class FolderPage implements OnInit {
     for (const id of privacyIds) {
       if (!ids.includes(id)) {
         await this.webService.removePrivacyBucketFolder(id, folder);
-        this.privacy.update(buckets => {
+        this.privacy.update((buckets) => {
           if (buckets) {
             return buckets.filter((b) => b.id !== id);
           } else {
@@ -194,6 +204,19 @@ export class FolderPage implements OnInit {
     await this.localStorageService.removeFolderRecursively(folder.id, folder.remoteId);
     this.syncService.fullSync();
     this.location.back();
+  }
+
+  protected async moveFolder(newParent: FolderId | null) {
+    const folder = this.folder();
+    if (!folder) return;
+
+    await this.localStorageService.updateFolder({
+      ...folder,
+      parentId: newParent,
+      updatedAt: truncateCurrentDate(),
+    });
+    this.syncService.fullSync();
+    this.moving.set(false);
   }
 
   protected readonly toColor = toColor;

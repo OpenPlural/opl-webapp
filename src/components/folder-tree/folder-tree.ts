@@ -10,7 +10,8 @@ import { FolderListItem } from '../list-item/folder-list-item/folder-list-item';
 export class FolderTree {
   readonly folder = input.required<Folder>();
   readonly folders = input.required<Folder[]>();
-  readonly selected = input.required<FolderId[]>();
+  readonly selected = input<FolderId[]>([]);
+  readonly selector = input<boolean>(true);
   readonly toggleSelected = output<FolderId>();
 
   protected readonly children = computed(() => {
