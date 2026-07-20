@@ -4,14 +4,13 @@ import { formatDuration } from '../../util/Duration';
 import { SettingsService } from '../../services/SettingsService';
 import { FrontEntry } from '../../services/model/Front';
 import { IconButton } from '../icon-button/icon-button';
-import { PopupInput } from '../popup-input/popup-input';
 import { truncateCurrentDate, truncateDate, truncateDateToInputValue } from '../../util/DateTruncate';
 import { WebService } from '../../services/WebService';
 import { openDialog } from '../../util/CommonFunctions';
 
 @Component({
   selector: 'app-historic-front-entry',
-  imports: [TranslatePipe, IconButton, PopupInput],
+  imports: [TranslatePipe, IconButton],
   templateUrl: './historic-front-entry.component.html',
 })
 export class HistoricFrontEntry {
