@@ -48,9 +48,7 @@ export class PrivacyBucketPage implements OnInit {
   protected readonly bucketMembers = computed(() => {
     const bucket = this.bucket();
     if (bucket) {
-      return this.localStorageService.members()
-        .filter((member) => member.remoteId && bucket.members.includes(member.remoteId))
-        .map((member) => member.id);
+      return bucket.members;
     }
     return [];
   });
@@ -152,6 +150,13 @@ export class PrivacyBucketPage implements OnInit {
       const member = members.find((member) => member.id === memberId);
       if (member) {
         await this.webService.addPrivacyBucketMember(bucket.id, member);
+        this.bucket.update((bucket) => {
+          if (!bucket) return null;
+          return {
+            ...bucket,
+            members: [...bucket.members, memberId],
+          };
+        });
       }
     }
 
@@ -159,6 +164,13 @@ export class PrivacyBucketPage implements OnInit {
       const member = members.find((member) => member.id === memberId);
       if (member) {
         await this.webService.removePrivacyBucketMember(bucket.id, member);
+        this.bucket.update((bucket) => {
+          if (!bucket) return null;
+          return {
+            ...bucket,
+            members: bucket.members.filter((member) => member !== memberId),
+          };
+        });
       }
     }
 
