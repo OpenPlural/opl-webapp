@@ -36,4 +36,13 @@
       </div>
     }
   </div>
+
+  @let update = this.update();
+  @if (update) {
+    <app-popup-confirm [forceOpen]="true" dialogId="appUpdatePrompt" title="labels.update.available"
+                       [yes]="'app.update' | translate:{version: update}" [no]="'actions.cancel' | translate"
+                       [loading]="updating()" (confirm)="triggerUpdate()" (deny)="this.update.set(null)">
+      {{'labels.update.prompt' | translate}}
+    </app-popup-confirm>
+  }
 </div>

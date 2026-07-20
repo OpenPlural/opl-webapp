@@ -50,7 +50,11 @@
   },
   "labels": {
     "error": "Error",
-    "createdAt": "Created at {date}"
+    "createdAt": "Created at {date}",
+    "update": {
+      "available": "Update available",
+      "prompt": "Please update the app for the latest features and bugfixes."
+    }
   },
   "fields": {
     "name": "Name",

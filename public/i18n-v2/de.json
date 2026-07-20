@@ -50,7 +50,11 @@
   },
   "labels": {
     "error": "Fehler",
-    "createdAt": "Erstellt am {date}"
+    "createdAt": "Erstellt am {date}",
+    "update": {
+      "available": "Update verfügbar",
+      "prompt": "Bitte aktualisiere die App für die neusten Features und Bugfixes."
+    }
   },
   "fields": {
     "name": "Name",

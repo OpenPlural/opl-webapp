@@ -50,7 +50,11 @@
   },
   "labels": {
     "error": "Greška",
-    "createdAt": "Kreirano u {date}"
+    "createdAt": "Kreirano u {date}",
+    "update": {
+      "available": "Ažuriranje je dostupno",
+      "prompt": "Ažurirajte aplikaciju za najnovije funkcije i ispravke grešaka."
+    }
   },
   "fields": {
     "name": "Ime",
