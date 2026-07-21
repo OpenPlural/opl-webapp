@@ -1,4 +1,4 @@
-import { Component, computed, inject, input } from '@angular/core';
+import { Component, computed, inject, input, output } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { formatDuration } from '../../util/Duration';
 import { SettingsService } from '../../services/SettingsService';
@@ -18,6 +18,7 @@ export class HistoricFrontEntry {
   private readonly webService = inject(WebService);
 
   readonly frontEntry = input.required<FrontEntry>();
+  readonly update = output();
 
   protected readonly startTimeValue = computed(() => {
     const frontEntry = this.frontEntry();
@@ -66,8 +67,9 @@ export class HistoricFrontEntry {
         ...frontEntry,
         startedAt,
         endedAt,
-        updatedAt: truncateCurrentDate()
+        updatedAt: truncateCurrentDate(),
       });
+      this.update.emit();
     }
   }
 

@@ -28,6 +28,12 @@ export class FrontHistoryTextualPage implements OnInit {
     }
   }
 
+  protected async reloadFrontHistory() {
+    this.frontHistory.set(null);
+    this.page.set(0);
+    await this.loadFrontHistory();
+  }
+
   protected async loadFrontHistory() {
     const page = this.page();
 

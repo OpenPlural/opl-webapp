@@ -6,7 +6,7 @@ import { Loading } from '../../../components/loading/loading';
 import { TranslatePipe } from '@ngx-translate/core';
 import { HistoricFrontEntry } from '../../../components/historic-front-entry/historic-front-entry.component';
 import { openDialog } from '../../../util/CommonFunctions';
-import { truncateCurrentDate, truncateDate } from '../../../util/DateTruncate';
+import { truncateDate } from '../../../util/DateTruncate';
 import { LocalStorageService } from '../../../services/LocalStorageService';
 import { SyncService } from '../../../services/SyncService';
 
@@ -31,6 +31,12 @@ export class MemberFrontHistoryPage implements OnInit {
     if (this.frontHistory() === null) {
       this.loadFrontHistory();
     }
+  }
+
+  protected async reloadFrontHistory() {
+    this.frontHistory.set(null);
+    this.page.set(0);
+    await this.loadFrontHistory();
   }
 
   protected async loadFrontHistory() {
@@ -80,9 +86,7 @@ export class MemberFrontHistoryPage implements OnInit {
         endedAt,
       });
       await this.syncService.fullSync();
-      this.frontHistory.set(null);
-      this.page.set(0);
-      await this.loadFrontHistory();
+      await this.reloadFrontHistory();
     }
   }
 

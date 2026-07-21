@@ -3,7 +3,7 @@
 @if (frontHistory) {
   @for (frontEntry of frontHistory; track frontEntry.id) {
     <div class="border rounded-lg bg-base-100 p-2 mb-2">
-      <app-historic-front-entry [frontEntry]="frontEntry" />
+      <app-historic-front-entry [frontEntry]="frontEntry" (update)="reloadFrontHistory()" />
     </div>
   }
 
