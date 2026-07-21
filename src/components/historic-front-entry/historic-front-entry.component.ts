@@ -1,4 +1,4 @@
-import { Component, computed, inject, input } from '@angular/core';
+import { Component, computed, inject, input, output } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { formatDuration } from '../../util/Duration';
 import { SettingsService } from '../../services/SettingsService';
@@ -7,10 +7,11 @@ import { IconButton } from '../icon-button/icon-button';
 import { truncateCurrentDate, truncateDate, truncateDateToInputValue } from '../../util/DateTruncate';
 import { WebService } from '../../services/WebService';
 import { openDialog } from '../../util/CommonFunctions';
+import { PopupConfirm } from '../popup-confirm/popup-confirm';
 
 @Component({
   selector: 'app-historic-front-entry',
-  imports: [TranslatePipe, IconButton],
+  imports: [TranslatePipe, IconButton, PopupConfirm],
   templateUrl: './historic-front-entry.component.html',
 })
 export class HistoricFrontEntry {
@@ -18,6 +19,7 @@ export class HistoricFrontEntry {
   private readonly webService = inject(WebService);
 
   readonly frontEntry = input.required<FrontEntry>();
+  readonly update = output();
 
   protected readonly startTimeValue = computed(() => {
     const frontEntry = this.frontEntry();
@@ -66,8 +68,19 @@ export class HistoricFrontEntry {
         ...frontEntry,
         startedAt,
         endedAt,
-        updatedAt: truncateCurrentDate()
+        updatedAt: truncateCurrentDate(),
       });
+      this.update.emit();
+    }
+  }
+
+  protected async deleteFrontEntry() {
+    const frontEntry = this.frontEntry();
+    console.log("deleting");
+    if (frontEntry.remoteId) {
+      console.log("deleting id", frontEntry.remoteId);
+      await this.webService.deleteFrontEntry(frontEntry.remoteId);
+      this.update.emit();
     }
   }
 

@@ -7,7 +7,7 @@
       <app-member-list-item [member]="member" [editable]="false" [inactive]="true" />
     }
     <div class="border-x border-b rounded-b-lg bg-base-100 p-2 mb-2 mx-4">
-      <app-historic-front-entry [frontEntry]="frontEntry" />
+      <app-historic-front-entry [frontEntry]="frontEntry" (update)="reloadFrontHistory()" />
     </div>
   }
 

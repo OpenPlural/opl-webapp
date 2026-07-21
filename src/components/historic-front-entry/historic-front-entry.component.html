@@ -1,7 +1,10 @@
 @let frontEntry = this.frontEntry();
 <div class="flex flex-row justify-between w-full">
   <span>{{formatDate(frontEntry.startedAt)}}</span>
-  <app-icon-button name="front.actions.changeTime" icon="fa-clock-o" (action)="openDialog('historicFrontTimePrompt-' + frontEntry.id)" />
+  <span>
+    <app-icon-button name="front.actions.changeTime" icon="fa-clock-o" buttonClass="text-accent" (action)="openDialog('historicFrontTimePrompt-' + frontEntry.id)" />
+    <app-icon-button name="front.actions.delete" icon="fa-trash" buttonClass="text-error" (action)="openDialog('historicFrontDeletePrompt-' + frontEntry.id)" />
+  </span>
   @if (frontEntry.endedAt) {
     <span>{{formatDate(frontEntry.endedAt)}}</span>
   }
@@ -18,6 +21,10 @@
     {{frontEntry.comment}}
   </div>
 }
+
+<app-popup-confirm [dialogId]="'historicFrontDeletePrompt-' + frontEntry.id" title="front.actions.delete" (confirm)="deleteFrontEntry()">
+  {{'front.prompts.delete' | translate }}
+</app-popup-confirm>
 
 <dialog [id]="'historicFrontTimePrompt-' + frontEntry.id" class="modal">
   <div class="modal-box">
