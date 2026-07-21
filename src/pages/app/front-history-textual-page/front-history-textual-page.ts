@@ -49,6 +49,6 @@ export class FrontHistoryTextualPage implements OnInit {
   }
 
   protected getMember(id: MemberId): Member | undefined {
-    return this.localStorageService.members().find((member) => member.remoteId === id);
+    return this.localStorageService.members().find((member) => member.id === id);
   }
 }
