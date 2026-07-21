@@ -158,7 +158,8 @@
     "actions": {
       "front": "Dodaj na front",
       "unfront": "Ukloni sa fronta",
-      "changeTime": "Promeni vreme fronta"
+      "changeTime": "Promeni vreme fronta",
+      "createEntry": "Kreiraj unos fronta"
     },
     "labels": {
       "empty": "Trenutno niko nije na frontu.",

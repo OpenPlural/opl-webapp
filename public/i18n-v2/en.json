@@ -158,7 +158,8 @@
     "actions": {
       "front": "Add to front",
       "unfront": "Remove from front",
-      "changeTime": "Change front time"
+      "changeTime": "Change front time",
+      "createEntry": "Create front entry"
     },
     "labels": {
       "empty": "No one is fronting right now.",

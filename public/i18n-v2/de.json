@@ -158,7 +158,8 @@
     "actions": {
       "front": "Zur Front hinzufügen",
       "unfront": "Von der Front entfernen",
-      "changeTime": "Frontzeit ändern"
+      "changeTime": "Frontzeit ändern",
+      "createEntry": "Fronteintrag erstellen"
     },
     "labels": {
       "graphical": "Grafisch",
