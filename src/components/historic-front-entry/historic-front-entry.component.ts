@@ -8,6 +8,7 @@ import { truncateCurrentDate, truncateDate, truncateDateToInputValue } from '../
 import { WebService } from '../../services/WebService';
 import { openDialog } from '../../util/CommonFunctions';
 import { PopupConfirm } from '../popup-confirm/popup-confirm';
+import { SyncService } from '../../services/SyncService';
 
 @Component({
   selector: 'app-historic-front-entry',
@@ -16,6 +17,7 @@ import { PopupConfirm } from '../popup-confirm/popup-confirm';
 })
 export class HistoricFrontEntry {
   private readonly settingsService = inject(SettingsService);
+  private readonly syncService = inject(SyncService);
   private readonly webService = inject(WebService);
 
   readonly frontEntry = input.required<FrontEntry>();
@@ -76,9 +78,7 @@ export class HistoricFrontEntry {
 
   protected async deleteFrontEntry() {
     const frontEntry = this.frontEntry();
-    console.log("deleting");
     if (frontEntry.remoteId) {
-      console.log("deleting id", frontEntry.remoteId);
       await this.webService.deleteFrontEntry(frontEntry.remoteId);
       this.update.emit();
     }
