@@ -159,7 +159,11 @@
       "front": "Add to front",
       "unfront": "Remove from front",
       "changeTime": "Change front time",
-      "createEntry": "Create front entry"
+      "create": "Create front entry",
+      "delete": "Delete front entry"
+    },
+    "prompts": {
+      "delete": "Do you really want to delete this front entry?"
     },
     "labels": {
       "empty": "No one is fronting right now.",
