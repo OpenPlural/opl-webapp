@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 import { MemberListItem } from '../member-list-item/member-list-item';
 import { formatDuration } from '../../../util/Duration';
 import { TranslatePipe } from '@ngx-translate/core';
-import {truncateCurrentDate, truncateDate} from '../../../util/DateTruncate';
+import { truncateCurrentDate, truncateDate, truncateDateToInputValue } from '../../../util/DateTruncate';
 import { SyncService } from '../../../services/SyncService';
 import { nullableField } from '../../../util/NullString';
 import {IconButton} from '../../icon-button/icon-button';
@@ -40,6 +40,11 @@ export class FronterListItem implements AfterViewInit, OnDestroy {
   protected readonly member = computed(() => {
     const memberId = this.frontEntry().member;
     return this.localStorageService.members().find((m) => m.id === memberId);
+  });
+  protected readonly startTimeValue = computed(() => {
+    const frontEntry = this.frontEntry();
+    const startTime = new Date(Date.parse(frontEntry.startedAt));
+    return truncateDateToInputValue(startTime);
   });
 
   ngAfterViewInit() {
