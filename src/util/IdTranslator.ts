@@ -8,9 +8,9 @@ import { PrivacyBucket } from '../services/model/Privacy';
 export type TargetField = 'id' | 'remoteId';
 type LocalRemoteIdPair = { id: bigint; remoteId: bigint | null };
 
-export function translateFolder(localStorageService: LocalStorageService, folder: Folder, target: TargetField): Folder {
+export function translateFolder(localStorageService: LocalStorageService, additionalFolders: Folder[], folder: Folder, target: TargetField): Folder {
   folder = Object.assign({}, folder);
-  translateFolders(localStorageService, folder, ['parentId'], target);
+  translateFolders(localStorageService, additionalFolders, folder, ['parentId'], target);
   return folder;
 }
 
@@ -47,8 +47,8 @@ export function translatePrivacyBucket(localStorageService: LocalStorageService,
   };
 }
 
-function translateFolders(localStorageService: LocalStorageService, obj: any, fieldNames: string[], target: TargetField) {
-  translateFields(localStorageService.folders(), obj, fieldNames, target);
+function translateFolders(localStorageService: LocalStorageService, additionalFolders: Folder[], obj: any, fieldNames: string[], target: TargetField) {
+  translateFields([...localStorageService.folders(), ...additionalFolders], obj, fieldNames, target);
 }
 
 function translateMembers(localStorageService: LocalStorageService, obj: any, fieldNames: string[], target: TargetField) {

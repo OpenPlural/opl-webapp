@@ -77,7 +77,7 @@ export class WebService {
   }
 
   async createFolder(folder: Folder): Promise<FolderId> {
-    folder = translateFolder(this.localStorageService, folder, 'remoteId');
+    folder = translateFolder(this.localStorageService, [folder], folder, 'remoteId');
     return firstValueFrom(this.http.put<IdResponse>(`${BASE_URL}/api/v1/folder/`, folder)).then(res => res.id);
   }
 
@@ -86,7 +86,7 @@ export class WebService {
   }
 
   async updateFolder(folder: Folder): Promise<void> {
-    folder = translateFolder(this.localStorageService, folder, 'remoteId');
+    folder = translateFolder(this.localStorageService, [folder], folder, 'remoteId');
     await firstValueFrom(this.http.patch(`${BASE_URL}/api/v1/folder/${folder.remoteId}`, folder));
   }
 

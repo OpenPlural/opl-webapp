@@ -115,7 +115,7 @@ export class SyncService {
       folderIds,
       deletionDelta,
       'folder',
-      (folder) => translateFolder(this.localStorageService, folder, 'id'),
+      (folder) => translateFolder(this.localStorageService, updatedFolders, folder, 'id'),
       async (folder) => await this.webService.createFolder(folder),
       async (_, localFolder) => await this.webService.updateFolder(localFolder),
       async (remoteId) => await this.webService.deleteFolder(remoteId),
