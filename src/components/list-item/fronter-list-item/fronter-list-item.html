@@ -18,5 +18,6 @@
       <input type="text" class="input grow" [placeholder]="'front.labels.comment' | translate" [value]="frontEntry().comment || ''" (focusout)="updateFrontComment($event)">
     </div>
   </div>
-  <app-popup-input [dialogId]="'frontTimePrompt-' + member.id" title="front.actions.changeTime" label="front.labels.time" inputType="datetime-local" (submitValue)="updateFrontTime($event)" />
+  <app-popup-input [dialogId]="'frontTimePrompt-' + member.id" title="front.actions.changeTime" label="front.labels.time"
+                   inputType="datetime-local" [initialValue]="startTimeValue()" (submitValue)="updateFrontTime($event)" />
 }
