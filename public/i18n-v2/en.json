@@ -50,7 +50,11 @@
   },
   "labels": {
     "error": "Error",
-    "createdAt": "Created at {date}"
+    "createdAt": "Created at {date}",
+    "update": {
+      "available": "Update available",
+      "prompt": "Please update the app for the latest features and bugfixes."
+    }
   },
   "fields": {
     "name": "Name",
@@ -98,6 +102,7 @@
     "dataExport": "Export",
     "dataImportExport": "Import & Export",
     "massDelete": "Mass delete",
+    "social": "Social Media",
     "legal": "Legal",
     "setup": "Setup"
   },
@@ -106,6 +111,9 @@
       "create": "Create folder",
       "edit": "Edit folder",
       "delete": "Delete folder",
+      "assignMembers": "Assign members",
+      "move": "Move folder",
+      "moveToRoot": "Move into root",
       "show": "Show folders",
       "hide": "Hide folders",
       "goToParent": "Go to parent folder",
@@ -150,13 +158,20 @@
     "actions": {
       "front": "Add to front",
       "unfront": "Remove from front",
-      "changeTime": "Change front time"
+      "changeTime": "Change front time",
+      "create": "Create front entry",
+      "delete": "Delete front entry"
+    },
+    "prompts": {
+      "delete": "Do you really want to delete this front entry?"
     },
     "labels": {
       "empty": "No one is fronting right now.",
       "comment": "Custom status (e.g. Co-fronting)",
       "current": "Current fronters",
       "time": "Time",
+      "startTime": "Start Time",
+      "endTime": "End Time",
       "history": {
         "graphical": "Graphical",
         "textual": "Textual",
@@ -188,7 +203,8 @@
   "privacyBuckets": {
     "actions": {
       "create": "Create privacy bucket",
-      "delete": "Delete privacy bucket"
+      "delete": "Delete privacy bucket",
+      "assignMembers": "Assign members"
     },
     "prompts": {
       "delete": "Do you really want to delete the privacy bucket {bucketName}?"
@@ -372,6 +388,13 @@
     },
     "prompts": {
       "delete": "Do you really want to delete {folderCount, plural, one {# folder} other {# folders}} and {memberCount, plural, one {# member} other {# members}}?"
+    }
+  },
+  "social": {
+    "text": {
+      "discord": "This is our main community where you can ask questions, give us feedback, and chat with other users. We also post update changelogs, downtimes, and other important information here.",
+      "stoat": "This is an alternative to Discord. Most channels on this server are linked to the Discord server.",
+      "github": "This is where we host the source code of Open Plural. If you're a developer, you can contribute to the project here."
     }
   },
   "legal": {

@@ -43,15 +43,19 @@ const languages = [
     predicate: isDevMode,
   }, {
     id: 'en',
+    code: 'en',
     name: 'English'
   }, {
     id: 'de',
+    code: 'de',
     name: 'Deutsch'
   }, {
     id: 'sr-Latn',
+    code: 'sh',
     name: 'Srpski (Latinica)'
   }, {
     id: 'sr-Cyrl',
+    code: 'sh',
     name: 'Српски (Ћирилица)'
   }
 ];

@@ -50,7 +50,11 @@
   },
   "labels": {
     "error": "Greška",
-    "createdAt": "Kreirano u {date}"
+    "createdAt": "Kreirano u {date}",
+    "update": {
+      "available": "Ažuriranje je dostupno",
+      "prompt": "Ažurirajte aplikaciju za najnovije funkcije i ispravke grešaka."
+    }
   },
   "fields": {
     "name": "Ime",
@@ -98,6 +102,7 @@
     "dataExport": "Izvoz",
     "dataImportExport": "Uvoz & Izvoz",
     "massDelete": "Masovno brisanje",
+    "social": "Društvene mreže",
     "legal": "Pravno",
     "setup": "Podešavanje"
   },
@@ -106,6 +111,9 @@
       "create": "Kreiraj fasciklu",
       "edit": "Uredi fasciklu",
       "delete": "Izbriši fasciklu",
+      "assignMembers": "Dodeli članove",
+      "move": "Premesti fasciklu",
+      "moveToRoot": "Premesti u koren",
       "show": "Pokaži fascikle",
       "hide": "Sakrij fascikle",
       "goToParent": "Idi u nadređenu fasciklu",
@@ -150,13 +158,17 @@
     "actions": {
       "front": "Dodaj na front",
       "unfront": "Ukloni sa fronta",
-      "changeTime": "Promeni vreme fronta"
+      "changeTime": "Promeni vreme fronta",
+      "create": "Kreiraj unos fronta",
+      "delete": "Izbriši unos fronta"
     },
     "labels": {
       "empty": "Trenutno niko nije na frontu.",
       "comment": "Prilagođen status (npr. Co-fronting)",
       "current": "Aktuelni fronteri",
       "time": "Vreme",
+      "startTime": "Vreme početka",
+      "endTime": "Vreme završetka",
       "history": {
         "graphical": "Grafičko",
         "textual": "Tekstualno",
@@ -188,7 +200,8 @@
   "privacyBuckets": {
     "actions": {
       "create": "Kreiraj kantu za privatnost",
-      "delete": "Izbriši kantu za privatnost"
+      "delete": "Izbriši kantu za privatnost",
+      "assignMembers": "Dodeli članove"
     },
     "prompts": {
       "delete": "Da li zaista želite da izbrišete kantu {bucketName}?"
@@ -372,6 +385,13 @@
     },
     "prompts": {
       "delete": "Da li zaista želite da izbrišete {folderCount, plural, one {# fasciklu} few {# fascikle} other {# fascikla}} i {memberCount, plural, one {# član} few {# člana} other {# članova}}?"
+    }
+  },
+  "social": {
+    "text": {
+      "discord": "Ovo je naša glavna zajednica. Ovde možete postavljati pitanja, davati povratne informacije i ćaskati sa drugim ljudima. Takođe objavljujemo evidenciju promena ažuriranja, informacije o prekide rada servera i druge važne informacije.",
+      "stoat": "Ovo je alternativa Diskordu. Većina kanala na ovom serveru je povezana sa Diskord serverom.",
+      "github": "Ovde se nalazi kod za Open Plural. Ako ste programer, možete doprineti projektu ovde."
     }
   },
   "legal": {

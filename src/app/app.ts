@@ -11,10 +11,14 @@ import { ErrorService } from '../services/ErrorService';
 import { ToastService } from '../services/ToastService';
 import {CurrentFrontNotifyService} from '../services/CurrentFrontNotifyService';
 import {forgetRememberedPath} from '../util/RememberPath';
+import { PopupConfirm } from '../components/popup-confirm/popup-confirm';
+import { WebService } from '../services/WebService';
+import { VERSION } from '../environment';
+import { openDialog } from '../util/CommonFunctions';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, TranslatePipe],
+  imports: [RouterOutlet, TranslatePipe, PopupConfirm],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
@@ -27,13 +31,25 @@ export class App implements OnInit {
   private readonly settingsService = inject(SettingsService);
   private readonly syncService = inject(SyncService);
   private readonly toastService = inject(ToastService);
+  private readonly webService = inject(WebService);
 
   private readonly storagePersistRequested = signal(false);
   private readonly initialSyncDone = signal(false);
   protected readonly languageSelected = signal(false);
+  protected readonly update = signal<string | null>(null);
+  protected readonly updating = signal(false);
 
   protected readonly ready = computed(() => this.storagePersistRequested() && this.initialSyncDone() && this.localStorageService.ready());
   protected readonly toasts = computed(() => this.toastService.toasts());
+  protected readonly languageCode = computed(() => {
+    const lang = this.settingsService.settings().language;
+    const languages = getLanguages();
+    const language = languages.find((l) => l.id === lang);
+    if (language && 'code' in language) {
+      return language.code as string;
+    }
+    return;
+  });
 
   constructor() {
     hookOnDataDeletion(async () => {
@@ -71,6 +87,14 @@ export class App implements OnInit {
     if (lang && lang === "true") {
       this.languageSelected.set(true);
     }
+
+    this.webService.getNewestVersion()
+      .then((version) => {
+        if (version !== VERSION) {
+          this.update.set(version);
+        }
+      })
+      .catch((_) => {});
   }
 
   private initialSync() {
@@ -94,6 +118,45 @@ export class App implements OnInit {
     this.settingsService.changeLanguage(id);
     localStorage.setItem("languageSelected", "true");
     this.languageSelected.set(true);
+  }
+
+  protected async triggerUpdate() {
+    try {
+      this.updating.set(true);
+      if ('serviceWorker' in navigator) {
+        const registration = await navigator.serviceWorker.getRegistration();
+
+        if (registration) {
+          await registration.update();
+
+          await new Promise<void>((resolve) => {
+            const onControllerChange = () => {
+              navigator.serviceWorker.removeEventListener('controllerchange', onControllerChange);
+              resolve();
+            };
+
+            navigator.serviceWorker.addEventListener('controllerchange', onControllerChange);
+
+            if (registration.waiting) {
+              registration.waiting.postMessage({
+                type: 'SKIP_WAITING',
+              })
+            }
+
+            setTimeout(() => {
+              navigator.serviceWorker.removeEventListener('controllerchange', onControllerChange);
+              resolve();
+            }, 10000);
+          });
+
+          await navigator.serviceWorker.ready;
+          window.location.reload();
+          return;
+        }
+      }
+    } finally {
+      this.updating.set(false);
+    }
   }
 
   protected readonly getLanguages = getLanguages;

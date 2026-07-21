@@ -291,11 +291,13 @@ export class WebService {
   }
 
   async getFrontHistory(page: number): Promise<FrontEntry[]> {
-    return firstValueFrom(this.http.get<FrontEntry[]>(`${BASE_URL}/api/v1/front/history?page=${page}`));
+    const frontEntries = await firstValueFrom(this.http.get<FrontEntry[]>(`${BASE_URL}/api/v1/front/history?page=${page}`));
+    return frontEntries.map((frontEntry) => translateFrontEntry(this.localStorageService, frontEntry, 'id'));
   }
 
   async getMemberFrontHistory(member: Member, page: number): Promise<FrontEntry[]> {
-    return firstValueFrom(this.http.get<FrontEntry[]>(`${BASE_URL}/api/v1/member/${member.remoteId}/front-history?page=${page}`));
+    const frontEntries = await firstValueFrom(this.http.get<FrontEntry[]>(`${BASE_URL}/api/v1/member/${member.remoteId}/front-history?page=${page}`));
+    return frontEntries.map((frontEntry) => translateFrontEntry(this.localStorageService, frontEntry, 'id'));
   }
 
   async getMemberCustomFields(userId: UserId, memberId: MemberId): Promise<ViewedCustomFieldDataValue[]> {

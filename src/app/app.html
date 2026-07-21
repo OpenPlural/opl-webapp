@@ -1,37 +1,48 @@
-<div class="min-h-screen h-full w-screen bg-black">
-  <div class="min-h-screen h-full max-w-[900px] mx-auto bg-base-300">
-    @if (ready()) {
-      @if (languageSelected()) {
-        <router-outlet />
+<div [lang]="languageCode()">
+  <div class="min-h-screen h-full w-screen bg-black">
+    <div class="min-h-screen h-full max-w-[900px] mx-auto bg-base-300">
+      @if (ready()) {
+        @if (languageSelected()) {
+          <router-outlet />
+        } @else {
+          <dialog class="modal modal-open">
+            <div class="modal-box flex flex-col items-center">
+              <p class="mb-2 text-xl font-bold">{{'app.language' | translate}}</p>
+              <div class="overflow-auto w-full flex flex-col space-y-1">
+                @for (lang of getLanguages(); track lang.id) {
+                  <button type="button" class="w-full btn btn-soft" (click)="chooseLanguage(lang.id)">
+                    {{lang.name}}
+                  </button>
+                }
+              </div>
+            </div>
+          </dialog>
+        }
       } @else {
         <dialog class="modal modal-open">
-          <div class="modal-box flex flex-col items-center">
-            <p class="mb-2 text-xl font-bold">{{'app.language' | translate}}</p>
-            <div class="overflow-auto w-full flex flex-col space-y-1">
-              @for (lang of getLanguages(); track lang.id) {
-                <button type="button" class="w-full btn btn-soft" (click)="chooseLanguage(lang.id)">
-                  {{lang.name}}
-                </button>
-              }
-            </div>
+          <div class="modal-box flex justify-between items-center">
+            <span>{{'app.loading' | translate}}</span>
+            <span class="loading loading-spinner loading-xl"></span>
           </div>
         </dialog>
       }
-    } @else {
-      <dialog class="modal modal-open">
-        <div class="modal-box flex justify-between items-center">
-          <span>{{'app.loading' | translate}}</span>
-          <span class="loading loading-spinner loading-xl"></span>
-        </div>
-      </dialog>
+    </div>
+  </div>
+
+  <div class="toast">
+    @for (toast of toasts(); track toast.id) {
+      <div class="alert {{toast.type}} w-80">
+        {{toast.message}}
+      </div>
     }
   </div>
-</div>
 
-<div class="toast">
-  @for (toast of toasts(); track toast.id) {
-    <div class="alert {{toast.type}} w-80">
-      {{toast.message}}
-    </div>
+  @let update = this.update();
+  @if (update) {
+    <app-popup-confirm [forceOpen]="true" dialogId="appUpdatePrompt" title="labels.update.available"
+                       [yes]="'app.update' | translate:{version: update}" [no]="'actions.cancel' | translate"
+                       [loading]="updating()" (confirm)="triggerUpdate()" (deny)="this.update.set(null)">
+      {{'labels.update.prompt' | translate}}
+    </app-popup-confirm>
   }
 </div>

@@ -50,7 +50,11 @@
   },
   "labels": {
     "error": "Fehler",
-    "createdAt": "Erstellt am {date}"
+    "createdAt": "Erstellt am {date}",
+    "update": {
+      "available": "Update verfügbar",
+      "prompt": "Bitte aktualisiere die App für die neusten Features und Bugfixes."
+    }
   },
   "fields": {
     "name": "Name",
@@ -98,6 +102,7 @@
     "dataExport": "Export",
     "dataImportExport": "Import & Export",
     "massDelete": "Massenlöschung",
+    "social": "Soziale Medien",
     "legal": "Legales",
     "setup": "Einrichtung"
   },
@@ -106,6 +111,9 @@
       "create": "Ordner erstellen",
       "edit": "Ordner bearbeiten",
       "delete": "Ordner löschen",
+      "assignMembers": "Mitglieder zuweisen",
+      "move": "Ordner verschieben",
+      "moveToRoot": "In den Stamm verschieben",
       "show": "Ordner einblenden",
       "hide": "Ordner ausblenden",
       "goToParent": "Zum übergeordneten Ordner",
@@ -150,7 +158,9 @@
     "actions": {
       "front": "Zur Front hinzufügen",
       "unfront": "Von der Front entfernen",
-      "changeTime": "Frontzeit ändern"
+      "changeTime": "Frontzeit ändern",
+      "create": "Fronteintrag erstellen",
+      "delete": "Fronteintrag löschen"
     },
     "labels": {
       "graphical": "Grafisch",
@@ -159,6 +169,8 @@
       "comment": "Benutzerdefinierter Status (z.B. Co-fronting)",
       "current": "Aktuelle Fronter",
       "time": "Zeit",
+      "startTime": "Startzeit",
+      "endTime": "Endzeit",
       "history": {
         "ongoing": "Aktuell",
         "noMoreEntries": "Keine weiteren Einträge"
@@ -188,7 +200,8 @@
   "privacyBuckets": {
     "actions": {
       "create": "Privatsphäre-Bucket erstellen",
-      "delete": "Privatsphäre-Bucket löschen"
+      "delete": "Privatsphäre-Bucket löschen",
+      "assignMembers": "Mitglieder zuweisen"
     },
     "prompts": {
       "delete": "Willst du den Privatsphäre-Bucket {bucketName} wirklich löschen?"
@@ -372,6 +385,13 @@
     },
     "prompts": {
       "delete": "Willst du wirklich {folderCount} Ordner und {memberCount, plural, one {1 Mitglied} other {# Mitglieder}} löschen?"
+    }
+  },
+  "social": {
+    "text": {
+      "discord": "Dies ist unsere Haupt-Community. Du kannst hier Fragen stellen, Feedback geben und mit anderen Nutzern chatten. Weiterhin senden wir hier Update-Changelogs, Infos zu Serverausfällen und andere wichtige Informationen.",
+      "stoat": "Dies ist eine Alternative zu Discord. Die meisten Kanäle dieses Servers sind mit dem Discord Server verknüpft.",
+      "github": "Hier hosten wir den Quellcode von Open Plural. Wenn du Entwickler bist, kannst du hier zum Projekt beitragen."
     }
   },
   "legal": {

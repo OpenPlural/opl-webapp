@@ -11,7 +11,6 @@ marked.use({
       tokenizer(src) {
         const match = src.match(/^__([^_]*)__/);
         if (match) {
-          console.log(match);
           return {
             type: 'underline',
             raw: match[0],
@@ -22,6 +21,24 @@ marked.use({
       },
       renderer(token) {
         return `<u>${token["text"]}</u>`;
+      }
+    }, {
+      name: 'centered',
+      level: 'block',
+      start(src) { return src.indexOf('{{'); },
+      tokenizer(src) {
+        const match = src.match(/^{{([^{}]*)}}/);
+        if (match) {
+          return {
+            type: 'centered',
+            raw: match[0],
+            text: match[1],
+          }
+        }
+        return undefined;
+      },
+      renderer(token) {
+        return `<div class="text-center">${token["text"]}</div>`;
       }
     }
   ]

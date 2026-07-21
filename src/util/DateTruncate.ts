@@ -5,3 +5,7 @@ export function truncateDate(date: Date): string {
 export function truncateCurrentDate(): string {
   return truncateDate(new Date());
 }
+
+export function truncateDateToInputValue(date: Date): string {
+  return date.toISOString().substring(0, 16);
+}

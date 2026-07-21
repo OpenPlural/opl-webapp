@@ -3,24 +3,7 @@
 @if (frontHistory) {
   @for (frontEntry of frontHistory; track frontEntry.id) {
     <div class="border rounded-lg bg-base-100 p-2 mb-2">
-      <div class="flex flex-row justify-between w-full">
-        <span>{{formatDate(frontEntry.startedAt)}}</span>
-        @if (frontEntry.endedAt) {
-          <span>{{formatDate(frontEntry.endedAt)}}</span>
-        }
-      </div>
-      <div class="mt-1.5 text-center">
-        @if (frontEntry.endedAt) {
-          {{getDuration(frontEntry.startedAt, frontEntry.endedAt)}}
-        } @else {
-          {{'front.labels.history.ongoing' | translate}}
-        }
-      </div>
-      @if (frontEntry.comment) {
-        <div class="text-center">
-          {{frontEntry.comment}}
-        </div>
-      }
+      <app-historic-front-entry [frontEntry]="frontEntry" (update)="reloadFrontHistory()" />
     </div>
   }
 
@@ -39,3 +22,31 @@
 } @else {
   <app-loading />
 }
+
+<div class="absolute bottom-0 w-full" style="max-width: calc(900px - var(--spacing) * 5)">
+  <div class="fab absolute">
+    <button class="btn btn-lg btn-circle btn-primary" (click)="openDialog('createFrontEntryPrompt')">
+      <i class="fa fa-plus"></i>
+    </button>
+  </div>
+</div>
+
+<dialog id="createFrontEntryPrompt" class="modal">
+  <div class="modal-box">
+    <h3 class="text-lg font-bold">{{'front.actions.changeTime' | translate}}</h3>
+    <form method="dialog" class="w-full" (submit)="createFrontTime($event)">
+      <fieldset class="fieldset">
+        <legend class="fieldset-legend">{{'front.labels.startTime' | translate}}</legend>
+        <input name="startTime" type="datetime-local" class="input w-full">
+      </fieldset>
+      <fieldset class="fieldset">
+        <legend class="fieldset-legend">{{'front.labels.endTime' | translate}}</legend>
+        <input name="endTime" type="datetime-local" class="input w-full">
+      </fieldset>
+      <button type="submit" class="mx-auto mt-5 block btn btn-success">{{'actions.confirm' | translate}}</button>
+    </form>
+  </div>
+  <form method="dialog" class="modal-backdrop">
+    <button></button>
+  </form>
+</dialog>

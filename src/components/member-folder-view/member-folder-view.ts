@@ -20,10 +20,20 @@ import {
   rememberLocalPath
 } from '../../util/RememberPath';
 import {compareCustomSort} from '../../util/CustomSort';
+import { MemberSelector } from '../selector/member-selector/member-selector';
+import { truncateCurrentDate } from '../../util/DateTruncate';
+import { SyncService } from '../../services/SyncService';
 
 @Component({
   selector: 'app-member-folder-view',
-  imports: [FolderListItem, IconButton, MemberListItem, ToggleIconButton, PopupInput],
+  imports: [
+    FolderListItem,
+    IconButton,
+    MemberListItem,
+    ToggleIconButton,
+    PopupInput,
+    MemberSelector,
+  ],
   templateUrl: './member-folder-view.html',
   styleUrl: './member-folder-view.css',
 })
@@ -32,6 +42,7 @@ export class MemberFolderView implements OnInit {
   private readonly router = inject(Router);
   private readonly localStorageService = inject(LocalStorageService);
   private readonly settingsService = inject(SettingsService);
+  private readonly syncService = inject(SyncService);
 
   readonly members = input.required<Member[]>();
   readonly folders = input.required<Folder[]>();
@@ -46,6 +57,16 @@ export class MemberFolderView implements OnInit {
     initialValue: null,
   });
   protected readonly showFolders = signal(true);
+  protected readonly assignMembers = signal(false);
+  protected readonly folderMembers = computed(() => {
+    const currentFolder = this.currentFolder();
+    if (currentFolder) {
+      return this.members()
+        .filter((member) => member.folders.indexOf(currentFolder) !== -1)
+        .map((member) => member.id);
+    }
+    return [];
+  });
   protected readonly currentPath = computed(() => {
     const currentFolder = this.currentFolder();
     if (currentFolder) {
@@ -117,7 +138,10 @@ export class MemberFolderView implements OnInit {
     } else {
       rememberedPath = getRememberedLocalPath();
     }
-    if (rememberedPath !== null && (rememberedPath === 0n || this.folders().find((folder) => folder.id === rememberedPath))) {
+    if (
+      rememberedPath !== null &&
+      (rememberedPath === 0n || this.folders().find((folder) => folder.id === rememberedPath))
+    ) {
       this.currentFolder.set(rememberedPath === 0n ? null : rememberedPath);
     } else if (friendId) {
       rememberFriendPath(friendId, 0n);
@@ -127,10 +151,12 @@ export class MemberFolderView implements OnInit {
   }
 
   protected toggleShowFolders() {
+    this.assignMembers.set(false);
     this.showFolders.update((b) => !b);
   }
 
   protected gotoParentFolder() {
+    this.assignMembers.set(false);
     this.currentFolder.update((folderId) => {
       if (folderId) {
         const currentFolder = this.folders().find((folder) => folder.id === folderId);
@@ -146,6 +172,7 @@ export class MemberFolderView implements OnInit {
   }
 
   protected changeCurrentFolder(folderId: FolderId | null) {
+    this.assignMembers.set(false);
     this.currentFolder.set(folderId);
     this.rememberCurrentFolder(folderId);
   }
@@ -182,6 +209,44 @@ export class MemberFolderView implements OnInit {
     if (currentFolder) {
       this.router.navigate(['app', 'folder', currentFolder]);
     }
+  }
+
+  protected async assignFolderMembers(selection: MemberId[]) {
+    const currentFolder = this.currentFolder();
+    if (!currentFolder) return;
+
+    const time = truncateCurrentDate();
+
+    const currentFolderMembers = this.folderMembers();
+    const addMembers = selection.filter((id) => !currentFolderMembers.includes(id));
+    const removeMembers = currentFolderMembers.filter((id) => !selection.includes(id));
+    const members = this.members();
+
+    for (const memberId of addMembers) {
+      const member = members.find((member) => member.id === memberId);
+      if (member) {
+        await this.localStorageService.updateMember({
+          ...member,
+          folders: [...member.folders, currentFolder],
+          updatedAt: time,
+        });
+      }
+    }
+
+    for (const memberId of removeMembers) {
+      const member = members.find((member) => member.id === memberId);
+      if (member) {
+        await this.localStorageService.updateMember({
+          ...member,
+          folders: member.folders.filter((id) => id !== currentFolder),
+          updatedAt: time,
+        });
+      }
+    }
+
+    this.assignMembers.set(false);
+
+    this.syncService.fullSync();
   }
 
   protected readonly openDialog = openDialog;

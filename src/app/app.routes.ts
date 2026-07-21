@@ -27,6 +27,7 @@ import {DataImport} from '../pages/app/data-import/data-import';
 import {DataExport} from '../pages/app/data-export/data-export';
 import {MassDelete} from '../pages/app/mass-delete/mass-delete';
 import {ResetPassword} from '../pages/reset-password/reset-password';
+import { Social } from '../pages/app/social/social';
 
 export const appRoutes: Routes = [
   {
@@ -118,6 +119,10 @@ export const appRoutes: Routes = [
     path: 'mass-delete',
     component: MassDelete,
     data: { name: 'navigation.massDelete' }
+  }, {
+    path: 'social',
+    component: Social,
+    data: { name: 'navigation.social' }
   }, {
     path: 'legal',
     component: Legal,
