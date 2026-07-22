@@ -222,27 +222,30 @@ export class MemberFolderView implements OnInit {
     const removeMembers = currentFolderMembers.filter((id) => !selection.includes(id));
     const members = this.members();
 
-    for (const memberId of addMembers) {
+    const promises = addMembers.map((memberId) => {
       const member = members.find((member) => member.id === memberId);
       if (member) {
-        await this.localStorageService.updateMember({
+        return this.localStorageService.updateMember({
           ...member,
           folders: [...member.folders, currentFolder],
           updatedAt: time,
         });
       }
-    }
-
-    for (const memberId of removeMembers) {
+      return;
+    }).filter((member) => member !== undefined);
+    removeMembers.map((memberId) => {
       const member = members.find((member) => member.id === memberId);
       if (member) {
-        await this.localStorageService.updateMember({
+        return this.localStorageService.updateMember({
           ...member,
           folders: member.folders.filter((id) => id !== currentFolder),
           updatedAt: time,
         });
       }
-    }
+      return;
+    }).filter((member) => member !== undefined)
+      .forEach((promise) => promises.push(promise));
+    await Promise.all(promises);
 
     this.assignMembers.set(false);
 
