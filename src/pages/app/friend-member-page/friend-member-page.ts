@@ -25,6 +25,7 @@ import {compareCustomSort, sortNestedFolders} from '../../../util/CustomSort';
     FriendMemberCustomFieldsPage,
   ],
   templateUrl: './friend-member-page.html',
+  styleUrl: './friend-member-page.css',
 })
 export class FriendMemberPage {
   private readonly route = inject(ActivatedRoute);
