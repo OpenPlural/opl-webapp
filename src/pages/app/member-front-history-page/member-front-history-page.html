@@ -23,14 +23,6 @@
   <app-loading />
 }
 
-<div class="absolute bottom-0 w-full" style="max-width: calc(900px - var(--spacing) * 5)">
-  <div class="fab absolute">
-    <button class="btn btn-lg btn-circle btn-primary" (click)="openDialog('createFrontEntryPrompt')">
-      <i class="fa fa-plus"></i>
-    </button>
-  </div>
-</div>
-
 <dialog id="createFrontEntryPrompt" class="modal">
   <div class="modal-box">
     <h3 class="text-lg font-bold">{{'front.actions.changeTime' | translate}}</h3>
