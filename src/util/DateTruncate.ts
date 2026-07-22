@@ -7,5 +7,7 @@ export function truncateCurrentDate(): string {
 }
 
 export function truncateDateToInputValue(date: Date): string {
+  date = new Date(date);
+  date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
   return date.toISOString().substring(0, 16);
 }
