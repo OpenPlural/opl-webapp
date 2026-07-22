@@ -6,8 +6,10 @@ export function truncateCurrentDate(): string {
   return truncateDate(new Date());
 }
 
-export function truncateDateToInputValue(date: Date): string {
+export function truncateDateToInputValue(date: Date, timezone: boolean = true): string {
   date = new Date(date);
-  date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+  if (timezone) {
+    date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+  }
   return date.toISOString().substring(0, 16);
 }
