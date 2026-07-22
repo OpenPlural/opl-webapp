@@ -34,7 +34,7 @@
                   @if (member) {
                     <app-member-list-item [member]="member" [editable]="false" (action)="gotoMemberPage(member.id)" />
                     @if (frontEntry.comment) {
-                      <div class="text-center mb-1">
+                      <div class="text-center text-accent mb-1">
                         {{frontEntry.comment}}
                       </div>
                     }
