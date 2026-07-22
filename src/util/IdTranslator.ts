@@ -8,10 +8,9 @@ import { PrivacyBucket } from '../services/model/Privacy';
 export type TargetField = 'id' | 'remoteId';
 type LocalRemoteIdPair = { id: bigint; remoteId: bigint | null };
 
-export function translateFolder(localStorageService: LocalStorageService, folder: Folder, target: TargetField): Folder {
+export function translateFolder(localStorageService: LocalStorageService, additionalFolders: Folder[], folder: Folder, target: TargetField): Folder {
   folder = Object.assign({}, folder);
-  includeRemoteId(folder, target);
-  translateFolders(localStorageService, folder, ['parentId'], target);
+  translateFolders(localStorageService, additionalFolders, folder, ['parentId'], target);
   return folder;
 }
 
@@ -20,21 +19,18 @@ export function translateMember(localStorageService: LocalStorageService, member
   const source = getOpposite(target);
   return {
     ...member,
-    remoteId: member.id,
     folders: member.folders.map((folderId) => resolve(folders, folderId, source)[target]!),
   };
 }
 
 export function translateFrontEntry(localStorageService: LocalStorageService, frontEntry: FrontEntry, target: TargetField): FrontEntry {
   frontEntry = Object.assign({}, frontEntry);
-  includeRemoteId(frontEntry, target);
   translateMembers(localStorageService, frontEntry, ['member'], target);
   return frontEntry;
 }
 
 export function translateCustomFieldDataValue(localStorageService: LocalStorageService, customFieldDataValue: CustomFieldDataValue, target: TargetField): CustomFieldDataValue {
   customFieldDataValue = Object.assign({}, customFieldDataValue);
-  includeRemoteId(customFieldDataValue, target);
   translateCustomFields(localStorageService, customFieldDataValue, ['fieldId'], target);
   translateMembers(localStorageService, customFieldDataValue, ['memberId'], target);
   return customFieldDataValue;
@@ -51,8 +47,8 @@ export function translatePrivacyBucket(localStorageService: LocalStorageService,
   };
 }
 
-function translateFolders(localStorageService: LocalStorageService, obj: any, fieldNames: string[], target: TargetField) {
-  translateFields(localStorageService.folders(), obj, fieldNames, target);
+function translateFolders(localStorageService: LocalStorageService, additionalFolders: Folder[], obj: any, fieldNames: string[], target: TargetField) {
+  translateFields([...localStorageService.folders(), ...additionalFolders], obj, fieldNames, target);
 }
 
 function translateMembers(localStorageService: LocalStorageService, obj: any, fieldNames: string[], target: TargetField) {
@@ -83,10 +79,4 @@ function resolve<T extends LocalRemoteIdPair>(array: T[], id: bigint, fieldName:
 
 function getOpposite(target: TargetField): TargetField {
   return target === 'id' ? 'remoteId' : 'id';
-}
-
-function includeRemoteId(obj: LocalRemoteIdPair, target: TargetField) {
-  if (target === 'id') {
-    obj.remoteId = obj.id;
-  }
 }
