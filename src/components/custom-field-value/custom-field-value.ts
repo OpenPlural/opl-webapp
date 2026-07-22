@@ -67,7 +67,7 @@ export class CustomFieldValue {
     const value = this.value();
     if (!value) return null;
 
-    return truncateDateToInputValue(new Date(parseInt(value.value)));
+    return truncateDateToInputValue(new Date(parseInt(value.value)), false);
   });
   protected readonly dateTimeFormatted = computed(() => {
     const field = this.field();
