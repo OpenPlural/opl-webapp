@@ -116,6 +116,7 @@
       "moveToRoot": "In den Stamm verschieben",
       "show": "Ordner einblenden",
       "hide": "Ordner ausblenden",
+      "viewDescription": "Beschreibung anzeigen",
       "goToParent": "Zum übergeordneten Ordner",
       "goToRoot": "Zum Stammordner"
     },
