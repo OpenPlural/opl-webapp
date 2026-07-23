@@ -116,6 +116,7 @@
       "moveToRoot": "Premesti u koren",
       "show": "Pokaži fascikle",
       "hide": "Sakrij fascikle",
+      "viewDescription": "Prikaži opis",
       "goToParent": "Idi u nadređenu fasciklu",
       "goToRoot": "Idi u koren"
     },

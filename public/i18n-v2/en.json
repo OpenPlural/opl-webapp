@@ -116,6 +116,7 @@
       "moveToRoot": "Move into root",
       "show": "Show folders",
       "hide": "Hide folders",
+      "viewDescription": "View description",
       "goToParent": "Go to parent folder",
       "goToRoot": "Go to root folder"
     },
