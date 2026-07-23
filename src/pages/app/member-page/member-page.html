@@ -1,7 +1,7 @@
 @let member = this.member();
 @if (member) {
   @let tab = selectedTab();
-  <app-edit-page-container [title]="member.name" (save)="save()" (delete)="openDialog('memberDeletePrompt')">
+  <app-edit-page-container [title]="member.name" [fab]="tab === 'frontHistory'" (save)="save()" (delete)="openDialog('memberDeletePrompt')" (fabAction)="openDialog('createFrontEntryPrompt')">
     <app-pager [currentPage]="tab" placement="top-29" rounding="rounded-b-lg" justify="justify-between">
       <app-toggle-icon-button name="navigation.profile" icon="fa-user" size="fa-lg" [toggled]="tab === 'profile'" (toggle)="selectedTab.set('profile')" />
       @if (!member.custom) {
@@ -37,16 +37,6 @@
       </div>
     </div>
   </app-edit-page-container>
-
-  @if (tab === 'frontHistory') {
-    <div class="absolute bottom-0 w-full" style="max-width: calc(900px - var(--spacing) * 5)">
-      <div class="fab absolute">
-        <button class="btn btn-lg btn-circle btn-primary" (click)="openDialog('createFrontEntryPrompt')">
-          <i class="fa fa-plus"></i>
-        </button>
-      </div>
-    </div>
-  }
 
   <app-popup-confirm dialogId="memberDeletePrompt" title="members.actions.delete" (confirm)="delete()">
     {{'members.prompts.delete' | translate:{ memberName: member.name } }}

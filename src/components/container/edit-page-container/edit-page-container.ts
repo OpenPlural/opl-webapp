@@ -13,8 +13,10 @@ export class EditPageContainer {
   private readonly location = inject(Location);
 
   readonly title = input.required<string>();
+  readonly fab = input<boolean>(false);
   readonly save = output();
   readonly delete = output();
+  readonly fabAction = output();
 
   protected goBack() {
     this.location.back();

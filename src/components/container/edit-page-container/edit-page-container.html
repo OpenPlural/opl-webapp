@@ -1,4 +1,4 @@
-<app-page-container>
+<app-page-container [fab]="fab()" (fabAction)="fabAction.emit()">
   <header class="h-full flex justify-between">
     <div class="flex justify-start">
       <app-vertical-center>
