@@ -1,6 +1,6 @@
-<div class="flex {{containerClass()}}">
-  <button type="button" class="max-w-full text-left grow flex justify-start btn btn-soft font-medium transition-none h-auto border-l-5 border-0 {{buttonClass()}}"
-          [class.inactive]="inactive()" [style]="'border-color: ' + cssColor()" (click)="selectable() ? toggleSelection() : action.emit()">
+<div class="flex max-w-full grow justify-start btn btn-soft font-medium transition-none h-auto border-l-5 border-0 {{containerClass()}}"
+     [class.inactive]="inactive()" [style]="'border-color: ' + cssColor()">
+  <button type="button" class="flex grow text-left {{buttonClass()}}" (click)="selectable() ? toggleSelection() : action.emit()">
     <div class="grow flex">
       <ng-content></ng-content>
     </div>
@@ -10,4 +10,5 @@
       </app-vertical-center>
     }
   </button>
+  <ng-content select=".actions"></ng-content>
 </div>

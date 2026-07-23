@@ -10,6 +10,7 @@ import {parseMarkdown} from '../../util/Markdown';
 export class MarkdownBox {
   readonly textareaName = input.required<string>();
   readonly editable = input.required<boolean>();
+  readonly useTextarea = input<boolean>(true);
   readonly markdown = model.required<string>();
 
   protected readonly editing = signal<boolean>(false);
