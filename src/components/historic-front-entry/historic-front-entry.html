@@ -1,7 +1,7 @@
 @let frontEntry = this.frontEntry();
 <div class="flex flex-row justify-between w-full">
   <span>{{formatDate(frontEntry.startedAt)}}</span>
-  <span>
+  <span class="max-[500px]:hidden">
     <app-icon-button name="front.actions.changeTime" icon="fa-clock-o" buttonClass="text-accent" (action)="openDialog('historicFrontTimePrompt-' + frontEntry.id)" />
     <app-icon-button name="front.actions.delete" icon="fa-trash" buttonClass="text-error" (action)="openDialog('historicFrontDeletePrompt-' + frontEntry.id)" />
   </span>
@@ -21,6 +21,10 @@
     {{frontEntry.comment}}
   </div>
 }
+<div class="text-center min-[500px]:hidden">
+  <app-icon-button name="front.actions.changeTime" icon="fa-clock-o" buttonClass="text-accent" (action)="openDialog('historicFrontTimePrompt-' + frontEntry.id)" />
+  <app-icon-button name="front.actions.delete" icon="fa-trash" buttonClass="text-error" (action)="openDialog('historicFrontDeletePrompt-' + frontEntry.id)" />
+</div>
 
 <app-popup-confirm [dialogId]="'historicFrontDeletePrompt-' + frontEntry.id" title="front.actions.delete" (confirm)="deleteFrontEntry()">
   {{'front.prompts.delete' | translate }}
