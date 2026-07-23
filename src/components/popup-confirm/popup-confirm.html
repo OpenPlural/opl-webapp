@@ -23,8 +23,9 @@
             {{(count === 0 ? 'confirm.yes' : 'confirm.yesCounted') | translate:{count, total: confirmations} }}
           </button>
         } @else {
-          <button class="btn btn-ghost btn-success text-lg" [disabled]="loading()" (click)="confirm.emit()">
-            @if (loading()) {
+          @let loading = this.loading();
+          <button class="btn btn-ghost btn-success text-lg" [class.btn-success]="!loading" [disabled]="loading" (click)="confirm.emit()">
+            @if (loading) {
               <span class="loading loading-spinner"></span>
             } @else {
               <i class="fa fa-check-circle" aria-hidden="true"></i>
