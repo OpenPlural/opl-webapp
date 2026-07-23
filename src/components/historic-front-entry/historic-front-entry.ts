@@ -8,16 +8,14 @@ import { truncateCurrentDate, truncateDate, truncateDateToInputValue } from '../
 import { WebService } from '../../services/WebService';
 import { openDialog } from '../../util/CommonFunctions';
 import { PopupConfirm } from '../popup-confirm/popup-confirm';
-import { SyncService } from '../../services/SyncService';
 
 @Component({
   selector: 'app-historic-front-entry',
   imports: [TranslatePipe, IconButton, PopupConfirm],
-  templateUrl: './historic-front-entry.component.html',
+  templateUrl: './historic-front-entry.html',
 })
 export class HistoricFrontEntry {
   private readonly settingsService = inject(SettingsService);
-  private readonly syncService = inject(SyncService);
   private readonly webService = inject(WebService);
 
   readonly frontEntry = input.required<FrontEntry>();
