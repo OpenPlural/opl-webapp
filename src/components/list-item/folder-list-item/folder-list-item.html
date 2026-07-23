@@ -10,4 +10,18 @@
   <app-vertical-center class="grow">
     <span class="ml-3">{{f.name}}</span>
   </app-vertical-center>
+  @if (f.description) {
+    <app-vertical-center class="actions">
+      <app-icon-button name="folders.actions.viewDescription" icon="fa-question-circle" (action)="openDialog('folderViewDescription-' + f.id)" />
+    </app-vertical-center>
+  }
 </app-list-item>
+
+@if (f.description) {
+  <dialog [id]="'folderViewDescription-' + f.id" class="modal">
+    <app-markdown-box class="modal-box" textareaName="description" [markdown]="f.description" [editable]="false" [useTextarea]="false" />
+    <form method="dialog" class="modal-backdrop">
+      <button></button>
+    </form>
+  </dialog>
+}
