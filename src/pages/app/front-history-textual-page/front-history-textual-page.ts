@@ -6,7 +6,7 @@ import {TranslatePipe} from '@ngx-translate/core';
 import {MemberListItem} from '../../../components/list-item/member-list-item/member-list-item';
 import {Member, MemberId} from '../../../services/model/Member';
 import {LocalStorageService} from '../../../services/LocalStorageService';
-import { HistoricFrontEntry } from '../../../components/historic-front-entry/historic-front-entry.component';
+import { HistoricFrontEntry } from '../../../components/historic-front-entry/historic-front-entry';
 
 @Component({
   selector: 'app-front-history-textual-page',

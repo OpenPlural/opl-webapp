@@ -4,7 +4,7 @@ import { FrontEntry, makeFrontEntry } from '../../../services/model/Front';
 import { WebService } from '../../../services/WebService';
 import { Loading } from '../../../components/loading/loading';
 import { TranslatePipe } from '@ngx-translate/core';
-import { HistoricFrontEntry } from '../../../components/historic-front-entry/historic-front-entry.component';
+import { HistoricFrontEntry } from '../../../components/historic-front-entry/historic-front-entry';
 import { openDialog } from '../../../util/CommonFunctions';
 import { truncateDate } from '../../../util/DateTruncate';
 import { LocalStorageService } from '../../../services/LocalStorageService';

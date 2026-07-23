@@ -12,7 +12,7 @@ import { PopupConfirm } from '../popup-confirm/popup-confirm';
 @Component({
   selector: 'app-historic-front-entry',
   imports: [TranslatePipe, IconButton, PopupConfirm],
-  templateUrl: './historic-front-entry.component.html',
+  templateUrl: './historic-front-entry.html',
 })
 export class HistoricFrontEntry {
   private readonly settingsService = inject(SettingsService);
