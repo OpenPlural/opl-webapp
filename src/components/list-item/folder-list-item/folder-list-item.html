@@ -10,7 +10,7 @@
   <app-vertical-center class="grow">
     <span class="ml-3">{{f.name}}</span>
   </app-vertical-center>
-  @if (f.description) {
+  @if (f.description && descriptionPopup()) {
     <app-vertical-center class="actions">
       <app-icon-button name="folders.actions.viewDescription" icon="fa-question-circle" (action)="openDialog('folderViewDescription-' + f.id)" />
     </app-vertical-center>
