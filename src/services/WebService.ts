@@ -118,9 +118,10 @@ export class WebService {
     await firstValueFrom(this.http.delete(`${BASE_URL}/api/v1/front/${remoteId}`));
   }
 
-  async updateFrontEntry(frontEntry: FrontEntry): Promise<void> {
+  async updateFrontEntry(frontEntry: FrontEntry, useRemoteId: boolean = true): Promise<void> {
     frontEntry = translateFrontEntry(this.localStorageService, frontEntry, 'remoteId');
-    await firstValueFrom(this.http.patch(`${BASE_URL}/api/v1/front/${frontEntry.remoteId}`, frontEntry));
+    const id = useRemoteId ? frontEntry.remoteId : frontEntry.id;
+    await firstValueFrom(this.http.patch(`${BASE_URL}/api/v1/front/${id}`, frontEntry));
   }
 
   async createCustomField(customField: CustomField): Promise<CustomFieldId> {

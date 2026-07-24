@@ -69,7 +69,7 @@ export class HistoricFrontEntry {
         startedAt,
         endedAt,
         updatedAt: truncateCurrentDate(),
-      });
+      }, false);
       this.update.emit();
     }
   }
