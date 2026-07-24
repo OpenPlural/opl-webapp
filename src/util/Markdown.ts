@@ -40,6 +40,25 @@ marked.use({
       renderer(token) {
         return `<div class="text-center">${token["text"]}</div>`;
       }
+    }, {
+      name: 'language',
+      level: 'inline',
+      start(src) { return src.indexOf('<lang '); },
+      tokenizer(src) {
+        const match = src.match(/^<lang ([^>]*)>(.*?)<\/lang>/);
+        if (match) {
+          return {
+            type: 'language',
+            raw: match[0],
+            code: match[1],
+            text: match[2],
+          }
+        }
+        return undefined;
+      },
+      renderer(token) {
+        return `<span lang="${token["code"]}">${token["text"]}</span>`;
+      }
     }
   ]
 });
