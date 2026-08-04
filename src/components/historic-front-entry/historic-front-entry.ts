@@ -9,6 +9,7 @@ import { WebService } from '../../services/WebService';
 import { openDialog } from '../../util/CommonFunctions';
 import { PopupConfirm } from '../popup-confirm/popup-confirm';
 import { SyncService } from '../../services/SyncService';
+import { LocalStorageService } from '../../services/LocalStorageService';
 
 @Component({
   selector: 'app-historic-front-entry',
@@ -16,6 +17,7 @@ import { SyncService } from '../../services/SyncService';
   templateUrl: './historic-front-entry.html',
 })
 export class HistoricFrontEntry {
+  private readonly localStorageService = inject(LocalStorageService);
   private readonly settingsService = inject(SettingsService);
   private readonly syncService = inject(SyncService);
   private readonly webService = inject(WebService);
@@ -86,6 +88,10 @@ export class HistoricFrontEntry {
   protected async deleteFrontEntry() {
     const frontEntry = this.frontEntry();
     await this.webService.deleteFrontEntry(frontEntry.id);
+    if (!frontEntry.endedAt) {
+      this.localStorageService.markDirty();
+      await this.syncService.fullSync();
+    }
     this.update.emit();
   }
 
