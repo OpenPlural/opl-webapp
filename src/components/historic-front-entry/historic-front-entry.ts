@@ -76,10 +76,8 @@ export class HistoricFrontEntry {
 
   protected async deleteFrontEntry() {
     const frontEntry = this.frontEntry();
-    if (frontEntry.remoteId) {
-      await this.webService.deleteFrontEntry(frontEntry.remoteId);
-      this.update.emit();
-    }
+    await this.webService.deleteFrontEntry(frontEntry.id);
+    this.update.emit();
   }
 
   protected readonly openDialog = openDialog;
