@@ -8,6 +8,7 @@ import { truncateCurrentDate, truncateDate, truncateDateToInputValue } from '../
 import { WebService } from '../../services/WebService';
 import { openDialog } from '../../util/CommonFunctions';
 import { PopupConfirm } from '../popup-confirm/popup-confirm';
+import { SyncService } from '../../services/SyncService';
 
 @Component({
   selector: 'app-historic-front-entry',
@@ -16,6 +17,7 @@ import { PopupConfirm } from '../popup-confirm/popup-confirm';
 })
 export class HistoricFrontEntry {
   private readonly settingsService = inject(SettingsService);
+  private readonly syncService = inject(SyncService);
   private readonly webService = inject(WebService);
 
   readonly frontEntry = input.required<FrontEntry>();
@@ -51,17 +53,21 @@ export class HistoricFrontEntry {
     const endTime = formData.get('endTime')?.toString().trim();
     form.reset();
 
-    if (startTime && endTime) {
-      const startTimestamp = Date.parse(startTime);
-      const endTimestamp = Date.parse(endTime);
+    if (startTime) {
       const now = Date.now();
-
-      if (startTimestamp > endTimestamp || endTimestamp > now) {
-        return;
-      }
+      const startTimestamp = Date.parse(startTime);
 
       const startedAt = truncateDate(new Date(startTimestamp));
-      const endedAt = truncateDate(new Date(endTimestamp));
+      let endedAt = null;
+
+      if (this.endTimeValue()) {
+        if (!endTime) return;
+        const endTimestamp = Date.parse(endTime);
+        if (startTimestamp > endTimestamp || endTimestamp > now) {
+          return;
+        }
+        endedAt = truncateDate(new Date(endTimestamp));
+      }
 
       const frontEntry = this.frontEntry();
       await this.webService.updateFrontEntry({
@@ -70,6 +76,9 @@ export class HistoricFrontEntry {
         endedAt,
         updatedAt: truncateCurrentDate(),
       }, false);
+      if (!endedAt) {
+        await this.syncService.fullSync();
+      }
       this.update.emit();
     }
   }
