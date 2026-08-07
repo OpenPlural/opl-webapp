@@ -5,6 +5,9 @@
     } @else if (syncPending()) {
       <app-icon-button name="sync.trigger" icon="fa-cloud-upload" buttonClass="btn-danger" (action)="sync()" />
     }
+    @if (virtualSession()) {
+      <i class="fa fa-television fa-lg text-accent"></i>
+    }
   </app-vertical-center>
   <main>
     @let system = this.system();
