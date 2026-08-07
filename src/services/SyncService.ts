@@ -64,11 +64,12 @@ export class SyncService {
 
       this.accountService.updateAccountFromSync(syncData.user, syncData.friendCode);
 
-      await this.syncFolders(syncData.updatedFolders, syncData.folderIds, syncData.deletionDelta);
-      await this.syncMembers(syncData.updatedMembers, syncData.memberIds, syncData.deletionDelta);
-      await this.syncCustomFields(syncData.updatedFields, syncData.fieldIds, syncData.deletionDelta);
-      await this.syncCustomFieldValues(syncData.updatedFieldValues, syncData.fieldValueIds, syncData.deletionDelta);
-      await this.syncFrontEntries(syncData.front);
+      const doServerUpdates = !this.accountService.virtualSessionToken();
+      await this.syncFolders(syncData.updatedFolders, syncData.folderIds, syncData.deletionDelta, doServerUpdates);
+      await this.syncMembers(syncData.updatedMembers, syncData.memberIds, syncData.deletionDelta, doServerUpdates);
+      await this.syncCustomFields(syncData.updatedFields, syncData.fieldIds, syncData.deletionDelta, doServerUpdates);
+      await this.syncCustomFieldValues(syncData.updatedFieldValues, syncData.fieldValueIds, syncData.deletionDelta, doServerUpdates);
+      await this.syncFrontEntries(syncData.front, doServerUpdates);
 
       await this.localStorageService.updateSyncTime(Date.parse(syncData.time), !syncData.deletionDelta);
 
@@ -91,7 +92,7 @@ export class SyncService {
     }
   }
 
-  private async syncFrontEntries(serverFront: FrontEntry[]) {
+  private async syncFrontEntries(serverFront: FrontEntry[], doServerUpdates: boolean) {
     await this.syncGeneric(
       this.localStorageService.front(),
       serverFront,
@@ -104,11 +105,12 @@ export class SyncService {
       async () => {},
       async (frontEntry) => await this.localStorageService.addFrontEntry(frontEntry),
       async (frontEntry) => await this.localStorageService.updateFrontEntry(frontEntry),
-      async (frontEntryId) => await this.localStorageService.removeFrontEntry(frontEntryId)
+      async (frontEntryId) => await this.localStorageService.removeFrontEntry(frontEntryId),
+      doServerUpdates,
     );
   }
 
-  private async syncFolders(updatedFolders: Folder[], folderIds: FolderId[], deletionDelta: boolean) {
+  private async syncFolders(updatedFolders: Folder[], folderIds: FolderId[], deletionDelta: boolean, doServerUpdates: boolean) {
     await this.syncGeneric(
       this.localStorageService.folders(),
       updatedFolders,
@@ -122,10 +124,11 @@ export class SyncService {
       async (folder) => await this.localStorageService.addFolder(folder),
       async (folder) => await this.localStorageService.updateFolder(folder),
       async (folderId) => await this.localStorageService.removeFolderRecursively(folderId, null),
+      doServerUpdates,
     );
   }
 
-  private async syncMembers(updatedMembers: Member[], memberIds: MemberId[], deletionDelta: boolean) {
+  private async syncMembers(updatedMembers: Member[], memberIds: MemberId[], deletionDelta: boolean, doServerUpdates: boolean) {
     await this.syncGeneric(
       this.localStorageService.members(),
       updatedMembers,
@@ -144,11 +147,12 @@ export class SyncService {
       async (memberId) => await this.webService.deleteMember(memberId),
       async (member) => await this.localStorageService.addMember(member),
       async (member) => await this.localStorageService.updateMember(member),
-      async (memberId) => await this.localStorageService.removeMember(memberId, null)
+      async (memberId) => await this.localStorageService.removeMember(memberId, null),
+      doServerUpdates,
     );
   }
 
-  private async syncCustomFields(updatedFields: CustomField[], fieldIds: CustomFieldId[], deletionDelta: boolean) {
+  private async syncCustomFields(updatedFields: CustomField[], fieldIds: CustomFieldId[], deletionDelta: boolean, doServerUpdates: boolean) {
     await this.syncGeneric(
       this.localStorageService.customFields(),
       updatedFields,
@@ -161,7 +165,8 @@ export class SyncService {
       async (fieldId) => await this.webService.deleteCustomField(fieldId),
       async (field) => await this.localStorageService.addCustomField(field),
       async (field) => await this.localStorageService.updateCustomField(field),
-      async (fieldId) => await this.localStorageService.removeCustomField(fieldId, null)
+      async (fieldId) => await this.localStorageService.removeCustomField(fieldId, null),
+      doServerUpdates,
     );
 
     if (this.localStorageService.isCustomFieldReorderRequired()) {
@@ -169,7 +174,7 @@ export class SyncService {
     }
   }
 
-  private async syncCustomFieldValues(updatedFieldValues: CustomFieldDataValue[], fieldValueIds: CustomFieldDataId[], deletionDelta: boolean) {
+  private async syncCustomFieldValues(updatedFieldValues: CustomFieldDataValue[], fieldValueIds: CustomFieldDataId[], deletionDelta: boolean, doServerUpdates: boolean) {
     await this.syncGeneric(
       this.localStorageService.customFieldValues(),
       updatedFieldValues,
@@ -182,7 +187,8 @@ export class SyncService {
       async (dataId) => await this.webService.deleteCustomFieldValue(dataId),
       async (value) => await this.localStorageService.addCustomFieldValue(value),
       async (value) => await this.localStorageService.updateCustomFieldValue(value),
-      async (dataId) => await this.localStorageService.removeCustomFieldValue(dataId, null)
+      async (dataId) => await this.localStorageService.removeCustomFieldValue(dataId, null),
+      doServerUpdates,
     );
   }
 
@@ -199,6 +205,7 @@ export class SyncService {
     localAdd: (item: L) => Promise<void>,
     localUpdate: (item: L) => Promise<void>,
     localRemove: (itemId: bigint) => Promise<void>,
+    doServerUpdates: boolean,
   ) {
     serverIds = [...serverIds];
     function isServerKnown(remoteId: bigint): boolean {
@@ -233,19 +240,23 @@ export class SyncService {
           if (updatedServerItem) {
             const serverUpdatedAt = Date.parse(updatedServerItem.updatedAt);
             if (localUpdatedAt > serverUpdatedAt) {
-              await webUpdate(updatedServerItem, localItem);
+              if (doServerUpdates) {
+                await webUpdate(updatedServerItem, localItem);
+              }
             } else if (localUpdatedAt < serverUpdatedAt) {
               await localUpdate(makeLocalItem(localItem, updatedServerItem));
-            } else {
+            } else if (doServerUpdates) {
               await webUpdate(updatedServerItem, localItem);
             }
           } else if (localUpdatedAt >= this.localStorageService.getLastSyncTime()) {
-            await webUpdate(null, localItem);
+            if (doServerUpdates) {
+              await webUpdate(null, localItem);
+            }
           }
         } else {
           await localRemove(localId);
         }
-      } else {
+      } else if (doServerUpdates) {
         const remoteId = await webCreate(localItem);
         await localUpdate({
           ...localItem,
@@ -282,18 +293,20 @@ export class SyncService {
         localItems.push(localItem);
       }
     }
-    if (deletionDelta) {
-      const deletions = await this.localStorageService.getDeletions();
-      for (const deletion of deletions) {
-        if (deletion.resourceType === deletionType && !serverIds.includes(deletion.resourceId) && !localItems.find(li => li.remoteId === deletion.resourceId)) {
-          serverIds.push(deletion.resourceId);
-          await webDelete(deletion.resourceId);
+    if (doServerUpdates) {
+      if (deletionDelta) {
+        const deletions = await this.localStorageService.getDeletions();
+        for (const deletion of deletions) {
+          if (deletion.resourceType === deletionType && !serverIds.includes(deletion.resourceId) && !localItems.find(li => li.remoteId === deletion.resourceId)) {
+            serverIds.push(deletion.resourceId);
+            await webDelete(deletion.resourceId);
+          }
         }
-      }
-    } else {
-      for (const remoteId of serverIds) {
-        if (!localItems.some(li => li.remoteId === remoteId)) {
-          await webDelete(remoteId);
+      } else {
+        for (const remoteId of serverIds) {
+          if (!localItems.some(li => li.remoteId === remoteId)) {
+            await webDelete(remoteId);
+          }
         }
       }
     }

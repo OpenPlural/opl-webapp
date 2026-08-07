@@ -11,9 +11,16 @@ export function authenticatedInterceptor(req: HttpRequest<unknown>, next: HttpHa
   const accountService = inject(AccountService);
   const toastService = inject(ToastService);
 
-  req = req.clone({
-    withCredentials: true
-  });
+  const virtualSessionToken = accountService.virtualSessionToken();
+  if (virtualSessionToken) {
+    req = req.clone({
+      headers: req.headers.set('Authorization', 'Bearer ' + virtualSessionToken)
+    });
+  } else {
+    req = req.clone({
+      withCredentials: true
+    });
+  }
 
   const router = inject(Router);
   return next(req).pipe(

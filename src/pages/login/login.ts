@@ -42,6 +42,15 @@ export class Login {
     if (username && password) {
       this.loading.set(true);
       try {
+        if (username === '__VIRTUAL' && password === '__VIRTUAL') {
+          const virtualSessionToken = prompt("Please enter your virtual session token:");
+          if (virtualSessionToken) {
+            await this.accountService.initVirtualSession(virtualSessionToken);
+            this.localStorageService.markDirty();
+            await this.syncService.fullSync(true);
+          }
+          return;
+        }
         await this.accountService.login(username, password);
         this.localStorageService.markDirty();
         await this.syncService.fullSync(true);
