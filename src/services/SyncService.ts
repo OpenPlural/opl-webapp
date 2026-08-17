@@ -38,11 +38,18 @@ export class SyncService {
   });
 
   private readonly _syncInProgress = signal(false);
+  private readonly _syncQueued = signal(false);
 
   readonly syncInProgress = this._syncInProgress.asReadonly();
 
   async fullSync(forceAbsoluteSync: boolean = false): Promise<void> {
-    if (!this.localStorageService.ready() || !this.localStorageService.dirty() || this.syncInProgress()) return;
+    const syncInProgress = this.syncInProgress();
+    if (!this.localStorageService.ready() || !this.localStorageService.dirty() || syncInProgress) {
+      if (syncInProgress) {
+        this._syncQueued.set(true);
+      }
+      return;
+    }
 
     try {
       this._syncInProgress.set(true);
@@ -89,6 +96,13 @@ export class SyncService {
       throw e;
     } finally {
       this._syncInProgress.set(false);
+      setTimeout(() => {
+        if (this._syncQueued()) {
+          this._syncQueued.set(false);
+          this.localStorageService.markDirty();
+          this.fullSync();
+        }
+      }, 50);
     }
   }
 
