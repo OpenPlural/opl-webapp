@@ -48,6 +48,10 @@ export class WebService {
     return firstValueFrom(this.http.post<AccountInfo>(`${BASE_URL}/auth/login`, { name: username, password, device }));
   }
 
+  async initVirtualSession(): Promise<AccountInfo> {
+    return firstValueFrom(this.http.get<AccountInfo>(`${BASE_URL}/api/v1/session/virtual`));
+  }
+
   async deleteAccount(id: UserId, password: string): Promise<void> {
     await firstValueFrom(this.http.post(`${BASE_URL}/auth/delete-account`, { id, password }));
   }

@@ -7,9 +7,11 @@ import {fromJson, toJson} from '../util/FixedJson';
 @Injectable({ providedIn: 'root' })
 export class AccountService {
   private readonly _account: WritableSignal<AccountInfo | null> = signal(null);
+  private readonly _virtualSessionToken: WritableSignal<string | null> = signal(null);
   private readonly _ready = signal(false);
 
   readonly account = this._account.asReadonly();
+  readonly virtualSessionToken = this._virtualSessionToken.asReadonly();
   readonly ready = this._ready.asReadonly();
 
   private readonly webService = inject(WebService);
@@ -19,6 +21,12 @@ export class AccountService {
     if (accountInfo) {
       this._account.set(fromJson(accountInfo));
     }
+
+    const virtualSessionToken = localStorage.getItem('virtualSessionToken');
+    if (virtualSessionToken) {
+      this._virtualSessionToken.set(virtualSessionToken);
+    }
+
     this._ready.set(true);
   }
 
@@ -26,6 +34,18 @@ export class AccountService {
     const accountInfo = await this.webService.login(username, password);
     localStorage.setItem('account', toJson(accountInfo));
     this._account.set(accountInfo);
+  }
+
+  async initVirtualSession(token: string): Promise<void> {
+    this._virtualSessionToken.set(token);
+    try {
+      const accountInfo = await this.webService.initVirtualSession();
+      localStorage.setItem('account', toJson(accountInfo));
+      localStorage.setItem('virtualSessionToken', token);
+    } catch (e) {
+      this._virtualSessionToken.set(null);
+      throw e;
+    }
   }
 
   logout() {

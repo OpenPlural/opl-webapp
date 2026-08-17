@@ -85,7 +85,9 @@ export class NavPageContainer {
   }
 
   protected async logout() {
-    await this.webService.invalidateCurrentSession();
+    if (!this.accountService.virtualSessionToken()) {
+      await this.webService.invalidateCurrentSession();
+    }
     this.accountService.logout();
     await deleteLocalData(this.accountService, this.localStorageService, this.router);
   }

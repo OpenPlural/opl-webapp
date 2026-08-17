@@ -26,6 +26,7 @@ export class Dashboard {
   protected readonly system = computed(() => this.accountService.account()?.user.system || false);
   protected readonly syncPending = computed(() => this.localStorageService.dirty());
   protected readonly syncRunning = computed(() => this.syncService.syncInProgress());
+  protected readonly virtualSession = computed(() => !!this.accountService.virtualSessionToken());
 
   protected async sync() {
     //if (!this.syncPending() || this.syncRunning()) return;
