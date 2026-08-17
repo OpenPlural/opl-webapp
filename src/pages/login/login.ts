@@ -48,6 +48,7 @@ export class Login {
             await this.accountService.initVirtualSession(virtualSessionToken);
             this.localStorageService.markDirty();
             await this.syncService.fullSync(true);
+            this.router.navigate(['app']);
           }
           return;
         }
