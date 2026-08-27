@@ -16,6 +16,8 @@ export class MemberSelector implements OnInit {
   readonly dialogId = input.required<string>();
   readonly title = input.required<string>();
   readonly custom = input<boolean>();
+  readonly frontingFirst = input<boolean>(false);
+  readonly selectMultiple = input<boolean>(true);
   readonly selection = input<MemberId[]>([]);
   readonly submitSelection = output<MemberId[]>();
   readonly forceClose = output();
@@ -23,9 +25,17 @@ export class MemberSelector implements OnInit {
   readonly updatedSelection = signal<MemberId[]>([]);
 
   readonly members = computed(() => {
+    const frontingFirst = this.frontingFirst();
+    const front = this.localStorageService.ongoingFront();
     const custom = this.custom();
     if (custom === undefined) {
       return this.localStorageService.members().sort((a, b) => {
+        if (frontingFirst) {
+          const aFronting = front.some((entry) => entry.member === a.id);
+          const bFronting = front.some((entry) => entry.member === b.id);
+          if (aFronting && !bFronting) return -1;
+          if (!aFronting && bFronting) return 1;
+        }
         if (!a.custom && b.custom) return -1;
         if (a.custom && !b.custom) return 1;
         return compareCustomSort(a, b);
@@ -33,7 +43,15 @@ export class MemberSelector implements OnInit {
     } else {
       return this.localStorageService.members()
         .filter(member => member.custom === custom)
-        .sort(compareCustomSort);
+        .sort((a, b) => {
+          if (frontingFirst) {
+            const aFronting = front.some((entry) => entry.member === a.id);
+            const bFronting = front.some((entry) => entry.member === b.id);
+            if (aFronting && !bFronting) return -1;
+            if (!aFronting && bFronting) return 1;
+          }
+          return compareCustomSort(a, b);
+        });
     }
   });
 
@@ -44,6 +62,9 @@ export class MemberSelector implements OnInit {
   protected setSelected(id: MemberId, selected: boolean) {
     if (selected) {
       this.updatedSelection.update((selection) => [...selection, id]);
+      if (!this.selectMultiple()) {
+        this.submitSelection.emit(this.updatedSelection());
+      }
     } else {
       this.updatedSelection.update((selection) => selection.filter((v) => v !== id));
     }

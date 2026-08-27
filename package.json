@@ -26,6 +26,7 @@
     "@ngx-translate/core": "^17.0.0",
     "@ngx-translate/http-loader": "^17.0.0",
     "@tailwindcss/postcss": "^4.2.4",
+    "chart.js": "^4.5.1",
     "daisyui": "^5.5.19",
     "date-fns": "^4.1.0",
     "dompurify": "^3.4.9",

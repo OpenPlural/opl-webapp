@@ -7,6 +7,10 @@ export function compareCustomSort(a: {sort: bigint; name: string}, b: {sort: big
   return Number(a.sort - b.sort);
 }
 
+export function compareDates(a: string, b: string): number {
+  return Date.parse(a) - Date.parse(b);
+}
+
 export function sortNestedFolders(folders: Folder[]): Folder[] {
   return folders.sort((a, b) => {
     const aPath = getFolderPath(a, folders);

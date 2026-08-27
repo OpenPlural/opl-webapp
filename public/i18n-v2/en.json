@@ -201,6 +201,36 @@
       }
     }
   },
+  "polls": {
+    "actions": {
+      "create": "Create poll",
+      "edit": "Edit poll",
+      "delete": "Delete poll",
+      "vote": "Vote",
+      "addCustomOption": "Add custom option"
+    },
+    "prompts": {
+      "delete": "Do you really want to delete the poll {pollName}?"
+    },
+    "labels": {
+      "yes": "Yes",
+      "no": "No",
+      "abstain": "Abstain",
+      "veto": "Veto",
+      "comment": "Comment",
+      "type": "Type",
+      "openUntil": "Open until",
+      "expired": "Expired",
+      "totalVotes": "{count, plural, one {# vote} other {# votes}}",
+      "yesNo": "Yes / No",
+      "custom": "Custom",
+      "customOptions": "Custom options",
+      "allow": {
+        "abstain": "Allow abstain",
+        "veto": "Allow veto"
+      }
+    }
+  },
   "privacyBuckets": {
     "actions": {
       "create": "Create privacy bucket",

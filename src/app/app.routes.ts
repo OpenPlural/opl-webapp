@@ -28,6 +28,9 @@ import {DataExport} from '../pages/app/data-export/data-export';
 import {MassDelete} from '../pages/app/mass-delete/mass-delete';
 import {ResetPassword} from '../pages/reset-password/reset-password';
 import { Social } from '../pages/app/social/social';
+import { Polls } from '../pages/app/polls/polls';
+import { PollEdit } from '../pages/app/poll-edit/poll-edit';
+import { Poll } from '../pages/app/poll/poll';
 
 export const appRoutes: Routes = [
   {
@@ -56,6 +59,16 @@ export const appRoutes: Routes = [
     path: 'front-history',
     component: FrontHistoryPage,
     data: { name: 'navigation.frontHistory', systemNavigable: true }
+  }, {
+    path: 'polls',
+    component: Polls,
+    data: { name: 'navigation.polls', systemNavigable: true }
+  }, {
+    path: 'poll/:id',
+    component: Poll,
+  }, {
+    path: 'poll-edit/:id',
+    component: PollEdit,
   }, {
     path: 'friends',
     component: Friends,

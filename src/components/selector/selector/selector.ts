@@ -9,6 +9,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 export class Selector {
   readonly dialogId = input.required<string>();
   readonly title = input.required<string>();
+  readonly canSubmit = input<boolean>(true);
   readonly submitSelection = output();
   readonly forceClose = output();
 
