@@ -3,7 +3,7 @@ import { WebService } from './WebService';
 import { Folder, FolderId } from './model/Folder';
 import { LocalStorageService } from './LocalStorageService';
 import { Member, MemberId } from './model/Member';
-import { FrontEntry } from './model/Front';
+import { FrontEntry, FrontEntryId } from './model/Front';
 import { CustomField, CustomFieldDataId, CustomFieldDataValue, CustomFieldId } from './model/Field';
 import { compareCustomSort } from '../util/CustomSort';
 import { AccountService } from './AccountService';
@@ -107,8 +107,41 @@ export class SyncService {
   }
 
   private async syncFrontEntries(serverFront: FrontEntry[], doServerUpdates: boolean) {
+    const localFront = this.localStorageService.front();
+    const members = this.localStorageService.members();
+    function findConflict(serverEntry: FrontEntry): FrontEntry | null {
+      const member = members.find((m) => m.remoteId === serverEntry.member);
+      if (!member) return null;
+      const localEntry = localFront.find((l) => l.member === member.id && !l.endedAt && l.remoteId !== serverEntry.id);
+      return localEntry || null;
+    }
+
+    const deleted: FrontEntryId[] = [];
+    const fixed: FrontEntry[] = [];
+    for (const serverEntry of serverFront) {
+      const localEntry = findConflict(serverEntry);
+      if (localEntry) {
+        if (Date.parse(serverEntry.startedAt) >= Date.parse(localEntry.startedAt)) {
+          await this.webService.deleteFrontEntry(serverEntry.id);
+          deleted.push(serverEntry.id);
+        } else {
+          const fix = {
+            ...serverEntry,
+            endedAt: localEntry.startedAt,
+          };
+          await this.webService.updateFrontEntry({
+            ...fix,
+            member: localEntry.member,
+          }, false);
+          fixed.push(fix);
+        }
+      }
+    }
+    serverFront = serverFront.filter((entry) => !deleted.includes(entry.id))
+      .map((entry) => fixed.find((f) => f.id === entry.id) || entry);
+
     await this.syncGeneric(
-      this.localStorageService.front(),
+      localFront,
       serverFront,
       [],
       false,
