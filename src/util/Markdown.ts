@@ -20,7 +20,8 @@ marked.use({
         return undefined;
       },
       renderer(token) {
-        return `<u>${token["text"]}</u>`;
+        const nestedHtml = marked(token["text"]);
+        return `<u>${nestedHtml}</u>`;
       }
     }, {
       name: 'centered',
@@ -38,7 +39,8 @@ marked.use({
         return undefined;
       },
       renderer(token) {
-        return `<div class="text-center">${token["text"]}</div>`;
+        const nestedHtml = marked(token["text"]);
+        return `<div class="text-center">${nestedHtml}</div>`;
       }
     }, {
       name: 'language',
@@ -57,7 +59,8 @@ marked.use({
         return undefined;
       },
       renderer(token) {
-        return `<span lang="${token["code"]}">${token["text"]}</span>`;
+        const nestedHtml = marked(token["text"]);
+        return `<span lang="${token["code"]}">${nestedHtml}</span>`;
       }
     }
   ]
