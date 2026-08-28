@@ -20,7 +20,7 @@ marked.use({
         return undefined;
       },
       renderer(token) {
-        const nestedHtml = marked(token["text"]);
+        const nestedHtml = marked.parse(token["text"]) as string;
         return `<u>${nestedHtml}</u>`;
       }
     }, {
@@ -39,7 +39,7 @@ marked.use({
         return undefined;
       },
       renderer(token) {
-        const nestedHtml = marked(token["text"]);
+        const nestedHtml = marked.parse(token["text"]) as string;
         return `<div class="text-center">${nestedHtml}</div>`;
       }
     }, {
@@ -59,7 +59,7 @@ marked.use({
         return undefined;
       },
       renderer(token) {
-        const nestedHtml = marked(token["text"]);
+        const nestedHtml = marked.parse(token["text"]) as string;
         return `<span lang="${token["code"]}">${nestedHtml}</span>`;
       }
     }
