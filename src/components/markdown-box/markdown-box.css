@@ -11,3 +11,7 @@ div.markdown ::ng-deep ol {
 div.markdown ::ng-deep a {
   @apply text-accent font-bold;
 }
+
+div.markdown ::ng-deep em {
+  @apply italic;
+}
