@@ -23,7 +23,7 @@
         @if (user.user.system) {
           <div class="divider">{{'friends.labels.fronters' | translate}}</div>
           @if (user.front) {
-            <div class="px-5">
+            <div class="px-5 pb-10">
               @if (user.front.length === 0) {
                 <div class="text-center font-light">
                   {{'front.labels.empty' | translate}}
@@ -43,7 +43,7 @@
               }
             </div>
           } @else {
-            <div class="text-center">
+            <div class="text-center mb-10">
               {{'friends.labels.permissions.denied.front' | translate}}
             </div>
           }
