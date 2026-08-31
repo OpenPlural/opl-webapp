@@ -23,6 +23,7 @@ import { TranslateService } from '@ngx-translate/core';
     MemberListItem,
   ],
   templateUrl: './analytics.html',
+  styleUrl: './analytics.css',
 })
 export class Analytics {
   private readonly translate = inject(TranslateService);
