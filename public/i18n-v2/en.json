@@ -86,6 +86,8 @@
     "customFront": "Custom front",
     "frontHistory": "Front History",
     "analytics": "Analytics",
+    "frontCount": "Front Count",
+    "frontTime": "Front Time",
     "chat": "Chat",
     "polls": "Polls",
     "friends": "Friends",
@@ -229,6 +231,12 @@
         "abstain": "Allow abstain",
         "veto": "Allow veto"
       }
+    }
+  },
+  "analytics": {
+    "labels": {
+      "frontCount": "Fronted {count, plural, one {# time} other {# times}}",
+      "frontTime": "{days, plural, one {# day} other {# days}} and {hours, plural, one {# hour} other {# hours}}"
     }
   },
   "privacyBuckets": {

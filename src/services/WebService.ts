@@ -26,6 +26,7 @@ import {
 import { LocalStorageService } from './LocalStorageService';
 import {ApiKey, ApiKeyId} from './model/ApiKey';
 import { Poll, PollAnswer, PollAnswerId, PollId } from './model/Poll';
+import { Analytics } from './model/Analytics';
 
 const BASE_URL: string = localStorage.getItem('baseUrl') || (isDevMode() ? 'https://localhost:4200' : 'https://opl-api.webbiii.cc');
 
@@ -343,6 +344,10 @@ export class WebService {
 
   async getMemberWithFolders(userId: UserId, memberId: MemberId): Promise<ExtendedMember> {
     return firstValueFrom(this.http.get<ExtendedMember>(`${BASE_URL}/api/v1/member/${memberId}?userId=${userId}&extended=true`));
+  }
+
+  async getAnalytics(startDate: string, endDate: string): Promise<Analytics> {
+    return firstValueFrom(this.http.get<Analytics>(`${BASE_URL}/api/v1/analytics/?start=${startDate}&end=${endDate}`));
   }
 
   async getApiKeys(): Promise<ApiKey[]> {

@@ -228,6 +228,12 @@
       }
     }
   },
+  "analytics": {
+    "labels": {
+      "frontCount": "{count}-mal gefrontet",
+      "frontTime": "{days, plural, one {# Tag} other {# Tage}} und {hours, plural, one {# Stunde} other {# Stunden}}"
+    }
+  },
   "privacyBuckets": {
     "actions": {
       "create": "Privatsphäre-Bucket erstellen",
