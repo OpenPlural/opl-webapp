@@ -3,6 +3,7 @@ import {nullableField} from '../util/NullString';
 import {toColorInt} from '../util/ColorConvert';
 import {WebService} from './WebService';
 import {CUSTOM_FIELD_DATA_TYPE_DATETIME, CUSTOM_FIELD_DATA_TYPE_TEXT} from './model/Field';
+import { truncateDate } from '../util/DateTruncate';
 
 @Injectable({ providedIn: 'root' })
 export class ImportService {
@@ -31,11 +32,17 @@ export class ImportService {
       members = obj.members;
     }
 
+    let polls: any[] | null = null;
+    if (flags.polls && 'polls' in obj) {
+      polls = obj.polls;
+    }
+
     await this.webService.import({
       privacy,
       fields,
       folders,
       members,
+      polls,
       truncate: flags.truncate,
     });
   }
@@ -73,11 +80,17 @@ export class ImportService {
       }
     }
 
+    let polls: any[] | null = null;
+    if (flags.polls && 'polls' in obj) {
+      polls = await this.importPolls(obj.polls);
+    }
+
     await this.webService.import({
       privacy,
       fields,
       folders,
       members,
+      polls,
       truncate: flags.truncate,
     });
   }
@@ -203,6 +216,63 @@ export class ImportService {
     }
     return newMembers;
   }
+
+  private async importPolls(polls: any[]): Promise<any[]> {
+    const newPolls: any[] = [];
+    for (const poll of polls) {
+      let importPoll: any = {
+        name: poll.name,
+        description: nullableField(poll.desc),
+        openUntil: truncateDate(new Date(poll.endTime)),
+      };
+      if (poll.custom) {
+        const options: string[] = poll.options.map((option: any) => option.name);
+        importPoll = {
+          ...importPoll,
+          allowAbstain: false,
+          allowVeto: false,
+          customOptions: options,
+          answers: poll.votes.map((vote: any) => ({
+            memberId: vote.id,
+            answer: options.findIndex(opt => opt === vote.vote),
+            comment: nullableField(vote.comment),
+          })).filter((vote: any) => vote.answer !== -1),
+        };
+      } else {
+        importPoll = {
+          ...importPoll,
+          allowAbstain: poll.allowAbstain,
+          allowVeto: poll.allowVeto,
+          customOptions: null,
+          answers: poll.votes.map((vote: any) => {
+            let answer: number;
+            switch (vote.vote) {
+              case 'yes':
+                answer = 0;
+                break;
+              case 'no':
+                answer = 1;
+                break;
+              case 'veto':
+                answer = 2;
+                break;
+              case 'abstain':
+                answer = 3;
+                break;
+              default:
+                answer = -1;
+            }
+            return {
+              memberId: vote.id,
+              answer,
+              comment: nullableField(vote.comment),
+            };
+          }).filter((vote: any) => vote.answer !== -1),
+        };
+      }
+    }
+    return newPolls;
+  }
 }
 
 export interface ImportFlags {
@@ -210,6 +280,7 @@ export interface ImportFlags {
   members: boolean;
   customFront: boolean;
   customFields: boolean;
+  polls: boolean;
   privacyBuckets: boolean;
   truncate: boolean;
 }

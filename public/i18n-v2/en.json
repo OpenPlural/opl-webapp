@@ -399,6 +399,7 @@
       "members": "Import members",
       "customFront": "Import custom front",
       "customFields": "Import custom fields",
+      "polls": "Import polls",
       "privacyBuckets": "Import privacy buckets",
       "truncate": "Truncate everything that is too long"
     }

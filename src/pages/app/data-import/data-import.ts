@@ -43,6 +43,7 @@ export class DataImport implements OnInit, OnDestroy {
     const members = formData.get('members')?.toString() === 'on';
     const customFront = formData.get('customFront')?.toString() === 'on';
     const customFields = formData.get('customFields')?.toString() === 'on';
+    const polls = formData.get('polls')?.toString() === 'on';
     const privacyBuckets = formData.get('privacyBuckets')?.toString() === 'on';
     const truncate = formData.get('truncate')?.toString() === 'on';
 
@@ -53,6 +54,7 @@ export class DataImport implements OnInit, OnDestroy {
         members,
         customFront,
         customFields,
+        polls,
         privacyBuckets,
         truncate,
       });
