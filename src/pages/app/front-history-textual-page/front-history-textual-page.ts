@@ -12,6 +12,7 @@ import { HistoricFrontEntry } from '../../../components/historic-front-entry/his
   selector: 'app-front-history-textual-page',
   imports: [Loading, TranslatePipe, MemberListItem, HistoricFrontEntry],
   templateUrl: './front-history-textual-page.html',
+  styleUrl: './front-history-textual-page.css',
 })
 export class FrontHistoryTextualPage implements OnInit {
   private readonly localStorageService = inject(LocalStorageService);
