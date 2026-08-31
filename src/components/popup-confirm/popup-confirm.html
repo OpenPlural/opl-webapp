@@ -5,41 +5,43 @@
     <p class="py-4">
       <ng-content></ng-content>
     </p>
-    <div class="modal-action">
-      <form method="dialog">
-        <button class="btn btn-ghost btn-error text-lg" (click)="deny.emit()">
-          <i class="fa fa-times-circle" aria-hidden="true"></i>
-          @let no = this.no();
-          @if (no) {
-            {{no}}
-          } @else {
-            {{'confirm.no' | translate}}
-          }
-        </button>
-        @if (confirmations > 1) {
-          @let count = this.count();
-          <button [type]="count + 1 < confirmations ? 'button' : 'submit'" class="btn btn-ghost btn-success text-lg" (click)="increaseCount()">
-            <i class="fa fa-check-circle" aria-hidden="true"></i>
-            {{(count === 0 ? 'confirm.yes' : 'confirm.yesCounted') | translate:{count, total: confirmations} }}
-          </button>
-        } @else {
-          @let loading = this.loading();
-          <button class="btn btn-ghost btn-success text-lg" [class.btn-success]="!loading" [disabled]="loading" (click)="confirm.emit()">
-            @if (loading) {
-              <span class="loading loading-spinner"></span>
+    @if (showActionButtons()) {
+      <div class="modal-action">
+        <form method="dialog">
+          <button class="btn btn-ghost btn-error text-lg" (click)="deny.emit()">
+            <i class="fa fa-times-circle" aria-hidden="true"></i>
+            @let no = this.no();
+            @if (no) {
+              {{no}}
             } @else {
+              {{'confirm.no' | translate}}
+            }
+          </button>
+          @if (confirmations > 1) {
+            @let count = this.count();
+            <button [type]="count + 1 < confirmations ? 'button' : 'submit'" class="btn btn-ghost btn-success text-lg" (click)="increaseCount()">
               <i class="fa fa-check-circle" aria-hidden="true"></i>
-            }
-            @let yes = this.yes();
-            @if (yes) {
-              {{yes}}
-            } @else {
-              {{'confirm.yes' | translate}}
-            }
-          </button>
-        }
-      </form>
-    </div>
+              {{(count === 0 ? 'confirm.yes' : 'confirm.yesCounted') | translate:{count, total: confirmations} }}
+            </button>
+          } @else {
+            @let loading = this.loading();
+            <button class="btn btn-ghost btn-success text-lg" [class.btn-success]="!loading" [disabled]="loading" (click)="confirm.emit()">
+              @if (loading) {
+                <span class="loading loading-spinner"></span>
+              } @else {
+                <i class="fa fa-check-circle" aria-hidden="true"></i>
+              }
+              @let yes = this.yes();
+              @if (yes) {
+                {{yes}}
+              } @else {
+                {{'confirm.yes' | translate}}
+              }
+            </button>
+          }
+        </form>
+      </div>
+    }
   </div>
   <form method="dialog" class="modal-backdrop">
     <button (click)="deny.emit()"></button>
