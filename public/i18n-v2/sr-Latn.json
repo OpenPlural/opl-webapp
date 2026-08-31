@@ -228,6 +228,12 @@
       }
     }
   },
+  "analytics": {
+    "labels": {
+      "frontCount": "Na frontu {count, plural, one {# put} other {# puta}}",
+      "frontTime": "{days, plural, one {# dan} other {# dana}} i {hours, plural, one {# sat} few {# sata} other {# sati}}"
+    }
+  },
   "privacyBuckets": {
     "actions": {
       "create": "Kreiraj kantu za privatnost",

@@ -228,6 +228,12 @@
       }
     }
   },
+  "analytics": {
+    "labels": {
+      "frontCount": "На фронту {count, plural, one {# пут} other {# пута}}",
+      "frontTime": "{days, plural, one {# дан} other {# дана}} и {hours, plural, one {# сат} few {# сата} other {# сати}}"
+    }
+  },
   "privacyBuckets": {
     "actions": {
       "create": "Креирај канту за приватност",

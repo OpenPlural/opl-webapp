@@ -31,6 +31,7 @@ import { Social } from '../pages/app/social/social';
 import { Polls } from '../pages/app/polls/polls';
 import { PollEdit } from '../pages/app/poll-edit/poll-edit';
 import { Poll } from '../pages/app/poll/poll';
+import { Analytics } from '../pages/app/analytics/analytics';
 
 export const appRoutes: Routes = [
   {
@@ -59,6 +60,10 @@ export const appRoutes: Routes = [
     path: 'front-history',
     component: FrontHistoryPage,
     data: { name: 'navigation.frontHistory', systemNavigable: true }
+  }, {
+    path: 'analytics',
+    component: Analytics,
+    data: { name: 'navigation.analytics', systemNavigable: true }
   }, {
     path: 'polls',
     component: Polls,

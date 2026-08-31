@@ -12,7 +12,7 @@
     <app-vertical-center>
       <span class="text-left ml-1">
         <p class="wrap-anywhere">{{m.name}}</p>
-        <p class="wrap-anywhere font-light text-base-content/60">{{m.pronouns}}</p>
+        <p class="wrap-anywhere font-light text-base-content/60">{{overrideSubtext() || m.pronouns}}</p>
       </span>
     </app-vertical-center>
   </app-list-item>

@@ -1,0 +1,8 @@
+<div class="p-2 w-full flex sm:flex-row flex-col justify-between gap-2">
+  <input id="historyStart" type="date" class="input input-bordered w-full" [value]="start()" (change)="changeStart($event)">
+  <app-vertical-center>
+    <span class="hidden sm:inline"><i class="fa fa-caret-right"></i></span>
+    <span class="inline sm:hidden mx-auto"><i class="fa fa-caret-down"></i></span>
+  </app-vertical-center>
+  <input id="historyEnd" type="date" class="input input-bordered w-full" [value]="end()" (change)="changeEnd($event)">
+</div>

@@ -23,6 +23,7 @@ export class MemberListItem {
 
   readonly member = input.required<Member>();
   readonly editable = input.required<boolean>();
+  readonly overrideSubtext = input<string>();
   readonly inactive = input<boolean>(false);
   readonly selectable = input<boolean>(false);
   readonly selected = input<boolean>(false);
