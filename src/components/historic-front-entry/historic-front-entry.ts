@@ -10,10 +10,14 @@ import { openDialog } from '../../util/CommonFunctions';
 import { PopupConfirm } from '../popup-confirm/popup-confirm';
 import { SyncService } from '../../services/SyncService';
 import { LocalStorageService } from '../../services/LocalStorageService';
+import { Member } from '../../services/model/Member';
+import { ProfilePicture } from '../profile-picture/profile-picture';
+import { VerticalCenter } from '../vertical-center/vertical-center';
+import { toColor } from '../../util/ColorConvert';
 
 @Component({
   selector: 'app-historic-front-entry',
-  imports: [TranslatePipe, IconButton, PopupConfirm],
+  imports: [TranslatePipe, IconButton, PopupConfirm, ProfilePicture, VerticalCenter],
   templateUrl: './historic-front-entry.html',
 })
 export class HistoricFrontEntry {
@@ -23,6 +27,13 @@ export class HistoricFrontEntry {
   private readonly webService = inject(WebService);
 
   readonly frontEntry = input.required<FrontEntry>();
+  readonly graphical = input<boolean>(false);
+  readonly member = input<Member>();
+  readonly column = input<number>();
+  readonly row = input<number>();
+  readonly height = input<number>();
+  readonly selected = input<boolean>();
+  readonly onSelected = output<PointerEvent>();
   readonly update = output();
 
   protected readonly startTimeValue = computed(() => {
@@ -36,6 +47,10 @@ export class HistoricFrontEntry {
     const endTime = new Date(Date.parse(frontEntry.endedAt));
     return truncateDateToInputValue(endTime);
   });
+
+  protected selectEntry(event: PointerEvent) {
+    this.onSelected.emit(event);
+  }
 
   protected formatDate(date: string): string {
     return this.settingsService.formatDate(Date.parse(date), 'DateTime');
@@ -72,12 +87,15 @@ export class HistoricFrontEntry {
       }
 
       const frontEntry = this.frontEntry();
-      await this.webService.updateFrontEntry({
-        ...frontEntry,
-        startedAt,
-        endedAt,
-        updatedAt: truncateCurrentDate(),
-      }, false);
+      await this.webService.updateFrontEntry(
+        {
+          ...frontEntry,
+          startedAt,
+          endedAt,
+          updatedAt: truncateCurrentDate(),
+        },
+        false,
+      );
       if (!endedAt) {
         await this.syncService.fullSync();
       }
@@ -96,4 +114,5 @@ export class HistoricFrontEntry {
   }
 
   protected readonly openDialog = openDialog;
+  protected readonly toColor = toColor;
 }

@@ -2,17 +2,16 @@
   <main>
     @let tab = selectedTab();
     <app-pager [currentPage]="tab" [showTitle]="false" justify="justify-between">
-      <app-toggle-icon-button name="front.labels.history.graphical" icon="fa-bar-chart" size="fa-lg" [disabled]="true" [toggled]="tab === 'graphical'" (toggle)="selectedTab.set('graphical')" />
+      <app-toggle-icon-button name="front.labels.history.graphical" icon="fa-bar-chart" size="fa-lg" [toggled]="tab === 'graphical'" (toggle)="selectedTab.set('graphical')" />
       <app-toggle-icon-button name="front.labels.history.textual" icon="fa-list-ul" size="fa-lg" [toggled]="tab === 'textual'" (toggle)="selectedTab.set('textual')" />
     </app-pager>
-    <div class="scroll-container flex flex-col">
-      <div class="pt-10 p-5 overflow-y-auto">
-        @switch (tab) {
-          @case ('textual') {
-            <app-front-history-textual-page />
-          }
-        }
-      </div>
-    </div>
+    @switch (tab) {
+      @case ('graphical') {
+        <app-front-history-graphical-page />
+      }
+      @case ('textual') {
+        <app-front-history-textual-page />
+      }
+    }
   </main>
 </app-nav-page-container>
