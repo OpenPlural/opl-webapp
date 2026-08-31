@@ -198,6 +198,36 @@
       }
     }
   },
+  "polls": {
+    "actions": {
+      "create": "Kreiraj anketu",
+      "edit": "Uredi anketu",
+      "delete": "Izbriši anketu",
+      "vote": "Glasaj",
+      "addCustomOption": "Dodaj prilagođenu opciju"
+    },
+    "prompts": {
+      "delete": "Da li zaista želite da izbrišete anketu {pollName}?"
+    },
+    "labels": {
+      "yes": "Da",
+      "no": "Ne",
+      "abstain": "Apstiniraj",
+      "veto": "Veto",
+      "comment": "Komentar",
+      "type": "Vrsta",
+      "openUntil": "Otvoreno do",
+      "expired": "Isteklo",
+      "totalVotes": "{count, plural, one {# glas} few {# glasa} other {# glasova}}",
+      "yesNo": "Da / Ne",
+      "custom": "Prilagođeno",
+      "customOptions": "Prilagođene opcije",
+      "allow": {
+        "abstain": "Dozvoli apstiniranje",
+        "veto": "Dozvoli veto"
+      }
+    }
+  },
   "privacyBuckets": {
     "actions": {
       "create": "Kreiraj kantu za privatnost",

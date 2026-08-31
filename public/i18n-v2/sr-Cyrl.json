@@ -198,6 +198,36 @@
       }
     }
   },
+  "polls": {
+    "actions": {
+      "create": "Креирај анкету",
+      "edit": "Уреди анкету",
+      "delete": "Избриши анкету",
+      "vote": "Гласај",
+      "addCustomOption": "Додај прилагођену опцију"
+    },
+    "prompts": {
+      "delete": "Да ли заиста желите да избришете анкету {pollName}?"
+    },
+    "labels": {
+      "yes": "Да",
+      "no": "Не",
+      "abstain": "Апстинирај",
+      "veto": "Вето",
+      "comment": "Коментар",
+      "type": "Врста",
+      "openUntil": "Отворено до",
+      "expired": "Истекло",
+      "totalVotes": "{count, plural, one {# глас} few {# гласа} other {# гласова}}",
+      "yesNo": "Да / Не",
+      "custom": "Прилагођено",
+      "customOptions": "Прилагођене опције",
+      "allow": {
+        "abstain": "Дозволи апстинирање",
+        "veto": "Дозволи вето"
+      }
+    }
+  },
   "privacyBuckets": {
     "actions": {
       "create": "Креирај канту за приватност",

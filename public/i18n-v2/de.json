@@ -198,6 +198,36 @@
       }
     }
   },
+  "polls": {
+    "actions": {
+      "create": "Umfrage erstellen",
+      "edit": "Umfrage bearbeiten",
+      "delete": "Umfrage löschen",
+      "vote": "Abstimmen",
+      "addCustomOption": "Option hinzufügen"
+    },
+    "prompts": {
+      "delete": "Willst du wirklich die Umfrage {pollName} löschen?"
+    },
+    "labels": {
+      "yes": "Ja",
+      "no": "Nein",
+      "abstain": "Enthalten",
+      "veto": "Veto",
+      "comment": "Kommentar",
+      "type": "Typ",
+      "openUntil": "Geöffnet bis",
+      "expired": "Abgelaufen",
+      "totalVotes": "{count, plural, one {# Stimme} other {# Stimmen}}",
+      "yesNo": "Ja / Nein",
+      "custom": "Benutzerdefiniert",
+      "customOptions": "Benutzerdefinierte Optionen",
+      "allow": {
+        "abstain": "Enthaltung erlauben",
+        "veto": "Veto erlauben"
+      }
+    }
+  },
   "privacyBuckets": {
     "actions": {
       "create": "Privatsphäre-Bucket erstellen",
