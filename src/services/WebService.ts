@@ -21,10 +21,11 @@ import {
   translateCustomFieldDataValue,
   translateFolder,
   translateFrontEntry,
-  translateMember, translatePrivacyBucket
+  translateMember, translatePollAnswer, translatePrivacyBucket
 } from '../util/IdTranslator';
 import { LocalStorageService } from './LocalStorageService';
 import {ApiKey, ApiKeyId} from './model/ApiKey';
+import { Poll, PollAnswer, PollAnswerId, PollId } from './model/Poll';
 
 const BASE_URL: string = localStorage.getItem('baseUrl') || (isDevMode() ? 'https://localhost:4200' : 'https://opl-api.webbiii.cc');
 
@@ -156,6 +157,32 @@ export class WebService {
   async updateCustomFieldValue(customFieldValue: CustomFieldDataValue): Promise<void> {
     customFieldValue = translateCustomFieldDataValue(this.localStorageService, customFieldValue, 'remoteId');
     await firstValueFrom(this.http.patch(`${BASE_URL}/api/v1/field/value/${customFieldValue.remoteId}`, customFieldValue));
+  }
+
+  async createPoll(poll: Poll): Promise<PollId> {
+    return firstValueFrom(this.http.put<IdResponse>(`${BASE_URL}/api/v1/poll/`, poll)).then(res => res.id);
+  }
+
+  async deletePoll(remoteId: PollId): Promise<void> {
+    await firstValueFrom(this.http.delete(`${BASE_URL}/api/v1/poll/${remoteId}`));
+  }
+
+  async updatePoll(poll: Poll): Promise<void> {
+    await firstValueFrom(this.http.patch(`${BASE_URL}/api/v1/poll/${poll.remoteId}`, poll));
+  }
+
+  async createPollAnswer(pollAnswer: PollAnswer): Promise<PollAnswerId> {
+    pollAnswer = translatePollAnswer(this.localStorageService, pollAnswer, 'remoteId');
+    return firstValueFrom(this.http.put<IdResponse>(`${BASE_URL}/api/v1/poll/answer/`, pollAnswer)).then(res => res.id);
+  }
+
+  async deletePollAnswer(remoteId: PollAnswerId): Promise<void> {
+    await firstValueFrom(this.http.delete(`${BASE_URL}/api/v1/poll/answer/${remoteId}`));
+  }
+
+  async updatePollAnswer(pollAnswer: PollAnswer): Promise<void> {
+    pollAnswer = translatePollAnswer(this.localStorageService, pollAnswer, 'remoteId');
+    await firstValueFrom(this.http.patch(`${BASE_URL}/api/v1/poll/answer/${pollAnswer.remoteId}`, pollAnswer));
   }
 
   async createPrivacyBucket(privacyBucket: PrivacyBucket): Promise<PrivacyBucketId> {

@@ -43,5 +43,5 @@
 
 @if (bucket && assignMembers()) {
   <app-member-selector dialogId="privacyAssignMembers" title="privacyBuckets.actions.assignMembers" [selection]="bucketMembers()"
-                       [custom]="false" (submitSelection)="assignBucketMembers($event)" (forceClose)="assignMembers.set(false)" />
+                       (submitSelection)="assignBucketMembers($event)" (forceClose)="assignMembers.set(false)" />
 }

@@ -4,6 +4,7 @@ import { Member } from '../services/model/Member';
 import { FrontEntry } from '../services/model/Front';
 import { CustomFieldDataValue } from '../services/model/Field';
 import { PrivacyBucket } from '../services/model/Privacy';
+import { PollAnswer } from '../services/model/Poll';
 
 export type TargetField = 'id' | 'remoteId';
 type LocalRemoteIdPair = { id: bigint; remoteId: bigint | null };
@@ -36,6 +37,13 @@ export function translateCustomFieldDataValue(localStorageService: LocalStorageS
   return customFieldDataValue;
 }
 
+export function translatePollAnswer(localStorageService: LocalStorageService, pollAnswer: PollAnswer, target: TargetField): PollAnswer {
+  pollAnswer = Object.assign({}, pollAnswer);
+  translatePolls(localStorageService, pollAnswer, ['pollId'], target);
+  translateMembers(localStorageService, pollAnswer, ['memberId'], target);
+  return pollAnswer;
+}
+
 export function translatePrivacyBucket(localStorageService: LocalStorageService, privacyBucket: PrivacyBucket, target: TargetField): PrivacyBucket {
   const folders = localStorageService.folders();
   const members = localStorageService.members();
@@ -57,6 +65,10 @@ function translateMembers(localStorageService: LocalStorageService, obj: any, fi
 
 function translateCustomFields(localStorageService: LocalStorageService, obj: any, fieldNames: string[], target: TargetField) {
   translateFields(localStorageService.customFields(), obj, fieldNames, target);
+}
+
+function translatePolls(localStorageService: LocalStorageService, obj: any, fieldNames: string[], target: TargetField) {
+  translateFields(localStorageService.polls(), obj, fieldNames, target);
 }
 
 function translateFields(array: LocalRemoteIdPair[], obj: any, fieldNames: string[], target: TargetField) {
