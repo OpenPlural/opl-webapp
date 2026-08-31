@@ -1,5 +1,4 @@
-import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
-import { VerticalCenter } from '../../../components/vertical-center/vertical-center';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { FrontEntry, FrontEntryId } from '../../../services/model/Front';
 import { WebService } from '../../../services/WebService';
 import { Loading } from '../../../components/loading/loading';
@@ -9,6 +8,7 @@ import { toColor } from '../../../util/ColorConvert';
 import { SettingsService } from '../../../services/SettingsService';
 import { openDialog } from '../../../util/CommonFunctions';
 import { HistoricFrontEntry } from '../../../components/historic-front-entry/historic-front-entry';
+import { DateRange, SelectedDateRange } from '../../../components/date-range/date-range';
 
 const TIME_LABELS = ["22:00", "20:00", "18:00", "16:00", "14:00", "12:00", "10:00", "08:00", "06:00", "04:00", "02:00"];
 type RenderedFrontEntry = {
@@ -21,33 +21,28 @@ type RenderedFrontEntry = {
 
 @Component({
   selector: 'app-front-history-graphical-page',
-  imports: [
-    VerticalCenter,
-    Loading,
-    HistoricFrontEntry,
-  ],
+  imports: [Loading, HistoricFrontEntry, DateRange],
   templateUrl: './front-history-graphical-page.html',
   styleUrl: './front-history-graphical-page.css',
 })
-export class FrontHistoryGraphicalPage implements OnInit {
+export class FrontHistoryGraphicalPage {
   private readonly localStorageService = inject(LocalStorageService);
   private readonly settingsService = inject(SettingsService);
   private readonly webService = inject(WebService);
 
   protected readonly selectedEntry = signal<FrontEntryId | null>(null);
-  protected readonly historyStart = signal<string | null>(null);
-  protected readonly historyEnd = signal<string | null>(null);
+  protected readonly historyRange = signal<SelectedDateRange | null>(null);
   protected readonly frontHistory = signal<FrontEntry[] | null>(null);
   protected readonly renderedHistory = computed(() => {
-    let historyEnd = this.historyEnd();
-    if (!historyEnd) return null;
+    let historyRange = this.historyRange();
+    if (!historyRange) return null;
 
     let history = this.frontHistory();
     if (!history) return null;
 
     const members = this.localStorageService.members();
 
-    const historyEndSplit = historyEnd.split(/\D/);
+    const historyEndSplit = historyRange.end.split(/\D/);
     const historyTime = new Date(
       +historyEndSplit[0],
       +historyEndSplit[1] - 1,
@@ -96,12 +91,11 @@ export class FrontHistoryGraphicalPage implements OnInit {
     TIME_LABELS.map((time) => this.settingsService.formatTime(time)),
   );
   protected readonly days = computed(() => {
-    const newest = this.historyEnd();
-    const oldest = this.historyStart();
-    if (!newest || !oldest) return [];
+    const range = this.historyRange();
+    if (!range) return [];
 
-    const newestDate = Date.parse(newest);
-    const oldestDate = Date.parse(oldest);
+    const newestDate = Date.parse(range.end);
+    const oldestDate = Date.parse(range.start);
 
     const days: string[] = [];
     for (let date = newestDate; date >= oldestDate; date -= 86400000) {
@@ -112,34 +106,18 @@ export class FrontHistoryGraphicalPage implements OnInit {
 
   constructor() {
     effect(() => {
-      const start = this.historyStart();
-      const end = this.historyEnd();
-      if (start && end) {
-        this.frontHistory.set(null);
-        this.webService.getFrontHistoryInDateRange(start, end).then((frontHistory) => {
+      const range = this.historyRange();
+      this.frontHistory.set(null);
+      if (range) {
+        this.webService.getFrontHistoryInDateRange(range.start, range.end).then((frontHistory) => {
           this.frontHistory.set(frontHistory);
         });
-      } else {
-        this.frontHistory.set(null);
       }
     });
   }
 
-  ngOnInit() {
-    const end = new Date();
-    const start = new Date(end.getTime() - 604800000); // 1 week ago
-    this.historyStart.set(start.toISOString().split('T')[0]);
-    this.historyEnd.set(end.toISOString().split('T')[0]);
-  }
-
-  protected changeHistoryStart(event: Event) {
-    const input = event.target as HTMLInputElement;
-    this.historyStart.set(input.value || null);
-  }
-
-  protected changeHistoryEnd(event: Event) {
-    const input = event.target as HTMLInputElement;
-    this.historyEnd.set(input.value || null);
+  protected changeHistoryRange(range: SelectedDateRange) {
+    this.historyRange.set(range);
   }
 
   protected selectEntry(entry: FrontEntryId | null, event: PointerEvent) {
