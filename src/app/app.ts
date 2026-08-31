@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, effect, inject, isDevMode, OnInit, signal } from '@angular/core';
 import {NavigationEnd, Router, RouterOutlet} from '@angular/router';
 import { LocalStorageService } from '../services/LocalStorageService';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -14,7 +14,6 @@ import {forgetRememberedPath} from '../util/RememberPath';
 import { PopupConfirm } from '../components/popup-confirm/popup-confirm';
 import { WebService } from '../services/WebService';
 import { VERSION } from '../environment';
-import { openDialog } from '../util/CommonFunctions';
 
 @Component({
   selector: 'app-root',
@@ -88,13 +87,15 @@ export class App implements OnInit {
       this.languageSelected.set(true);
     }
 
-    this.webService.getNewestVersion()
-      .then((version) => {
-        if (version !== VERSION) {
-          this.update.set(version);
-        }
-      })
-      .catch((_) => {});
+    if (!isDevMode()) {
+      this.webService.getNewestVersion()
+        .then((version) => {
+          if (version !== VERSION) {
+            this.update.set(version);
+          }
+        })
+        .catch((_) => {});
+    }
   }
 
   private initialSync() {
