@@ -1,7 +1,7 @@
 <app-date-range [initialPeriod]="604800000" (dateRangeSelected)="changeHistoryRange($event)" />
 @let history = renderedHistory();
 @if (history) {
-  <div class="mt-2 scroll-container flex flex-col" (click)="selectEntry(null, $event)">
+  <div class="scroll-container flex flex-col" (click)="selectEntry(null, $event)">
     <div class="overflow-auto">
       <div class="relative h-screen">
         <div class="absolute">

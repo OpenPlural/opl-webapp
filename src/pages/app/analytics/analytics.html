@@ -4,8 +4,8 @@
     <app-date-range [initialPeriod]="2592000000" (dateRangeSelected)="changeAnalyticsRange($event)" />
     @let memberData = this.memberData();
     @if (memberData) {
-      <div class="mt-2 scroll-container flex flex-col">
-        <div class="overflow-y-auto">
+      <div class="scroll-container flex flex-col">
+        <div class="overflow-y-auto pb-10">
           @for (data of memberData; track data.id) {
             @if (data.member) {
               <app-member-list-item [member]="data.member" [editable]="false" [inactive]="true"
@@ -17,7 +17,6 @@
     } @else {
       <app-loading />
     }
-
   </main>
   <footer class="h-16">
     <app-vertical-center>
