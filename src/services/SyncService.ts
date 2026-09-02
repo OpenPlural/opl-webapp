@@ -12,6 +12,7 @@ import {
   translateFolder,
   translateFrontEntry,
   translateMember,
+  translatePhotoAlbum,
   translatePollAnswer
 } from '../util/IdTranslator';
 import { TranslateService } from '@ngx-translate/core';
@@ -19,6 +20,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { ToastService } from './ToastService';
 import {SettingsService} from './SettingsService';
 import { Poll, PollAnswer, PollAnswerId, PollId } from './model/Poll';
+import { PhotoAlbum, PhotoAlbumId } from './model/Gallery';
 
 const ABSOLUTE_SYNC_INTERVAL = 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
 
@@ -79,6 +81,7 @@ export class SyncService {
       await this.syncCustomFieldValues(syncData.updatedFieldValues, syncData.fieldValueIds, syncData.deletionDelta, doServerUpdates);
       await this.syncPolls(syncData.updatedPolls, syncData.pollIds, syncData.deletionDelta, doServerUpdates);
       await this.syncPollAnswers(syncData.updatedPollAnswers, syncData.pollAnswerIds, syncData.deletionDelta, doServerUpdates);
+      await this.syncPhotoAlbums(syncData.updatedPhotoAlbums, syncData.photoAlbumIds, syncData.deletionDelta, doServerUpdates);
       await this.syncFrontEntries(syncData.front, doServerUpdates);
 
       await this.localStorageService.updateSyncTime(Date.parse(syncData.time), !syncData.deletionDelta);
@@ -270,6 +273,24 @@ export class SyncService {
       async (pollAnswer) => await this.localStorageService.addPollAnswer(pollAnswer),
       async (pollAnswer) => await this.localStorageService.updatePollAnswer(pollAnswer),
       async (pollAnswerId) => await this.localStorageService.removePollAnswer(pollAnswerId, null),
+      doServerUpdates,
+    );
+  }
+
+  private async syncPhotoAlbums(updatedPhotoAlbums: PhotoAlbum[], photoAlbumIds: PhotoAlbumId[], deletionDelta: boolean, doServerUpdates: boolean) {
+    await this.syncGeneric(
+      this.localStorageService.photoAlbums(),
+      updatedPhotoAlbums,
+      photoAlbumIds,
+      deletionDelta,
+      'photo-album',
+      (photoAlbum) => translatePhotoAlbum(this.localStorageService, photoAlbum, 'id'),
+      async (photoAlbum) => await this.webService.createPhotoAlbum(photoAlbum),
+      async (_, localPhotoAlbum) => await this.webService.updatePhotoAlbum(localPhotoAlbum),
+      async (photoAlbumId) => await this.webService.deletePhotoAlbum(photoAlbumId),
+      async (photoAlbum) => await this.localStorageService.addPhotoAlbum(photoAlbum),
+      async (photoAlbum) => await this.localStorageService.updatePhotoAlbum(photoAlbum),
+      async (photoAlbumId) => await this.localStorageService.removePhotoAlbum(photoAlbumId, null),
       doServerUpdates,
     );
   }

@@ -19,7 +19,9 @@ import { CustomFieldDataUpdate, MemberCustomFieldsPage } from '../member-custom-
 import { FolderId } from '../../../services/model/Folder';
 import { truncateCurrentDate } from '../../../util/DateTruncate';
 import { MemberFrontHistoryPage } from '../member-front-history-page/member-front-history-page';
-import {sortNestedFolders} from '../../../util/CustomSort';
+import { compareCustomSort, sortNestedFolders } from '../../../util/CustomSort';
+import { MemberGallery } from '../../../components/member-gallery/member-gallery';
+import { CdkScrollable } from '@angular/cdk/scrolling';
 
 @Component({
   selector: 'app-member-page',
@@ -34,6 +36,8 @@ import {sortNestedFolders} from '../../../util/CustomSort';
     MemberOptionsPage,
     MemberCustomFieldsPage,
     MemberFrontHistoryPage,
+    MemberGallery,
+    CdkScrollable,
   ],
   templateUrl: './member-page.html',
   styleUrl: './member-page.css',
@@ -45,7 +49,7 @@ export class MemberPage {
   private readonly syncService = inject(SyncService);
 
   protected readonly selectedTab = signal<
-    'profile' | 'customFields' | 'messageBoard' | 'frontHistory' | 'notes' | 'options'
+    'profile' | 'gallery' | 'customFields' | 'messageBoard' | 'frontHistory' | 'notes' | 'options'
   >('profile');
   protected readonly updatedMemberProfile = signal<Member | null>(null);
   protected readonly updatedMemberFolders = signal<FolderId[] | null>(null);
@@ -77,6 +81,13 @@ export class MemberPage {
     const folders = this.localStorageService.folders();
     return sortNestedFolders(folders);
   });
+  protected readonly gallery = computed(() => {
+    const id = this.id();
+    if (!id) return [];
+
+    const gallery = this.localStorageService.photoAlbums().filter((pa) => pa.memberId === id);
+    return gallery.sort(compareCustomSort);
+  })
 
   protected async delete() {
     const member = this.member();

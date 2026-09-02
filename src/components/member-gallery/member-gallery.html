@@ -1,0 +1,153 @@
+@let album = this.album();
+@let editable = this.editable();
+@let editing = this.editing();
+
+<div class="w-full flex justify-between">
+  <div class="flex">
+    @if (album) {
+      <app-vertical-center>
+        <app-icon-button name="actions.goBack" icon="fa-arrow-left" (action)="goBack()" />
+      </app-vertical-center>
+      @if (editing) {
+        <app-vertical-center>
+          <app-toggle-icon-button name="actions.reorder.start" toggledName="actions.reorder.stop" icon="fa-sort" [toggled]="reorder()" (toggle)="toggleReorder()" />
+        </app-vertical-center>
+      }
+    }
+  </div>
+  <div class="flex">
+    @if (editable) {
+      @if (!album) {
+        <app-vertical-center>
+          <app-icon-button name="members.actions.gallery.album.create" icon="fa-plus" (action)="openDialog('albumNamePrompt')" />
+        </app-vertical-center>
+      }
+      <app-vertical-center>
+        @if (album) {
+          @if (editing) {
+            <app-icon-button name="actions.save" icon="fa-floppy-o" buttonClass="btn-success" (action)="saveAlbum()" />
+          } @else {
+            <app-icon-button name="members.actions.gallery.album.edit" icon="fa-pencil" size="fa-lg" (click)="this.editing.set(true)" />
+          }
+        } @else {
+          <app-toggle-icon-button name="actions.reorder.start" toggledName="actions.reorder.stop" icon="fa-sort" [toggled]="reorder()" (toggle)="toggleReorder()" />
+        }
+      </app-vertical-center>
+    }
+    <app-vertical-center>
+      @if (album && editing) {
+        <app-icon-button name="actions.delete" icon="fa-trash" size="fa-lg" buttonClass="btn-error" (action)="openDialog('albumDeletePrompt')" />
+      } @else {
+        <app-icon-button name="actions.close" icon="fa-times" (action)="closeGallery.emit()" />
+      }
+    </app-vertical-center>
+  </div>
+</div>
+
+@if (album) {
+  @if (editing) {
+    <form id="photoAlbumForm" class="mb-2">
+      <fieldset class="fieldset">
+        <legend class="fieldset-legend">{{'fields.name' | translate}}</legend>
+        <input name="name" type="text" class="w-full input" [value]="album.name" />
+      </fieldset>
+      <fieldset class="fieldset">
+        <legend class="fieldset-legend">{{'fields.description' | translate}}</legend>
+        <app-markdown-box textareaName="description" [(markdown)]="description" [editable]="true" />
+      </fieldset>
+    </form>
+    @if (album.remoteId) {
+      <div class="divider"></div>
+      <div class="px-5 py-0">
+        @let privacy = this.privacy();
+        @if (privacy) {
+          <app-privacy-bucket-list title="members.prompts.gallery.changePrivacy" [buckets]="privacy" (submitSelection)="updatePrivacy($event)" />
+        } @else {
+          <div class="text-center">
+            @let loading = this.loadingPrivacy();
+            <button type="button" class="btn btn-soft" [class.btn-disabled]="loading" (click)="loadPrivacy()">
+              {{'actions.privacy.load' | translate}}
+              @if (loading) {
+                <span class="loading loading-spinner"></span>
+              }
+            </button>
+          </div>
+        }
+      </div>
+    }
+  } @else if (description() !== '') {
+    <app-markdown-box textareaName="description" [(markdown)]="description" [editable]="false" />
+  }
+  <div class="divider"></div>
+  <div class="grid md:grid-cols-3 grid-cols-2 gap-2"
+       cdkDropList cdkDropListOrientation="mixed" [cdkDropListDisabled]="!reorder()"
+       (cdkDropListDropped)="reorderPhotos($event)">
+    @for (photo of photoUrls(); track photo) {
+      <div cdkDrag>
+        @let deleting = isDeleting($index);
+        <div class="avatar">
+          <div class="w-full rounded-xl">
+            <img [src]="photo" [class.grayscale]="deleting" />
+          </div>
+        </div>
+        @if (editing) {
+          @if (deleting) {
+            <button class="mt-1 w-full btn btn-soft" (click)="undoPhotoDeletion($index)">
+              <i class="fa fa-undo"></i>
+              {{'actions.undo' | translate}}
+            </button>
+          } @else {
+            <div class="join mt-1 w-full">
+              <button class="join-item grow btn btn-soft" aria-label="{{'members.actions.gallery.photo.moveUp' | translate}}" (click)="movePhoto($index, 'up')">
+                <i class="fa fa-arrow-left"></i>
+              </button>
+              <button class="join-item grow btn btn-soft" aria-label="{{'members.actions.gallery.photo.moveDown' | translate}}" (click)="movePhoto($index, 'down')">
+                <i class="fa fa-arrow-right"></i>
+              </button>
+              <button class="join-item grow btn btn-error" aria-label="{{'members.actions.gallery.photo.delete' | translate}}" (click)="deletePhoto($index)">
+                <i class="fa fa-trash"></i>
+              </button>
+            </div>
+          }
+        }
+      </div>
+    }
+    @if (editing) {
+      <div class="avatar">
+        <button class="rounded-xl w-full h-full aspect-square btn btn-soft flex flex-col justify-center text-center" (click)="openDialog('albumPhotoPrompt')">
+          <i class="fa fa-2x fa-plus"></i>
+        </button>
+      </div>
+    }
+  </div>
+} @else {
+  <div class="grid md:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-2"
+       cdkDropList cdkDropListOrientation="mixed" [cdkDropListDisabled]="!reorder()"
+       (cdkDropListDropped)="reorderAlbums($event)">
+    @for (album of gallery(); track album.id) {
+      <button cdkDrag class="btn w-full h-full aspect-square" (click)="openAlbum(album)">
+        <div class="flex flex-col w-full">
+          <div class="grid grid-cols-2 w-full aspect-square">
+            @if (album.photoUrls) {
+              <img [src]="album.photoUrls[0]" class="rounded-tl-xl" />
+              <img [src]="album.photoUrls[1]" class="rounded-tr-xl" />
+              <img [src]="album.photoUrls[2]" class="rounded-bl-xl" />
+              <img [src]="album.photoUrls[3]" class="rounded-br-xl" />
+            }
+          </div>
+          <div class="font-medium">
+            <p>{{album.name}}</p>
+          </div>
+        </div>
+      </button>
+    }
+  </div>
+}
+
+@if (album) {
+  <app-popup-confirm dialogId="albumDeletePrompt" title="members.actions.gallery.album.delete" (confirm)="deleteAlbum()">
+    {{'members.prompts.gallery.deleteAlbum' | translate:{ albumName: album.name } }}
+  </app-popup-confirm>
+}
+<app-popup-input dialogId="albumNamePrompt" title="members.actions.gallery.album.create" label="fields.name" (submitValue)="createAlbum($event)" />
+<app-popup-input dialogId="albumPhotoPrompt" title="members.actions.gallery.photo.add" label="fields.photoUrl" (submitValue)="addPhoto($event)" />

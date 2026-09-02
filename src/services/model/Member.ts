@@ -23,6 +23,7 @@ export interface Member {
 export interface ExtendedMember {
   member: Member;
   folders: Folder[];
+  hasGallery: boolean;
 }
 
 export function makeMember(name: string, custom: boolean): Member {

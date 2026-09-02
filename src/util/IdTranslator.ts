@@ -5,6 +5,7 @@ import { FrontEntry } from '../services/model/Front';
 import { CustomFieldDataValue } from '../services/model/Field';
 import { PrivacyBucket } from '../services/model/Privacy';
 import { PollAnswer } from '../services/model/Poll';
+import { PhotoAlbum } from '../services/model/Gallery';
 
 export type TargetField = 'id' | 'remoteId';
 type LocalRemoteIdPair = { id: bigint; remoteId: bigint | null };
@@ -28,6 +29,12 @@ export function translateFrontEntry(localStorageService: LocalStorageService, fr
   frontEntry = Object.assign({}, frontEntry);
   translateMembers(localStorageService, frontEntry, ['member'], target);
   return frontEntry;
+}
+
+export function translatePhotoAlbum(localStorageService: LocalStorageService, album: PhotoAlbum, target: TargetField): PhotoAlbum {
+  album = Object.assign({}, album);
+  translateMembers(localStorageService, album, ['memberId'], target);
+  return album;
 }
 
 export function translateCustomFieldDataValue(localStorageService: LocalStorageService, customFieldDataValue: CustomFieldDataValue, target: TargetField): CustomFieldDataValue {

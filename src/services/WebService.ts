@@ -21,12 +21,16 @@ import {
   translateCustomFieldDataValue,
   translateFolder,
   translateFrontEntry,
-  translateMember, translatePollAnswer, translatePrivacyBucket
+  translateMember,
+  translatePhotoAlbum,
+  translatePollAnswer,
+  translatePrivacyBucket
 } from '../util/IdTranslator';
 import { LocalStorageService } from './LocalStorageService';
 import {ApiKey, ApiKeyId} from './model/ApiKey';
 import { Poll, PollAnswer, PollAnswerId, PollId } from './model/Poll';
 import { Analytics } from './model/Analytics';
+import { PhotoAlbum, PhotoAlbumId } from './model/Gallery';
 
 const BASE_URL: string = localStorage.getItem('baseUrl') || (isDevMode() ? 'https://localhost:4200' : 'https://opl-api.webbiii.cc');
 
@@ -130,6 +134,20 @@ export class WebService {
     await firstValueFrom(this.http.patch(`${BASE_URL}/api/v1/front/${id}`, frontEntry));
   }
 
+  async createPhotoAlbum(album: PhotoAlbum): Promise<PhotoAlbumId> {
+    album = translatePhotoAlbum(this.localStorageService, album, 'remoteId');
+    return firstValueFrom(this.http.put<IdResponse>(`${BASE_URL}/api/v1/member/${album.memberId}/gallery`, album)).then(res => res.id);
+  }
+
+  async deletePhotoAlbum(remoteId: PhotoAlbumId): Promise<void> {
+    await firstValueFrom(this.http.delete(`${BASE_URL}/api/v1/member/gallery/${remoteId}`));
+  }
+
+  async updatePhotoAlbum(album: PhotoAlbum): Promise<void> {
+    album = translatePhotoAlbum(this.localStorageService, album, 'remoteId');
+    await firstValueFrom(this.http.patch(`${BASE_URL}/api/v1/member/${album.memberId}/gallery/${album.remoteId}`, album));
+  }
+
   async createCustomField(customField: CustomField): Promise<CustomFieldId> {
     return firstValueFrom(this.http.put<IdResponse>(`${BASE_URL}/api/v1/field/`, customField)).then(res => res.id);
   }
@@ -226,6 +244,10 @@ export class WebService {
     return firstValueFrom(this.http.put<SimplePrivacyBucket>(`${BASE_URL}/api/v1/privacy/${privacyBucketId}/field/${field.remoteId}`, {}));
   }
 
+  async addPrivacyBucketPhotoAlbum(privacyBucketId: PrivacyBucketId, album: PhotoAlbum): Promise<SimplePrivacyBucket> {
+    return firstValueFrom(this.http.put<SimplePrivacyBucket>(`${BASE_URL}/api/v1/privacy/${privacyBucketId}/gallery/${album.remoteId}`, {}));
+  }
+
   async addPrivacyBucketFriend(privacyBucketId: PrivacyBucketId, friendId: UserId): Promise<SimplePrivacyBucket> {
     return firstValueFrom(this.http.put<SimplePrivacyBucket>(`${BASE_URL}/api/v1/privacy/${privacyBucketId}/friend/${friendId}`, {}));
   }
@@ -242,6 +264,10 @@ export class WebService {
     await firstValueFrom(this.http.delete(`${BASE_URL}/api/v1/privacy/${privacyBucketId}/field/${field.remoteId}`));
   }
 
+  async removePrivacyBucketPhotoAlbum(privacyBucketId: PrivacyBucketId, album: PhotoAlbum): Promise<void> {
+    await firstValueFrom(this.http.delete(`${BASE_URL}/api/v1/privacy/${privacyBucketId}/gallery/${album.remoteId}`));
+  }
+
   async removePrivacyBucketFriend(privacyBucketId: PrivacyBucketId, friendId: UserId): Promise<void> {
     await firstValueFrom(this.http.delete(`${BASE_URL}/api/v1/privacy/${privacyBucketId}/friend/${friendId}`));
   }
@@ -256,6 +282,10 @@ export class WebService {
 
   async getCustomFieldPrivacy(field: CustomField): Promise<SimplePrivacyBucket[]> {
     return firstValueFrom(this.http.get<SimplePrivacyBucket[]>(`${BASE_URL}/api/v1/field/${field.remoteId}/privacy`));
+  }
+
+  async getPhotoAlbumPrivacy(album: PhotoAlbum): Promise<SimplePrivacyBucket[]> {
+    return firstValueFrom(this.http.get<SimplePrivacyBucket[]>(`${BASE_URL}/api/v1/member/${album.memberId}/gallery/${album.remoteId}/privacy`));
   }
 
   async getFriendPrivacy(friendId: UserId): Promise<SimplePrivacyBucket[]> {
@@ -332,6 +362,10 @@ export class WebService {
   async getMemberFrontHistory(member: Member, page: number): Promise<FrontEntry[]> {
     const frontEntries = await firstValueFrom(this.http.get<FrontEntry[]>(`${BASE_URL}/api/v1/member/${member.remoteId}/front-history?page=${page}`));
     return frontEntries.map((frontEntry) => translateFrontEntry(this.localStorageService, frontEntry, 'id'));
+  }
+
+  async getMemberGallery(userId: UserId, memberId: MemberId): Promise<PhotoAlbum[]> {
+    return firstValueFrom(this.http.get<PhotoAlbum[]>(`${BASE_URL}/api/v1/member/${memberId}/gallery?userId=${userId}`));
   }
 
   async getMemberCustomFields(userId: UserId, memberId: MemberId): Promise<ViewedCustomFieldDataValue[]> {

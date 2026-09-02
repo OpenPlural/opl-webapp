@@ -25,6 +25,7 @@
     "close": "Close",
     "cancel": "Cancel",
     "delete": "Delete",
+    "undo": "Undo",
     "save": "Save",
     "confirm": "Confirm",
     "search": "Search",
@@ -63,6 +64,7 @@
     "emoji": "Emoji",
     "color": "Color",
     "avatarUrl": "Avatar URL",
+    "photoUrl": "Photo URL",
     "info": "Info",
     "sort": "Sorting Value",
     "language": "Language",
@@ -80,6 +82,7 @@
     "dashboard": "Dashboard",
     "members": "Members",
     "profile": "Profile",
+    "gallery": "Gallery",
     "messageBoard": "Message Board",
     "notes": "Notes",
     "fronters": "Fronters",
@@ -140,11 +143,29 @@
       "create": "Create member",
       "delete": "Delete member",
       "changeFolders": "Change folders",
-      "editCustomFields": "Edit custom fields"
+      "editCustomFields": "Edit custom fields",
+      "gallery": {
+        "open": "View gallery",
+        "album": {
+          "create": "Create photo album",
+          "delete": "Delete photo album",
+          "edit": "Edit photo album"
+        },
+        "photo": {
+          "add": "Add photo",
+          "delete": "Delete photo",
+          "moveUp": "Move photo up",
+          "moveDown": "Move photo down"
+        }
+      }
     },
     "prompts": {
       "changePrivacy": "Select privacy buckets for this member",
-      "delete": "Do you really want to delete the member {memberName}?"
+      "delete": "Do you really want to delete the member {memberName}?",
+      "gallery": {
+        "changePrivacy": "Select privacy buckets for this photo album",
+        "deleteAlbum": "Do you really want to delete the photo album {albumName} and all its photos?"
+      }
     },
     "labels": {
       "folders": "Folders",
