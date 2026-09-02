@@ -25,6 +25,7 @@
     "close": "Schließen",
     "cancel": "Abbrechen",
     "delete": "Löschen",
+    "undo": "Rückgängig",
     "save": "Speichern",
     "confirm": "Bestätigen",
     "search": "Suchen",
@@ -63,6 +64,7 @@
     "emoji": "Emoji",
     "color": "Farbe",
     "avatarUrl": "Avatar URL",
+    "photoUrl": "Foto URL",
     "info": "Info",
     "sort": "Sortierwert",
     "language": "Sprache",
@@ -80,6 +82,7 @@
     "dashboard": "Übersicht",
     "members": "Mitglieder",
     "profile": "Profil",
+    "gallery": "Galerie",
     "messageBoard": "Messageboard",
     "notes": "Notizen",
     "fronters": "Fronter",
@@ -138,11 +141,29 @@
       "create": "Mitglied erstellen",
       "delete": "Mitglied löschen",
       "changeFolders": "Ordnerzugehörigkeit ändern",
-      "editCustomFields": "Benutzerdefinierte Felder bearbeiten"
+      "editCustomFields": "Benutzerdefinierte Felder bearbeiten",
+      "gallery": {
+        "open": "Galerie öffnen",
+        "album": {
+          "create": "Fotoalbum erstellen",
+          "delete": "Fotoalbum löschen",
+          "edit": "Fotoalbum bearbeiten"
+        },
+        "photo": {
+          "add": "Foto hinzufügen",
+          "delete": "Foto löschen",
+          "moveUp": "Foto nach oben verschieben",
+          "moveDown": "Foto nach unten verschieben"
+        }
+      }
     },
     "prompts": {
       "changePrivacy": "Wähle Privatsphäre-Buckets für dieses Mitglied",
-      "delete": "Willst du das Mitglied {memberName} wirklich löschen?"
+      "delete": "Willst du das Mitglied {memberName} wirklich löschen?",
+      "gallery": {
+        "changePrivacy": "Wähle Privatsphäre-Buckets für dieses Fotoalbum",
+        "deleteAlbum": "Willst du das Fotoalbum {albumName} und dessen Fotos wirklich löschen?"
+      }
     },
     "labels": {
       "folders": "Ordner",
