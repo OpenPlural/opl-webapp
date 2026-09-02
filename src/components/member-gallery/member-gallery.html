@@ -3,11 +3,16 @@
 @let editing = this.editing();
 
 <div class="w-full flex justify-between">
-  <div>
+  <div class="flex">
     @if (album) {
       <app-vertical-center>
         <app-icon-button name="actions.goBack" icon="fa-arrow-left" (action)="goBack()" />
       </app-vertical-center>
+      @if (editing) {
+        <app-vertical-center>
+          <app-toggle-icon-button name="actions.reorder.start" toggledName="actions.reorder.stop" icon="fa-sort" [toggled]="reorder()" (toggle)="toggleReorder()" />
+        </app-vertical-center>
+      }
     }
   </div>
   <div class="flex">
@@ -71,14 +76,14 @@
       </div>
     }
   } @else if (description() !== '') {
-    <div class="mb-2">
-      <app-markdown-box textareaName="description" [(markdown)]="description" [editable]="false" />
-    </div>
+    <app-markdown-box textareaName="description" [(markdown)]="description" [editable]="false" />
   }
   <div class="divider"></div>
-  <div class="grid md:grid-cols-3 grid-cols-2 gap-2">
+  <div class="grid md:grid-cols-3 grid-cols-2 gap-2"
+       cdkDropList cdkDropListOrientation="mixed" [cdkDropListDisabled]="!reorder()"
+       (cdkDropListDropped)="reorderPhotos($event)">
     @for (photo of photoUrls(); track photo) {
-      <div>
+      <div cdkDrag>
         @let deleting = isDeleting($index);
         <div class="avatar">
           <div class="w-full rounded-xl">

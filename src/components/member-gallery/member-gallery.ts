@@ -139,6 +139,7 @@ export class MemberGallery {
   protected goBack() {
     this.album.set(null);
     this.editing.set(false);
+    this.reorder.set(false);
   }
 
   protected async createAlbum(name: string) {
@@ -209,6 +210,14 @@ export class MemberGallery {
     }
 
     [photoUrls[index], photoUrls[newIndex]] = [photoUrls[newIndex], photoUrls[index]];
+  }
+
+  protected async reorderPhotos(event: CdkDragDrop<any, any>) {
+    this.photoUrls.update((photoUrls) => {
+      const updatedPhotoUrls = [...photoUrls];
+      moveItemInArray(updatedPhotoUrls, event.previousIndex, event.currentIndex);
+      return updatedPhotoUrls;
+    });
   }
 
   protected deletePhoto(index: number) {
