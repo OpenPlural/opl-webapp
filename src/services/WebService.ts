@@ -142,10 +142,6 @@ export class WebService {
     await firstValueFrom(this.http.patch(`${BASE_URL}/api/v1/field/${customField.remoteId}`, customField));
   }
 
-  async reorderCustomFields(ids: CustomFieldId[]): Promise<void> {
-    await firstValueFrom(this.http.post(`${BASE_URL}/api/v1/field/reorder`, ids));
-  }
-
   async createCustomFieldValue(customFieldValue: CustomFieldDataValue): Promise<CustomFieldDataId> {
     customFieldValue = translateCustomFieldDataValue(this.localStorageService, customFieldValue, 'remoteId');
     return firstValueFrom(this.http.put<IdResponse>(`${BASE_URL}/api/v1/field/value/`, customFieldValue)).then(res => res.id);

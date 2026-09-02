@@ -5,7 +5,6 @@ import { LocalStorageService } from './LocalStorageService';
 import { Member, MemberId } from './model/Member';
 import { FrontEntry, FrontEntryId } from './model/Front';
 import { CustomField, CustomFieldDataId, CustomFieldDataValue, CustomFieldId } from './model/Field';
-import { compareCustomSort } from '../util/CustomSort';
 import { AccountService } from './AccountService';
 import { generateLocalId } from '../util/IdGenerator';
 import {
@@ -219,10 +218,6 @@ export class SyncService {
       async (fieldId) => await this.localStorageService.removeCustomField(fieldId, null),
       doServerUpdates,
     );
-
-    if (this.localStorageService.isCustomFieldReorderRequired()) {
-      await this.webService.reorderCustomFields([...this.localStorageService.customFields()].sort(compareCustomSort).map(f => f.remoteId).filter(id => id != null));
-    }
   }
 
   private async syncCustomFieldValues(updatedFieldValues: CustomFieldDataValue[], fieldValueIds: CustomFieldDataId[], deletionDelta: boolean, doServerUpdates: boolean) {
