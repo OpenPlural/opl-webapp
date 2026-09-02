@@ -7,9 +7,10 @@ import { hookOnDataDeletion } from '../util/LocalDataDeletion';
 import { Deletion } from './model/Deletion';
 import { generateLocalId } from '../util/IdGenerator';
 import { Poll, PollAnswer, PollId } from './model/Poll';
+import { PhotoAlbum, PhotoAlbumId } from './model/Gallery';
 
 const WARN_NON_PERSISTENT = !isDevMode();
-const IDB_VERSION = 2;
+const IDB_VERSION = 3;
 const IDB_NAME = "OpenPlural";
 const IDB_FOLDERS = "folders";
 const IDB_MEMBERS = "members";
@@ -18,6 +19,7 @@ const IDB_CUSTOM_FIELDS = "customFields";
 const IDB_CUSTOM_FIELD_VALUES = "customFieldValues";
 const IDB_POLLS = "polls";
 const IDB_POLL_ANSWERS = "pollAnswers";
+const IDB_PHOTO_ALBUMS = "photoAlbums";
 const IDB_METADATA = "metadata";
 const IDB_DELETIONS = "deletions";
 
@@ -39,6 +41,7 @@ export class LocalStorageService {
   private readonly _customFieldValues: WritableSignal<CustomFieldDataValue[]> = signal([]);
   private readonly _polls: WritableSignal<Poll[]> = signal([]);
   private readonly _pollAnswers: WritableSignal<PollAnswer[]> = signal([]);
+  private readonly _photoAlbums: WritableSignal<PhotoAlbum[]> = signal([]);
 
   readonly folders = this._folders.asReadonly();
   readonly members = this._members.asReadonly();
@@ -48,6 +51,7 @@ export class LocalStorageService {
   readonly customFieldValues = this._customFieldValues.asReadonly();
   readonly polls = this._polls.asReadonly();
   readonly pollAnswers = this._pollAnswers.asReadonly();
+  readonly photoAlbums = this._photoAlbums.asReadonly();
 
   readonly ready = this._ready.asReadonly();
   readonly dirty = this._dirty.asReadonly();
@@ -65,6 +69,7 @@ export class LocalStorageService {
         this._customFieldValues.set([]);
         this._polls.set([]);
         this._pollAnswers.set([]);
+        this._photoAlbums.set([]);
       });
     });
 
@@ -91,9 +96,12 @@ export class LocalStorageService {
           db.createObjectStore(IDB_CUSTOM_FIELD_VALUES, { keyPath: 'id' });
           db.createObjectStore(IDB_METADATA, { keyPath: 'key' });
           db.createObjectStore(IDB_DELETIONS, { keyPath: 'id' });
+        // @ts-ignore
         case 1: // Added polls and poll answers
           db.createObjectStore(IDB_POLLS, { keyPath: 'id' });
           db.createObjectStore(IDB_POLL_ANSWERS, { keyPath: 'id' });
+        case 2: // Added photo albums
+          db.createObjectStore(IDB_PHOTO_ALBUMS, { keyPath: 'id' });
       }
     };
     req.onsuccess = () => {
@@ -108,10 +116,11 @@ export class LocalStorageService {
         this.readAll<CustomFieldDataValue>(IDB_CUSTOM_FIELD_VALUES).then((fv) => fv.map(this.deserializeCustomFieldValue)),
         this.readAll<Poll>(IDB_POLLS).then((p) => p.map(this.deserializePoll)),
         this.readAll<PollAnswer>(IDB_POLL_ANSWERS).then((pa) => pa.map(this.deserializePollAnswer)),
+        this.readAll<PhotoAlbum>(IDB_PHOTO_ALBUMS).then((pa) => pa.map(this.deserializePhotoAlbum)),
         this.getMetadata<string>('lastSyncTime'),
         this.getMetadata<string>('lastAbsSyncTime')
       ])
-        .then(([folders, members, front, customFields, customFieldValues, polls, pollAnswers, lastSyncTime, lastAbsSyncTime]) => {
+        .then(([folders, members, front, customFields, customFieldValues, polls, pollAnswers, photoAlbums, lastSyncTime, lastAbsSyncTime]) => {
           this._folders.set(folders);
           this._members.set(members);
           this._front.set(front);
@@ -119,6 +128,7 @@ export class LocalStorageService {
           this._customFieldValues.set(customFieldValues);
           this._polls.set(polls);
           this._pollAnswers.set(pollAnswers);
+          this._photoAlbums.set(photoAlbums);
           if (lastSyncTime) {
             this.lastSyncTime = parseInt(lastSyncTime);
           }
@@ -142,6 +152,7 @@ export class LocalStorageService {
     await this.clearAll(IDB_CUSTOM_FIELD_VALUES);
     await this.clearAll(IDB_POLLS);
     await this.clearAll(IDB_POLL_ANSWERS);
+    await this.clearAll(IDB_PHOTO_ALBUMS);
     await this.clearAll(IDB_METADATA);
     await this.clearAll(IDB_DELETIONS);
   }
@@ -192,6 +203,12 @@ export class LocalStorageService {
     this.ngZone.run(() => this._pollAnswers.update((answers) => [...answers, answer]));
   }
 
+  async addPhotoAlbum(album: PhotoAlbum): Promise<void> {
+    await this.writeValue(IDB_PHOTO_ALBUMS, this.serializePhotoAlbum(album));
+    this._dirty.set(true);
+    this.ngZone.run(() => this._photoAlbums.update((albums) => [...albums, album]));
+  }
+
   async updateFolder(folder: Folder): Promise<void> {
     await this.writeValue(IDB_FOLDERS, this.serializeFolder(folder));
     this._dirty.set(true);
@@ -232,6 +249,12 @@ export class LocalStorageService {
     await this.writeValue(IDB_POLL_ANSWERS, this.serializePollAnswer(answer));
     this._dirty.set(true);
     this.ngZone.run(() => this._pollAnswers.update((answers) => answers.map((pa) => pa.id === answer.id ? answer : pa)));
+  }
+
+  async updatePhotoAlbum(album: PhotoAlbum): Promise<void> {
+    await this.writeValue(IDB_PHOTO_ALBUMS, this.serializePhotoAlbum(album));
+    this._dirty.set(true);
+    this.ngZone.run(() => this._photoAlbums.update((albums) => albums.map((a) => a.id === album.id ? album : a)));
   }
 
   async removeFolderRecursively(folderId: FolderId, remoteId: bigint | null): Promise<void> {
@@ -343,6 +366,19 @@ export class LocalStorageService {
     }
     this._dirty.set(true);
     this.ngZone.run(() => this._pollAnswers.update((answers) => answers.filter((answer) => answer.id !== pollAnswerId)));
+  }
+
+  async removePhotoAlbum(photoAlbumId: PhotoAlbumId, remoteId: PhotoAlbumId | null): Promise<void> {
+    await this.deleteValue(IDB_PHOTO_ALBUMS, photoAlbumId.toString());
+    if (remoteId) {
+      await this.writeValue(IDB_DELETIONS, this.serializeDeletion({
+        id: generateLocalId(),
+        resourceId: remoteId,
+        resourceType: 'photo-album',
+      }));
+    }
+    this._dirty.set(true);
+    this.ngZone.run(() => this._photoAlbums.update((albums) => albums.filter((album) => album.id !== photoAlbumId)));
   }
 
   async setMetadata(key: string, value: any): Promise<void> {
@@ -506,6 +542,26 @@ export class LocalStorageService {
       pollId: BigInt(answer.pollId),
       memberId: BigInt(answer.memberId),
       answer: BigInt(answer.answer),
+    };
+  }
+
+  private serializePhotoAlbum(album: PhotoAlbum): any {
+    return {
+      ...album,
+      id: album.id.toString(),
+      remoteId: album.remoteId?.toString() || null,
+      memberId: album.memberId.toString(),
+      sort: album.sort.toString(),
+    };
+  }
+
+  private deserializePhotoAlbum(album: any): PhotoAlbum {
+    return {
+      ...album,
+      id: BigInt(album.id),
+      remoteId: album.remoteId ? BigInt(album.remoteId) : null,
+      memberId: BigInt(album.memberId),
+      sort: BigInt(album.sort),
     };
   }
 

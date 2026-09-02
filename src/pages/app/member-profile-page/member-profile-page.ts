@@ -27,9 +27,11 @@ export class MemberProfilePage implements OnInit {
   readonly editSelectableFolders = input<Folder[]>([]);
   readonly updateMember = output<Member>();
   readonly updateFolders = output<FolderId[]>();
+  readonly openGallery = output();
 
   protected readonly rootFolders = computed(() => this.editSelectableFolders().filter((f) => !f.parentId));
   protected readonly customSortEditor = computed(() => this.settingsService.settings().customSortEditor);
+  protected readonly loadAvatars = computed(() => this.settingsService.settings().loadAvatars);
 
   protected readonly avatarUrl = signal<string | null>(null);
   protected readonly description = signal<string>('');
@@ -119,6 +121,10 @@ export class MemberProfilePage implements OnInit {
     if (selected !== null) {
       this.updateFolders.emit(selected);
     }
+  }
+
+  protected viewGallery() {
+    this.openGallery.emit();
   }
 
   protected readonly toColor = toColor;

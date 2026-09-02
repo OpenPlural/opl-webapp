@@ -1,8 +1,14 @@
 @let member = this.member();
 @let editable = this.editable();
 @let avatarUrl = this.avatarUrl();
-<div class="mx-auto my-2 w-fit" [class.cursor-pointer]="editable">
+<div class="mx-auto my-2 w-fit text-center" [class.cursor-pointer]="editable">
   <app-profile-picture [avatarUrl]="avatarUrl || member.avatar" size="w-48" fallbackSize="fa-5x" [roundPfp]="false" (click)="openAvatarPrompt()" />
+  <div class="mt-2">
+    <button class="w-full btn btn-soft" [disabled]="!loadAvatars()" (click)="viewGallery()">
+      <i class="fa fa-picture-o"></i>
+      {{'members.actions.gallery.open' | translate}}
+    </button>
+  </div>
 </div>
 <form id="memberForm">
   <fieldset class="fieldset">
