@@ -28,8 +28,12 @@ export class ImportService {
     }
 
     let members: any[] | null = null;
+    let gallery: any[] | null = null;
     if (flags.members && 'members' in obj) {
       members = obj.members;
+      if ('gallery' in obj) {
+        gallery = obj.gallery;
+      }
     }
 
     let polls: any[] | null = null;
@@ -43,6 +47,7 @@ export class ImportService {
       folders,
       members,
       polls,
+      gallery,
       truncate: flags.truncate,
     });
   }
