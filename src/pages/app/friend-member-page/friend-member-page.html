@@ -11,7 +11,8 @@
         <div class="pt-10 p-5 overflow-y-auto">
           @switch (tab) {
             @case ('profile') {
-              <app-member-profile-page [member]="member" [folders]="folders()" [editable]="false" (openGallery)="showGallery()" />
+              <app-member-profile-page [member]="member" [folders]="folders()" [editable]="false"
+                                       [showGalleryOption]="hasGallery()" (openGallery)="showGallery()" />
             }
             @case ('gallery') {
               @let gallery = this.gallery();

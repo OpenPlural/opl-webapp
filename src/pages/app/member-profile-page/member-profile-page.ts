@@ -23,6 +23,7 @@ export class MemberProfilePage implements OnInit {
 
   readonly member = input.required<Member>();
   readonly folders = input.required<Folder[] | null>();
+  readonly showGalleryOption = input.required<boolean>();
   readonly editable = input.required<boolean>();
   readonly editSelectableFolders = input<Folder[]>([]);
   readonly updateMember = output<Member>();

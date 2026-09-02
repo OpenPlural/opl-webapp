@@ -18,7 +18,8 @@
       <div class="pt-10 p-5 overflow-y-auto" cdkScrollable>
         @switch (tab) {
           @case ('profile') {
-            <app-member-profile-page [member]="member" [folders]="folders()" [editable]="true" [editSelectableFolders]="allFolders()"
+            <app-member-profile-page [member]="member" [folders]="folders()" [editable]="true"
+                                     [showGalleryOption]="true" [editSelectableFolders]="allFolders()"
                                      (updateMember)="updatedMemberProfile.set($event)"
                                      (updateFolders)="updatedMemberFolders.set($event)"
                                      (openGallery)="selectedTab.set('gallery')"/>

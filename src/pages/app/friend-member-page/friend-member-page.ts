@@ -55,6 +55,7 @@ export class FriendMemberPage {
 
   protected readonly member = signal<Member | null>(null);
   protected readonly folders = signal<Folder[] | null>(null);
+  protected readonly hasGallery = signal<boolean>(false);
   protected readonly gallery = signal<PhotoAlbum[] | null>(null);
   protected readonly customFields = signal<ViewedCustomFieldDataValue[] | null>(null);
   protected readonly selectedTab = signal<'profile' | 'gallery' | 'customFields'>('profile');
@@ -67,10 +68,12 @@ export class FriendMemberPage {
         this.webService.getMemberWithFolders(userId, memberId).then((ext) => {
           this.member.set(ext.member);
           this.folders.set(sortNestedFolders(ext.folders));
+          this.hasGallery.set(ext.hasGallery);
         });
       } else {
         this.member.set(null);
         this.folders.set(null);
+        this.hasGallery.set(false);
       }
     });
   }
