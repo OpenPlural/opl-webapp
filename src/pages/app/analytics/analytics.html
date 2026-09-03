@@ -21,8 +21,8 @@
   <footer class="h-16">
     <app-vertical-center>
       <app-pager [currentPage]="selectedTab" justify="justify-between">
-        <app-toggle-icon-button name="navigation.analytics.frontCount" icon="fa-users" size="fa-lg" [toggled]="selectedTab === 'frontCount'" (toggle)="selectTab('frontCount')" />
-        <app-toggle-icon-button name="navigation.analytics.frontTime" icon="fa-tag" size="fa-lg" [toggled]="selectedTab === 'frontTime'" (toggle)="selectTab('frontTime')" />
+        <app-toggle-icon-button name="navigation.analytics.frontCount" icon="fa-sort-amount-desc" size="fa-lg" [toggled]="selectedTab === 'frontCount'" (toggle)="selectTab('frontCount')" />
+        <app-toggle-icon-button name="navigation.analytics.frontTime" icon="fa-clock-o" size="fa-lg" [toggled]="selectedTab === 'frontTime'" (toggle)="selectTab('frontTime')" />
       </app-pager>
     </app-vertical-center>
   </footer>
