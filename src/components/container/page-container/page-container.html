@@ -2,7 +2,8 @@
   <div class="w-full h-16 bg-base-100 shadow-md">
     <ng-content select="header"></ng-content>
   </div>
-  <div class="flex-1 overflow-y-auto" cdkScrollable [class.scroll-container]="footer()">
+  @let scrollable = this.scrollable();
+  <div class="flex-1" [class.overflow-y-auto]="scrollable" cdkScrollable [class.scroll-container]="footer()">
     <ng-content select="main"></ng-content>
   </div>
   @if (footer()) {

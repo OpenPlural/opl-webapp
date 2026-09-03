@@ -1,4 +1,4 @@
-<app-page-container [footer]="footer()" [fab]="fab()" (fabAction)="fabAction.emit()">
+<app-page-container [scrollable]="scrollable()" [footer]="footer()" [fab]="fab()" (fabAction)="fabAction.emit()">
   <header class="navbar">
     @let searchable = this.searchable();
     @let headerButtons = this.headerButtons();
