@@ -24,7 +24,8 @@
                 [row]="entry.row"
                 [height]="entry.height"
                 [selected]="selectedEntry === entry.entry.id"
-                (onSelected)="selectEntry(entry.entry.id, $event)" />
+                (onSelected)="selectEntry(entry.entry.id, $event)"
+                (update)="loadFrontHistory()"/>
             }
           </div>
         </div>
