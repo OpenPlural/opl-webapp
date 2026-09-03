@@ -60,14 +60,15 @@ export class FrontHistoryGraphicalPage {
       let member = members.find((member) => member.id === entry.member);
       if (!member) continue;
 
-      let row: number;
+      let endedAt: Date;
       if (entry.endedAt) {
-        const endedAt = new Date(Date.parse(entry.endedAt));
-        const daysDiff = Math.floor((historyTime - Date.parse(entry.endedAt)) / 86400000);
-        row = (1440 - endedAt.getHours() * 60 - endedAt.getMinutes()) * (1 / 3) + daysDiff * 480;
+        endedAt = new Date(Date.parse(entry.endedAt));
       } else {
-        row = 0;
+        endedAt = new Date();
       }
+      const daysDiff = Math.floor((historyTime - endedAt.getTime()) / 86400000);
+      let row = Math.max((1440 - endedAt.getHours() * 60 - endedAt.getMinutes()) * (1 / 3) + daysDiff * 480, 0);
+
       const startedAt = new Date(Date.parse(entry.startedAt));
       const startedDaysDiff = Math.floor((historyTime - Date.parse(entry.startedAt)) / 86400000);
       const startedRow =
