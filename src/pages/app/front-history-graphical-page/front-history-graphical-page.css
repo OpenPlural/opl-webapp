@@ -1,4 +1,4 @@
 .scroll-container {
   width: min(100vw, 900px);
-  height: calc(100vh - 183px);
+  height: calc(100vh - 168px);
 }
