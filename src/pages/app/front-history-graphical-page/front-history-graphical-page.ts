@@ -113,15 +113,18 @@ export class FrontHistoryGraphicalPage {
   });
 
   constructor() {
-    effect(() => {
-      const range = this.historyRange();
+    effect(() => this.loadFrontHistory());
+  }
+
+  protected async loadFrontHistory() {
+    const range = this.historyRange();
+    if (range) {
+      this.webService.getFrontHistoryInDateRange(range.start, range.end).then((frontHistory) => {
+        this.frontHistory.set(frontHistory);
+      });
+    } else {
       this.frontHistory.set(null);
-      if (range) {
-        this.webService.getFrontHistoryInDateRange(range.start, range.end).then((frontHistory) => {
-          this.frontHistory.set(frontHistory);
-        });
-      }
-    });
+    }
   }
 
   protected changeHistoryRange(range: SelectedDateRange) {
