@@ -13,7 +13,7 @@
               }
             }
           </div>
-          <div class="absolute top-0 right-0 h-full" style="width: calc(100% - 120px); left: 120px">
+          <div class="absolute top-0 right-0 h-full" style="left: 120px" [style.width]="width()">
             @let selectedEntry = this.selectedEntry();
             @for (entry of history; track entry.entry.id) {
               <app-historic-front-entry

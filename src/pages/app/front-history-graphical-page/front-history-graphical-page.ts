@@ -103,6 +103,13 @@ export class FrontHistoryGraphicalPage {
     }
     return days;
   });
+  protected readonly width = computed(() => {
+    const history = this.renderedHistory();
+    if (!history) return 'calc(100% - 120px)';
+
+    const maxColumn = history.reduce((max, entry) => Math.max(max, entry.column), 0);
+    return `calc(100% + ${45 * maxColumn}px + 120px)`;
+  });
 
   constructor() {
     effect(() => {
