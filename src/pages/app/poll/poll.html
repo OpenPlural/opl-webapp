@@ -1,0 +1,114 @@
+@let poll = this.poll();
+@if (poll) {
+  @let options = this.richOptions();
+  <app-popup-page-container [title]="poll.name">
+    <main>
+      <div class="p-5">
+        @if (poll.description) {
+          <app-markdown-box class="w-full sm:w-2/3" textareaName="description" [markdown]="poll.description" [editable]="false" />
+        }
+        <canvas id="pollGraph" class="mx-auto mt-6 w-2/3 lg:w-1/3">
+        </canvas>
+        <div class="mt-4 mx-auto w-fit grid grid-cols-2 gap-x-2" style="grid-template-columns: auto minmax(0, 1fr)">
+          @let answerPercentages = this.answerPercentages();
+          @for (option of options; track option.option) {
+            @let percentage = answerPercentages[option.index];
+            @if (poll.customOptions || option.index !== 2 || percentage !== 0 || poll.allowVeto) {
+              <span class="aspect-square h-5 my-auto rounded" [style]="'background-color: ' + option.color"></span>
+              <span>{{option.option}}: {{percentage}}%</span>
+            }
+          }
+        </div>
+        <div class="text-center mt-4">
+          <button class="btn btn-wide btn-accent" (click)="chooseVoteMember.set(true)">
+            {{'polls.actions.vote' | translate}}
+          </button>
+        </div>
+      </div>
+      @let tab = selectedAnswerTab();
+      @if (poll.customOptions) {
+        <div class="w-full bg-base-100 flex justify-between">
+          <app-vertical-center>
+            <app-icon-button name="actions.back" icon="fa-arrow-left" size="fa-lg" [buttonDisabled]="tab === 0" (action)="nextOption(-1)" />
+          </app-vertical-center>
+          <app-vertical-center>
+            <span>{{options[tab].option}}</span>
+          </app-vertical-center>
+          <app-vertical-center>
+            <app-icon-button name="actions.next" icon="fa-arrow-right" size="fa-lg" [buttonDisabled]="tab === options.length - 1" (action)="nextOption(1)" />
+          </app-vertical-center>
+        </div>
+        <div class="bg-base-100 text-center">
+          @let answerCounts = this.answerCounts();
+          {{ 'polls.labels.totalVotes' | translate:{count: answerCounts[tab]} }}
+        </div>
+        <app-poll-answers [answers]="answers()" [filter]="[tab]" [icons]="['fa-envelope']" />
+      } @else {
+        <app-pager [currentPage]="tab.toString()" placement="hidden" justify="justify-between">
+          <app-toggle-icon-button name="polls.labels.yes" icon="fa-thumbs-up" size="fa-lg" [toggled]="tab === 0" (toggle)="selectedAnswerTab.set(0)" />
+          <app-toggle-icon-button name="polls.labels.no" icon="fa-thumbs-down" size="fa-lg" [toggled]="tab === 1" (toggle)="selectedAnswerTab.set(1)" />
+          @if (poll.allowAbstain) {
+            <app-toggle-icon-button name="polls.labels.abstain" icon="fa-minus-circle" size="fa-lg" [toggled]="tab === 3" (toggle)="selectedAnswerTab.set(3)" />
+          }
+        </app-pager>
+        <div class="bg-base-100 text-center">
+          @let answerCounts = this.answerCounts();
+          {{ 'polls.labels.totalVotes' | translate:{count: tab === 1 ? answerCounts[1] + answerCounts[2] : answerCounts[tab]} }}
+        </div>
+        <app-poll-answers [answers]="answers()" [filter]="tab === 1 ? [1, 2] : [tab]"
+                          [icons]="['fa-thumbs-up', 'fa-thumbs-down', 'fa-times text-error', 'fa-minus-circle']" />
+      }
+      <div class="py-10"></div>
+    </main>
+    <app-vertical-center class="header-buttons">
+      <app-icon-button name="polls.actions.edit" icon="fa-pencil" size="fa-lg" (click)="editPoll()" />
+    </app-vertical-center>
+  </app-popup-page-container>
+  @if (chooseVoteMember()) {
+    <app-member-selector dialogId="voteMemberPrompt" title="polls.actions.vote" [custom]="false" [selectMultiple]="false"
+                         [frontingFirst]="true" (submitSelection)="voteWith($event)" (forceClose)="chooseVoteMember.set(false)" />
+  }
+  <dialog id="voteOptionPrompt" class="modal">
+    <div class="modal-box">
+      <h3 class="text-lg font-bold">{{'polls.actions.vote' | translate}}</h3>
+      @let member = this.voteMemberObject();
+      @if (member) {
+        <app-member-list-item [member]="member" [editable]="false" [inactive]="true" />
+      }
+      <textarea id="voteComment" class="textarea w-full mt-2" [placeholder]="'polls.labels.comment' | translate"></textarea>
+      @if (poll.customOptions) {
+        @for (option of options; track option.option) {
+          <button class="w-full min-h-fit btn btn-outline mt-2" (click)="submitVote(option.index)">
+            {{option.option}}
+          </button>
+        }
+      } @else {
+        <button class="w-full btn btn-success btn-outline mt-2" (click)="submitVote(0)">
+          <i class="fa fa-lg fa-thumbs-up"></i>
+          {{'polls.labels.yes' | translate}}
+        </button>
+        <button class="w-full btn btn-warning btn-outline mt-2" (click)="submitVote(1)">
+          <i class="fa fa-lg fa-thumbs-down"></i>
+          {{'polls.labels.no' | translate}}
+        </button>
+        @if (poll.allowVeto) {
+          <button class="w-full btn btn-error btn-outline mt-2" (click)="submitVote(2)">
+            <i class="fa fa-lg fa-times"></i>
+            {{'polls.labels.veto' | translate}}
+          </button>
+        }
+        @if (poll.allowAbstain) {
+          <button class="w-full btn btn-outline mt-2" (click)="submitVote(3)">
+            <i class="fa fa-lg fa-minus-circle"></i>
+            {{'polls.labels.abstain' | translate}}
+          </button>
+        }
+      }
+    </div>
+    <form method="dialog" class="modal-backdrop">
+      <button></button>
+    </form>
+  </dialog>
+} @else {
+  <app-misrouted />
+}

@@ -1,4 +1,4 @@
-<button class="btn btn-ghost btn-circle {{buttonSize()}} {{buttonClass()}}" aria-label="{{name() | translate}}" (click)="action.emit()">
+<button class="btn btn-ghost btn-circle {{buttonSize()}} {{buttonClass()}}" [disabled]="buttonDisabled()" aria-label="{{name() | translate}}" (click)="action.emit()">
   @if (stack()) {
     <span class="fa-stack {{size()}}" aria-hidden="true">
       @for (icon of this.icon(); track icon) {

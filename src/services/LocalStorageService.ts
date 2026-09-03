@@ -6,15 +6,20 @@ import { CustomField, CustomFieldDataId, CustomFieldDataValue, CustomFieldId } f
 import { hookOnDataDeletion } from '../util/LocalDataDeletion';
 import { Deletion } from './model/Deletion';
 import { generateLocalId } from '../util/IdGenerator';
+import { Poll, PollAnswer, PollId } from './model/Poll';
+import { PhotoAlbum, PhotoAlbumId } from './model/Gallery';
 
 const WARN_NON_PERSISTENT = !isDevMode();
-const IDB_VERSION = 1;
+const IDB_VERSION = 3;
 const IDB_NAME = "OpenPlural";
 const IDB_FOLDERS = "folders";
 const IDB_MEMBERS = "members";
 const IDB_FRONT = "front";
 const IDB_CUSTOM_FIELDS = "customFields";
 const IDB_CUSTOM_FIELD_VALUES = "customFieldValues";
+const IDB_POLLS = "polls";
+const IDB_POLL_ANSWERS = "pollAnswers";
+const IDB_PHOTO_ALBUMS = "photoAlbums";
 const IDB_METADATA = "metadata";
 const IDB_DELETIONS = "deletions";
 
@@ -25,7 +30,6 @@ export class LocalStorageService {
   private idb: IDBDatabase | undefined;
   private lastSyncTime = 0;
   private lastAbsSyncTime = 0;
-  private fieldsReorderedSinceLastSync = false;
 
   private readonly _ready = signal(false);
   private readonly _dirty = signal(true);
@@ -35,6 +39,9 @@ export class LocalStorageService {
   private readonly _front: WritableSignal<FrontEntry[]> = signal([]); // This only contains entries that are not synced yet or are still ongoing
   private readonly _customFields: WritableSignal<CustomField[]> = signal([]);
   private readonly _customFieldValues: WritableSignal<CustomFieldDataValue[]> = signal([]);
+  private readonly _polls: WritableSignal<Poll[]> = signal([]);
+  private readonly _pollAnswers: WritableSignal<PollAnswer[]> = signal([]);
+  private readonly _photoAlbums: WritableSignal<PhotoAlbum[]> = signal([]);
 
   readonly folders = this._folders.asReadonly();
   readonly members = this._members.asReadonly();
@@ -42,6 +49,9 @@ export class LocalStorageService {
   readonly ongoingFront = computed(() => this.front().filter((entry) => !entry.endedAt));
   readonly customFields = this._customFields.asReadonly();
   readonly customFieldValues = this._customFieldValues.asReadonly();
+  readonly polls = this._polls.asReadonly();
+  readonly pollAnswers = this._pollAnswers.asReadonly();
+  readonly photoAlbums = this._photoAlbums.asReadonly();
 
   readonly ready = this._ready.asReadonly();
   readonly dirty = this._dirty.asReadonly();
@@ -50,7 +60,6 @@ export class LocalStorageService {
     hookOnDataDeletion(async () => {
       this.lastSyncTime = 0;
       this.lastAbsSyncTime = 0;
-      this.fieldsReorderedSinceLastSync = false;
 
       this.ngZone.run(() => {
         this._folders.set([]);
@@ -58,6 +67,9 @@ export class LocalStorageService {
         this._front.set([]);
         this._customFields.set([]);
         this._customFieldValues.set([]);
+        this._polls.set([]);
+        this._pollAnswers.set([]);
+        this._photoAlbums.set([]);
       });
     });
 
@@ -73,7 +85,9 @@ export class LocalStorageService {
       // @ts-ignore
       const db: IDBDatabase = e.target.result;
 
+      // Fallthrough intentional for incremental upgrades
       switch (e.oldVersion) {
+        // @ts-ignore
         case 0: // Initial creation
           db.createObjectStore(IDB_FOLDERS, { keyPath: 'id' });
           db.createObjectStore(IDB_MEMBERS, { keyPath: 'id' });
@@ -82,7 +96,12 @@ export class LocalStorageService {
           db.createObjectStore(IDB_CUSTOM_FIELD_VALUES, { keyPath: 'id' });
           db.createObjectStore(IDB_METADATA, { keyPath: 'key' });
           db.createObjectStore(IDB_DELETIONS, { keyPath: 'id' });
-          break;
+        // @ts-ignore
+        case 1: // Added polls and poll answers
+          db.createObjectStore(IDB_POLLS, { keyPath: 'id' });
+          db.createObjectStore(IDB_POLL_ANSWERS, { keyPath: 'id' });
+        case 2: // Added photo albums
+          db.createObjectStore(IDB_PHOTO_ALBUMS, { keyPath: 'id' });
       }
     };
     req.onsuccess = () => {
@@ -95,24 +114,26 @@ export class LocalStorageService {
         this.readAll<FrontEntry>(IDB_FRONT).then((f) => f.map(this.deserializeFrontEntry)),
         this.readAll<CustomField>(IDB_CUSTOM_FIELDS).then((f) => f.map(this.deserializeCustomField)),
         this.readAll<CustomFieldDataValue>(IDB_CUSTOM_FIELD_VALUES).then((fv) => fv.map(this.deserializeCustomFieldValue)),
+        this.readAll<Poll>(IDB_POLLS).then((p) => p.map(this.deserializePoll)),
+        this.readAll<PollAnswer>(IDB_POLL_ANSWERS).then((pa) => pa.map(this.deserializePollAnswer)),
+        this.readAll<PhotoAlbum>(IDB_PHOTO_ALBUMS).then((pa) => pa.map(this.deserializePhotoAlbum)),
         this.getMetadata<string>('lastSyncTime'),
-        this.getMetadata<string>('lastAbsSyncTime'),
-        this.getMetadata<string>('fieldsReorderedSinceLastSync')
+        this.getMetadata<string>('lastAbsSyncTime')
       ])
-        .then(([folders, members, front, customFields, customFieldValues, lastSyncTime, lastAbsSyncTime, fieldsReorderedSinceLastSync]) => {
+        .then(([folders, members, front, customFields, customFieldValues, polls, pollAnswers, photoAlbums, lastSyncTime, lastAbsSyncTime]) => {
           this._folders.set(folders);
           this._members.set(members);
           this._front.set(front);
           this._customFields.set(customFields);
           this._customFieldValues.set(customFieldValues);
+          this._polls.set(polls);
+          this._pollAnswers.set(pollAnswers);
+          this._photoAlbums.set(photoAlbums);
           if (lastSyncTime) {
             this.lastSyncTime = parseInt(lastSyncTime);
           }
           if (lastAbsSyncTime) {
             this.lastAbsSyncTime = parseInt(lastAbsSyncTime);
-          }
-          if (fieldsReorderedSinceLastSync) {
-            this.fieldsReorderedSinceLastSync = fieldsReorderedSinceLastSync === 'true';
           }
           this._ready.set(true);
         })
@@ -129,6 +150,9 @@ export class LocalStorageService {
     await this.clearAll(IDB_FRONT);
     await this.clearAll(IDB_CUSTOM_FIELDS);
     await this.clearAll(IDB_CUSTOM_FIELD_VALUES);
+    await this.clearAll(IDB_POLLS);
+    await this.clearAll(IDB_POLL_ANSWERS);
+    await this.clearAll(IDB_PHOTO_ALBUMS);
     await this.clearAll(IDB_METADATA);
     await this.clearAll(IDB_DELETIONS);
   }
@@ -167,6 +191,24 @@ export class LocalStorageService {
     this.ngZone.run(() => this._customFieldValues.update((values) => [...values, value]));
   }
 
+  async addPoll(poll: Poll): Promise<void> {
+    await this.writeValue(IDB_POLLS, this.serializePoll(poll));
+    this._dirty.set(true);
+    this.ngZone.run(() => this._polls.update((polls) => [...polls, poll]));
+  }
+
+  async addPollAnswer(answer: PollAnswer): Promise<void> {
+    await this.writeValue(IDB_POLL_ANSWERS, this.serializePollAnswer(answer));
+    this._dirty.set(true);
+    this.ngZone.run(() => this._pollAnswers.update((answers) => [...answers, answer]));
+  }
+
+  async addPhotoAlbum(album: PhotoAlbum): Promise<void> {
+    await this.writeValue(IDB_PHOTO_ALBUMS, this.serializePhotoAlbum(album));
+    this._dirty.set(true);
+    this.ngZone.run(() => this._photoAlbums.update((albums) => [...albums, album]));
+  }
+
   async updateFolder(folder: Folder): Promise<void> {
     await this.writeValue(IDB_FOLDERS, this.serializeFolder(folder));
     this._dirty.set(true);
@@ -195,6 +237,24 @@ export class LocalStorageService {
     await this.writeValue(IDB_CUSTOM_FIELD_VALUES, this.serializeCustomFieldValue(value));
     this._dirty.set(true);
     this.ngZone.run(() => this._customFieldValues.update((values) => values.map((fv) => fv.id === value.id ? value : fv)));
+  }
+
+  async updatePoll(poll: Poll): Promise<void> {
+    await this.writeValue(IDB_POLLS, this.serializePoll(poll));
+    this._dirty.set(true);
+    this.ngZone.run(() => this._polls.update((polls) => polls.map((p) => p.id === poll.id ? poll : p)));
+  }
+
+  async updatePollAnswer(answer: PollAnswer): Promise<void> {
+    await this.writeValue(IDB_POLL_ANSWERS, this.serializePollAnswer(answer));
+    this._dirty.set(true);
+    this.ngZone.run(() => this._pollAnswers.update((answers) => answers.map((pa) => pa.id === answer.id ? answer : pa)));
+  }
+
+  async updatePhotoAlbum(album: PhotoAlbum): Promise<void> {
+    await this.writeValue(IDB_PHOTO_ALBUMS, this.serializePhotoAlbum(album));
+    this._dirty.set(true);
+    this.ngZone.run(() => this._photoAlbums.update((albums) => albums.map((a) => a.id === album.id ? album : a)));
   }
 
   async removeFolderRecursively(folderId: FolderId, remoteId: bigint | null): Promise<void> {
@@ -282,6 +342,45 @@ export class LocalStorageService {
     this.ngZone.run(() => this._customFieldValues.update((values) => values.filter((value) => value.id !== customFieldDataId)));
   }
 
+  async removePoll(pollId: PollId, remoteId: PollId | null): Promise<void> {
+    await this.deleteValue(IDB_POLLS, pollId.toString());
+    if (remoteId) {
+      await this.writeValue(IDB_DELETIONS, this.serializeDeletion({
+        id: generateLocalId(),
+        resourceId: remoteId,
+        resourceType: 'poll',
+      }));
+    }
+    this._dirty.set(true);
+    this.ngZone.run(() => this._polls.update((polls) => polls.filter((poll) => poll.id !== pollId)));
+  }
+
+  async removePollAnswer(pollAnswerId: PollId, remoteId: PollId | null): Promise<void> {
+    await this.deleteValue(IDB_POLL_ANSWERS, pollAnswerId.toString());
+    if (remoteId) {
+      await this.writeValue(IDB_DELETIONS, this.serializeDeletion({
+        id: generateLocalId(),
+        resourceId: remoteId,
+        resourceType: 'poll-answer',
+      }));
+    }
+    this._dirty.set(true);
+    this.ngZone.run(() => this._pollAnswers.update((answers) => answers.filter((answer) => answer.id !== pollAnswerId)));
+  }
+
+  async removePhotoAlbum(photoAlbumId: PhotoAlbumId, remoteId: PhotoAlbumId | null): Promise<void> {
+    await this.deleteValue(IDB_PHOTO_ALBUMS, photoAlbumId.toString());
+    if (remoteId) {
+      await this.writeValue(IDB_DELETIONS, this.serializeDeletion({
+        id: generateLocalId(),
+        resourceId: remoteId,
+        resourceType: 'photo-album',
+      }));
+    }
+    this._dirty.set(true);
+    this.ngZone.run(() => this._photoAlbums.update((albums) => albums.filter((album) => album.id !== photoAlbumId)));
+  }
+
   async setMetadata(key: string, value: any): Promise<void> {
     await this.writeValue(IDB_METADATA, { key, value });
   }
@@ -296,25 +395,14 @@ export class LocalStorageService {
       this.lastAbsSyncTime = syncTime;
     }
     this.lastSyncTime = syncTime;
-    this.fieldsReorderedSinceLastSync = false;
     await this.setMetadata('lastSyncTime', this.lastSyncTime.toString());
     await this.setMetadata('lastAbsSyncTime', this.lastAbsSyncTime.toString());
-    await this.setMetadata('fieldsReorderedSinceLastSync', 'false');
     await this.clearAll(IDB_DELETIONS);
     this.ngZone.run(() => this._dirty.set(false));
   }
 
-  async notifyCustomFieldsReordered() {
-    this.fieldsReorderedSinceLastSync = true;
-    await this.setMetadata('fieldsReorderedSinceLastSync', 'true');
-  }
-
   async getDeletions(): Promise<Deletion[]> {
     return this.readAll<Deletion>(IDB_DELETIONS).then((d) => d.map(this.deserializeDeletion));
-  }
-
-  isCustomFieldReorderRequired(): boolean {
-    return this.fieldsReorderedSinceLastSync;
   }
 
   getLastSyncTime(): number {
@@ -416,6 +504,64 @@ export class LocalStorageService {
       remoteId: customFieldValue.remoteId ? BigInt(customFieldValue.remoteId) : null,
       fieldId: BigInt(customFieldValue.fieldId),
       memberId: BigInt(customFieldValue.memberId),
+    };
+  }
+
+  private serializePoll(poll: Poll): any {
+    return {
+      ...poll,
+      id: poll.id.toString(),
+      remoteId: poll.remoteId?.toString() || null,
+    };
+  }
+
+  private deserializePoll(poll: any): Poll {
+    return {
+      ...poll,
+      id: BigInt(poll.id),
+      remoteId: poll.remoteId ? BigInt(poll.remoteId) : null,
+    };
+  }
+
+  private serializePollAnswer(answer: PollAnswer): any {
+    return {
+      ...answer,
+      id: answer.id.toString(),
+      remoteId: answer.remoteId?.toString() || null,
+      pollId: answer.pollId.toString(),
+      memberId: answer.memberId.toString(),
+      answer: answer.answer.toString(),
+    };
+  }
+
+  private deserializePollAnswer(answer: any): PollAnswer {
+    return {
+      ...answer,
+      id: BigInt(answer.id),
+      remoteId: answer.remoteId ? BigInt(answer.remoteId) : null,
+      pollId: BigInt(answer.pollId),
+      memberId: BigInt(answer.memberId),
+      answer: BigInt(answer.answer),
+    };
+  }
+
+  private serializePhotoAlbum(album: PhotoAlbum): any {
+    return {
+      ...album,
+      id: album.id.toString(),
+      remoteId: album.remoteId?.toString() || null,
+      memberId: album.memberId.toString(),
+      sort: album.sort.toString(),
+    };
+  }
+
+  private deserializePhotoAlbum(album: any): PhotoAlbum {
+    return {
+      ...album,
+      id: BigInt(album.id),
+      remoteId: album.remoteId ? BigInt(album.remoteId) : null,
+      memberId: BigInt(album.memberId),
+      sort: BigInt(album.sort),
     };
   }
 

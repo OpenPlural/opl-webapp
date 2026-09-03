@@ -1,0 +1,37 @@
+@let poll = this.poll();
+@if (poll) {
+  <app-edit-page-container [title]="poll.name" (save)="save()" (delete)="openDialog('pollDeletePrompt')">
+    <div class="p-5">
+      <form id="pollForm">
+        <fieldset class="fieldset">
+          <legend class="fieldset-legend">{{'fields.name' | translate}}</legend>
+          <input name="name" type="text" class="w-full input" [value]="poll.name" />
+        </fieldset>
+        <fieldset class="fieldset">
+          <legend class="fieldset-legend">{{'fields.description' | translate}}</legend>
+          <app-markdown-box textareaName="description" [(markdown)]="description" [editable]="true" />
+        </fieldset>
+        @if (!poll.customOptions) {
+          <label class="label mt-2">
+            <input name="allowVeto" type="checkbox" class="toggle" [checked]="poll.allowVeto">
+            {{'polls.labels.allow.veto' | translate}}
+          </label>
+          <br>
+          <label class="label">
+            <input name="allowAbstain" type="checkbox" class="toggle" [checked]="poll.allowAbstain">
+            {{'polls.labels.allow.abstain' | translate}}
+          </label>
+        }
+        <fieldset class="fieldset">
+          <legend class="fieldset-legend">{{'polls.labels.openUntil' | translate}}</legend>
+          <input name="openUntil" type="datetime-local" class="input w-full" [value]="openUntilInputValue()">
+        </fieldset>
+      </form>
+    </div>
+  </app-edit-page-container>
+  <app-popup-confirm dialogId="pollDeletePrompt" title="polls.actions.delete" (confirm)="delete()">
+    {{'polls.prompts.delete' | translate:{ pollName: poll.name } }}
+  </app-popup-confirm>
+} @else {
+  <app-misrouted />
+}

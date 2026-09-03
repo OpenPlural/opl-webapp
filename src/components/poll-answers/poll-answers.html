@@ -1,0 +1,20 @@
+<div class="bg-base-100">
+  <ul class="px-2">
+    @for (answer of filteredAnswers(); track answer.id) {
+      @let member = getMember(answer.memberId);
+      @if (member) {
+        <li class="p-1">
+          <i class="fa fa-lg ml-3 mr-5 {{getIcon(answer.answer)}}"></i>
+          <div class="inline-grid">
+            <span class="font-bold">{{member.name}}</span>
+            @if (answer.comment) {
+              <div class="text-base-content/70 whitespace-pre-line">
+                {{answer.comment}}
+              </div>
+            }
+          </div>
+        </li>
+      }
+    }
+  </ul>
+</div>

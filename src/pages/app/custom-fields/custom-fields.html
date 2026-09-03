@@ -5,7 +5,7 @@
   <main>
     @let fields = this.customFields();
     @if (fields) {
-      <ul cdkDropList [cdkDropListDisabled]="!reorder()" (cdkDropListDropped)="reorderFields($event)">
+      <ul cdkDropList cdkDropListAutoScrollStep="20" [cdkDropListDisabled]="!reorder()" (cdkDropListDropped)="reorderFields($event)">
         @for (field of fields; track field.id) {
           <li cdkDrag class="flex mx-2 mt-2">
             <button type="button" class="grow flex justify-start btn btn-soft font-medium transition-none h-auto" (click)="gotoCustomField(field.id)">

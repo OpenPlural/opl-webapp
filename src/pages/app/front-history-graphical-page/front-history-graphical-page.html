@@ -1,0 +1,36 @@
+<app-date-range [initialPeriod]="604800000" (dateRangeSelected)="changeHistoryRange($event)" />
+@let history = renderedHistory();
+@if (history) {
+  <div class="scroll-container flex flex-col" (click)="selectEntry(null, $event)">
+    <div class="overflow-auto">
+      <div class="relative h-screen">
+        <div class="absolute">
+          <div class="flex flex-col pr-2 border-r-base-100 border-r-2" style="width:120px">
+            @for (day of days(); track day) {
+              <span class="h-10 ml-2 font-bold">{{day}}</span>
+              @for (hour of hours(); track hour) {
+                <span class="h-10 ml-2 text-xs">{{hour}}</span>
+              }
+            }
+          </div>
+          <div class="absolute top-0 right-0 h-full" style="width: calc(100% - 120px); left: 120px">
+            @let selectedEntry = this.selectedEntry();
+            @for (entry of history; track entry.entry.id) {
+              <app-historic-front-entry
+                [frontEntry]="entry.entry"
+                [graphical]="true"
+                [member]="entry.member"
+                [column]="entry.column"
+                [row]="entry.row"
+                [height]="entry.height"
+                [selected]="selectedEntry === entry.entry.id"
+                (onSelected)="selectEntry(entry.entry.id, $event)" />
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+} @else {
+  <app-loading />
+}

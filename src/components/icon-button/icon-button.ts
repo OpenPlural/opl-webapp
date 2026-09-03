@@ -13,5 +13,6 @@ export class IconButton {
   readonly size = input<string>('fa-lg');
   readonly buttonSize = input<string>('btn-lg');
   readonly buttonClass = input<string>('');
+  readonly buttonDisabled = input<boolean>(false);
   readonly action = output();
 }

@@ -4,7 +4,9 @@
     <div class="modal-action">
       <form method="dialog" class="w-full" (submit)="submitForm($event)">
         <ng-content></ng-content>
-        <button type="submit" class="mx-auto mt-5 block btn btn-success">{{'actions.confirm' | translate}}</button>
+        @if (canSubmit()) {
+          <button type="submit" class="mx-auto mt-5 block btn btn-success">{{'actions.confirm' | translate}}</button>
+        }
       </form>
     </div>
   </div>

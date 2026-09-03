@@ -5,19 +5,22 @@ import { LocalStorageService } from './LocalStorageService';
 import { Member, MemberId } from './model/Member';
 import { FrontEntry, FrontEntryId } from './model/Front';
 import { CustomField, CustomFieldDataId, CustomFieldDataValue, CustomFieldId } from './model/Field';
-import { compareCustomSort } from '../util/CustomSort';
 import { AccountService } from './AccountService';
 import { generateLocalId } from '../util/IdGenerator';
 import {
   translateCustomFieldDataValue,
   translateFolder,
   translateFrontEntry,
-  translateMember
+  translateMember,
+  translatePhotoAlbum,
+  translatePollAnswer
 } from '../util/IdTranslator';
 import { TranslateService } from '@ngx-translate/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ToastService } from './ToastService';
 import {SettingsService} from './SettingsService';
+import { Poll, PollAnswer, PollAnswerId, PollId } from './model/Poll';
+import { PhotoAlbum, PhotoAlbumId } from './model/Gallery';
 
 const ABSOLUTE_SYNC_INTERVAL = 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
 
@@ -76,6 +79,9 @@ export class SyncService {
       await this.syncMembers(syncData.updatedMembers, syncData.memberIds, syncData.deletionDelta, doServerUpdates);
       await this.syncCustomFields(syncData.updatedFields, syncData.fieldIds, syncData.deletionDelta, doServerUpdates);
       await this.syncCustomFieldValues(syncData.updatedFieldValues, syncData.fieldValueIds, syncData.deletionDelta, doServerUpdates);
+      await this.syncPolls(syncData.updatedPolls, syncData.pollIds, syncData.deletionDelta, doServerUpdates);
+      await this.syncPollAnswers(syncData.updatedPollAnswers, syncData.pollAnswerIds, syncData.deletionDelta, doServerUpdates);
+      await this.syncPhotoAlbums(syncData.updatedPhotoAlbums, syncData.photoAlbumIds, syncData.deletionDelta, doServerUpdates);
       await this.syncFrontEntries(syncData.front, doServerUpdates);
 
       await this.localStorageService.updateSyncTime(Date.parse(syncData.time), !syncData.deletionDelta);
@@ -215,10 +221,6 @@ export class SyncService {
       async (fieldId) => await this.localStorageService.removeCustomField(fieldId, null),
       doServerUpdates,
     );
-
-    if (this.localStorageService.isCustomFieldReorderRequired()) {
-      await this.webService.reorderCustomFields([...this.localStorageService.customFields()].sort(compareCustomSort).map(f => f.remoteId).filter(id => id != null));
-    }
   }
 
   private async syncCustomFieldValues(updatedFieldValues: CustomFieldDataValue[], fieldValueIds: CustomFieldDataId[], deletionDelta: boolean, doServerUpdates: boolean) {
@@ -235,6 +237,60 @@ export class SyncService {
       async (value) => await this.localStorageService.addCustomFieldValue(value),
       async (value) => await this.localStorageService.updateCustomFieldValue(value),
       async (dataId) => await this.localStorageService.removeCustomFieldValue(dataId, null),
+      doServerUpdates,
+    );
+  }
+
+  private async syncPolls(updatedPolls: Poll[], pollIds: PollId[], deletionDelta: boolean, doServerUpdates: boolean) {
+    await this.syncGeneric(
+      this.localStorageService.polls(),
+      updatedPolls,
+      pollIds,
+      deletionDelta,
+      'poll',
+      (poll) => poll,
+      async (poll) => await this.webService.createPoll(poll),
+      async (_, localPoll) => await this.webService.updatePoll(localPoll),
+      async (pollId) => await this.webService.deletePoll(pollId),
+      async (poll) => await this.localStorageService.addPoll(poll),
+      async (poll) => await this.localStorageService.updatePoll(poll),
+      async (pollId) => await this.localStorageService.removePoll(pollId, null),
+      doServerUpdates,
+    );
+  }
+
+  private async syncPollAnswers(updatedPollAnswers: PollAnswer[], pollAnswerIds: PollAnswerId[], deletionDelta: boolean, doServerUpdates: boolean) {
+    await this.syncGeneric(
+      this.localStorageService.pollAnswers(),
+      updatedPollAnswers,
+      pollAnswerIds,
+      deletionDelta,
+      'poll-answer',
+      (pollAnswer) => translatePollAnswer(this.localStorageService, pollAnswer, 'id'),
+      async (pollAnswer) => await this.webService.createPollAnswer(pollAnswer),
+      async (_, localPollAnswer) => await this.webService.updatePollAnswer(localPollAnswer),
+      async (pollAnswerId) => await this.webService.deletePollAnswer(pollAnswerId),
+      async (pollAnswer) => await this.localStorageService.addPollAnswer(pollAnswer),
+      async (pollAnswer) => await this.localStorageService.updatePollAnswer(pollAnswer),
+      async (pollAnswerId) => await this.localStorageService.removePollAnswer(pollAnswerId, null),
+      doServerUpdates,
+    );
+  }
+
+  private async syncPhotoAlbums(updatedPhotoAlbums: PhotoAlbum[], photoAlbumIds: PhotoAlbumId[], deletionDelta: boolean, doServerUpdates: boolean) {
+    await this.syncGeneric(
+      this.localStorageService.photoAlbums(),
+      updatedPhotoAlbums,
+      photoAlbumIds,
+      deletionDelta,
+      'photo-album',
+      (photoAlbum) => translatePhotoAlbum(this.localStorageService, photoAlbum, 'id'),
+      async (photoAlbum) => await this.webService.createPhotoAlbum(photoAlbum),
+      async (_, localPhotoAlbum) => await this.webService.updatePhotoAlbum(localPhotoAlbum),
+      async (photoAlbumId) => await this.webService.deletePhotoAlbum(photoAlbumId),
+      async (photoAlbum) => await this.localStorageService.addPhotoAlbum(photoAlbum),
+      async (photoAlbum) => await this.localStorageService.updatePhotoAlbum(photoAlbum),
+      async (photoAlbumId) => await this.localStorageService.removePhotoAlbum(photoAlbumId, null),
       doServerUpdates,
     );
   }

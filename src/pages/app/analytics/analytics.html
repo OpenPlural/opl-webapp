@@ -1,0 +1,29 @@
+<app-nav-page-container [footer]="true">
+  @let selectedTab = this.selectedTab();
+  <main>
+    <app-date-range [initialPeriod]="2592000000" (dateRangeSelected)="changeAnalyticsRange($event)" />
+    @let memberData = this.memberData();
+    @if (memberData) {
+      <div class="scroll-container flex flex-col">
+        <div class="overflow-y-auto pb-10">
+          @for (data of memberData; track data.id) {
+            @if (data.member) {
+              <app-member-list-item [member]="data.member" [editable]="false" [inactive]="true"
+                                    [overrideSubtext]="selectedTab === 'frontCount' ? data.frontCountText : data.frontTimeText"/>
+            }
+          }
+        </div>
+      </div>
+    } @else {
+      <app-loading />
+    }
+  </main>
+  <footer class="h-16">
+    <app-vertical-center>
+      <app-pager [currentPage]="selectedTab" justify="justify-between">
+        <app-toggle-icon-button name="navigation.analytics.frontCount" icon="fa-users" size="fa-lg" [toggled]="selectedTab === 'frontCount'" (toggle)="selectTab('frontCount')" />
+        <app-toggle-icon-button name="navigation.analytics.frontTime" icon="fa-tag" size="fa-lg" [toggled]="selectedTab === 'frontTime'" (toggle)="selectTab('frontTime')" />
+      </app-pager>
+    </app-vertical-center>
+  </footer>
+</app-nav-page-container>

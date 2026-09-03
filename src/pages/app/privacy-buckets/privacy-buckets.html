@@ -5,7 +5,7 @@
   <main>
     @let buckets = this.buckets();
     @if (buckets) {
-      <ul cdkDropList [cdkDropListDisabled]="!reorder()" (cdkDropListDropped)="reorderBuckets($event)">
+      <ul cdkDropList cdkDropListAutoScrollStep="20" [cdkDropListDisabled]="!reorder()" (cdkDropListDropped)="reorderBuckets($event)">
         @for (bucket of buckets; track bucket.id) {
           <li cdkDrag class="h-full">
             <app-privacy-bucket-list-item [bucket]="bucket" (action)="gotoPrivacyBucket(bucket.id)" />

@@ -1,28 +1,32 @@
 @let frontHistory = this.frontHistory();
 
 @if (frontHistory) {
-  @for (frontEntry of frontHistory; track frontEntry.id) {
-    @let member = getMember(frontEntry.member);
-    @if (member) {
-      <app-member-list-item [member]="member" [editable]="false" [inactive]="true" />
-    }
-    <div class="border-x border-b rounded-b-lg bg-base-100 p-2 mb-2 mx-4">
-      <app-historic-front-entry [frontEntry]="frontEntry" (update)="reloadFrontHistory()" />
-    </div>
-  }
+  <div class="scroll-container flex flex-col">
+    <div class="overflow-y-auto">
+      @for (frontEntry of frontHistory; track frontEntry.id) {
+        @let member = getMember(frontEntry.member);
+        @if (member) {
+          <app-member-list-item [member]="member" [editable]="false" [inactive]="true" />
+        }
+        <div class="border-x border-b rounded-b-lg bg-base-100 p-2 mb-2 mx-4">
+          <app-historic-front-entry [frontEntry]="frontEntry" (update)="reloadFrontHistory()" />
+        </div>
+      }
 
-  @let loadingMore = this.loadingMore();
-  @let canLoadMore = this.canLoadMore();
-  <button class="btn btn-soft w-full" [disabled]="loadingMore || !canLoadMore" (click)="loadFrontHistory()">
-    @if (loadingMore) {
-      <span class="loading loading-spinner"></span>
-    }
-    @if (canLoadMore) {
-      {{'actions.loadMore' | translate}}
-    } @else {
-      {{'front.labels.history.noMoreEntries' | translate}}
-    }
-  </button>
+      @let loadingMore = this.loadingMore();
+      @let canLoadMore = this.canLoadMore();
+      <button class="btn btn-soft w-full" [disabled]="loadingMore || !canLoadMore" (click)="loadFrontHistory()">
+        @if (loadingMore) {
+          <span class="loading loading-spinner"></span>
+        }
+        @if (canLoadMore) {
+          {{'actions.loadMore' | translate}}
+        } @else {
+          {{'front.labels.history.noMoreEntries' | translate}}
+        }
+      </button>
+    </div>
+  </div>
 } @else {
   <app-loading />
 }

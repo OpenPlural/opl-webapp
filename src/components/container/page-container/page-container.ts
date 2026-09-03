@@ -1,8 +1,9 @@
 import { Component, input, output } from '@angular/core';
+import { CdkScrollable } from '@angular/cdk/scrolling';
 
 @Component({
   selector: 'app-page-container',
-  imports: [],
+  imports: [CdkScrollable],
   templateUrl: './page-container.html',
   styleUrl: './page-container.css',
 })

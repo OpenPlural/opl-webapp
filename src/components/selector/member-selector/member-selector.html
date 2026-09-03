@@ -1,7 +1,8 @@
 @let members = this.members();
-<app-selector [dialogId]="dialogId()" [title]="title()" (submitSelection)="submitSelection.emit(this.updatedSelection())" (forceClose)="forceClose.emit()">
+@let multiple = this.selectMultiple();
+<app-selector [dialogId]="dialogId()" [title]="title()" [canSubmit]="multiple" (submitSelection)="submitSelection.emit(this.updatedSelection())" (forceClose)="forceClose.emit()">
   @let selection = this.updatedSelection();
   @for (member of members; track member.id) {
-    <app-member-list-item [member]="member" [editable]="false" [selectable]="true" [selected]="selection.includes(member.id)" (selectionStatus)="setSelected(member.id, $event)" />
+    <app-member-list-item [member]="member" [editable]="false" [selectable]="multiple" [selected]="selection.includes(member.id)" (selectionStatus)="setSelected(member.id, $event)" (action)="setSelected(member.id, true)" />
   }
 </app-selector>

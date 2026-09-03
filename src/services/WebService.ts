@@ -21,10 +21,16 @@ import {
   translateCustomFieldDataValue,
   translateFolder,
   translateFrontEntry,
-  translateMember, translatePrivacyBucket
+  translateMember,
+  translatePhotoAlbum,
+  translatePollAnswer,
+  translatePrivacyBucket
 } from '../util/IdTranslator';
 import { LocalStorageService } from './LocalStorageService';
 import {ApiKey, ApiKeyId} from './model/ApiKey';
+import { Poll, PollAnswer, PollAnswerId, PollId } from './model/Poll';
+import { Analytics } from './model/Analytics';
+import { PhotoAlbum, PhotoAlbumId } from './model/Gallery';
 
 const BASE_URL: string = localStorage.getItem('baseUrl') || (isDevMode() ? 'https://localhost:4200' : 'https://opl-api.webbiii.cc');
 
@@ -128,6 +134,20 @@ export class WebService {
     await firstValueFrom(this.http.patch(`${BASE_URL}/api/v1/front/${id}`, frontEntry));
   }
 
+  async createPhotoAlbum(album: PhotoAlbum): Promise<PhotoAlbumId> {
+    album = translatePhotoAlbum(this.localStorageService, album, 'remoteId');
+    return firstValueFrom(this.http.put<IdResponse>(`${BASE_URL}/api/v1/member/${album.memberId}/gallery`, album)).then(res => res.id);
+  }
+
+  async deletePhotoAlbum(remoteId: PhotoAlbumId): Promise<void> {
+    await firstValueFrom(this.http.delete(`${BASE_URL}/api/v1/member/gallery/${remoteId}`));
+  }
+
+  async updatePhotoAlbum(album: PhotoAlbum): Promise<void> {
+    album = translatePhotoAlbum(this.localStorageService, album, 'remoteId');
+    await firstValueFrom(this.http.patch(`${BASE_URL}/api/v1/member/${album.memberId}/gallery/${album.remoteId}`, album));
+  }
+
   async createCustomField(customField: CustomField): Promise<CustomFieldId> {
     return firstValueFrom(this.http.put<IdResponse>(`${BASE_URL}/api/v1/field/`, customField)).then(res => res.id);
   }
@@ -138,10 +158,6 @@ export class WebService {
 
   async updateCustomField(customField: CustomField): Promise<void> {
     await firstValueFrom(this.http.patch(`${BASE_URL}/api/v1/field/${customField.remoteId}`, customField));
-  }
-
-  async reorderCustomFields(ids: CustomFieldId[]): Promise<void> {
-    await firstValueFrom(this.http.post(`${BASE_URL}/api/v1/field/reorder`, ids));
   }
 
   async createCustomFieldValue(customFieldValue: CustomFieldDataValue): Promise<CustomFieldDataId> {
@@ -156,6 +172,32 @@ export class WebService {
   async updateCustomFieldValue(customFieldValue: CustomFieldDataValue): Promise<void> {
     customFieldValue = translateCustomFieldDataValue(this.localStorageService, customFieldValue, 'remoteId');
     await firstValueFrom(this.http.patch(`${BASE_URL}/api/v1/field/value/${customFieldValue.remoteId}`, customFieldValue));
+  }
+
+  async createPoll(poll: Poll): Promise<PollId> {
+    return firstValueFrom(this.http.put<IdResponse>(`${BASE_URL}/api/v1/poll/`, poll)).then(res => res.id);
+  }
+
+  async deletePoll(remoteId: PollId): Promise<void> {
+    await firstValueFrom(this.http.delete(`${BASE_URL}/api/v1/poll/${remoteId}`));
+  }
+
+  async updatePoll(poll: Poll): Promise<void> {
+    await firstValueFrom(this.http.patch(`${BASE_URL}/api/v1/poll/${poll.remoteId}`, poll));
+  }
+
+  async createPollAnswer(pollAnswer: PollAnswer): Promise<PollAnswerId> {
+    pollAnswer = translatePollAnswer(this.localStorageService, pollAnswer, 'remoteId');
+    return firstValueFrom(this.http.put<IdResponse>(`${BASE_URL}/api/v1/poll/answer/`, pollAnswer)).then(res => res.id);
+  }
+
+  async deletePollAnswer(remoteId: PollAnswerId): Promise<void> {
+    await firstValueFrom(this.http.delete(`${BASE_URL}/api/v1/poll/answer/${remoteId}`));
+  }
+
+  async updatePollAnswer(pollAnswer: PollAnswer): Promise<void> {
+    pollAnswer = translatePollAnswer(this.localStorageService, pollAnswer, 'remoteId');
+    await firstValueFrom(this.http.patch(`${BASE_URL}/api/v1/poll/answer/${pollAnswer.remoteId}`, pollAnswer));
   }
 
   async createPrivacyBucket(privacyBucket: PrivacyBucket): Promise<PrivacyBucketId> {
@@ -202,6 +244,10 @@ export class WebService {
     return firstValueFrom(this.http.put<SimplePrivacyBucket>(`${BASE_URL}/api/v1/privacy/${privacyBucketId}/field/${field.remoteId}`, {}));
   }
 
+  async addPrivacyBucketPhotoAlbum(privacyBucketId: PrivacyBucketId, album: PhotoAlbum): Promise<SimplePrivacyBucket> {
+    return firstValueFrom(this.http.put<SimplePrivacyBucket>(`${BASE_URL}/api/v1/privacy/${privacyBucketId}/gallery/${album.remoteId}`, {}));
+  }
+
   async addPrivacyBucketFriend(privacyBucketId: PrivacyBucketId, friendId: UserId): Promise<SimplePrivacyBucket> {
     return firstValueFrom(this.http.put<SimplePrivacyBucket>(`${BASE_URL}/api/v1/privacy/${privacyBucketId}/friend/${friendId}`, {}));
   }
@@ -218,6 +264,10 @@ export class WebService {
     await firstValueFrom(this.http.delete(`${BASE_URL}/api/v1/privacy/${privacyBucketId}/field/${field.remoteId}`));
   }
 
+  async removePrivacyBucketPhotoAlbum(privacyBucketId: PrivacyBucketId, album: PhotoAlbum): Promise<void> {
+    await firstValueFrom(this.http.delete(`${BASE_URL}/api/v1/privacy/${privacyBucketId}/gallery/${album.remoteId}`));
+  }
+
   async removePrivacyBucketFriend(privacyBucketId: PrivacyBucketId, friendId: UserId): Promise<void> {
     await firstValueFrom(this.http.delete(`${BASE_URL}/api/v1/privacy/${privacyBucketId}/friend/${friendId}`));
   }
@@ -232,6 +282,10 @@ export class WebService {
 
   async getCustomFieldPrivacy(field: CustomField): Promise<SimplePrivacyBucket[]> {
     return firstValueFrom(this.http.get<SimplePrivacyBucket[]>(`${BASE_URL}/api/v1/field/${field.remoteId}/privacy`));
+  }
+
+  async getPhotoAlbumPrivacy(album: PhotoAlbum): Promise<SimplePrivacyBucket[]> {
+    return firstValueFrom(this.http.get<SimplePrivacyBucket[]>(`${BASE_URL}/api/v1/member/${album.memberId}/gallery/${album.remoteId}/privacy`));
   }
 
   async getFriendPrivacy(friendId: UserId): Promise<SimplePrivacyBucket[]> {
@@ -300,9 +354,18 @@ export class WebService {
     return frontEntries.map((frontEntry) => translateFrontEntry(this.localStorageService, frontEntry, 'id'));
   }
 
+  async getFrontHistoryInDateRange(startDate: string, endDate: string): Promise<FrontEntry[]> {
+    const frontEntries = await firstValueFrom(this.http.get<FrontEntry[]>(`${BASE_URL}/api/v1/front/history/by-date?start=${startDate}&end=${endDate}`));
+    return frontEntries.map((frontEntry) => translateFrontEntry(this.localStorageService, frontEntry, 'id'));
+  }
+
   async getMemberFrontHistory(member: Member, page: number): Promise<FrontEntry[]> {
     const frontEntries = await firstValueFrom(this.http.get<FrontEntry[]>(`${BASE_URL}/api/v1/member/${member.remoteId}/front-history?page=${page}`));
     return frontEntries.map((frontEntry) => translateFrontEntry(this.localStorageService, frontEntry, 'id'));
+  }
+
+  async getMemberGallery(userId: UserId, memberId: MemberId): Promise<PhotoAlbum[]> {
+    return firstValueFrom(this.http.get<PhotoAlbum[]>(`${BASE_URL}/api/v1/member/${memberId}/gallery?userId=${userId}`));
   }
 
   async getMemberCustomFields(userId: UserId, memberId: MemberId): Promise<ViewedCustomFieldDataValue[]> {
@@ -311,6 +374,10 @@ export class WebService {
 
   async getMemberWithFolders(userId: UserId, memberId: MemberId): Promise<ExtendedMember> {
     return firstValueFrom(this.http.get<ExtendedMember>(`${BASE_URL}/api/v1/member/${memberId}?userId=${userId}&extended=true`));
+  }
+
+  async getAnalytics(startDate: string, endDate: string): Promise<Analytics> {
+    return firstValueFrom(this.http.get<Analytics>(`${BASE_URL}/api/v1/analytics/?start=${startDate}&end=${endDate}`));
   }
 
   async getApiKeys(): Promise<ApiKey[]> {

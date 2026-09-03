@@ -1,0 +1,9 @@
+@let poll = this.poll();
+<button class="w-full btn mt-2" (click)="gotoPoll(poll.id)">
+  <div class="card w-full">
+    <div class="card-body text-left wrap-anywhere">
+      <h2 class="card-title">{{poll.name}}</h2>
+      <p class="font-normal">{{formatOpenUntil(poll)}}</p>
+    </div>
+  </div>
+</button>

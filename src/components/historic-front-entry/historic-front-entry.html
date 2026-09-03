@@ -1,30 +1,73 @@
 @let frontEntry = this.frontEntry();
-<div class="flex flex-row justify-between w-full">
-  <span>{{formatDate(frontEntry.startedAt)}}</span>
-  <span class="max-[500px]:hidden">
+@if (graphical()) {
+  @let member = this.member()!;
+  <div class="absolute w-6 rounded-xl"
+       [style.left.px]="column()! * 45 + 12"
+       [style.top.px]="row()! + 8"
+       [style.height.px]="height()!"
+       [style.background-color]="toColor(member.color)"
+       (click)="selectEntry($event)">
+    <app-profile-picture [avatarUrl]="member.avatar" size="w-10 -mt-2 -ml-2"/>
+  </div>
+
+  @if (selected()) {
+    <div class="absolute p-2 bg-base-100 rounded-xl"
+         [style.left.px]="column()! * 45 + 30"
+         [style.top.px]="row()! + 35">
+      <div class="flex gap-2">
+        <app-profile-picture [avatarUrl]="member.avatar" size="w-10"/>
+        <app-vertical-center>
+          <span>{{member.name}}</span>
+        </app-vertical-center>
+      </div>
+      <div class="divider my-0"></div>
+      <div class="text-center text-nowrap">
+        {{formatDate(frontEntry.startedAt)}}
+        <div class="w-full">
+          <i class="fa fa-caret-down"></i>
+        </div>
+        @if (frontEntry.endedAt) {
+          {{formatDate(frontEntry.endedAt)}}
+          <div>({{getDuration(frontEntry.startedAt, frontEntry.endedAt)}})</div>
+        } @else {
+          …
+        }
+      </div>
+      <div class="divider my-0"></div>
+      <div class="w-full flex justify-around">
+        <app-icon-button name="front.actions.changeTime" icon="fa-clock-o" buttonClass="text-accent" (action)="openDialog('historicFrontTimePrompt-' + frontEntry.id)" />
+        <app-icon-button name="front.actions.delete" icon="fa-trash" buttonClass="text-error" (action)="openDialog('historicFrontDeletePrompt-' + frontEntry.id)" />
+      </div>
+    </div>
+  }
+} @else {
+  <div class="flex flex-row justify-between w-full">
+    <span>{{formatDate(frontEntry.startedAt)}}</span>
+    <span class="max-[500px]:hidden">
     <app-icon-button name="front.actions.changeTime" icon="fa-clock-o" buttonClass="text-accent" (action)="openDialog('historicFrontTimePrompt-' + frontEntry.id)" />
     <app-icon-button name="front.actions.delete" icon="fa-trash" buttonClass="text-error" (action)="openDialog('historicFrontDeletePrompt-' + frontEntry.id)" />
   </span>
-  @if (frontEntry.endedAt) {
-    <span>{{formatDate(frontEntry.endedAt)}}</span>
-  }
-</div>
-<div class="text-center">
-  @if (frontEntry.endedAt) {
-    {{getDuration(frontEntry.startedAt, frontEntry.endedAt)}}
-  } @else {
-    {{'front.labels.history.ongoing' | translate}}
-  }
-</div>
-@if (frontEntry.comment) {
+    @if (frontEntry.endedAt) {
+      <span>{{formatDate(frontEntry.endedAt)}}</span>
+    }
+  </div>
   <div class="text-center">
-    {{frontEntry.comment}}
+    @if (frontEntry.endedAt) {
+      {{getDuration(frontEntry.startedAt, frontEntry.endedAt)}}
+    } @else {
+      {{'front.labels.history.ongoing' | translate}}
+    }
+  </div>
+  @if (frontEntry.comment) {
+    <div class="text-center">
+      {{frontEntry.comment}}
+    </div>
+  }
+  <div class="text-center min-[500px]:hidden">
+    <app-icon-button name="front.actions.changeTime" icon="fa-clock-o" buttonClass="text-accent" (action)="openDialog('historicFrontTimePrompt-' + frontEntry.id)" />
+    <app-icon-button name="front.actions.delete" icon="fa-trash" buttonClass="text-error" (action)="openDialog('historicFrontDeletePrompt-' + frontEntry.id)" />
   </div>
 }
-<div class="text-center min-[500px]:hidden">
-  <app-icon-button name="front.actions.changeTime" icon="fa-clock-o" buttonClass="text-accent" (action)="openDialog('historicFrontTimePrompt-' + frontEntry.id)" />
-  <app-icon-button name="front.actions.delete" icon="fa-trash" buttonClass="text-error" (action)="openDialog('historicFrontDeletePrompt-' + frontEntry.id)" />
-</div>
 
 <app-popup-confirm [dialogId]="'historicFrontDeletePrompt-' + frontEntry.id" title="front.actions.delete" (confirm)="deleteFrontEntry()">
   {{'front.prompts.delete' | translate }}

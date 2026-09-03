@@ -25,6 +25,7 @@
     "close": "Zatvori",
     "cancel": "Otkaži",
     "delete": "Izbriši",
+    "undo": "Poništi",
     "save": "Spremi",
     "confirm": "Potvrdi",
     "search": "Traži",
@@ -63,6 +64,7 @@
     "emoji": "Emotikon",
     "color": "Boja",
     "avatarUrl": "URL avatara",
+    "photoUrl": "URL slike",
     "info": "Info",
     "sort": "Broj za sortiranje",
     "language": "Jezik",
@@ -80,6 +82,7 @@
     "dashboard": "Glavna stranica",
     "members": "Članovi",
     "profile": "Profil",
+    "gallery": "Galerija",
     "messageBoard": "Ploča za poruke",
     "notes": "Beleške",
     "fronters": "Fronteri",
@@ -138,11 +141,29 @@
       "create": "Kreiraj člana",
       "delete": "Izbriši člana",
       "changeFolders": "Promeni fascikle",
-      "editCustomFields": "Uredi prilagođena polja"
+      "editCustomFields": "Uredi prilagođena polja",
+      "gallery": {
+        "open": "Otvori galeriju",
+        "album": {
+          "create": "Kreiraj foto album",
+          "delete": "Izbriši foto album",
+          "edit": "Uredi foto album"
+        },
+        "photo": {
+          "add": "Dodaj sliku",
+          "delete": "Izbriši sliku",
+          "moveUp": "Pomeri sliku nagore",
+          "moveDown": "Pomeri sliku nadole"
+        }
+      }
     },
     "prompts": {
       "changePrivacy": "Izaberite kante za ovog člana",
-      "delete": "Da li zaista želite da izbrišete člana {memberName}?"
+      "delete": "Da li zaista želite da izbrišete člana {memberName}?",
+      "gallery": {
+        "changePrivacy": "Izaberite kante za ovaj foto album",
+        "deleteAlbum": "Da li zaista želite da izbrišete foto album {albumName} i njegove slike?"
+      }
     },
     "labels": {
       "folders": "Fascikle",
@@ -196,6 +217,42 @@
         "time": "Doba dana",
         "datetime": "Datum & Doba dana"
       }
+    }
+  },
+  "polls": {
+    "actions": {
+      "create": "Kreiraj anketu",
+      "edit": "Uredi anketu",
+      "delete": "Izbriši anketu",
+      "vote": "Glasaj",
+      "addCustomOption": "Dodaj prilagođenu opciju"
+    },
+    "prompts": {
+      "delete": "Da li zaista želite da izbrišete anketu {pollName}?"
+    },
+    "labels": {
+      "yes": "Da",
+      "no": "Ne",
+      "abstain": "Apstiniraj",
+      "veto": "Veto",
+      "comment": "Komentar",
+      "type": "Vrsta",
+      "openUntil": "Otvoreno do",
+      "expired": "Isteklo",
+      "totalVotes": "{count, plural, one {# glas} few {# glasa} other {# glasova}}",
+      "yesNo": "Da / Ne",
+      "custom": "Prilagođeno",
+      "customOptions": "Prilagođene opcije",
+      "allow": {
+        "abstain": "Dozvoli apstiniranje",
+        "veto": "Dozvoli veto"
+      }
+    }
+  },
+  "analytics": {
+    "labels": {
+      "frontCount": "Na frontu {count, plural, one {# put} other {# puta}}",
+      "frontTime": "{days, plural, one {# dan} other {# dana}} i {hours, plural, one {# sat} few {# sata} other {# sati}}"
     }
   },
   "privacyBuckets": {
@@ -366,6 +423,7 @@
       "members": "Uvezi članove",
       "customFront": "Uvezi prilagođen front",
       "customFields": "Uvezi prilagođena polja",
+      "polls": "Uvezi ankete",
       "privacyBuckets": "Uvezi kante za privatnost",
       "truncate": "Skrati sve što je predugo"
     }

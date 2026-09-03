@@ -14,6 +14,7 @@ import { SyncService } from '../../../services/SyncService';
 import { openDialog } from '../../../util/CommonFunctions';
 import { ErrorService } from '../../../services/ErrorService';
 import {ToggleIconButton} from '../../../components/toggle-icon-button/toggle-icon-button';
+import { truncateCurrentDate } from '../../../util/DateTruncate';
 
 @Component({
   selector: 'app-custom-fields',
@@ -70,14 +71,15 @@ export class CustomFields {
     const fields = this.customFields();
     if (!fields) return;
 
+    const now = truncateCurrentDate();
     const updatedFields = [...fields];
     moveItemInArray(updatedFields, event.previousIndex, event.currentIndex);
     for (let i = 0; i < updatedFields.length; i++) {
       const field = Object.assign({}, updatedFields[i]);
       field.sort = BigInt(i + 1);
+      field.updatedAt = now;
       await this.localStorageService.updateCustomField(field);
     }
-    await this.localStorageService.notifyCustomFieldsReordered();
     try {
       await this.syncService.fullSync();
     } catch (e) {

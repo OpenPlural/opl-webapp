@@ -13,6 +13,7 @@ export class PopupConfirm {
   readonly no = input<string | null>(null);
   readonly forceOpen = input<boolean>(false);
   readonly loading = input<boolean>(false);
+  readonly showActionButtons = input<boolean>(true);
   readonly confirmations = input(1);
   readonly confirm = output();
   readonly deny = output();

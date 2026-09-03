@@ -1,0 +1,72 @@
+<app-nav-page-container [fab]="true" (fabAction)="openDialog('createPollPrompt')">
+  <main>
+    <div class="mx-2">
+      @for (poll of polls(); track poll.id) {
+        @if (isOpen(poll)) {
+          <app-poll-link [poll]="poll" />
+        }
+      }
+      @if (hasExpiredPolls()) {
+        <div class="divider">{{'polls.labels.expired' | translate}}</div>
+        @for (poll of polls(); track poll.id) {
+          @if (!isOpen(poll)) {
+            <app-poll-link [poll]="poll" />
+          }
+        }
+      }
+    </div>
+  </main>
+  <i class="fa fa-plus"></i>
+</app-nav-page-container>
+<dialog id="createPollPrompt" class="modal" (close)="resetPollCreationDialog()">
+  <div class="modal-box">
+    <h3 class="text-lg font-bold">{{'polls.actions.create' | translate}}</h3>
+    <form id="createPollForm" method="dialog" class="w-full" (submit)="createPoll($event)">
+      <fieldset class="fieldset">
+        <legend class="fieldset-legend">{{'fields.name' | translate}}</legend>
+        <input name="name" type="text" class="input w-full">
+      </fieldset>
+
+      @let createCustomPoll = this.createCustomPoll();
+      <fieldset class="fieldset">
+        <legend class="fieldset-legend">{{'polls.labels.type' | translate}}</legend>
+        <div class="join flex flex-row">
+          <button class="btn join-item flex-1" [class.btn-outline]="createCustomPoll" [class.btn-accent]="!createCustomPoll"
+                  (click)="toggleCreateCustomPoll($event)">
+            {{'polls.labels.yesNo' | translate}}
+          </button>
+          <button class="btn join-item flex-1" [class.btn-outline]="!createCustomPoll" [class.btn-accent]="createCustomPoll"
+                  (click)="toggleCreateCustomPoll($event)">
+            {{'polls.labels.custom' | translate}}
+          </button>
+        </div>
+      </fieldset>
+      @if (createCustomPoll) {
+        <fieldset class="fieldset">
+          <legend class="fieldset-legend">{{'polls.labels.customOptions' | translate}}</legend>
+          <div id="customOptions" class="join join-vertical">
+            <input name="customOption1" type="text" class="input w-full join-item">
+            <input name="customOption2" type="text" class="input w-full join-item">
+            <button class="join-item btn btn-accent btn-outline" [disabled]="optionCount() >= 16" (click)="addCustomOption($event)">
+              {{'polls.actions.addCustomOption' | translate}}
+            </button>
+          </div>
+        </fieldset>
+      } @else {
+        <label class="label mt-2">
+          <input name="allowVeto" type="checkbox" class="toggle">
+          {{'polls.labels.allow.veto' | translate}}
+        </label>
+        <br>
+        <label class="label">
+          <input name="allowAbstain" type="checkbox" class="toggle">
+          {{'polls.labels.allow.abstain' | translate}}
+        </label>
+      }
+      <button type="submit" class="mx-auto mt-5 block btn btn-success">{{'actions.confirm' | translate}}</button>
+    </form>
+  </div>
+  <form method="dialog" class="modal-backdrop">
+    <button></button>
+  </form>
+</dialog>
