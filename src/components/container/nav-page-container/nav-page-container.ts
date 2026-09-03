@@ -46,6 +46,7 @@ export class NavPageContainer {
 
   readonly footer = input<boolean>(false);
   readonly fab = input<boolean>(false);
+  readonly scrollable = input<boolean>(true);
   readonly searchable = input<boolean>(false);
   readonly headerButtons = input<boolean>(false);
   readonly forceNavMenu = input<boolean>(false);

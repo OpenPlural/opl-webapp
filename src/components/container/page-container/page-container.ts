@@ -10,5 +10,6 @@ import { CdkScrollable } from '@angular/cdk/scrolling';
 export class PageContainer {
   readonly footer = input<boolean>(false);
   readonly fab = input<boolean>(false);
+  readonly scrollable = input<boolean>(true);
   readonly fabAction = output();
 }
