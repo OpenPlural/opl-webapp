@@ -23,6 +23,8 @@
                 [column]="entry.column"
                 [row]="entry.row"
                 [height]="entry.height"
+                [actualRow]="entry.actualRow"
+                [actualHeight]="entry.actualHeight"
                 [selected]="selectedEntry === entry.entry.id"
                 (onSelected)="selectEntry(entry.entry.id, $event)"
                 (update)="loadFrontHistory()"/>

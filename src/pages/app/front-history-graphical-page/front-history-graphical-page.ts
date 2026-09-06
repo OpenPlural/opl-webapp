@@ -19,6 +19,8 @@ type RenderedFrontEntry = {
   row: number;
   column: number;
   height: number;
+  actualRow: number;
+  actualHeight: number;
 };
 
 @Component({
@@ -75,6 +77,8 @@ export class FrontHistoryGraphicalPage {
       const startedDaysDiff = Math.floor((historyTime - Date.parse(entry.startedAt)) / 86400000);
       const startedRow = (1440 - startedAt.getHours() * 60 - startedAt.getMinutes()) / (60 / PX_PER_HOUR) + startedDaysDiff * PX_PER_HOUR * 24;
       let height = startedRow - row;
+      const actualRow = row;
+      const actualHeight = height;
       if (height < MIN_PX_HEIGHT) {
         row -= MIN_PX_HEIGHT - height;
         height = MIN_PX_HEIGHT;
@@ -84,7 +88,7 @@ export class FrontHistoryGraphicalPage {
         column++;
       }
 
-      render.push({ entry, member, row, column, height });
+      render.push({ entry, member, row, column, height, actualRow, actualHeight });
     }
     return render.reverse();
   });
