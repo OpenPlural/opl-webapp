@@ -3,8 +3,8 @@
   @let member = this.member()!;
   <div class="absolute w-6 rounded-xl"
        [style.left.px]="column()! * 45 + 12"
-       [style.top.px]="row()! + 8"
-       [style.height.px]="height()!"
+       [style.top.px]="row()! + 16"
+       [style.height.px]="height()! - 8"
        [style.background-color]="toColor(member.color)"
        (click)="selectEntry($event)">
     <app-profile-picture [avatarUrl]="member.avatar" size="w-10 -mt-2 -ml-2"/>
