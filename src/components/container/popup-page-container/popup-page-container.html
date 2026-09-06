@@ -1,6 +1,6 @@
 <app-page-container [footer]="footer()">
   <header class="navbar">
-    <div class="flex-none inline-flex justify-start">
+    <div class="inline-flex justify-start">
       <app-vertical-center>
         <app-icon-button name="actions.close" icon="fa-times" (action)="goBack()" />
       </app-vertical-center>
@@ -10,7 +10,7 @@
     </div>
     <div class="flex-1"></div>
     @let searching = this.searching();
-    <div class="flex-none flex items-center md:left-auto md:right-auto md:relative" [ngClass]="{'left-1/2': searching, 'right-0': searching, 'absolute': searching}">
+    <div class="flex items-center md:left-auto md:right-auto md:relative" [ngClass]="{'left-1/2': searching, 'right-0': searching, 'absolute': searching}">
       <ng-content select=".header-buttons"></ng-content>
       @if (searchable()) {
         @if (searching) {
