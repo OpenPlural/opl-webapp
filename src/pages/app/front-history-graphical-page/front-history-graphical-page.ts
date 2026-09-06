@@ -11,7 +11,7 @@ import { HistoricFrontEntry } from '../../../components/historic-front-entry/his
 import { DateRange, SelectedDateRange } from '../../../components/date-range/date-range';
 
 const TIME_LABELS = ["22:00", "20:00", "18:00", "16:00", "14:00", "12:00", "10:00", "08:00", "06:00", "04:00", "02:00"];
-const PX_PER_HOUR = 20;
+const PX_PER_HOUR = 24;
 type RenderedFrontEntry = {
   entry: FrontEntry;
   member: Member;
