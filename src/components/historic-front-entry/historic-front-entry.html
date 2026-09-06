@@ -1,8 +1,23 @@
 @let frontEntry = this.frontEntry();
 @if (graphical()) {
   @let member = this.member()!;
+  @if (graphicalResized()) {
+    <div class="absolute w-2 h-2 rounded-full bg-white"
+         [style.left.px]="column()! * 55 + 8"
+         [style.top.px]="actualRow()! + 8">
+    </div>
+    <div class="absolute w-1 rounded-xl bg-white"
+         [style.left.px]="column()! * 55 + 10"
+         [style.top.px]="actualRow()! + 8"
+         [style.height.px]="actualHeight()!">
+    </div>
+    <div class="absolute w-2 h-2 rounded-full bg-white"
+         [style.left.px]="column()! * 55 + 8"
+         [style.top.px]="actualRow()! + actualHeight()!">
+    </div>
+  }
   <div class="absolute w-6 rounded-xl"
-       [style.left.px]="column()! * 45 + 12"
+       [style.left.px]="column()! * 55 + 25"
        [style.top.px]="row()! + 16"
        [style.height.px]="height()! - 8"
        [style.background-color]="toColor(member.color)"

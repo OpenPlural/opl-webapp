@@ -32,6 +32,8 @@ export class HistoricFrontEntry {
   readonly column = input<number>();
   readonly row = input<number>();
   readonly height = input<number>();
+  readonly actualRow = input<number>();
+  readonly actualHeight = input<number>();
   readonly selected = input<boolean>();
   readonly onSelected = output<PointerEvent>();
   readonly update = output();
@@ -46,6 +48,12 @@ export class HistoricFrontEntry {
     if (!frontEntry.endedAt) return undefined;
     const endTime = new Date(Date.parse(frontEntry.endedAt));
     return truncateDateToInputValue(endTime);
+  });
+  protected readonly graphicalResized = computed(() => {
+    const height = this.height();
+    const actualHeight = this.actualHeight();
+    if (height === undefined || actualHeight === undefined) return false;
+    return height !== actualHeight;
   });
 
   protected selectEntry(event: PointerEvent) {

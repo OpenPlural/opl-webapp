@@ -11,12 +11,16 @@ import { HistoricFrontEntry } from '../../../components/historic-front-entry/his
 import { DateRange, SelectedDateRange } from '../../../components/date-range/date-range';
 
 const TIME_LABELS = ["22:00", "20:00", "18:00", "16:00", "14:00", "12:00", "10:00", "08:00", "06:00", "04:00", "02:00"];
+const PX_PER_HOUR = 24;
+const MIN_PX_HEIGHT = 50;
 type RenderedFrontEntry = {
   entry: FrontEntry;
   member: Member;
   row: number;
   column: number;
   height: number;
+  actualRow: number;
+  actualHeight: number;
 };
 
 @Component({
@@ -67,24 +71,24 @@ export class FrontHistoryGraphicalPage {
         endedAt = new Date();
       }
       const daysDiff = Math.floor((historyTime - endedAt.getTime()) / 86400000);
-      let row = Math.max((1440 - endedAt.getHours() * 60 - endedAt.getMinutes()) * (1 / 3) + daysDiff * 480, 0);
+      let row = Math.max((1440 - endedAt.getHours() * 60 - endedAt.getMinutes()) / (60 / PX_PER_HOUR) + daysDiff * PX_PER_HOUR * 24, 0);
 
       const startedAt = new Date(Date.parse(entry.startedAt));
       const startedDaysDiff = Math.floor((historyTime - Date.parse(entry.startedAt)) / 86400000);
-      const startedRow =
-        (1440 - startedAt.getHours() * 60 - startedAt.getMinutes()) * (1 / 3) +
-        startedDaysDiff * 480;
+      const startedRow = (1440 - startedAt.getHours() * 60 - startedAt.getMinutes()) / (60 / PX_PER_HOUR) + startedDaysDiff * PX_PER_HOUR * 24;
       let height = startedRow - row;
-      if (height < 60) {
-        row -= 60 - height;
-        height = 60;
+      const actualRow = row;
+      const actualHeight = height;
+      if (height < MIN_PX_HEIGHT) {
+        row -= MIN_PX_HEIGHT - height;
+        height = MIN_PX_HEIGHT;
       }
       let column = 0;
       while (render.some((e) => e.column === column && row + height + 20 >= e.row)) {
         column++;
       }
 
-      render.push({ entry, member, row, column, height });
+      render.push({ entry, member, row, column, height, actualRow, actualHeight });
     }
     return render.reverse();
   });

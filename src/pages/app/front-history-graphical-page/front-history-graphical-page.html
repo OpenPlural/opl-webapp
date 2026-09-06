@@ -7,9 +7,9 @@
         <div class="absolute">
           <div class="flex flex-col pr-2 border-r-base-100 border-r-2 pb-48" style="width:120px">
             @for (day of days(); track day) {
-              <span class="h-10 ml-2 font-bold">{{day}}</span>
+              <span class="h-12 ml-2 font-bold">{{day}}</span>
               @for (hour of hours(); track hour) {
-                <span class="h-10 ml-2 text-xs">{{hour}}</span>
+                <span class="h-12 ml-2 text-xs">{{hour}}</span>
               }
             }
           </div>
@@ -23,6 +23,8 @@
                 [column]="entry.column"
                 [row]="entry.row"
                 [height]="entry.height"
+                [actualRow]="entry.actualRow"
+                [actualHeight]="entry.actualHeight"
                 [selected]="selectedEntry === entry.entry.id"
                 (onSelected)="selectEntry(entry.entry.id, $event)"
                 (update)="loadFrontHistory()"/>
