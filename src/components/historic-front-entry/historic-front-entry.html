@@ -22,7 +22,7 @@
        [style.height.px]="height()! - 8"
        [style.background-color]="toColor(member.color)"
        (click)="selectEntry($event)">
-    <app-profile-picture [avatarUrl]="member.avatar" size="w-10 -mt-2 -ml-2"/>
+    <app-profile-picture [avatarUrl]="member.avatar" size="w-10 -mt-2 -ml-2 {{member.custom ? 'border-2 border-dashed' : ''}}" />
   </div>
 
   @if (selected()) {
