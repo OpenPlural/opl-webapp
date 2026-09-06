@@ -52,7 +52,7 @@ export class HistoricFrontEntry {
   protected readonly graphicalResized = computed(() => {
     const height = this.height();
     const actualHeight = this.actualHeight();
-    if (!height || !actualHeight) return false;
+    if (height === undefined || actualHeight === undefined) return false;
     return height !== actualHeight;
   });
 
