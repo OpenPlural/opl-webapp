@@ -12,6 +12,7 @@ import { DateRange, SelectedDateRange } from '../../../components/date-range/dat
 
 const TIME_LABELS = ["22:00", "20:00", "18:00", "16:00", "14:00", "12:00", "10:00", "08:00", "06:00", "04:00", "02:00"];
 const PX_PER_HOUR = 24;
+const MIN_PX_HEIGHT = 60;
 type RenderedFrontEntry = {
   entry: FrontEntry;
   member: Member;
@@ -74,9 +75,9 @@ export class FrontHistoryGraphicalPage {
       const startedDaysDiff = Math.floor((historyTime - Date.parse(entry.startedAt)) / 86400000);
       const startedRow = (1440 - startedAt.getHours() * 60 - startedAt.getMinutes()) / (60 / PX_PER_HOUR) + startedDaysDiff * PX_PER_HOUR * 24;
       let height = startedRow - row;
-      if (height < 60) {
-        row -= 60 - height;
-        height = 60;
+      if (height < MIN_PX_HEIGHT) {
+        row -= MIN_PX_HEIGHT - height;
+        height = MIN_PX_HEIGHT;
       }
       let column = 0;
       while (render.some((e) => e.column === column && row + height + 20 >= e.row)) {
