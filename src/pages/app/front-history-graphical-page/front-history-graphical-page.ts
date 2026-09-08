@@ -104,7 +104,7 @@ export class FrontHistoryGraphicalPage {
 
     const days: string[] = [];
     for (let date = newestDate; date >= oldestDate; date -= 86400000) {
-      days.push(this.settingsService.formatDate(date, 'Date'));
+      days.push(this.settingsService.formatDate(date, 'Date', false));
     }
     return days;
   });
