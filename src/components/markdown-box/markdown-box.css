@@ -15,3 +15,7 @@ div.markdown ::ng-deep a {
 div.markdown ::ng-deep em {
   @apply italic;
 }
+
+div.markdown ::ng-deep p {
+  @apply inline;
+}
