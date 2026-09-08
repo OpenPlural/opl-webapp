@@ -16,6 +16,10 @@ div.markdown ::ng-deep em {
   @apply italic;
 }
 
+div.markdown ::ng-deep p {
+  @apply inline;
+}
+
 div.markdown ::ng-deep blockquote {
   @apply border-l-4 rounded-l-sm pl-2;
 }
