@@ -123,8 +123,8 @@ export class MemberGallery {
     }
   }
 
-  protected openAlbum(album: PhotoAlbum) {
-    if (this.reorder()) return;
+  protected openAlbum(album: PhotoAlbum, checkReorder: boolean) {
+    if (checkReorder && this.reorder()) return;
 
     album = Object.assign({}, album);
 
@@ -149,7 +149,7 @@ export class MemberGallery {
     const album = makePhotoAlbum(name, this.memberId(), BigInt(this.gallery().length + 1));
     await this.localStorageService.addPhotoAlbum(album);
     this.syncService.fullSync();
-    this.openAlbum(album);
+    this.openAlbum(album, false);
   }
 
   protected async saveAlbum() {
@@ -181,6 +181,7 @@ export class MemberGallery {
       updated.photoUrls = newPhotoUrls;
 
       await this.localStorageService.updatePhotoAlbum(updated);
+      this.openAlbum(updated, false);
       this.syncService.fullSync();
     }
   }
