@@ -16,7 +16,7 @@ export class MarkdownBox {
   protected readonly editing = signal<boolean>(false);
 
   protected readonly htmlText = computed(() => {
-    const markdown = this.markdown().replace(/^---$/gm, '<br><hr>').replace(/\n/g, '<br>');
+    const markdown = this.markdown();
     return parseMarkdown(markdown);
   });
 
