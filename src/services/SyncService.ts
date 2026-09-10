@@ -82,7 +82,7 @@ export class SyncService {
       await this.syncPolls(syncData.updatedPolls, syncData.pollIds, syncData.deletionDelta, doServerUpdates);
       await this.syncPollAnswers(syncData.updatedPollAnswers, syncData.pollAnswerIds, syncData.deletionDelta, doServerUpdates);
       await this.syncPhotoAlbums(syncData.updatedPhotoAlbums, syncData.photoAlbumIds, syncData.deletionDelta, doServerUpdates);
-      await this.syncFrontEntries(syncData.front, doServerUpdates);
+      await this.syncFrontEntries(syncData.front, syncData.endedFront, doServerUpdates);
 
       await this.localStorageService.updateSyncTime(Date.parse(syncData.time), !syncData.deletionDelta);
 
@@ -112,13 +112,18 @@ export class SyncService {
     }
   }
 
-  private async syncFrontEntries(serverFront: FrontEntry[], doServerUpdates: boolean) {
+  private async syncFrontEntries(serverFront: FrontEntry[], endedFront: FrontEntryId[], doServerUpdates: boolean) {
     const localFront = this.localStorageService.front();
     const members = this.localStorageService.members();
     function findConflict(serverEntry: FrontEntry): FrontEntry | null {
       const member = members.find((m) => m.remoteId === serverEntry.member);
       if (!member) return null;
-      const localEntry = localFront.find((l) => l.member === member.id && !l.endedAt && l.remoteId !== serverEntry.id);
+      const localEntry = localFront.find((l) => {
+        if (l.remoteId) {
+          if (l.remoteId === serverEntry.id || endedFront.includes(l.remoteId)) return false;
+        }
+        return l.member === member.id && !l.endedAt;
+      });
       return localEntry || null;
     }
 

@@ -1,7 +1,7 @@
 import { UserInfo } from './User';
 import { Folder, FolderId } from './Folder';
 import { Member, MemberId } from './Member';
-import { FrontEntry } from './Front';
+import { FrontEntry, FrontEntryId } from './Front';
 import { CustomField, CustomFieldDataId, CustomFieldDataValue, CustomFieldId } from './Field';
 import { Poll, PollAnswer, PollAnswerId, PollId } from './Poll';
 import { PhotoAlbum, PhotoAlbumId } from './Gallery';
@@ -26,4 +26,5 @@ export interface SyncData {
   updatedPollAnswers: PollAnswer[];
   updatedPhotoAlbums: PhotoAlbum[];
   front: FrontEntry[];
+  endedFront: FrontEntryId[];
 }
