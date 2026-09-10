@@ -115,41 +115,43 @@ export class SyncService {
   private async syncFrontEntries(serverFront: FrontEntry[], endedFront: FrontEntryId[], doServerUpdates: boolean) {
     const localFront = this.localStorageService.front();
     const members = this.localStorageService.members();
-    function findConflict(serverEntry: FrontEntry): FrontEntry | null {
-      const member = members.find((m) => m.remoteId === serverEntry.member);
-      if (!member) return null;
-      const localEntry = localFront.find((l) => {
-        if (l.remoteId) {
-          if (l.remoteId === serverEntry.id || endedFront.includes(l.remoteId)) return false;
-        }
-        return l.member === member.id && !l.endedAt;
-      });
-      return localEntry || null;
-    }
+    if (doServerUpdates) {
+      function findConflict(serverEntry: FrontEntry): FrontEntry | null {
+        const member = members.find((m) => m.remoteId === serverEntry.member);
+        if (!member) return null;
+        const localEntry = localFront.find((l) => {
+          if (l.remoteId) {
+            if (l.remoteId === serverEntry.id || endedFront.includes(l.remoteId)) return false;
+          }
+          return l.member === member.id && !l.endedAt;
+        });
+        return localEntry || null;
+      }
 
-    const deleted: FrontEntryId[] = [];
-    const fixed: FrontEntry[] = [];
-    for (const serverEntry of serverFront) {
-      const localEntry = findConflict(serverEntry);
-      if (localEntry) {
-        if (Date.parse(serverEntry.startedAt) >= Date.parse(localEntry.startedAt)) {
-          await this.webService.deleteFrontEntry(serverEntry.id);
-          deleted.push(serverEntry.id);
-        } else {
-          const fix = {
-            ...serverEntry,
-            endedAt: localEntry.startedAt,
-          };
-          await this.webService.updateFrontEntry({
-            ...fix,
-            member: localEntry.member,
-          }, false);
-          fixed.push(fix);
+      const deleted: FrontEntryId[] = [];
+      const fixed: FrontEntry[] = [];
+      for (const serverEntry of serverFront) {
+        const localEntry = findConflict(serverEntry);
+        if (localEntry) {
+          if (Date.parse(serverEntry.startedAt) >= Date.parse(localEntry.startedAt)) {
+            await this.webService.deleteFrontEntry(serverEntry.id);
+            deleted.push(serverEntry.id);
+          } else {
+            const fix = {
+              ...serverEntry,
+              endedAt: localEntry.startedAt,
+            };
+            await this.webService.updateFrontEntry({
+              ...fix,
+              member: localEntry.member,
+            }, false);
+            fixed.push(fix);
+          }
         }
       }
+      serverFront = serverFront.filter((entry) => !deleted.includes(entry.id))
+        .map((entry) => fixed.find((f) => f.id === entry.id) || entry);
     }
-    serverFront = serverFront.filter((entry) => !deleted.includes(entry.id))
-      .map((entry) => fixed.find((f) => f.id === entry.id) || entry);
 
     await this.syncGeneric(
       localFront,
