@@ -125,7 +125,7 @@
        cdkDropList cdkDropListAutoScrollStep="20" cdkDropListOrientation="mixed" [cdkDropListDisabled]="!reorder()"
        (cdkDropListDropped)="reorderAlbums($event)">
     @for (album of gallery(); track album.id) {
-      <button cdkDrag class="btn w-full h-full aspect-square" (click)="openAlbum(album)">
+      <button cdkDrag class="btn w-full h-full aspect-square" (click)="openAlbum(album, true)">
         <div class="flex flex-col w-full">
           <div class="grid grid-cols-2 w-full aspect-square">
             @if (album.photoUrls) {
