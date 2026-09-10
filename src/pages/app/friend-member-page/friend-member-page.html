@@ -17,7 +17,8 @@
             @case ('gallery') {
               @let gallery = this.gallery();
               @if (gallery) {
-                <app-member-gallery [memberId]="member.id" [gallery]="gallery" [editable]="false" />
+                <app-member-gallery [memberId]="member.id" [gallery]="gallery" [editable]="false"
+                                    (closeGallery)="selectedTab.set('profile')" />
               } @else {
                 <app-loading />
               }
