@@ -26,7 +26,7 @@
           }
           @case ('gallery') {
             <app-member-gallery [memberId]="member.id" [gallery]="gallery()" [editable]="true"
-                                (closeGallery)="selectedTab.set('profile')"/>
+                                (closeGallery)="selectedTab.set('profile')" />
           }
           @case ('customFields') {
             <app-member-custom-fields-page [member]="member"
