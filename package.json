@@ -1,6 +1,6 @@
 {
   "name": "opl-webapp",
-  "version": "0.5.7",
+  "version": "0.5.8",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
