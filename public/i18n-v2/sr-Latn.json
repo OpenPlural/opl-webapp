@@ -51,6 +51,7 @@
   },
   "labels": {
     "error": "Greška",
+    "fileTooLarge": "Fajl je prevelik (maks. {maxSize} MiB)",
     "createdAt": "Kreirano u {date}",
     "update": {
       "available": "Ažuriranje je dostupno",

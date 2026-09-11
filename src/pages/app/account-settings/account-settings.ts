@@ -19,6 +19,7 @@ import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { ColorInput } from '../../../components/color-input/color-input';
 import {MarkdownBox} from '../../../components/markdown-box/markdown-box';
+import { PopupAvatar } from '../../../components/popup-avatar/popup-avatar';
 
 @Component({
   selector: 'app-account-settings',
@@ -32,6 +33,7 @@ import {MarkdownBox} from '../../../components/markdown-box/markdown-box';
     ToggleSetting,
     ColorInput,
     MarkdownBox,
+    PopupAvatar,
   ],
   templateUrl: './account-settings.html',
 })

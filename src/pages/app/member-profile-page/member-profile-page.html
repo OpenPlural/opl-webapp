@@ -36,7 +36,7 @@
     </fieldset>
   }
 </form>
-<app-popup-input dialogId="memberAvatarPrompt" title="actions.changeAvatar" label="fields.avatarUrl" [initialValue]="avatarUrl || member.avatar || ''" (submitValue)="editAvatar($event)" />
+<app-popup-avatar dialogId="memberAvatarPrompt" title="actions.changeAvatar" label="fields.avatarUrl" [initialValue]="avatarUrl || member.avatar || ''" (submitValue)="editAvatar($event)" />
 
 @if (!member.custom) {
   <div class="divider">{{'members.labels.folders' | translate}}</div>

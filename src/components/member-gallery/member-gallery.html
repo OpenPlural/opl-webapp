@@ -87,7 +87,7 @@
         @let deleting = isDeleting($index);
         <div class="avatar">
           <div class="w-full rounded-xl">
-            <img [src]="photo" [class.grayscale]="deleting" />
+            <img [src]="getCdnUrl(photo)" [class.grayscale]="deleting" />
           </div>
         </div>
         @if (editing) {
@@ -129,10 +129,10 @@
         <div class="flex flex-col w-full">
           <div class="grid grid-cols-2 w-full aspect-square">
             @if (album.photoUrls) {
-              <img [src]="album.photoUrls[0]" class="rounded-tl-xl" />
-              <img [src]="album.photoUrls[1]" class="rounded-tr-xl" />
-              <img [src]="album.photoUrls[2]" class="rounded-bl-xl" />
-              <img [src]="album.photoUrls[3]" class="rounded-br-xl" />
+              <img [src]="getCdnUrl(album.photoUrls[0])" class="rounded-tl-xl" />
+              <img [src]="getCdnUrl(album.photoUrls[1])" class="rounded-tr-xl" />
+              <img [src]="getCdnUrl(album.photoUrls[2])" class="rounded-bl-xl" />
+              <img [src]="getCdnUrl(album.photoUrls[3])" class="rounded-br-xl" />
             }
           </div>
           <div class="font-medium">
@@ -150,4 +150,4 @@
   </app-popup-confirm>
 }
 <app-popup-input dialogId="albumNamePrompt" title="members.actions.gallery.album.create" label="fields.name" (submitValue)="createAlbum($event)" />
-<app-popup-input dialogId="albumPhotoPrompt" title="members.actions.gallery.photo.add" label="fields.photoUrl" (submitValue)="addPhoto($event)" />
+<app-popup-avatar dialogId="albumPhotoPrompt" title="members.actions.gallery.photo.add" label="fields.photoUrl" (submitValue)="addPhoto($event)" />

@@ -1,5 +1,8 @@
 import { Component, computed, inject, input } from '@angular/core';
 import { SettingsService } from '../../services/SettingsService';
+import { BASE_URL } from '../../services/WebService';
+import { truncateCurrentDate, truncateDate } from '../../util/DateTruncate';
+import { getCdnUrl } from '../../services/model/Cdn';
 
 @Component({
   selector: 'app-profile-picture',
@@ -16,4 +19,5 @@ export class ProfilePicture {
   readonly roundPfp = input<boolean>(true);
 
   protected readonly loadAvatar = computed(() => this.settingsService.settings().loadAvatars);
+  protected readonly realAvatarUrl = computed(() => getCdnUrl(this.avatarUrl()));
 }
