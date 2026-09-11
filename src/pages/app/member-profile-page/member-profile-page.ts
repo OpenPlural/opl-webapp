@@ -3,7 +3,6 @@ import { ProfilePicture } from '../../../components/profile-picture/profile-pict
 import { TranslatePipe } from '@ngx-translate/core';
 import { toColor } from '../../../util/ColorConvert';
 import { Member } from '../../../services/model/Member';
-import { PopupInput } from '../../../components/popup-input/popup-input';
 import { nullableField } from '../../../util/NullString';
 import { openDialog } from '../../../util/CommonFunctions';
 import { truncateCurrentDate } from '../../../util/DateTruncate';
@@ -12,10 +11,11 @@ import { Folder, FolderId } from '../../../services/model/Folder';
 import { FolderTree } from '../../../components/folder-tree/folder-tree';
 import {MarkdownBox} from '../../../components/markdown-box/markdown-box';
 import {SettingsService} from '../../../services/SettingsService';
+import { PopupAvatar } from '../../../components/popup-avatar/popup-avatar';
 
 @Component({
   selector: 'app-member-profile-page',
-  imports: [ProfilePicture, TranslatePipe, PopupInput, ColorInput, FolderTree, MarkdownBox],
+  imports: [ProfilePicture, TranslatePipe, ColorInput, FolderTree, MarkdownBox, PopupAvatar],
   templateUrl: './member-profile-page.html',
 })
 export class MemberProfilePage implements OnInit {
@@ -30,8 +30,12 @@ export class MemberProfilePage implements OnInit {
   readonly updateFolders = output<FolderId[]>();
   readonly openGallery = output();
 
-  protected readonly rootFolders = computed(() => this.editSelectableFolders().filter((f) => !f.parentId));
-  protected readonly customSortEditor = computed(() => this.settingsService.settings().customSortEditor);
+  protected readonly rootFolders = computed(() =>
+    this.editSelectableFolders().filter((f) => !f.parentId),
+  );
+  protected readonly customSortEditor = computed(
+    () => this.settingsService.settings().customSortEditor,
+  );
   protected readonly loadAvatars = computed(() => this.settingsService.settings().loadAvatars);
 
   protected readonly avatarUrl = signal<string | null>(null);

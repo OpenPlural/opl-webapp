@@ -1,4 +1,4 @@
-@let url = avatarUrl();
+@let url = realAvatarUrl();
 @if (url && loadAvatar()) {
   <div class="avatar">
     <div [class]="size()" [class.rounded-full]="roundPfp()" [class.rounded-xl]="!roundPfp()">

@@ -20,6 +20,8 @@ import { PrivacyBucketId, SimplePrivacyBucket } from '../../services/model/Priva
 import { compareCustomSort } from '../../util/CustomSort';
 import { WebService } from '../../services/WebService';
 import { PrivacyBucketList } from '../privacy-bucket-list/privacy-bucket-list';
+import { getCdnUrl } from '../../services/model/Cdn';
+import { PopupAvatar } from '../popup-avatar/popup-avatar';
 
 @Component({
   selector: 'app-member-gallery',
@@ -34,6 +36,7 @@ import { PrivacyBucketList } from '../privacy-bucket-list/privacy-bucket-list';
     CdkDropList,
     CdkDrag,
     PrivacyBucketList,
+    PopupAvatar,
   ],
   templateUrl: './member-gallery.html',
 })
@@ -240,4 +243,5 @@ export class MemberGallery {
 
   protected readonly toColor = toColor;
   protected readonly openDialog = openDialog;
+  protected readonly getCdnUrl = getCdnUrl;
 }

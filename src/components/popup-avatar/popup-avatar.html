@@ -1,0 +1,22 @@
+<dialog [id]="dialogId()" class="modal">
+  <div class="modal-box">
+    <h3 class="text-lg font-bold">{{title() | translate}}</h3>
+    <form method="dialog" class="w-full" (submit)="submitForm($event)">
+      <fieldset class="fieldset">
+        <legend class="fieldset-legend">{{label() | translate}}</legend>
+        <input name="file" type="file" accept="image/*" class="file-input w-full" (change)="onChangeFile($event)">
+        @if (fileTooLarge()) {
+          <span class="text-error">{{'labels.fileTooLarge' | translate:{maxSize:CDN_MAX_FILE_SIZE_MB} }}</span>
+        }
+      </fieldset>
+      <fieldset class="fieldset">
+        <legend class="fieldset-legend">{{label() | translate}}</legend>
+        <input name="value" type="url" class="input w-full" [value]="realInitialValue()">
+      </fieldset>
+      <button type="submit" [disabled]="fileTooLarge()" class="mx-auto mt-5 block btn btn-success">{{'actions.confirm' | translate}}</button>
+    </form>
+  </div>
+  <form method="dialog" class="modal-backdrop">
+    <button></button>
+  </form>
+</dialog>

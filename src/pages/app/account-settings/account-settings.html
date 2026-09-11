@@ -76,7 +76,7 @@
       </button>
     </div>
   </app-edit-page-container>
-  <app-popup-input dialogId="accountAvatarPrompt" title="actions.changeAvatar" label="fields.avatarUrl" [initialValue]="avatarUrl || account.user.avatar || ''" (submitValue)="editAvatar($event)" />
+  <app-popup-avatar dialogId="accountAvatarPrompt" title="actions.changeAvatar" label="fields.avatarUrl" [initialValue]="avatarUrl || account.user.avatar || ''" (submitValue)="editAvatar($event)" />
   <app-popup-confirm dialogId="accountDeletePrompt" title="account.actions.delete" [confirmations]="10" (confirm)="openDialog('accountDeletePasswordPrompt')">
     {{'account.prompts.delete' | translate:{ accountName: account.user.name } }}
   </app-popup-confirm>

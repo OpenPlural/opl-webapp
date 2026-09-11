@@ -51,6 +51,7 @@
   },
   "labels": {
     "error": "Error",
+    "fileTooLarge": "File is too large (max. {maxSize} MiB)",
     "createdAt": "Created at {date}",
     "update": {
       "available": "Update available",
