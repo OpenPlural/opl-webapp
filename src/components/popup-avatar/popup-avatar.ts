@@ -43,7 +43,7 @@ export class PopupAvatar {
     const file = formData.get('file');
 
     let value;
-    if (file instanceof File) {
+    if (file instanceof File && file.size !== 0) {
       if (this.fileTooLarge()) {
         return;
       }
