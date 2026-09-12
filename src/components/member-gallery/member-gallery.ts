@@ -1,5 +1,5 @@
 import { Component, computed, inject, input, output, signal } from '@angular/core';
-import { makePhotoAlbum, PhotoAlbum } from '../../services/model/Gallery';
+import { makePhotoAlbum, PhotoAlbum, PhotoAlbumId } from '../../services/model/Gallery';
 import { IconButton } from '../icon-button/icon-button';
 import { VerticalCenter } from '../vertical-center/vertical-center';
 import { toColor } from '../../util/ColorConvert';
@@ -52,7 +52,7 @@ export class MemberGallery {
   readonly editable = input.required<boolean>();
   readonly closeGallery = output();
 
-  protected readonly album = signal<PhotoAlbum | null>(null);
+  protected readonly album = signal<PhotoAlbumId | null>(null);
   protected readonly description = signal<string>('');
   protected readonly photoUrls = signal<string[]>([]);
   protected readonly deleting = signal<number[]>([]);
@@ -63,9 +63,17 @@ export class MemberGallery {
   protected readonly privacy = signal<SimplePrivacyBucket[] | null>(null);
   protected readonly loadingPrivacy = signal<boolean>(false);
 
+  protected readonly resolvedAlbum = computed(() => {
+    const albumId = this.album();
+    if (!albumId) return null;
+
+    const gallery = this.gallery();
+    return gallery.find((a) => a.id === albumId) || null;
+  });
+
   protected async loadPrivacy() {
-    const album = this.album();
-    if (!album || !album.remoteId) return;
+    const album = this.resolvedAlbum();
+    if (!album) return;
 
     this.loadingPrivacy.set(true);
     const privacy = await this.webService.getPhotoAlbumPrivacy(album);
@@ -73,7 +81,7 @@ export class MemberGallery {
   }
 
   protected async updatePrivacy(ids: PrivacyBucketId[]) {
-    const album = this.album();
+    const album = this.resolvedAlbum();
     if (!album || !album.remoteId) return;
 
     const privacyIds = this.privacyIds();
@@ -130,11 +138,9 @@ export class MemberGallery {
   protected openAlbum(album: PhotoAlbum, checkReorder: boolean) {
     if (checkReorder && this.reorder()) return;
 
-    album = Object.assign({}, album);
-
     this.privacy.set(null);
     this.loadingPrivacy.set(false);
-    this.album.set(album);
+    this.album.set(album.id);
     this.description.set(album.description || '');
     this.photoUrls.set(album.photoUrls ? [...album.photoUrls] : []);
     this.deleting.set([]);
@@ -152,14 +158,14 @@ export class MemberGallery {
     }
     const album = makePhotoAlbum(name, this.memberId(), BigInt(this.gallery().length + 1));
     await this.localStorageService.addPhotoAlbum(album);
-    this.syncService.fullSync();
     this.openAlbum(album, false);
+    this.syncService.fullSync();
   }
 
   protected async saveAlbum() {
     this.editing.set(false);
 
-    const album = this.album();
+    const album = this.resolvedAlbum();
     if (!album) return;
 
     const form = document.getElementById('photoAlbumForm') as HTMLFormElement;
@@ -191,7 +197,7 @@ export class MemberGallery {
   }
 
   protected async deleteAlbum() {
-    let album = this.album();
+    let album = this.resolvedAlbum();
     if (!album) return;
 
     await this.localStorageService.removePhotoAlbum(album.id, album.remoteId);
