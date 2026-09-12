@@ -87,7 +87,8 @@
         @let deleting = isDeleting($index);
         <div class="avatar">
           <div class="w-full rounded-xl">
-            <img [src]="getCdnUrl(photo)" [class.grayscale]="deleting" />
+            @let url = getCdnUrl(photo);
+            <img class="cursor-pointer" [src]="url" [class.grayscale]="deleting" (click)="openImagePopup(url)" />
           </div>
         </div>
         @if (editing) {
@@ -151,3 +152,12 @@
 }
 <app-popup-input dialogId="albumNamePrompt" title="members.actions.gallery.album.create" label="fields.name" (submitValue)="createAlbum($event)" />
 <app-popup-avatar dialogId="albumPhotoPrompt" title="members.actions.gallery.photo.add" label="fields.photoUrl" (submitValue)="addPhoto($event)" />
+
+<dialog id="fullPhotoPopup" class="modal">
+  <div class="modal-box">
+    <img [src]="viewedPhoto()" />
+  </div>
+  <form method="dialog" class="modal-backdrop">
+    <button></button>
+  </form>
+</dialog>

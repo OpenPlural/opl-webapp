@@ -58,6 +58,7 @@ export class MemberGallery {
   protected readonly deleting = signal<number[]>([]);
   protected readonly editing = signal<boolean>(false);
   protected readonly reorder = signal<boolean>(false);
+  protected readonly viewedPhoto = signal<string | null>(null);
 
   protected readonly privacyIds = computed(() => this.privacy()?.map((bucket) => bucket.id) || []);
   protected readonly privacy = signal<SimplePrivacyBucket[] | null>(null);
@@ -246,6 +247,13 @@ export class MemberGallery {
 
   protected isDeleting(index: number): boolean {
     return this.deleting().includes(index);
+  }
+
+  protected openImagePopup(url: string | null) {
+    if (!url) return;
+
+    this.viewedPhoto.set(url);
+    openDialog('fullPhotoPopup');
   }
 
   protected readonly toColor = toColor;
