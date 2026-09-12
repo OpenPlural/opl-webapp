@@ -155,7 +155,11 @@
 
 <dialog id="fullPhotoPopup" class="modal">
   <div class="modal-box">
-    <img [src]="viewedPhoto()" />
+    <form method="dialog" class="w-full">
+      <button>
+        <img [src]="viewedPhoto()" />
+      </button>
+    </form>
   </div>
   <form method="dialog" class="modal-backdrop">
     <button></button>
