@@ -39,6 +39,7 @@ import { PopupAvatar } from '../popup-avatar/popup-avatar';
     PopupAvatar,
   ],
   templateUrl: './member-gallery.html',
+  styleUrl: './member-gallery.css',
 })
 export class MemberGallery {
   private readonly errorService = inject(ErrorService);
