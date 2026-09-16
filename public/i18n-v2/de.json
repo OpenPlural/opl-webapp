@@ -56,6 +56,10 @@
     "update": {
       "available": "Update verfügbar",
       "prompt": "Bitte aktualisiere die App für die neusten Features und Bugfixes."
+    },
+    "id": {
+      "local": "Lokale ID: {id}",
+      "remote": "Remote ID: {id}"
     }
   },
   "fields": {

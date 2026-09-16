@@ -13,10 +13,11 @@ import { Location } from '@angular/common';
 import { toColor } from '../../../util/ColorConvert';
 import { PrivacyBucketList } from '../../../components/privacy-bucket-list/privacy-bucket-list';
 import {compareCustomSort} from '../../../util/CustomSort';
+import { Ids } from '../../../components/ids/ids';
 
 @Component({
   selector: 'app-friend-settings-page',
-  imports: [Loading, TranslatePipe, PopupConfirm, EditPageContainer, PrivacyBucketList],
+  imports: [Loading, TranslatePipe, PopupConfirm, EditPageContainer, PrivacyBucketList, Ids],
   templateUrl: './friend-settings-page.html',
 })
 export class FriendSettingsPage {

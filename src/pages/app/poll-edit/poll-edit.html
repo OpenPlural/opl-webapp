@@ -1,7 +1,7 @@
 @let poll = this.poll();
 @if (poll) {
   <app-edit-page-container [title]="poll.name" (save)="save()" (delete)="openDialog('pollDeletePrompt')">
-    <div class="p-5">
+    <div class="p-5" [class.pb-0]="showIDs()">
       <form id="pollForm">
         <fieldset class="fieldset">
           <legend class="fieldset-legend">{{'fields.name' | translate}}</legend>
@@ -28,6 +28,7 @@
         </fieldset>
       </form>
     </div>
+    <app-ids [object]="poll" extraMargin="mb-5" />
   </app-edit-page-container>
   <app-popup-confirm dialogId="pollDeletePrompt" title="polls.actions.delete" (confirm)="delete()">
     {{'polls.prompts.delete' | translate:{ pollName: poll.name } }}

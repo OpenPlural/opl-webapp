@@ -22,6 +22,7 @@ import {MarkdownBox} from "../../../components/markdown-box/markdown-box";
 import { Folder, FolderId } from '../../../services/model/Folder';
 import { compareCustomSort, sortNestedFolders } from '../../../util/CustomSort';
 import { FolderTree } from '../../../components/folder-tree/folder-tree';
+import { Ids } from '../../../components/ids/ids';
 
 @Component({
   selector: 'app-folder-page',
@@ -34,6 +35,7 @@ import { FolderTree } from '../../../components/folder-tree/folder-tree';
     ColorInput,
     MarkdownBox,
     FolderTree,
+    Ids,
   ],
   templateUrl: './folder-page.html',
 })

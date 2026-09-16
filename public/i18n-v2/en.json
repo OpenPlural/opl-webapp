@@ -56,6 +56,10 @@
     "update": {
       "available": "Update available",
       "prompt": "Please update the app for the latest features and bugfixes."
+    },
+    "id": {
+      "local": "Local ID: {id}",
+      "remote": "Remote ID: {id}"
     }
   },
   "fields": {
