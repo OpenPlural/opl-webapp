@@ -4,6 +4,7 @@
   "short_name": "Open Plural",
   "display": "standalone",
   "start_url": "/",
+  "background_color": "#1a1a1a",
   "icons": [
     {
       "src": "icons/icon192.png",
