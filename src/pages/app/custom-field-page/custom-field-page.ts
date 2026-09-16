@@ -16,10 +16,11 @@ import { PrivacyBucketId, SimplePrivacyBucket } from '../../../services/model/Pr
 import { openDialog } from '../../../util/CommonFunctions';
 import { truncateCurrentDate } from '../../../util/DateTruncate';
 import {compareCustomSort} from '../../../util/CustomSort';
+import { Ids } from '../../../components/ids/ids';
 
 @Component({
   selector: 'app-custom-field-page',
-  imports: [EditPageContainer, Misrouted, PopupConfirm, PrivacyBucketList, TranslatePipe],
+  imports: [EditPageContainer, Misrouted, PopupConfirm, PrivacyBucketList, TranslatePipe, Ids],
   templateUrl: './custom-field-page.html',
 })
 export class CustomFieldPage {

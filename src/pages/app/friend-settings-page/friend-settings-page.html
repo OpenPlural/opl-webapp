@@ -38,6 +38,10 @@
         {{'friends.labels.notifyReplacing' | translate}}
       </span>
     </div>
+    @let id = this.id();
+    @if (id) {
+      <app-ids [object]="{id}" />
+    }
     <div class="divider"></div>
     <div class="md:px-32 p-5 pt-0">
       @let privacy = this.privacy();

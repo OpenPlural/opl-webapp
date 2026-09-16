@@ -13,16 +13,12 @@ import { truncateCurrentDate, truncateDate, truncateDateToInputValue } from '../
 import { openDialog } from '../../../util/CommonFunctions';
 import { MarkdownBox } from '../../../components/markdown-box/markdown-box';
 import { nullableField } from '../../../util/NullString';
+import { SettingsService } from '../../../services/SettingsService';
+import { Ids } from '../../../components/ids/ids';
 
 @Component({
   selector: 'app-poll-edit',
-  imports: [
-    EditPageContainer,
-    Misrouted,
-    PopupConfirm,
-    TranslatePipe,
-    MarkdownBox,
-  ],
+  imports: [EditPageContainer, Misrouted, PopupConfirm, TranslatePipe, MarkdownBox, Ids],
   templateUrl: './poll-edit.html',
 })
 export class PollEdit implements OnInit {
@@ -30,6 +26,7 @@ export class PollEdit implements OnInit {
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   private readonly localStorageService = inject(LocalStorageService);
+  private readonly settingsService = inject(SettingsService);
   private readonly syncService = inject(SyncService);
 
   readonly id = toSignal(
@@ -51,6 +48,7 @@ export class PollEdit implements OnInit {
     const openUntil = new Date(Date.parse(poll.openUntil));
     return truncateDateToInputValue(openUntil);
   });
+  protected readonly showIDs = computed(() => this.settingsService.settings().showIds);
 
   protected readonly description = signal<string>('');
 

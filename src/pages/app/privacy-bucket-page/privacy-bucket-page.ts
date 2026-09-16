@@ -19,6 +19,7 @@ import {MarkdownBox} from '../../../components/markdown-box/markdown-box';
 import { MemberSelector } from '../../../components/selector/member-selector/member-selector';
 import { MemberId } from '../../../services/model/Member';
 import { LocalStorageService } from '../../../services/LocalStorageService';
+import { Ids } from '../../../components/ids/ids';
 
 @Component({
   selector: 'app-privacy-bucket-page',
@@ -30,6 +31,7 @@ import { LocalStorageService } from '../../../services/LocalStorageService';
     UserListItem,
     MarkdownBox,
     MemberSelector,
+    Ids,
   ],
   templateUrl: './privacy-bucket-page.html',
 })

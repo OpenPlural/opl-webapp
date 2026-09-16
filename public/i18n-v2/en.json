@@ -56,6 +56,10 @@
     "update": {
       "available": "Update available",
       "prompt": "Please update the app for the latest features and bugfixes."
+    },
+    "id": {
+      "local": "Local ID: {id}",
+      "remote": "Remote ID: {id}"
     }
   },
   "fields": {
@@ -364,7 +368,8 @@
       "general": "General Settings",
       "member": "Member Settings",
       "group": "Group Settings",
-      "notification": "Notification Settings"
+      "notification": "Notification Settings",
+      "advanced": "Advanced Settings"
     },
     "labels": {
       "defaultPage": "Default Page",
@@ -401,6 +406,10 @@
       "currentFrontNotify": {
         "name": "Show a permanent \"Current fronters\" notification",
         "description": "When enabled, you will see a permanent notification with your current fronters"
+      },
+      "showIds": {
+        "name": "Show IDs",
+        "description": "When enabled, you will see the IDs of folders, members, polls, etc."
       }
     }
   },

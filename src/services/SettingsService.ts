@@ -158,6 +158,7 @@ export interface Settings {
   customSortEditor: boolean;
   hideRootMembers: boolean;
   currentFrontNotify: boolean;
+  showIds: boolean;
 }
 
 function makeDefaultSettings(): Settings {
@@ -173,5 +174,6 @@ function makeDefaultSettings(): Settings {
     customSortEditor: false,
     hideRootMembers: false,
     currentFrontNotify: false,
+    showIds: false,
   }
 }

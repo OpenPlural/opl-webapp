@@ -87,6 +87,9 @@
           </div>
         </div>
       }
+
+      <div class="divider">{{'options.titles.advanced' | translate}}</div>
+      <app-toggle-setting name="options.labels.showIds" [toggled]="settings.showIds" (toggle)="toggleSetting('showIds', $event)" />
     </div>
   </main>
 </app-nav-page-container>

@@ -55,6 +55,7 @@
         </div>
       </div>
     }
+    <app-ids [object]="folder" />
     @if (folder.remoteId) {
       <div class="divider"></div>
       <div class="px-5 py-0">
@@ -75,7 +76,7 @@
       </div>
     }
     <div class="divider"></div>
-    <div class="px-5 py-0 text-center">
+    <div class="px-5 mb-5 text-center">
       @if (moving()) {
         <div>
           <p class="font-bold">{{'folders.actions.move' | translate}}</p>

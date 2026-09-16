@@ -7,10 +7,11 @@ import { PrivacyBucketList } from '../../../components/privacy-bucket-list/priva
 import { TranslatePipe } from '@ngx-translate/core';
 import { SettingsService } from '../../../services/SettingsService';
 import {compareCustomSort} from '../../../util/CustomSort';
+import { Ids } from '../../../components/ids/ids';
 
 @Component({
   selector: 'app-member-options-page',
-  imports: [ToggleSetting, PrivacyBucketList, TranslatePipe],
+  imports: [ToggleSetting, PrivacyBucketList, TranslatePipe, Ids],
   templateUrl: './member-options-page.html',
 })
 export class MemberOptionsPage {

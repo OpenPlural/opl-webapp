@@ -1,0 +1,16 @@
+@if (show()) {
+  <div class="divider"></div>
+  <div class="text-center {{extraMargin()}}">
+    @let object = this.object();
+    @if (remoteOnly()) {
+      {{'labels.id.remote' | translate:{id: object.id} }}
+    } @else {
+      {{'labels.id.local' | translate:{id: object.id} }}
+      @let remoteId = this.remoteId();
+      @if (remoteId) {
+        <br>
+        {{'labels.id.remote' | translate:{id: remoteId} }}
+      }
+    }
+  </div>
+}
