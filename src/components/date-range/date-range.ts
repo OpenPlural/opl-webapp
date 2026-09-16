@@ -15,7 +15,7 @@ export class DateRange implements OnInit {
 
   ngOnInit() {
     const end = new Date(Date.now() + 86400000);
-    const start = new Date(Date.now() - this.initialPeriod());
+    const start = new Date(end.getTime() - this.initialPeriod());
     this.start.set(start.toISOString().split('T')[0]);
     this.end.set(end.toISOString().split('T')[0]);
     this.emitDateRange();
