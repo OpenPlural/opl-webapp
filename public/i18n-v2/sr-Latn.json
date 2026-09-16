@@ -359,7 +359,8 @@
       "general": "Opšta podešavanja",
       "member": "Podešavanja članova",
       "group": "Podešavanja grupe",
-      "notification": "Podešavanja obavesti"
+      "notification": "Podešavanja obavesti",
+      "advanced": "Napredna podešavanja"
     },
     "labels": {
       "defaultPage": "Zadana stranica",
@@ -396,6 +397,10 @@
       "currentFrontNotify": {
         "name": "Prikaži stalnu obavest o aktuelnim frontom",
         "description": "Kada je aktivirano, videćete stalnu obavest sa Vašim aktuelnim fronterima"
+      },
+      "showIds": {
+        "name": "Prikaži ID-ove",
+        "description": "Kada je aktivirano, videćete ID-ove fascikla, članova, anketa, itd."
       }
     }
   },
