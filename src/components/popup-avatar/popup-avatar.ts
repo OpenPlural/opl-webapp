@@ -17,6 +17,7 @@ export class PopupAvatar {
   readonly title = input.required<string>();
   readonly label = input.required<string>();
   readonly initialValue = input<string>('');
+  readonly uploading = output();
   readonly submitValue = output<string>();
 
   protected readonly fileTooLarge = signal<boolean>(false);
@@ -47,6 +48,7 @@ export class PopupAvatar {
       if (this.fileTooLarge()) {
         return;
       }
+      this.uploading.emit();
       const bytes = await file.bytes();
       value = await this.webService.uploadToCdn(bytes, file.type.replace("image/", ""));
     } else {

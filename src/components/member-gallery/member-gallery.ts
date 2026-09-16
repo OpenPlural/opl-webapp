@@ -59,6 +59,7 @@ export class MemberGallery {
   protected readonly editing = signal<boolean>(false);
   protected readonly reorder = signal<boolean>(false);
   protected readonly viewedPhoto = signal<string | null>(null);
+  protected readonly uploading = signal<number>(0);
 
   protected readonly privacyIds = computed(() => this.privacy()?.map((bucket) => bucket.id) || []);
   protected readonly privacy = signal<SimplePrivacyBucket[] | null>(null);
@@ -145,6 +146,7 @@ export class MemberGallery {
     this.description.set(album.description || '');
     this.photoUrls.set(album.photoUrls ? [...album.photoUrls] : []);
     this.deleting.set([]);
+    this.uploading.set(1);
   }
 
   protected goBack() {
@@ -206,7 +208,12 @@ export class MemberGallery {
     this.goBack();
   }
 
+  protected onUploading() {
+    this.uploading.update(i => i + 1);
+  }
+
   protected addPhoto(url: string) {
+    this.uploading.update(i => Math.max(i - 1, 0));
     this.photoUrls.update((urls) => [...urls, url]);
   }
 

@@ -113,6 +113,11 @@
         }
       </div>
     }
+    @for (_ of [].constructor(uploading()); track $index) {
+      <div class="avatar">
+        <span class="m-auto loading loading-spinner loading-xl"></span>
+      </div>
+    }
     @if (editing) {
       <div class="avatar">
         <button class="rounded-xl w-full h-full aspect-square btn btn-soft flex flex-col justify-center text-center" (click)="openDialog('albumPhotoPrompt')">
@@ -151,7 +156,7 @@
   </app-popup-confirm>
 }
 <app-popup-input dialogId="albumNamePrompt" title="members.actions.gallery.album.create" label="fields.name" (submitValue)="createAlbum($event)" />
-<app-popup-avatar dialogId="albumPhotoPrompt" title="members.actions.gallery.photo.add" label="fields.photoUrl" (submitValue)="addPhoto($event)" />
+<app-popup-avatar dialogId="albumPhotoPrompt" title="members.actions.gallery.photo.add" label="fields.photoUrl" (uploading)="onUploading()" (submitValue)="addPhoto($event)" />
 
 <dialog id="fullPhotoPopup" class="modal">
   <div class="modal-box">
