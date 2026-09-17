@@ -137,7 +137,7 @@
       "root": "Stamm",
       "totalMembers": {
         "header": "Anzahl der Mitglieder",
-        "value": "{count, plural, one {# member} other {# members}} and {archivedCount, plural, one {# archived member} other {# archived members}}"
+        "value": "{count, plural, one {# Mitglied} other {# Mitglieder}} and {archivedCount, plural, one {# archiviertes Mitglied} other {# archivierte Mitglieder}}"
       }
     }
   },
