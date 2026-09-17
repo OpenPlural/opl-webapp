@@ -186,6 +186,7 @@ export class ImportService {
       }
 
       newMembers.push({
+        id: member._id,
         name: member.name,
         pronouns: nullableField(member.pronouns),
         avatar: nullableField(member.avatarUrl),
@@ -206,6 +207,7 @@ export class ImportService {
     const newMembers: any[] = [];
     for (const frontStatus of frontStatuses) {
       newMembers.push({
+        id: frontStatus._id,
         name: frontStatus.name,
         pronouns: null,
         avatar: nullableField(frontStatus.avatarUrl),
