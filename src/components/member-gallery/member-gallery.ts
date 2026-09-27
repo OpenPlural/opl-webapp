@@ -146,7 +146,7 @@ export class MemberGallery {
     this.description.set(album.description || '');
     this.photoUrls.set(album.photoUrls ? [...album.photoUrls] : []);
     this.deleting.set([]);
-    this.uploading.set(1);
+    this.uploading.set(0);
   }
 
   protected goBack() {
