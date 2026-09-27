@@ -13,7 +13,7 @@ import { UserInfo } from '../../../services/model/User';
 import { ToggleSetting } from '../../../components/toggle-setting/toggle-setting';
 import { SettingsService } from '../../../services/SettingsService';
 import { deleteLocalData } from '../../../util/LocalDataDeletion';
-import { openDialog } from '../../../util/CommonFunctions';
+import { copyToClipboard, openDialog } from '../../../util/CommonFunctions';
 import { LocalStorageService } from '../../../services/LocalStorageService';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
@@ -21,6 +21,7 @@ import { ColorInput } from '../../../components/color-input/color-input';
 import {MarkdownBox} from '../../../components/markdown-box/markdown-box';
 import { PopupAvatar } from '../../../components/popup-avatar/popup-avatar';
 import { Ids } from '../../../components/ids/ids';
+import { IconButton } from '../../../components/icon-button/icon-button';
 
 @Component({
   selector: 'app-account-settings',
@@ -36,6 +37,7 @@ import { Ids } from '../../../components/ids/ids';
     MarkdownBox,
     PopupAvatar,
     Ids,
+    IconButton,
   ],
   templateUrl: './account-settings.html',
 })
@@ -72,6 +74,7 @@ export class AccountSettings implements OnInit {
   protected readonly showTotalMemberCount = signal<boolean>(false);
   protected readonly showFriendCode = signal<boolean>(false);
   protected readonly accountError = signal<string | null>(null);
+  protected readonly friendCodeCopied = signal<boolean>(false);
 
   ngOnInit() {
     this.description.set(this.account()?.user.description || '');
@@ -213,4 +216,5 @@ export class AccountSettings implements OnInit {
 
   protected readonly toColor = toColor;
   protected readonly openDialog = openDialog;
+  protected readonly copyToClipboard = copyToClipboard;
 }
