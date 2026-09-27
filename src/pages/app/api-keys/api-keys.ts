@@ -3,7 +3,7 @@ import {WebService} from '../../../services/WebService';
 import {ApiKey, ApiKeyId} from '../../../services/model/ApiKey';
 import {TranslatePipe} from '@ngx-translate/core';
 import {NavPageContainer} from '../../../components/container/nav-page-container/nav-page-container';
-import {openDialog} from '../../../util/CommonFunctions';
+import { copyToClipboard, openDialog } from '../../../util/CommonFunctions';
 import {Loading} from '../../../components/loading/loading';
 import {SettingsService} from '../../../services/SettingsService';
 import {IconButton} from '../../../components/icon-button/icon-button';
@@ -70,22 +70,10 @@ export class ApiKeys implements OnInit{
     this.apiKeyToken.set(undefined);
   }
 
-  protected async copyCreatedApiKey() {
-    const input = document.getElementById('createdApiKeyToken') as HTMLInputElement;
-    input.select();
-    input.setSelectionRange(0, 99999);
-    if (navigator.clipboard) {
-      await navigator.clipboard.writeText(input.value);
-      this.apiKeyCopied.set(true);
-      setTimeout(() => {
-        this.apiKeyCopied.set(false);
-      }, 500);
-    }
-  }
-
   protected formatDate(date: string): string {
     return this.settingsService.formatDate(Date.parse(date), 'DateTime');
   }
 
   protected readonly openDialog = openDialog;
+  protected readonly copyToClipboard = copyToClipboard;
 }
