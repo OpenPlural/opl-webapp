@@ -32,11 +32,17 @@
       <span class="font-bold">{{'friends.labels.code' | translate}}</span>
       <div class="mt-2 mb-5">
         @if (showFriendCode()) {
-          <span class="block mb-1">{{account.friendCode}}</span>
-          <button class="btn btn-soft" (click)="changeFriendCode()">
-            <i class="fa fa-refresh"></i>
-            {{'friends.actions.changeCode' | translate}}
-          </button>
+          <div class="join mt-2">
+            <div class="flex-1">
+              <label class="w-full input join-item">
+                <input id="friendCode" readonly [value]="account.friendCode">
+              </label>
+            </div>
+            <app-icon-button name="actions.copy" [icon]="friendCodeCopied() ? 'fa-check' : 'fa-clipboard'"
+                             buttonSize="" buttonClass="btn-outline join-item" (action)="copyToClipboard('friendCode', friendCodeCopied)" />
+            <app-icon-button name="friends.actions.changeCode" icon="fa-refresh" buttonSize=""
+                             buttonClass="btn-outline join-item" (action)="changeFriendCode()" />
+          </div>
         } @else {
           <button class="btn btn-soft" (click)="showFriendCode.set(true)">
             <i class="fa fa-eye"></i>

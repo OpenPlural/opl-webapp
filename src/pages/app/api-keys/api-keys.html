@@ -67,7 +67,7 @@
         </label>
       </div>
       <app-icon-button name="actions.copy" [icon]="apiKeyCopied() ? 'fa-check' : 'fa-clipboard'"
-                       buttonSize="" buttonClass="btn-outline join-item" (action)="copyCreatedApiKey()" />
+                       buttonSize="" buttonClass="btn-outline join-item" (action)="copyToClipboard('createdApiKeyToken', apiKeyCopied)" />
     </div>
   </div>
   <form method="dialog" class="modal-backdrop">
