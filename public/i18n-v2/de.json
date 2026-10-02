@@ -66,6 +66,7 @@
     "name": "Name",
     "pronouns": "Pronomen",
     "description": "Beschreibung",
+    "customFields": "Benutzerdefinierte Felder",
     "emoji": "Emoji",
     "color": "Farbe",
     "avatarUrl": "Avatar URL",
@@ -172,6 +173,7 @@
     },
     "labels": {
       "folders": "Ordner",
+      "searchOptions": "Suchoptionen",
       "archived": "Archiviert",
       "options": {
         "archived": {

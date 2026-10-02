@@ -8,10 +8,11 @@ import { Pager } from '../../../components/pager/pager';
 import { VerticalCenter } from '../../../components/vertical-center/vertical-center';
 import { MemberFolderView } from '../../../components/member-folder-view/member-folder-view';
 import { MemberId } from '../../../services/model/Member';
+import { defaultSearchFlags, SearchFlags, SearchOptions } from '../../../components/search-options/search-options';
 
 @Component({
   selector: 'app-members',
-  imports: [NavPageContainer, ToggleIconButton, Pager, VerticalCenter, MemberFolderView],
+  imports: [NavPageContainer, ToggleIconButton, Pager, VerticalCenter, MemberFolderView, SearchOptions],
   templateUrl: './members.html',
 })
 export class Members implements OnInit, OnDestroy {
@@ -23,7 +24,7 @@ export class Members implements OnInit, OnDestroy {
   readonly custom = signal(false);
 
   protected readonly searchQuery = signal<string | null>(null);
-  protected readonly searchArchived = signal<boolean>(false);
+  protected readonly searchFlags = signal<SearchFlags>(defaultSearchFlags());
 
   protected readonly localMembers = computed(() =>
     this.localStorageService.members().filter((member) => member.custom === this.custom()),
@@ -56,9 +57,5 @@ export class Members implements OnInit, OnDestroy {
 
   protected gotoMemberPage(memberId: MemberId) {
     this.router.navigate(['app', 'member', memberId]);
-  }
-
-  protected toggleSearchArchived() {
-    this.searchArchived.update((b) => !b);
   }
 }

@@ -18,6 +18,7 @@ import { Loading } from '../../../components/loading/loading';
 import {MarkdownBox} from '../../../components/markdown-box/markdown-box';
 import {forgetRememberedPath, getRememberedFriendPath} from '../../../util/RememberPath';
 import {compareCustomSort} from '../../../util/CustomSort';
+import { defaultSearchFlags, SearchFlags, SearchOptions } from '../../../components/search-options/search-options';
 
 @Component({
   selector: 'app-friend-page',
@@ -33,6 +34,7 @@ import {compareCustomSort} from '../../../util/CustomSort';
     IconButton,
     Loading,
     MarkdownBox,
+    SearchOptions,
   ],
   templateUrl: './friend-page.html',
 })
@@ -44,7 +46,7 @@ export class FriendPage {
   protected readonly user = signal<ExtendedUserInfo | null>(null);
   protected readonly selectedTab = signal<'account' | 'members'>('account');
   protected readonly searchQuery = signal<string | null>(null);
-  protected readonly searchArchived = signal<boolean>(false);
+  protected readonly searchFlags = signal<SearchFlags>(defaultSearchFlags());
 
   protected readonly members = computed(() => this.user()?.members?.filter((m) => !m.custom) || []);
   protected readonly fronters = computed(() => {
@@ -103,9 +105,5 @@ export class FriendPage {
 
   protected gotoFriendSettings() {
     this.router.navigate(['app', 'friend', this.id(), 'settings']);
-  }
-
-  protected toggleSearchArchived() {
-    this.searchArchived.update((b) => !b);
   }
 }

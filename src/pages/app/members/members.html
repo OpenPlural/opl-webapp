@@ -1,13 +1,11 @@
 <app-nav-page-container [footer]="true" [searchable]="true" (search)="searchQuery.set($event)">
   <div class="search-options">
-    <app-vertical-center>
-      <app-toggle-icon-button name="members.labels.archived" icon="fa-archive" [toggled]="searchArchived()" (toggle)="toggleSearchArchived()" />
-    </app-vertical-center>
+    <app-search-options [flags]="searchFlags()" [canSearchCustomFields]="true" (changeFlags)="searchFlags.set($event)" />
   </div>
   @let customFront = custom();
   <main>
     <app-member-folder-view [friendId]="null" [folders]="localFolders()" [members]="localMembers()" [searchQuery]="searchQuery()"
-                            [archived]="searchArchived()" [editable]="true" [custom]="customFront" (selectMember)="gotoMemberPage($event)" />
+                            [searchFlags]="searchFlags()" [editable]="true" [custom]="customFront" (selectMember)="gotoMemberPage($event)" />
   </main>
   <footer class="h-16">
     <app-vertical-center>

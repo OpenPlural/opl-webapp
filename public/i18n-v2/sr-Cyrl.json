@@ -66,6 +66,7 @@
     "name": "Име",
     "pronouns": "Заменице",
     "description": "Опис",
+    "customFields": "Прилагођена поља",
     "emoji": "Емотикон",
     "color": "Боја",
     "avatarUrl": "URL аватара",
@@ -172,6 +173,7 @@
     },
     "labels": {
       "folders": "Фасцикле",
+      "searchOptions": "Опције претраживања",
       "archived": "Архивиран",
       "options": {
         "archived": {
