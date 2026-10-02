@@ -11,6 +11,7 @@ export const CUSTOM_FIELD_DATA_TYPE_DATE = "Date";
 export const CUSTOM_FIELD_DATA_TYPE_TIME = "Time";
 export const CUSTOM_FIELD_DATA_TYPE_DATETIME = "DateTime";
 export const CUSTOM_FIELD_DATA_TYPE_DAY_MONTH = "DayMonth";
+export const CUSTOM_FIELD_DATA_TYPE_NAMED_SCALE = "NamedScale";
 export const CUSTOM_FIELD_DATA_TYPES = [
   CUSTOM_FIELD_DATA_TYPE_TEXT,
   CUSTOM_FIELD_DATA_TYPE_COLOR,
@@ -18,6 +19,7 @@ export const CUSTOM_FIELD_DATA_TYPES = [
   CUSTOM_FIELD_DATA_TYPE_TIME,
   CUSTOM_FIELD_DATA_TYPE_DATETIME,
   CUSTOM_FIELD_DATA_TYPE_DAY_MONTH,
+  CUSTOM_FIELD_DATA_TYPE_NAMED_SCALE,
 ];
 
 export interface CustomField {
@@ -26,6 +28,7 @@ export interface CustomField {
   sort: bigint;
   name: string;
   dataType: string;
+  config: string | null;
   updatedAt: string;
 }
 
@@ -43,6 +46,7 @@ export interface ViewedCustomFieldDataValue {
   sort: bigint;
   name: string;
   dataType: string;
+  config: string | null;
   value: string;
 }
 
@@ -53,6 +57,7 @@ export function makeCustomField(name: string, sort: bigint): CustomField {
     sort,
     name,
     dataType: CUSTOM_FIELD_DATA_TYPE_TEXT,
+    config: null,
     updatedAt: truncateCurrentDate(),
   };
 }

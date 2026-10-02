@@ -221,7 +221,8 @@
         "date": "Datum",
         "time": "Doba dana",
         "datetime": "Datum & Doba dana",
-        "daymonth": "Dan & Mesec"
+        "daymonth": "Dan & Mesec",
+        "namedscale": "Imenovana skala"
       }
     }
   },

@@ -221,7 +221,8 @@
         "date": "Datum",
         "time": "Uhrzeit",
         "datetime": "Datum & Uhrzeit",
-        "daymonth": "Tag & Monat"
+        "daymonth": "Tag & Monat",
+        "namedscale": "Beschriftete Skala"
       }
     }
   },
