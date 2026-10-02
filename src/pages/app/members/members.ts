@@ -9,6 +9,7 @@ import { VerticalCenter } from '../../../components/vertical-center/vertical-cen
 import { MemberFolderView } from '../../../components/member-folder-view/member-folder-view';
 import { MemberId } from '../../../services/model/Member';
 import { defaultSearchFlags, SearchFlags, SearchOptions } from '../../../components/search-options/search-options';
+import { getRememberedLocalSearch, rememberLocalSearch } from '../../../util/RememberSearch';
 
 @Component({
   selector: 'app-members',
@@ -37,10 +38,24 @@ export class Members implements OnInit, OnDestroy {
         this.custom.set(data['custom']);
       }),
     );
+
+    const search = getRememberedLocalSearch();
+    if (search) {
+      this.searchQuery.set(search.query);
+      if (search.flags) {
+        this.searchFlags.set(search.flags);
+      }
+    } else {
+      rememberLocalSearch('', null);
+    }
   }
 
   ngOnDestroy() {
     this.subscription()?.unsubscribe();
+  }
+
+  protected updateSearch() {
+    rememberLocalSearch(this.searchQuery(), this.searchFlags());
   }
 
   protected gotoMembers() {

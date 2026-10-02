@@ -14,6 +14,7 @@ import {forgetRememberedPath} from '../util/RememberPath';
 import { PopupConfirm } from '../components/popup-confirm/popup-confirm';
 import { WebService } from '../services/WebService';
 import { VERSION } from '../environment';
+import { forgetRememberedSearch } from '../util/RememberSearch';
 
 @Component({
   selector: 'app-root',
@@ -73,6 +74,7 @@ export class App implements OnInit {
           !event.url.startsWith('/app/member/') && !event.url.startsWith('/app/folder/') &&
           !event.url.startsWith('/app/friend/')) {
           forgetRememberedPath();
+          forgetRememberedSearch();
         }
       }
     })

@@ -1,13 +1,13 @@
 @let user = this.user();
 @let tab = this.selectedTab();
-<app-popup-page-container [footer]="user ? user.user.system : false" [title]="user ? user.user.name : ''" [searchable]="tab === 'members'" (search)="searchQuery.set($event)">
+<app-popup-page-container [footer]="user ? user.user.system : false" [title]="user ? user.user.name : ''" [searchable]="tab === 'members'" (search)="searchQuery.set($event); updateSearch()">
   @if (tab === 'account') {
     <app-vertical-center class="header-buttons">
       <app-icon-button name="navigation.friendSettings" icon="fa-cog" (click)="gotoFriendSettings()" />
     </app-vertical-center>
   }
   <div class="search-options">
-    <app-search-options [flags]="searchFlags()" [canSearchCustomFields]="false" (changeFlags)="searchFlags.set($event)" />
+    <app-search-options [flags]="searchFlags()" [canSearchCustomFields]="false" (changeFlags)="searchFlags.set($event); updateSearch()" />
   </div>
   <main>
     @if (user) {

@@ -19,6 +19,7 @@ import {MarkdownBox} from '../../../components/markdown-box/markdown-box';
 import {forgetRememberedPath, getRememberedFriendPath} from '../../../util/RememberPath';
 import {compareCustomSort} from '../../../util/CustomSort';
 import { defaultSearchFlags, SearchFlags, SearchOptions } from '../../../components/search-options/search-options';
+import { forgetRememberedSearch, getRememberedFriendSearch, rememberFriendSearch } from '../../../util/RememberSearch';
 
 @Component({
   selector: 'app-friend-page',
@@ -79,8 +80,17 @@ export class FriendPage {
       if (id) {
         this.webService.getUser(id).then((user) => {
           const rememberedPath = getRememberedFriendPath(id);
-          if (rememberedPath !== null) {
+          const rememberedSearch = getRememberedFriendSearch(id);
+          if (rememberedPath !== null || rememberedSearch !== null) {
             this.selectedTab.set('members');
+          }
+          if (rememberedSearch) {
+            this.searchQuery.set(rememberedSearch.query);
+            if (rememberedSearch.flags) {
+              this.searchFlags.set(rememberedSearch.flags);
+            }
+          } else {
+            rememberFriendSearch(id, '', null);
           }
           this.user.set(user);
         });
@@ -90,8 +100,16 @@ export class FriendPage {
     });
   }
 
+  protected updateSearch() {
+    const id = this.id();
+    if (id) {
+      rememberFriendSearch(id, this.searchQuery(), this.searchFlags());
+    }
+  }
+
   protected gotoTab(tab: 'account' | 'members') {
     forgetRememberedPath();
+    forgetRememberedSearch();
     this.selectedTab.set(tab);
   }
 
