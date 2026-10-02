@@ -66,6 +66,7 @@
     "name": "Ime",
     "pronouns": "Zamenice",
     "description": "Opis",
+    "customFields": "Prilagođena polja",
     "emoji": "Emotikon",
     "color": "Boja",
     "avatarUrl": "URL avatara",
@@ -172,6 +173,7 @@
     },
     "labels": {
       "folders": "Fascikle",
+      "searchOptions": "Opcije pretraživanja",
       "archived": "Arhiviran",
       "options": {
         "archived": {

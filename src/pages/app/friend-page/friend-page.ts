@@ -18,6 +18,8 @@ import { Loading } from '../../../components/loading/loading';
 import {MarkdownBox} from '../../../components/markdown-box/markdown-box';
 import {forgetRememberedPath, getRememberedFriendPath} from '../../../util/RememberPath';
 import {compareCustomSort} from '../../../util/CustomSort';
+import { defaultSearchFlags, SearchFlags, SearchOptions } from '../../../components/search-options/search-options';
+import { forgetRememberedSearch, getRememberedFriendSearch, rememberFriendSearch } from '../../../util/RememberSearch';
 
 @Component({
   selector: 'app-friend-page',
@@ -33,6 +35,7 @@ import {compareCustomSort} from '../../../util/CustomSort';
     IconButton,
     Loading,
     MarkdownBox,
+    SearchOptions,
   ],
   templateUrl: './friend-page.html',
 })
@@ -44,7 +47,7 @@ export class FriendPage {
   protected readonly user = signal<ExtendedUserInfo | null>(null);
   protected readonly selectedTab = signal<'account' | 'members'>('account');
   protected readonly searchQuery = signal<string | null>(null);
-  protected readonly searchArchived = signal<boolean>(false);
+  protected readonly searchFlags = signal<SearchFlags>(defaultSearchFlags());
 
   protected readonly members = computed(() => this.user()?.members?.filter((m) => !m.custom) || []);
   protected readonly fronters = computed(() => {
@@ -77,8 +80,17 @@ export class FriendPage {
       if (id) {
         this.webService.getUser(id).then((user) => {
           const rememberedPath = getRememberedFriendPath(id);
-          if (rememberedPath !== null) {
+          const rememberedSearch = getRememberedFriendSearch(id);
+          if (rememberedPath !== null || rememberedSearch !== null) {
             this.selectedTab.set('members');
+          }
+          if (rememberedSearch) {
+            this.searchQuery.set(rememberedSearch.query);
+            if (rememberedSearch.flags) {
+              this.searchFlags.set(rememberedSearch.flags);
+            }
+          } else {
+            rememberFriendSearch(id, '', null);
           }
           this.user.set(user);
         });
@@ -88,8 +100,16 @@ export class FriendPage {
     });
   }
 
+  protected updateSearch() {
+    const id = this.id();
+    if (id) {
+      rememberFriendSearch(id, this.searchQuery(), this.searchFlags());
+    }
+  }
+
   protected gotoTab(tab: 'account' | 'members') {
     forgetRememberedPath();
+    forgetRememberedSearch();
     this.selectedTab.set(tab);
   }
 
@@ -103,9 +123,5 @@ export class FriendPage {
 
   protected gotoFriendSettings() {
     this.router.navigate(['app', 'friend', this.id(), 'settings']);
-  }
-
-  protected toggleSearchArchived() {
-    this.searchArchived.update((b) => !b);
   }
 }
