@@ -220,7 +220,8 @@
         "color": "Boja",
         "date": "Datum",
         "time": "Doba dana",
-        "datetime": "Datum & Doba dana"
+        "datetime": "Datum & Doba dana",
+        "daymonth": "Dan & Mesec"
       }
     }
   },

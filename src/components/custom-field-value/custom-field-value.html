@@ -33,6 +33,13 @@
           <input type="text" class="grow input" [value]="dateTimeFormatted() || ''" readonly />
         }
       }
+      @case (CUSTOM_FIELD_DATA_TYPE_DAY_MONTH) {
+        @if (editable) {
+          <input type="date" class="grow input" [value]="dateValue()" (input)="dateTimeChanged($event)" />
+        } @else {
+          <input type="text" class="grow input" [value]="dateTimeFormatted() || ''" readonly />
+        }
+      }
     }
     @if (editable) {
       <app-vertical-center class="max-h-10">

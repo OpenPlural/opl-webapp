@@ -225,7 +225,8 @@
         "color": "Color",
         "date": "Date",
         "time": "Time",
-        "datetime": "Date & Time"
+        "datetime": "Date & Time",
+        "daymonth": "Day & Month"
       }
     }
   },

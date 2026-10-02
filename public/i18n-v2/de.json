@@ -220,7 +220,8 @@
         "color": "Farbe",
         "date": "Datum",
         "time": "Uhrzeit",
-        "datetime": "Datum & Uhrzeit"
+        "datetime": "Datum & Uhrzeit",
+        "daymonth": "Tag & Monat"
       }
     }
   },

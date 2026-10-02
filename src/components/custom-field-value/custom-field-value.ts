@@ -2,7 +2,7 @@ import { Component, computed, inject, input, output, signal } from '@angular/cor
 import {
   CUSTOM_FIELD_DATA_TYPE_COLOR,
   CUSTOM_FIELD_DATA_TYPE_DATE,
-  CUSTOM_FIELD_DATA_TYPE_DATETIME,
+  CUSTOM_FIELD_DATA_TYPE_DATETIME, CUSTOM_FIELD_DATA_TYPE_DAY_MONTH,
   CUSTOM_FIELD_DATA_TYPE_TEXT,
   CUSTOM_FIELD_DATA_TYPE_TIME,
   CustomField,
@@ -73,7 +73,8 @@ export class CustomFieldValue {
     const field = this.field();
     if (
       field.dataType != CUSTOM_FIELD_DATA_TYPE_DATE &&
-      field.dataType != CUSTOM_FIELD_DATA_TYPE_DATETIME
+      field.dataType != CUSTOM_FIELD_DATA_TYPE_DATETIME &&
+      field.dataType != CUSTOM_FIELD_DATA_TYPE_DAY_MONTH
     )
       return null;
 
@@ -130,4 +131,5 @@ export class CustomFieldValue {
   protected readonly CUSTOM_FIELD_DATA_TYPE_DATE = CUSTOM_FIELD_DATA_TYPE_DATE;
   protected readonly CUSTOM_FIELD_DATA_TYPE_DATETIME = CUSTOM_FIELD_DATA_TYPE_DATETIME;
   protected readonly CUSTOM_FIELD_DATA_TYPE_TIME = CUSTOM_FIELD_DATA_TYPE_TIME;
+  protected readonly CUSTOM_FIELD_DATA_TYPE_DAY_MONTH = CUSTOM_FIELD_DATA_TYPE_DAY_MONTH;
 }

@@ -77,13 +77,18 @@ export class SettingsService {
     }
   }
 
-  formatDate(timestamp: number, type: 'Date' | 'DateTime', parseTimezone: boolean = true): string {
+  formatDate(timestamp: number, type: 'Date' | 'DateTime' | 'DayMonth', parseTimezone: boolean = true): string {
     const settings = this.storage();
+    let format = settings.dateFormat;
+    if (type === 'DayMonth') {
+      type = 'Date';
+      format = settings.dateFormat.replace(/[^0-9]y+[^0-9]/g, '').trim();
+    }
 
     if (parseTimezone) {
-      return this.formatDateWithTimezone(timestamp, settings.dateFormat, type);
+      return this.formatDateWithTimezone(timestamp, format, type);
     } else {
-      return this.formatDateWithoutTimezone(timestamp, settings.dateFormat, type);
+      return this.formatDateWithoutTimezone(timestamp, format, type);
     }
   }
 
