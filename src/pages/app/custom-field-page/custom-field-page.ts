@@ -11,12 +11,13 @@ import { SyncService } from '../../../services/SyncService';
 import { WebService } from '../../../services/WebService';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
-import { CUSTOM_FIELD_DATA_TYPES } from '../../../services/model/Field';
+import { CUSTOM_FIELD_DATA_TYPE_NAMED_SCALE, CUSTOM_FIELD_DATA_TYPES } from '../../../services/model/Field';
 import { PrivacyBucketId, SimplePrivacyBucket } from '../../../services/model/Privacy';
 import { openDialog } from '../../../util/CommonFunctions';
 import { truncateCurrentDate } from '../../../util/DateTruncate';
 import {compareCustomSort} from '../../../util/CustomSort';
 import { Ids } from '../../../components/ids/ids';
+import { fromJson, toJson } from '../../../util/FixedJson';
 
 @Component({
   selector: 'app-custom-field-page',
@@ -39,9 +40,15 @@ export class CustomFieldPage {
     ),
     { initialValue: null },
   );
+  readonly selectedType = signal<string | null>(null);
   readonly customField = computed(() => {
     const id = this.id();
     return this.localStorageService.customFields().find((f) => f.id === id);
+  });
+  readonly scaleLabels = computed(() => {
+    const field = this.customField();
+    if (!field || field.dataType !== CUSTOM_FIELD_DATA_TYPE_NAMED_SCALE || !field.config) return [];
+    return fromJson(field.config) as string[];
   });
   readonly privacyIds = computed(() => this.privacy()?.map((bucket) => bucket.id) || []);
   readonly privacy = signal<SimplePrivacyBucket[] | null>(null);
@@ -88,6 +95,11 @@ export class CustomFieldPage {
     await this.loadPrivacy();
   }
 
+  protected typeChanged(event: Event) {
+    const select = event.target as HTMLSelectElement;
+    this.selectedType.set(select.value);
+  }
+
   protected async save() {
     const field = this.customField();
     if (!field) return;
@@ -97,10 +109,20 @@ export class CustomFieldPage {
     const name = formData.get('name')?.toString();
     const dataType = formData.get('type')?.toString();
 
+    let config: string | null = null;
+    if (dataType === CUSTOM_FIELD_DATA_TYPE_NAMED_SCALE) {
+      const scaleLabelLeft = formData.get('scaleLabelLeft')?.toString();
+      const scaleLabelRight = formData.get('scaleLabelRight')?.toString();
+      if (scaleLabelLeft && scaleLabelRight) {
+        config = toJson([scaleLabelLeft, scaleLabelRight]);
+      }
+    }
+
     if (name && dataType) {
       const updated = Object.assign({}, field);
       updated.name = name;
       updated.dataType = dataType;
+      updated.config = config;
       updated.updatedAt = truncateCurrentDate();
 
       await this.localStorageService.updateCustomField(updated);
@@ -120,4 +142,5 @@ export class CustomFieldPage {
 
   protected readonly CUSTOM_FIELD_DATA_TYPES = CUSTOM_FIELD_DATA_TYPES;
   protected readonly openDialog = openDialog;
+  protected readonly CUSTOM_FIELD_DATA_TYPE_NAMED_SCALE = CUSTOM_FIELD_DATA_TYPE_NAMED_SCALE;
 }

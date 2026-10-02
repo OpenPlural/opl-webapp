@@ -3,6 +3,8 @@ import {
   CUSTOM_FIELD_DATA_TYPE_COLOR,
   CUSTOM_FIELD_DATA_TYPE_DATE,
   CUSTOM_FIELD_DATA_TYPE_DATETIME,
+  CUSTOM_FIELD_DATA_TYPE_DAY_MONTH,
+  CUSTOM_FIELD_DATA_TYPE_NAMED_SCALE,
   CUSTOM_FIELD_DATA_TYPE_TEXT,
   CUSTOM_FIELD_DATA_TYPE_TIME,
   CustomField,
@@ -16,6 +18,7 @@ import { IconButton } from '../icon-button/icon-button';
 import { VerticalCenter } from '../vertical-center/vertical-center';
 import {MarkdownBox} from '../markdown-box/markdown-box';
 import { truncateDateToInputValue } from '../../util/DateTruncate';
+import { fromJson } from '../../util/FixedJson';
 
 @Component({
   selector: 'app-custom-field-value',
@@ -73,7 +76,8 @@ export class CustomFieldValue {
     const field = this.field();
     if (
       field.dataType != CUSTOM_FIELD_DATA_TYPE_DATE &&
-      field.dataType != CUSTOM_FIELD_DATA_TYPE_DATETIME
+      field.dataType != CUSTOM_FIELD_DATA_TYPE_DATETIME &&
+      field.dataType != CUSTOM_FIELD_DATA_TYPE_DAY_MONTH
     )
       return null;
 
@@ -81,6 +85,15 @@ export class CustomFieldValue {
     if (!value) return null;
 
     return this.settingsService.formatDate(parseInt(value.value), field.dataType, false);
+  });
+  protected readonly scaleLabels = computed(() => {
+    const field = this.field();
+    if (!field || field.dataType !== CUSTOM_FIELD_DATA_TYPE_NAMED_SCALE || !field.config) return null;
+    const array = fromJson(field.config);
+    if (Array.isArray(array) && array.length === 2) {
+      return array as string[];
+    }
+    return null;
   });
   protected readonly timeFormatted = computed(() => {
     const field = this.field();
@@ -120,6 +133,15 @@ export class CustomFieldValue {
     this.valueCleared.set(false);
   }
 
+  protected scaleValueChanged(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const value = parseInt(input.value);
+    if (!isNaN(value)) {
+      this.changeValue.emit(value.toString());
+      this.valueCleared.set(false);
+    }
+  }
+
   protected fieldClear() {
     this.clearValue.emit();
     this.valueCleared.set(true);
@@ -130,4 +152,6 @@ export class CustomFieldValue {
   protected readonly CUSTOM_FIELD_DATA_TYPE_DATE = CUSTOM_FIELD_DATA_TYPE_DATE;
   protected readonly CUSTOM_FIELD_DATA_TYPE_DATETIME = CUSTOM_FIELD_DATA_TYPE_DATETIME;
   protected readonly CUSTOM_FIELD_DATA_TYPE_TIME = CUSTOM_FIELD_DATA_TYPE_TIME;
+  protected readonly CUSTOM_FIELD_DATA_TYPE_DAY_MONTH = CUSTOM_FIELD_DATA_TYPE_DAY_MONTH;
+  protected readonly CUSTOM_FIELD_DATA_TYPE_NAMED_SCALE = CUSTOM_FIELD_DATA_TYPE_NAMED_SCALE;
 }

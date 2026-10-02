@@ -9,12 +9,21 @@
         </fieldset>
         <fieldset class="fieldset">
           <legend class="fieldset-legend">{{'customFields.labels.type.type' | translate}}</legend>
-          <select name="type" class="w-full select">
+          <select name="type" class="w-full select" (change)="typeChanged($event)">
             @for (dataType of CUSTOM_FIELD_DATA_TYPES; track dataType) {
               <option [value]="dataType" [selected]="dataType === field.dataType">{{'customFields.labels.type.' + dataType.toLowerCase() | translate}}</option>
             }
           </select>
         </fieldset>
+        @let currentType = selectedType() || field.dataType;
+        @if (currentType === CUSTOM_FIELD_DATA_TYPE_NAMED_SCALE) {
+          <fieldset class="fieldset">
+            <legend class="fieldset-legend">{{'customFields.labels.namedscale.labels' | translate}}</legend>
+            @let scaleLabels = this.scaleLabels();
+            <input name="scaleLabelLeft" type="text" class="w-full input" [value]="scaleLabels[0] || null" />
+            <input name="scaleLabelRight" type="text" class="w-full input" [value]="scaleLabels[1] || null" />
+          </fieldset>
+        }
       </form>
     </div>
     <app-ids [object]="field" />

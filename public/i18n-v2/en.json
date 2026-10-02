@@ -225,7 +225,12 @@
         "color": "Color",
         "date": "Date",
         "time": "Time",
-        "datetime": "Date & Time"
+        "datetime": "Date & Time",
+        "daymonth": "Day & Month",
+        "namedscale": "Named Scale"
+      },
+      "namedscale": {
+        "labels": "Labels"
       }
     }
   },
