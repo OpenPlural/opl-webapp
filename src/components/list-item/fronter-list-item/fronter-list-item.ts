@@ -20,10 +20,12 @@ import {IconButton} from '../../icon-button/icon-button';
 import {VerticalCenter} from '../../vertical-center/vertical-center';
 import {PopupInput} from '../../popup-input/popup-input';
 import {openDialog} from '../../../util/CommonFunctions';
+import { MemberSelector } from '../../selector/member-selector/member-selector';
+import { MemberId } from '../../../services/model/Member';
 
 @Component({
   selector: 'app-fronter-list-item',
-  imports: [MemberListItem, TranslatePipe, IconButton, VerticalCenter, PopupInput],
+  imports: [MemberListItem, TranslatePipe, IconButton, VerticalCenter, PopupInput, MemberSelector],
   templateUrl: './fronter-list-item.html',
 })
 export class FronterListItem implements AfterViewInit, OnDestroy {
@@ -36,6 +38,7 @@ export class FronterListItem implements AfterViewInit, OnDestroy {
   readonly frontEntry = input.required<FrontEntry>();
 
   protected readonly elapsedTime = signal('');
+  protected readonly changingFronter = signal(false);
 
   protected readonly member = computed(() => {
     const memberId = this.frontEntry().member;
@@ -82,7 +85,7 @@ export class FronterListItem implements AfterViewInit, OnDestroy {
     await this.localStorageService.updateFrontEntry({
       ...frontEntry,
       comment,
-      updatedAt: truncateCurrentDate()
+      updatedAt: truncateCurrentDate(),
     });
     this.syncService.fullSync();
   }
@@ -97,7 +100,19 @@ export class FronterListItem implements AfterViewInit, OnDestroy {
     await this.localStorageService.updateFrontEntry({
       ...frontEntry,
       startedAt: timestamp,
-      updatedAt: truncateCurrentDate()
+      updatedAt: truncateCurrentDate(),
+    });
+    this.syncService.fullSync();
+  }
+
+  protected async updateFronter(selection: MemberId[]) {
+    this.changingFronter.set(false);
+
+    const frontEntry = this.frontEntry();
+    await this.localStorageService.updateFrontEntry({
+      ...frontEntry,
+      member: selection[0],
+      updatedAt: truncateCurrentDate(),
     });
     this.syncService.fullSync();
   }
