@@ -24,7 +24,7 @@
   <app-popup-input [dialogId]="'frontTimePrompt-' + member.id" title="front.actions.changeTime" label="front.labels.time"
                    inputType="datetime-local" [initialValue]="startTimeValue()" (submitValue)="updateFrontTime($event)" />
   @if (changingFronter()) {
-    <app-member-selector dialogId="voteMemberPrompt" title="polls.actions.vote" [selectMultiple]="false"
+    <app-member-selector dialogId="fronterPrompt" title="front.actions.changeMember" [selectMultiple]="false"
                          (submitSelection)="updateFronter($event)" (forceClose)="changingFronter.set(false)" />
   }
 }
