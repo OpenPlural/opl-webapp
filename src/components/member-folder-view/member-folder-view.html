@@ -50,6 +50,6 @@
 
   @if (assignMembers() && inFolder) {
     <app-member-selector dialogId="folderAssignMembers" title="folders.actions.assignMembers" [selection]="folderMembers()"
-                         (submitSelection)="assignFolderMembers($event)" (forceClose)="assignMembers.set(false)" />
+                         [custom]="false" (submitSelection)="assignFolderMembers($event)" (forceClose)="assignMembers.set(false)" />
   }
 }

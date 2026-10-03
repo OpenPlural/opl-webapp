@@ -65,7 +65,7 @@
     </app-vertical-center>
   </app-popup-page-container>
   @if (chooseVoteMember()) {
-    <app-member-selector dialogId="voteMemberPrompt" title="polls.actions.vote" [selectMultiple]="false"
+    <app-member-selector dialogId="voteMemberPrompt" title="polls.actions.vote" [custom]="false" [selectMultiple]="false"
                          [frontingFirst]="true" (submitSelection)="voteWith($event)" (forceClose)="chooseVoteMember.set(false)" />
   }
   <dialog id="voteOptionPrompt" class="modal">

@@ -15,7 +15,7 @@ export class MemberSelector implements OnInit {
 
   readonly dialogId = input.required<string>();
   readonly title = input.required<string>();
-  readonly custom = input<boolean>(false);
+  readonly custom = input<boolean>();
   readonly frontingFirst = input<boolean>(false);
   readonly selectMultiple = input<boolean>(true);
   readonly selection = input<MemberId[]>([]);
