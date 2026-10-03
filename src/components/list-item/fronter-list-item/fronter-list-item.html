@@ -10,6 +10,9 @@
       </div>
       <div class="flex flex-row">
         <app-vertical-center>
+          <app-icon-button name="front.actions.changeMember" icon="fa-user" (action)="changingFronter.set(true)" />
+        </app-vertical-center>
+        <app-vertical-center>
           <app-icon-button name="front.actions.changeTime" icon="fa-clock-o" (action)="openDialog('frontTimePrompt-' + member.id)" />
         </app-vertical-center>
       </div>
@@ -20,4 +23,8 @@
   </div>
   <app-popup-input [dialogId]="'frontTimePrompt-' + member.id" title="front.actions.changeTime" label="front.labels.time"
                    inputType="datetime-local" [initialValue]="startTimeValue()" (submitValue)="updateFrontTime($event)" />
+  @if (changingFronter()) {
+    <app-member-selector dialogId="voteMemberPrompt" title="polls.actions.vote" [selectMultiple]="false"
+                         (submitSelection)="updateFronter($event)" (forceClose)="changingFronter.set(false)" />
+  }
 }
