@@ -21,4 +21,8 @@ export class DataImportExport {
   protected export(format: string) {
     this.router.navigate(['app', 'data-export', format]);
   }
+
+  protected goToPluralKitSettings() {
+    this.router.navigate(['app', 'pluralkit']);
+  }
 }

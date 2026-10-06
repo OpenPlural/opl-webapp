@@ -32,6 +32,7 @@ import { Poll, PollAnswer, PollAnswerId, PollId } from './model/Poll';
 import { Analytics } from './model/Analytics';
 import { PhotoAlbum, PhotoAlbumId } from './model/Gallery';
 import { UploadResponse } from './model/Cdn';
+import { PkConfig } from './model/PluralKit';
 
 export const BASE_URL: string = localStorage.getItem('baseUrl') || (isDevMode() ? 'https://localhost:4200' : 'https://opl-api.webbiii.cc');
 
@@ -408,6 +409,18 @@ export class WebService {
   async uploadToCdn(bytes: Uint8Array, type: string): Promise<string> {
     const res = await firstValueFrom(this.http.post<UploadResponse>(`${BASE_URL}/api/v1/cdn/upload`, bytes.buffer));
     return `:cdn:${res.id}:${type}:${res.access}`;
+  }
+
+  async getPkConfig(): Promise<PkConfig> {
+    return firstValueFrom(this.http.get<PkConfig>(`${BASE_URL}/api/v1/pluralkit/`));
+  }
+
+  async updatePkConfig(config: PkConfig): Promise<void> {
+    await firstValueFrom(this.http.post(`${BASE_URL}/api/v1/pluralkit/`, config));
+  }
+
+  async syncPk() {
+    await firstValueFrom(this.http.post(`${BASE_URL}/api/v1/pluralkit/sync`, {}));
   }
 }
 

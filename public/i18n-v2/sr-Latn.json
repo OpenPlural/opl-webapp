@@ -110,6 +110,7 @@
     "dataImport": "Uvoz",
     "dataExport": "Izvoz",
     "dataImportExport": "Uvoz & Izvoz",
+    "pluralkit": "PluralKit",
     "massDelete": "Masovno brisanje",
     "social": "Društvene mreže",
     "legal": "Pravno",
@@ -175,6 +176,7 @@
       "folders": "Fascikle",
       "searchOptions": "Opcije pretraživanja",
       "archived": "Arhiviran",
+      "pkId": "PluralKit ID",
       "options": {
         "archived": {
           "name": "Arhiviran",
@@ -257,6 +259,17 @@
         "abstain": "Dozvoli apstiniranje",
         "veto": "Dozvoli veto"
       }
+    }
+  },
+  "pluralkit": {
+    "actions": {
+      "link": "Poveži PluralKit",
+      "sync": "Sinhronizuj sa PluralKit-om"
+    },
+    "labels": {
+      "token": "PluralKit Token",
+      "displayName": "Prikazano ime za članove",
+      "displayNameEmpty": "Ostavite prazno ako ne želite postaviti prikazana imena"
     }
   },
   "analytics": {

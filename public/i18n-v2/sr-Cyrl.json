@@ -110,6 +110,7 @@
     "dataImport": "Увоз",
     "dataExport": "Извоз",
     "dataImportExport": "Увоз & Извоз",
+    "pluralkit": "PluralKit",
     "massDelete": "Масовно брисање",
     "social": "Друштвене мреже",
     "legal": "Правно",
@@ -175,6 +176,7 @@
       "folders": "Фасцикле",
       "searchOptions": "Опције претраживања",
       "archived": "Архивиран",
+      "pkId": "PluralKit ID",
       "options": {
         "archived": {
           "name": "Архивиран",
@@ -257,6 +259,17 @@
         "abstain": "Дозволи апстинирање",
         "veto": "Дозволи вето"
       }
+    }
+  },
+  "pluralkit": {
+    "actions": {
+      "link": "Повежи PluralKit",
+      "sync": "Синхронизуј са PluralKit-ом"
+    },
+    "labels": {
+      "token": "PluralKit Токен",
+      "displayName": "Приказано име за чланове",
+      "displayNameEmpty": "Оставите празно ако не желите поставити приказана имена"
     }
   },
   "analytics": {
