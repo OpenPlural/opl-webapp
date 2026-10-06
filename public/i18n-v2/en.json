@@ -190,6 +190,7 @@
       "front": "Add to front",
       "unfront": "Remove from front",
       "changeTime": "Change front time",
+      "changeMember": "Change fronter",
       "create": "Create front entry",
       "delete": "Delete front entry"
     },
