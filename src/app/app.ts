@@ -99,6 +99,13 @@ export class App implements OnInit {
         })
         .catch((_) => {});
     }
+
+    let theme = localStorage.getItem("theme");
+    if (!theme) {
+      theme = "dim";
+      localStorage.setItem("theme", theme);
+    }
+    document.body.setAttribute('data-theme', theme);
   }
 
   private initialSync() {
