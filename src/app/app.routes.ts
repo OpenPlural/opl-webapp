@@ -32,6 +32,7 @@ import { Polls } from '../pages/app/polls/polls';
 import { PollEdit } from '../pages/app/poll-edit/poll-edit';
 import { Poll } from '../pages/app/poll/poll';
 import { Analytics } from '../pages/app/analytics/analytics';
+import { Pluralkit } from '../pages/app/pluralkit/pluralkit';
 
 export const appRoutes: Routes = [
   {
@@ -133,6 +134,10 @@ export const appRoutes: Routes = [
     path: 'data-export/openPlural',
     component: DataExport,
     data: { name: 'navigation.dataExport', format: 'openPlural' }
+  }, {
+    path: 'pluralkit',
+    component: Pluralkit,
+    data: { name: 'navigation.pluralkit' }
   }, {
     path: 'mass-delete',
     component: MassDelete,

@@ -37,7 +37,8 @@
             <app-member-front-history-page [member]="member" />
           }
           @case ('options') {
-            <app-member-options-page [member]="member" (updateArchived)="updatedArchived.set($event)" />
+            <app-member-options-page [member]="member" (updateArchived)="updatedArchived.set($event)"
+            (updatePkId)="updatedPkId.set($event)"/>
           }
         }
       </div>

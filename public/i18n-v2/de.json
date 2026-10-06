@@ -110,6 +110,7 @@
     "dataImport": "Import",
     "dataExport": "Export",
     "dataImportExport": "Import & Export",
+    "pluralkit": "PluralKit",
     "massDelete": "Massenlöschung",
     "social": "Soziale Medien",
     "legal": "Legales",
@@ -175,6 +176,7 @@
       "folders": "Ordner",
       "searchOptions": "Suchoptionen",
       "archived": "Archiviert",
+      "pkId": "PluralKit ID",
       "options": {
         "archived": {
           "name": "Archiviert",
@@ -256,6 +258,17 @@
         "abstain": "Enthaltung erlauben",
         "veto": "Veto erlauben"
       }
+    }
+  },
+  "pluralkit": {
+    "actions": {
+      "link": "PluralKit verbinden",
+      "sync": "Mit PluralKit synchronisieren"
+    },
+    "labels": {
+      "token": "PluralKit Token",
+      "displayName": "Anzeigename für Mitglieder",
+      "displayNameEmpty": "Leer lassen, um keine Anzeigenamen zu setzen"
     }
   },
   "analytics": {
