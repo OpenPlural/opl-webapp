@@ -386,6 +386,9 @@
     },
     "labels": {
       "defaultPage": "Задана страница",
+      "theme": "Тема",
+      "lightThemes": "Светле теме",
+      "darkThemes": "Тамне теме",
       "dateFormat": "Формат датума",
       "dateFormatExample": "Пример датума је 1. новембар 2024",
       "timeFormat": "Формат времена",

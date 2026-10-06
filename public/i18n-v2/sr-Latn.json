@@ -386,6 +386,9 @@
     },
     "labels": {
       "defaultPage": "Zadana stranica",
+      "theme": "Tema",
+      "lightThemes": "Svetle teme",
+      "darkThemes": "Tamne teme",
       "dateFormat": "Format datuma",
       "dateFormatExample": "Primer datuma je 1. novembar 2024",
       "timeFormat": "Format vremena",

@@ -1,7 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 @import "tailwindcss";
 @plugin "daisyui" {
-  themes: dim --default;
+  themes: dim --default, dracula, dark, sunset, emerald, corporate, synthwave, retro, halloween, garden, aqua, fantasy, business, night, abyss;
 }
 
 .fieldset {

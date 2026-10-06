@@ -386,6 +386,9 @@
     },
     "labels": {
       "defaultPage": "Standardseite",
+      "theme": "Theme",
+      "lightThemes": "Helle Themen",
+      "darkThemes": "Dunkle Themen",
       "dateFormat": "Datumsformat",
       "dateFormatExample": "Das Beispieldatum ist der 1. November 2024",
       "timeFormat": "Uhrzeitformat",

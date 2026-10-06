@@ -21,6 +21,21 @@
       </fieldset>
 
       <fieldset class="fieldset">
+        <legend class="fieldset-legend">{{'options.labels.theme' | translate}}</legend>
+        <select class="w-full select" (change)="updateTheme($event)">
+          <option disabled>-- {{'options.labels.darkThemes' | translate}} --</option>
+          @let selectedTheme = this.selectedTheme();
+          @for (theme of THEMES; track theme) {
+            @if (theme) {
+              <option [value]="theme" [selected]="theme === selectedTheme">{{getThemeName(theme)}}</option>
+            } @else {
+              <option disabled>-- {{'options.labels.lightThemes' | translate}} --</option>
+            }
+          }
+        </select>
+      </fieldset>
+
+      <fieldset class="fieldset">
         <legend class="fieldset-legend">{{'options.labels.dateFormat' | translate}}</legend>
         <span class="text-base-content/60">{{'options.labels.dateFormatExample' | translate}}</span>
         <select class="w-full select" (change)="updateDateFormat($event)">

@@ -394,6 +394,9 @@
     },
     "labels": {
       "defaultPage": "Default Page",
+      "theme": "Theme",
+      "lightThemes": "Light themes",
+      "darkThemes": "Dark themes",
       "dateFormat": "Date Format",
       "dateFormatExample": "The example date is the 1st of November 2024",
       "timeFormat": "Time Format",

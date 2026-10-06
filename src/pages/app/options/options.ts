@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { NavPageContainer } from '../../../components/container/nav-page-container/nav-page-container';
 import { TranslatePipe } from '@ngx-translate/core';
 import { appRoutes } from '../../../app/app.routes';
@@ -18,6 +18,8 @@ export class Options {
   private readonly pushService = inject(PushService);
   private readonly settingsService = inject(SettingsService);
 
+  protected readonly selectedTheme = signal<string>('');
+
   protected readonly settings = computed(() => this.settingsService.settings());
 
   protected readonly appRoutes = computed(() => {
@@ -35,6 +37,11 @@ export class Options {
     });
   });
 
+  constructor() {
+    const theme = localStorage.getItem('theme');
+    this.selectedTheme.set(theme || 'dim');
+  }
+
   protected updateDefaultPage(event: Event) {
     const select = event.target as HTMLSelectElement;
     this.settingsService.changeStringSetting('defaultRoute', select.value);
@@ -43,6 +50,12 @@ export class Options {
   protected updateLanguage(event: Event) {
     const select = event.target as HTMLSelectElement;
     this.settingsService.changeLanguage(select.value);
+  }
+
+  protected updateTheme(event: Event) {
+    const select = event.target as HTMLSelectElement;
+    localStorage.setItem('theme', select.value);
+    document.body.setAttribute('data-theme', select.value);
   }
 
   protected updateDateFormat(event: Event) {
@@ -58,6 +71,17 @@ export class Options {
     this.pushService.requestPermissions();
   }
 
+  protected getThemeName(theme: string): string {
+    return theme.charAt(0).toUpperCase() + theme.slice(1);
+  }
+
   protected readonly getLanguages = getLanguages;
   protected readonly Notification = Notification;
+  protected readonly THEMES = THEMES;
 }
+
+const THEMES = [
+  'abyss', 'aqua', 'business', 'dark', 'dim', 'dracula', 'halloween', 'night', 'sunset', 'synthwave',
+  null,
+  'corporate', 'emerald', 'fantasy', 'garden', 'retro'
+];
