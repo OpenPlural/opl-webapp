@@ -187,6 +187,7 @@ export class ImportService {
 
       newMembers.push({
         id: member._id,
+        pkId: nullableField(member.pkId),
         name: member.name,
         pronouns: nullableField(member.pronouns),
         avatar: nullableField(member.avatarUrl),
