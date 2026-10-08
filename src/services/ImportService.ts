@@ -54,6 +54,7 @@ export class ImportService {
       polls,
       gallery,
       user,
+      cdn: obj.cdn || null,
       truncate: flags.truncate,
     });
   }
@@ -116,6 +117,7 @@ export class ImportService {
       members,
       polls,
       user,
+      cdn: null,
       truncate: flags.truncate,
     });
   }
