@@ -105,6 +105,7 @@ export class HistoricFrontEntry {
         false,
       );
       if (!endedAt) {
+        this.localStorageService.markDirty();
         await this.syncService.fullSync();
       }
       this.update.emit();
