@@ -13,13 +13,13 @@ export class ImportService {
     const obj = JSON.parse(input);
 
     let privacy: any[] | null = null;
-    if (flags.privacyBuckets && 'privacyBuckets' in obj) {
-      privacy = obj.privacyBuckets;
+    if (flags.privacyBuckets && 'privacy' in obj) {
+      privacy = obj.privacy;
     }
 
     let fields: any[] | null = null;
-    if (flags.customFields && 'customFields' in obj) {
-      fields = obj.customFields;
+    if (flags.customFields && 'fields' in obj) {
+      fields = obj.fields;
     }
 
     let folders: any[] | null = null;
