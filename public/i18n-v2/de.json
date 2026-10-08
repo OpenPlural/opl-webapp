@@ -456,6 +456,7 @@
       "customFields": "Benutzerdefinierte Felder importieren",
       "polls": "Umfragen importieren",
       "privacyBuckets": "Privatsphäre-Buckets importieren",
+      "userProfile": "Nutzerprofil importieren",
       "truncate": "Alles kürzen, was zu lang ist"
     }
   },

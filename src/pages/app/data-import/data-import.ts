@@ -45,6 +45,7 @@ export class DataImport implements OnInit, OnDestroy {
     const customFields = formData.get('customFields')?.toString() === 'on';
     const polls = formData.get('polls')?.toString() === 'on';
     const privacyBuckets = formData.get('privacyBuckets')?.toString() === 'on';
+    const userProfile = formData.get('userProfile')?.toString() === 'on';
     const truncate = formData.get('truncate')?.toString() === 'on';
 
     if (file instanceof File) {
@@ -56,6 +57,7 @@ export class DataImport implements OnInit, OnDestroy {
         customFields,
         polls,
         privacyBuckets,
+        userProfile,
         truncate,
       });
       reader.readAsText(file);

@@ -41,6 +41,11 @@ export class ImportService {
       polls = obj.polls;
     }
 
+    let user: any | null = null;
+    if (flags.userProfile && 'user' in obj) {
+      user = obj.user;
+    }
+
     await this.webService.import({
       privacy,
       fields,
@@ -48,6 +53,8 @@ export class ImportService {
       members,
       polls,
       gallery,
+      user,
+      cdn: obj.cdn || null,
       truncate: flags.truncate,
     });
   }
@@ -90,12 +97,27 @@ export class ImportService {
       polls = await this.importPolls(obj.polls);
     }
 
+    let user: any | null = null;
+    if (flags.userProfile && 'users' in obj) {
+      if (Array.isArray(obj.users) && obj.users.length === 1) {
+        const userObj = obj.users[0];
+        user = {
+          avatar: nullableField(userObj.avatarUrl),
+          description: nullableField(userObj.desc),
+          color: toColorInt(userObj.color),
+          system: 'isAsystem' in userObj && typeof userObj.isAsystem === "boolean" && userObj.isAsystem,
+        };
+      }
+    }
+
     await this.webService.import({
       privacy,
       fields,
       folders,
       members,
       polls,
+      user,
+      cdn: null,
       truncate: flags.truncate,
     });
   }
@@ -290,5 +312,6 @@ export interface ImportFlags {
   customFields: boolean;
   polls: boolean;
   privacyBuckets: boolean;
+  userProfile: boolean;
   truncate: boolean;
 }

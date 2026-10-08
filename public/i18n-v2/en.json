@@ -464,6 +464,7 @@
       "customFields": "Import custom fields",
       "polls": "Import polls",
       "privacyBuckets": "Import privacy buckets",
+      "userProfile": "Import user profile",
       "truncate": "Truncate everything that is too long"
     }
   },
