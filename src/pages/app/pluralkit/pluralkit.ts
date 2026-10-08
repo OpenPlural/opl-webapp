@@ -6,6 +6,7 @@ import { nullableField } from '../../../util/NullString';
 import { Loading } from '../../../components/loading/loading';
 import { PkConfig } from '../../../services/model/PluralKit';
 import { SyncService } from '../../../services/SyncService';
+import { LocalStorageService } from '../../../services/LocalStorageService';
 
 @Component({
   selector: 'app-pluralkit',
@@ -13,6 +14,7 @@ import { SyncService } from '../../../services/SyncService';
   templateUrl: './pluralkit.html',
 })
 export class Pluralkit implements OnInit {
+  private readonly localStorageService = inject(LocalStorageService);
   private readonly syncService = inject(SyncService);
   private readonly webService = inject(WebService);
 
@@ -49,11 +51,13 @@ export class Pluralkit implements OnInit {
     }
   }
 
-  protected async sync() {
+  protected async sync(direction: 'Push' | 'Pull') {
     try {
       this.loadingType.set('sync');
       this.loading.set(true);
-      await this.webService.syncPk();
+      await this.webService.syncPk(direction);
+      this.localStorageService.markDirty();
+      await this.syncService.fullSync();
     } finally {
       this.loading.set(false);
     }

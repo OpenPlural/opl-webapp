@@ -264,7 +264,10 @@
   "pluralkit": {
     "actions": {
       "link": "Повежи PluralKit",
-      "sync": "Синхронизуј са PluralKit-ом"
+      "sync": {
+        "push": "Синхронизуј са PluralKit-ом",
+        "pull": "Увези из PluralKit-а"
+      }
     },
     "labels": {
       "token": "PluralKit Токен",
@@ -446,8 +449,8 @@
       "import": "Увези податке"
     },
     "labels": {
-      "simplyPlural": "Увези из Simply Plural",
-      "openPlural": "Увези из Open Plural",
+      "simplyPlural": "Увези из Simply Plural-а",
+      "openPlural": "Увези из Open Plural-а",
       "file": "Фајл (.json)",
       "flags": "Опције",
       "folders": "Увези фасцикле",

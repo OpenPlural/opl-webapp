@@ -272,7 +272,10 @@
   "pluralkit": {
     "actions": {
       "link": "Link PluralKit",
-      "sync": "Sync with PluralKit"
+      "sync": {
+        "push": "Sync with PluralKit",
+        "pull": "Import from PluralKit"
+      }
     },
     "labels": {
       "token": "PluralKit Token",
