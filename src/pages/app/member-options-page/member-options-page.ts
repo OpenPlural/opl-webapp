@@ -20,8 +20,11 @@ export class MemberOptionsPage {
 
   readonly member = input.required<Member>();
   readonly updateArchived = output<boolean>();
+  readonly updatePkId = output<string>();
 
-  protected readonly memberCreationDate = computed(() => this.settingsService.formatDate(Date.parse(this.member().createdAt), 'DateTime'));
+  protected readonly memberCreationDate = computed(() =>
+    this.settingsService.formatDate(Date.parse(this.member().createdAt), 'DateTime'),
+  );
 
   protected readonly privacyIds = computed(() => this.privacy()?.map((bucket) => bucket.id) || []);
   protected readonly privacy = signal<SimplePrivacyBucket[] | null>(null);
@@ -45,7 +48,7 @@ export class MemberOptionsPage {
     for (const id of ids) {
       if (!privacyIds.includes(id)) {
         const bucket = await this.webService.addPrivacyBucketMember(id, member);
-        this.privacy.update(buckets => {
+        this.privacy.update((buckets) => {
           if (buckets) {
             return [...buckets, bucket].sort(compareCustomSort);
           } else {
@@ -57,7 +60,7 @@ export class MemberOptionsPage {
     for (const id of privacyIds) {
       if (!ids.includes(id)) {
         await this.webService.removePrivacyBucketMember(id, member);
-        this.privacy.update(buckets => {
+        this.privacy.update((buckets) => {
           if (buckets) {
             return buckets.filter((b) => b.id !== id);
           } else {
@@ -67,5 +70,10 @@ export class MemberOptionsPage {
       }
     }
     await this.loadPrivacy();
+  }
+
+  protected pkIdChanged(event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.updatePkId.emit(input.value);
   }
 }

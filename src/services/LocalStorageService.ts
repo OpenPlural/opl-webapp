@@ -448,6 +448,7 @@ export class LocalStorageService {
       ...member,
       id: BigInt(member.id),
       remoteId: member.remoteId ? BigInt(member.remoteId) : null,
+      pkId: member.pkId || null,
       folders: member.folders.map((f: string) => BigInt(f)),
       sort: member.sort ? BigInt(member.sort) : 0n,
     };

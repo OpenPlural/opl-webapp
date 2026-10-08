@@ -1,0 +1,47 @@
+<app-nav-page-container>
+  <main>
+    @let config = this.config();
+    @if (config) {
+      <form class="w-full px-2" (submit)="updatePkConfig($event)">
+        @let loading = this.loading();
+        @let loadingType = this.loadingType();
+
+        <fieldset class="fieldset">
+          <legend class="fieldset-legend">{{'pluralkit.labels.token' | translate}}</legend>
+          <input name="token" type="password" class="w-full input" [value]="config.token || ''" [disabled]="loading">
+        </fieldset>
+
+        <fieldset class="fieldset">
+          <legend class="fieldset-legend">{{'pluralkit.labels.displayName' | translate}}</legend>
+          <input name="displayName" type="text" class="w-full input" [value]="config.displayName || ''" [disabled]="loading">
+        </fieldset>
+        <div class="px-4">
+          %name% — {{'fields.name' | translate}}
+          <br>
+          %pronouns% — {{'fields.pronouns' | translate}}
+          <br>
+          {{'pluralkit.labels.displayNameEmpty' | translate}}
+        </div>
+
+        <button type="submit" class="mt-2 w-full btn btn-success" [disabled]="loading">
+          {{'actions.save' | translate}}
+          @if (loading && loadingType === 'save') {
+            <span class="loading loading-spinner"></span>
+          }
+        </button>
+      </form>
+      <div class="divider"></div>
+      <div class="w-full px-2">
+        <button class="w-full btn btn-accent" [disabled]="loading || config.token === null" (click)="sync()">
+          <i class="fa fa-refresh"></i>
+          {{'pluralkit.actions.sync' | translate}}
+          @if (loading && loadingType === 'sync') {
+            <span class="loading loading-spinner"></span>
+          }
+        </button>
+      </div>
+    } @else {
+      <app-loading />
+    }
+  </main>
+</app-nav-page-container>

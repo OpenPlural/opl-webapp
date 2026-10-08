@@ -23,6 +23,7 @@ import {compareCustomSort} from '../../util/CustomSort';
 import { MemberSelector } from '../selector/member-selector/member-selector';
 import { truncateCurrentDate } from '../../util/DateTruncate';
 import { SyncService } from '../../services/SyncService';
+import { SearchFlags } from '../search-options/search-options';
 
 @Component({
   selector: 'app-member-folder-view',
@@ -47,7 +48,7 @@ export class MemberFolderView implements OnInit {
   readonly members = input.required<Member[]>();
   readonly folders = input.required<Folder[]>();
   readonly searchQuery = input.required<string | null>();
-  readonly archived = input.required<boolean>();
+  readonly searchFlags = input.required<SearchFlags>();
   readonly editable = input.required<boolean>();
   readonly custom = input.required<boolean>();
   readonly friendId = input.required<UserId | null>();
@@ -84,15 +85,26 @@ export class MemberFolderView implements OnInit {
   protected readonly currentFolder = signal<FolderId | null>(null);
   protected readonly shownMembers = computed(() => {
     let allMembers = this.members();
-    if (!this.archived()) {
+    const searchFlags = this.searchFlags();
+    if (!searchFlags.archived) {
       allMembers = allMembers.filter((member) => !member.archived);
     }
 
     const searchQuery = this.searchQuery();
     if (searchQuery) {
-      allMembers = allMembers.filter(
-        (member) => member.name.toLowerCase().indexOf(searchQuery.toLowerCase()) !== -1,
-      );
+      const customFieldData = searchFlags.customFields ? this.localStorageService.customFieldValues() : [];
+      const query = searchQuery.toLowerCase();
+      allMembers = allMembers.filter((member) => {
+        if (searchFlags.name && member.name.toLowerCase().includes(query)) return true;
+        if (searchFlags.pronouns && member.pronouns?.toLowerCase().includes(query)) return true;
+        if (searchFlags.description && member.description?.toLowerCase().includes(query)) return true;
+        if (searchFlags.customFields) {
+          for (const field of customFieldData) {
+            if (field.memberId === member.id && field.value.toLowerCase().includes(query)) return true;
+          }
+        }
+        return false;
+      });
     }
     if (this.showFolders()) {
       const currentFolder = this.currentFolder();

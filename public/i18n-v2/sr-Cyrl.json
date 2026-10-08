@@ -66,6 +66,7 @@
     "name": "Име",
     "pronouns": "Заменице",
     "description": "Опис",
+    "customFields": "Прилагођена поља",
     "emoji": "Емотикон",
     "color": "Боја",
     "avatarUrl": "URL аватара",
@@ -109,6 +110,7 @@
     "dataImport": "Увоз",
     "dataExport": "Извоз",
     "dataImportExport": "Увоз & Извоз",
+    "pluralkit": "PluralKit",
     "massDelete": "Масовно брисање",
     "social": "Друштвене мреже",
     "legal": "Правно",
@@ -172,7 +174,9 @@
     },
     "labels": {
       "folders": "Фасцикле",
+      "searchOptions": "Опције претраживања",
       "archived": "Архивиран",
+      "pkId": "PluralKit ID",
       "options": {
         "archived": {
           "name": "Архивиран",
@@ -186,6 +190,7 @@
       "front": "Додај на фронт",
       "unfront": "Уклони са фронта",
       "changeTime": "Промени време фронта",
+      "changeMember": "Промени фронтера",
       "create": "Креирај унос фронта",
       "delete": "Избриши унос фронта"
     },
@@ -220,7 +225,9 @@
         "color": "Боја",
         "date": "Датум",
         "time": "Доба дана",
-        "datetime": "Датум & Доба дана"
+        "datetime": "Датум & Доба дана",
+        "daymonth": "Дан & Месец",
+        "namedscale": "Именована скала"
       }
     }
   },
@@ -252,6 +259,17 @@
         "abstain": "Дозволи апстинирање",
         "veto": "Дозволи вето"
       }
+    }
+  },
+  "pluralkit": {
+    "actions": {
+      "link": "Повежи PluralKit",
+      "sync": "Синхронизуј са PluralKit-ом"
+    },
+    "labels": {
+      "token": "PluralKit Токен",
+      "displayName": "Приказано име за чланове",
+      "displayNameEmpty": "Оставите празно ако не желите поставити приказана имена"
     }
   },
   "analytics": {
@@ -368,6 +386,9 @@
     },
     "labels": {
       "defaultPage": "Задана страница",
+      "theme": "Тема",
+      "lightThemes": "Светле теме",
+      "darkThemes": "Тамне теме",
       "dateFormat": "Формат датума",
       "dateFormatExample": "Пример датума је 1. новембар 2024",
       "timeFormat": "Формат времена",
@@ -435,6 +456,7 @@
       "customFields": "Увези прилагођена поља",
       "polls": "Увези анкете",
       "privacyBuckets": "Увези канте за приватност",
+      "userProfile": "Увези кориснички профил",
       "truncate": "Скрати све што је предуго"
     }
   },

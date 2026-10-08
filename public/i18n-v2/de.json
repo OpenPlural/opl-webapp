@@ -66,6 +66,7 @@
     "name": "Name",
     "pronouns": "Pronomen",
     "description": "Beschreibung",
+    "customFields": "Benutzerdefinierte Felder",
     "emoji": "Emoji",
     "color": "Farbe",
     "avatarUrl": "Avatar URL",
@@ -109,6 +110,7 @@
     "dataImport": "Import",
     "dataExport": "Export",
     "dataImportExport": "Import & Export",
+    "pluralkit": "PluralKit",
     "massDelete": "Massenlöschung",
     "social": "Soziale Medien",
     "legal": "Legales",
@@ -172,7 +174,9 @@
     },
     "labels": {
       "folders": "Ordner",
+      "searchOptions": "Suchoptionen",
       "archived": "Archiviert",
+      "pkId": "PluralKit ID",
       "options": {
         "archived": {
           "name": "Archiviert",
@@ -186,6 +190,7 @@
       "front": "Zur Front hinzufügen",
       "unfront": "Von der Front entfernen",
       "changeTime": "Frontzeit ändern",
+      "changeMember": "Fronter ändern",
       "create": "Fronteintrag erstellen",
       "delete": "Fronteintrag löschen"
     },
@@ -220,7 +225,9 @@
         "color": "Farbe",
         "date": "Datum",
         "time": "Uhrzeit",
-        "datetime": "Datum & Uhrzeit"
+        "datetime": "Datum & Uhrzeit",
+        "daymonth": "Tag & Monat",
+        "namedscale": "Beschriftete Skala"
       }
     }
   },
@@ -252,6 +259,17 @@
         "abstain": "Enthaltung erlauben",
         "veto": "Veto erlauben"
       }
+    }
+  },
+  "pluralkit": {
+    "actions": {
+      "link": "PluralKit verbinden",
+      "sync": "Mit PluralKit synchronisieren"
+    },
+    "labels": {
+      "token": "PluralKit Token",
+      "displayName": "Anzeigename für Mitglieder",
+      "displayNameEmpty": "Leer lassen, um keine Anzeigenamen zu setzen"
     }
   },
   "analytics": {
@@ -368,6 +386,9 @@
     },
     "labels": {
       "defaultPage": "Standardseite",
+      "theme": "Theme",
+      "lightThemes": "Helle Themen",
+      "darkThemes": "Dunkle Themen",
       "dateFormat": "Datumsformat",
       "dateFormatExample": "Das Beispieldatum ist der 1. November 2024",
       "timeFormat": "Uhrzeitformat",
@@ -435,6 +456,7 @@
       "customFields": "Benutzerdefinierte Felder importieren",
       "polls": "Umfragen importieren",
       "privacyBuckets": "Privatsphäre-Buckets importieren",
+      "userProfile": "Nutzerprofil importieren",
       "truncate": "Alles kürzen, was zu lang ist"
     }
   },

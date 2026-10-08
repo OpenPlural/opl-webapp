@@ -1,6 +1,9 @@
 @let members = this.members();
 @let multiple = this.selectMultiple();
 <app-selector [dialogId]="dialogId()" [title]="title()" [canSubmit]="multiple" (submitSelection)="submitSelection.emit(this.updatedSelection())" (forceClose)="forceClose.emit()">
+  <div class="text-right -mt-15">
+    <app-toggle-icon-button name="members.labels.archived" icon="fa-archive" [toggled]="showArchived()" (toggle)="toggleShowArchived()" />
+  </div>
   @let selection = this.updatedSelection();
   @for (member of members; track member.id) {
     <app-member-list-item [member]="member" [editable]="false" [selectable]="multiple" [selected]="selection.includes(member.id)" (selectionStatus)="setSelected(member.id, $event)" (action)="setSelected(member.id, true)" />

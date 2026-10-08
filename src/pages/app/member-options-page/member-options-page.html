@@ -1,5 +1,9 @@
 @let member = this.member();
 <app-toggle-setting name="members.labels.options.archived" [toggled]="member.archived" (toggle)="updateArchived.emit($event)" />
+<fieldset class="fieldset">
+  <legend class="fieldset-legend">{{'members.labels.pkId' | translate}}</legend>
+  <input name="pkId" type="text" class="input w-full" max="6" [value]="member.pkId" (input)="pkIdChanged($event)">
+</fieldset>
 @if (member.remoteId) {
   <div class="divider"></div>
   <div class="p-5 pt-0">

@@ -66,6 +66,7 @@
     "name": "Name",
     "pronouns": "Pronouns",
     "description": "Description",
+    "customFields": "Custom Fields",
     "emoji": "Emoji",
     "color": "Color",
     "avatarUrl": "Avatar URL",
@@ -111,6 +112,7 @@
     "dataImport": "Import",
     "dataExport": "Export",
     "dataImportExport": "Import & Export",
+    "pluralkit": "PluralKit",
     "massDelete": "Mass delete",
     "social": "Social Media",
     "legal": "Legal",
@@ -174,7 +176,9 @@
     },
     "labels": {
       "folders": "Folders",
+      "searchOptions": "Search options",
       "archived": "Archived",
+      "pkId": "PluralKit ID",
       "options": {
         "archived": {
           "name": "Archived",
@@ -188,6 +192,7 @@
       "front": "Add to front",
       "unfront": "Remove from front",
       "changeTime": "Change front time",
+      "changeMember": "Change fronter",
       "create": "Create front entry",
       "delete": "Delete front entry"
     },
@@ -225,7 +230,12 @@
         "color": "Color",
         "date": "Date",
         "time": "Time",
-        "datetime": "Date & Time"
+        "datetime": "Date & Time",
+        "daymonth": "Day & Month",
+        "namedscale": "Named Scale"
+      },
+      "namedscale": {
+        "labels": "Labels"
       }
     }
   },
@@ -257,6 +267,17 @@
         "abstain": "Allow abstain",
         "veto": "Allow veto"
       }
+    }
+  },
+  "pluralkit": {
+    "actions": {
+      "link": "Link PluralKit",
+      "sync": "Sync with PluralKit"
+    },
+    "labels": {
+      "token": "PluralKit Token",
+      "displayName": "Display Name for members",
+      "displayNameEmpty": "Leave empty to not set display names"
     }
   },
   "analytics": {
@@ -373,6 +394,9 @@
     },
     "labels": {
       "defaultPage": "Default Page",
+      "theme": "Theme",
+      "lightThemes": "Light themes",
+      "darkThemes": "Dark themes",
       "dateFormat": "Date Format",
       "dateFormatExample": "The example date is the 1st of November 2024",
       "timeFormat": "Time Format",
@@ -440,6 +464,7 @@
       "customFields": "Import custom fields",
       "polls": "Import polls",
       "privacyBuckets": "Import privacy buckets",
+      "userProfile": "Import user profile",
       "truncate": "Truncate everything that is too long"
     }
   },

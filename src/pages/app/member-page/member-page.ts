@@ -22,6 +22,7 @@ import { MemberFrontHistoryPage } from '../member-front-history-page/member-fron
 import { compareCustomSort, sortNestedFolders } from '../../../util/CustomSort';
 import { MemberGallery } from '../../../components/member-gallery/member-gallery';
 import { CdkScrollable } from '@angular/cdk/scrolling';
+import { nullableField } from '../../../util/NullString';
 
 @Component({
   selector: 'app-member-page',
@@ -56,6 +57,7 @@ export class MemberPage {
   protected readonly editingCustomFieldData = signal<boolean>(false);
   protected readonly updatedCustomFieldData = signal<CustomFieldDataUpdate[] | null>(null);
   protected readonly updatedArchived = signal<boolean | null>(null);
+  protected readonly updatedPkId = signal<string | null>(null);
 
   protected readonly id = toSignal(
     this.route.paramMap.pipe(
@@ -115,6 +117,14 @@ export class MemberPage {
         updatedMember = member;
       }
       updatedMember.archived = updatedArchived;
+    }
+
+    const updatedPkId = this.updatedPkId();
+    if (updatedPkId !== null) {
+      if (!updatedMember) {
+        updatedMember = member;
+      }
+      updatedMember.pkId = nullableField(updatedPkId);
     }
 
     const folderUpdates = this.updatedMemberFolders();

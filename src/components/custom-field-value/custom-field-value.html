@@ -33,6 +33,31 @@
           <input type="text" class="grow input" [value]="dateTimeFormatted() || ''" readonly />
         }
       }
+      @case (CUSTOM_FIELD_DATA_TYPE_DAY_MONTH) {
+        @if (editable) {
+          <input type="date" class="grow input" [value]="dateValue()" (input)="dateTimeChanged($event)" />
+        } @else {
+          <input type="text" class="grow input" [value]="dateTimeFormatted() || ''" readonly />
+        }
+      }
+      @case (CUSTOM_FIELD_DATA_TYPE_NAMED_SCALE) {
+        <div class="grow">
+          <input type="range" class="w-full range range-accent opacity-100 [--range-fill:0]" min="0" max="200"
+                 [value]="value || '0'" [disabled]="!editable" [readonly]="!editable" (change)="scaleValueChanged($event)" />
+          @let scaleLabels = this.scaleLabels();
+          @if (scaleLabels) {
+            <div class="flex justify-between px-2">
+              <span>|</span>
+              <span>|</span>
+              <span>|</span>
+            </div>
+            <div class="flex justify-between">
+              <span>{{scaleLabels[0]}}</span>
+              <span>{{scaleLabels[1]}}</span>
+            </div>
+          }
+        </div>
+      }
     }
     @if (editable) {
       <app-vertical-center class="max-h-10">
