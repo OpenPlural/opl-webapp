@@ -32,9 +32,16 @@
       </form>
       <div class="divider"></div>
       <div class="w-full px-2">
-        <button class="w-full btn btn-accent" [disabled]="loading || config.token === null" (click)="sync()">
+        <button class="w-full btn btn-accent" [disabled]="loading || config.token === null" (click)="sync('Push')">
           <i class="fa fa-refresh"></i>
-          {{'pluralkit.actions.sync' | translate}}
+          {{'pluralkit.actions.sync.push' | translate}}
+          @if (loading && loadingType === 'sync') {
+            <span class="loading loading-spinner"></span>
+          }
+        </button>
+        <button class="w-full mt-2 btn btn-soft" [disabled]="loading || config.token === null" (click)="sync('Pull')">
+          <i class="fa fa-download"></i>
+          {{'pluralkit.actions.sync.pull' | translate}}
           @if (loading && loadingType === 'sync') {
             <span class="loading loading-spinner"></span>
           }

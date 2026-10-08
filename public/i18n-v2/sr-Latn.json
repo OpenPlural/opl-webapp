@@ -264,7 +264,10 @@
   "pluralkit": {
     "actions": {
       "link": "Poveži PluralKit",
-      "sync": "Sinhronizuj sa PluralKit-om"
+      "sync": {
+        "push": "Sinhronizuj sa PluralKit-om",
+        "pull": "Uvezi iz PluralKit-a"
+      }
     },
     "labels": {
       "token": "PluralKit Token",
@@ -446,8 +449,8 @@
       "import": "Uvezi"
     },
     "labels": {
-      "simplyPlural": "Uvezi iz Simply Plural",
-      "openPlural": "Uvezi iz Open Plural",
+      "simplyPlural": "Uvezi iz Simply Plural-a",
+      "openPlural": "Uvezi iz Open Plural-a",
       "file": "Fajl (.json)",
       "flags": "Opcije",
       "folders": "Uvezi fascikle",

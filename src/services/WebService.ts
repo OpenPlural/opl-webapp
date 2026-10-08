@@ -419,8 +419,8 @@ export class WebService {
     await firstValueFrom(this.http.post(`${BASE_URL}/api/v1/pluralkit/`, config));
   }
 
-  async syncPk() {
-    await firstValueFrom(this.http.post(`${BASE_URL}/api/v1/pluralkit/sync`, {}));
+  async syncPk(direction: 'Push' | 'Pull') {
+    await firstValueFrom(this.http.post(`${BASE_URL}/api/v1/pluralkit/sync?direction=${direction}`, {}));
   }
 }
 

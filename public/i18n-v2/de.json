@@ -264,7 +264,10 @@
   "pluralkit": {
     "actions": {
       "link": "PluralKit verbinden",
-      "sync": "Mit PluralKit synchronisieren"
+      "sync": {
+        "push": "Mit PluralKit synchronisieren",
+        "pull": "Von PluralKit importieren"
+      }
     },
     "labels": {
       "token": "PluralKit Token",

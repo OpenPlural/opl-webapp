@@ -49,11 +49,11 @@ export class Pluralkit implements OnInit {
     }
   }
 
-  protected async sync() {
+  protected async sync(direction: 'Push' | 'Pull') {
     try {
       this.loadingType.set('sync');
       this.loading.set(true);
-      await this.webService.syncPk();
+      await this.webService.syncPk(direction);
     } finally {
       this.loading.set(false);
     }
