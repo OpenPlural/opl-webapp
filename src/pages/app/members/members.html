@@ -1,4 +1,4 @@
-<app-nav-page-container [footer]="true" [searchable]="true" (search)="searchQuery.set($event); updateSearch()">
+<app-nav-page-container [footer]="true" [searchable]="true" [searchQuery]="searchQuery()" (search)="searchQuery.set($event); updateSearch()">
   <div class="search-options">
     <app-search-options [flags]="searchFlags()" [canSearchCustomFields]="true" (changeFlags)="searchFlags.set($event); updateSearch()" />
   </div>

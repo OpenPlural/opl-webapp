@@ -1,4 +1,4 @@
-import {Component, computed, inject, input, output, signal} from '@angular/core';
+import { Component, computed, inject, input, OnInit, output, signal } from '@angular/core';
 import { PageContainer } from '../page-container/page-container';
 import { appRoutes } from '../../../app/app.routes';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -18,7 +18,7 @@ import {SettingsService} from '../../../services/SettingsService';
   imports: [PageContainer, TranslatePipe, ToggleIconButton, PopupConfirm, NgClass],
   templateUrl: './nav-page-container.html',
 })
-export class NavPageContainer {
+export class NavPageContainer implements OnInit {
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   private readonly accountService = inject(AccountService);
@@ -48,10 +48,18 @@ export class NavPageContainer {
   readonly fab = input<boolean>(false);
   readonly scrollable = input<boolean>(true);
   readonly searchable = input<boolean>(false);
+  readonly searchQuery = input<string | null>(null);
   readonly headerButtons = input<boolean>(false);
   readonly forceNavMenu = input<boolean>(false);
   readonly search = output<string | null>();
   readonly fabAction = output();
+
+  ngOnInit() {
+    const searchQuery= this.searchQuery();
+    if (searchQuery) {
+      this.searching.set(true);
+    }
+  }
 
   protected getCurrentRouteName(): string | null {
     const data = this.route.routeConfig?.data;
