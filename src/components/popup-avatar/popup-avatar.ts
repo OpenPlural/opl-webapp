@@ -49,7 +49,7 @@ export class PopupAvatar {
         return;
       }
       this.uploading.emit();
-      const bytes = await file.bytes();
+      const bytes = await file.arrayBuffer();
       value = await this.webService.uploadToCdn(bytes, file.type.replace("image/", ""));
     } else {
       value = formData.get('value')?.toString().trim();
