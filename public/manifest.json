@@ -27,6 +27,11 @@
       "sizes": "1024x1024",
       "type": "image/png",
       "purpose": "maskable"
+    }, {
+      "src": "icons/icon-transparent.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "monochrome"
     }
   ]
 }
