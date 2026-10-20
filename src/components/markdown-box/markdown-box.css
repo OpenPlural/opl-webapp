@@ -23,3 +23,8 @@ div.markdown ::ng-deep li > ul {
 div.markdown ::ng-deep blockquote {
   @apply border-l-4 rounded-l-sm pl-2;
 }
+
+div.markdown ::ng-deep .censored:not([data-uncensored="true"]) {
+  @apply bg-neutral text-neutral;
+  @apply select-none;
+}

@@ -87,6 +87,25 @@ marked.use({
         const nestedHtml = marked.parseInline(token["text"]) as string;
         return `<span lang="${token["code"]}">${nestedHtml}</span>`;
       }
+    }, {
+      name: 'censored',
+      level: 'inline',
+      start(src) { return src.indexOf('||'); },
+      tokenizer(src) {
+        const match = src.match(/^\|\|([^|]*)\|\|/);
+        if (match) {
+          return {
+            type: 'censored',
+            raw: match[0],
+            text: match[1],
+          }
+        }
+        return undefined;
+      },
+      renderer(token) {
+        const nestedHtml = marked.parseInline(token["text"]) as string;
+        return `<span class="censored">${nestedHtml}</span>`;
+      }
     }
   ]
 });

@@ -31,6 +31,15 @@ export class MarkdownBox {
     this.markdown.set(input.value);
   }
 
+  protected markdownClick(event: PointerEvent) {
+    const target = event.target as HTMLElement;
+    if (target.classList.contains('censored') && !target.hasAttribute("data-uncensored")) {
+      target.setAttribute("data-uncensored", "true");
+    } else {
+      this.startEditing();
+    }
+  }
+
   protected startEditing() {
     if (!this.editable()) {
       return;
