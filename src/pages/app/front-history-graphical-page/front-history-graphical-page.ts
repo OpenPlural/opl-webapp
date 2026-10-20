@@ -120,7 +120,7 @@ export class FrontHistoryGraphicalPage {
     effect(() => this.loadFrontHistory());
   }
 
-  protected async loadFrontHistory() {
+  async loadFrontHistory() {
     const range = this.historyRange();
     if (range) {
       this.webService.getFrontHistoryInDateRange(range.start, range.end).then((frontHistory) => {
