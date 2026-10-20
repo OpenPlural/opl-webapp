@@ -9,6 +9,9 @@
   <div class="search-options">
     <app-search-options [flags]="searchFlags()" [canSearchCustomFields]="false" (changeFlags)="searchFlags.set($event); updateSearch()" />
   </div>
+  <div class="search-quick-access">
+    <app-toggle-icon-button name="members.labels.archived" icon="fa-archive" [toggled]="searchFlags().archived" (toggle)="toggleShowArchived()" />
+  </div>
   <main>
     @if (user) {
       @if (tab === 'account') {

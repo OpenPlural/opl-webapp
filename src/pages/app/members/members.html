@@ -2,6 +2,9 @@
   <div class="search-options">
     <app-search-options [flags]="searchFlags()" [canSearchCustomFields]="true" (changeFlags)="searchFlags.set($event); updateSearch()" />
   </div>
+  <div class="search-quick-access">
+    <app-toggle-icon-button name="members.labels.archived" icon="fa-archive" [toggled]="searchFlags().archived" (toggle)="toggleShowArchived()" />
+  </div>
   @let customFront = custom();
   <main>
     <app-member-folder-view [friendId]="null" [folders]="localFolders()" [members]="localMembers()" [searchQuery]="searchQuery()"

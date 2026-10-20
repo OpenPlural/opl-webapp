@@ -16,6 +16,8 @@
         @if (searching) {
           <ng-content select=".search-options"></ng-content>
           <input type="search" class="grow input" [value]="searchQuery()" (input)="search.emit($any($event).target.value)">
+        } @else {
+          <ng-content select=".search-quick-access"></ng-content>
         }
         <app-toggle-icon-button name="actions.search" icon="fa-search" size="" [toggled]="searching" (toggle)="toggleSearch()"/>
       }

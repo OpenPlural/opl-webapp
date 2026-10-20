@@ -107,6 +107,13 @@ export class FriendPage {
     }
   }
 
+  protected toggleShowArchived() {
+    this.searchFlags.update(flags => ({
+      ...flags,
+      archived: !flags.archived,
+    }));
+  }
+
   protected gotoTab(tab: 'account' | 'members') {
     forgetRememberedPath();
     forgetRememberedSearch();

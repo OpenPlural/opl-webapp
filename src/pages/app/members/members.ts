@@ -58,6 +58,13 @@ export class Members implements OnInit, OnDestroy {
     rememberLocalSearch(this.searchQuery(), this.searchFlags());
   }
 
+  protected toggleShowArchived() {
+    this.searchFlags.update(flags => ({
+      ...flags,
+      archived: !flags.archived,
+    }));
+  }
+
   protected gotoMembers() {
     this.router.navigate(['app', 'members']);
   }
