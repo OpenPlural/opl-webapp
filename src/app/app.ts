@@ -15,10 +15,12 @@ import { PopupConfirm } from '../components/popup-confirm/popup-confirm';
 import { WebService } from '../services/WebService';
 import { VERSION } from '../environment';
 import { forgetRememberedSearch } from '../util/RememberSearch';
+import { IconButton } from '../components/icon-button/icon-button';
+import { VerticalCenter } from '../components/vertical-center/vertical-center';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, TranslatePipe, PopupConfirm],
+  imports: [RouterOutlet, TranslatePipe, PopupConfirm, IconButton, VerticalCenter],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
@@ -39,8 +41,13 @@ export class App implements OnInit {
   protected readonly update = signal<string | null>(null);
   protected readonly updating = signal(false);
 
-  protected readonly installed = computed(() => !!('serviceWorker' in navigator && navigator.serviceWorker.controller));
-  protected readonly ready = computed(() => this.storagePersistRequested() && this.initialSyncDone() && this.localStorageService.ready());
+  protected readonly installed = computed(
+    () => !!('serviceWorker' in navigator && navigator.serviceWorker.controller),
+  );
+  protected readonly ready = computed(
+    () =>
+      this.storagePersistRequested() && this.initialSyncDone() && this.localStorageService.ready(),
+  );
   protected readonly toasts = computed(() => this.toastService.toasts());
   protected readonly languageCode = computed(() => {
     const lang = this.settingsService.settings().language;
@@ -70,14 +77,19 @@ export class App implements OnInit {
 
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
-        if (event.url !== '/app/members' && event.url !== '/app/fronters' && event.url !== '/app/custom-front' &&
-          !event.url.startsWith('/app/member/') && !event.url.startsWith('/app/folder/') &&
-          !event.url.startsWith('/app/friend/')) {
+        if (
+          event.url !== '/app/members' &&
+          event.url !== '/app/fronters' &&
+          event.url !== '/app/custom-front' &&
+          !event.url.startsWith('/app/member/') &&
+          !event.url.startsWith('/app/folder/') &&
+          !event.url.startsWith('/app/friend/')
+        ) {
           forgetRememberedPath();
           forgetRememberedSearch();
         }
       }
-    })
+    });
   }
 
   ngOnInit() {
@@ -85,13 +97,14 @@ export class App implements OnInit {
       this.storagePersistRequested.set(true);
     });
 
-    const lang = localStorage.getItem("languageSelected");
-    if (lang && lang === "true") {
+    const lang = localStorage.getItem('languageSelected');
+    if (lang && lang === 'true') {
       this.languageSelected.set(true);
     }
 
     if (!isDevMode()) {
-      this.webService.getNewestVersion()
+      this.webService
+        .getNewestVersion()
         .then((version) => {
           if (version !== VERSION) {
             this.update.set(version);
@@ -100,10 +113,10 @@ export class App implements OnInit {
         .catch((_) => {});
     }
 
-    let theme = localStorage.getItem("theme");
+    let theme = localStorage.getItem('theme');
     if (!theme) {
-      theme = "dim";
-      localStorage.setItem("theme", theme);
+      theme = 'dim';
+      localStorage.setItem('theme', theme);
     }
     document.body.setAttribute('data-theme', theme);
   }
@@ -115,11 +128,12 @@ export class App implements OnInit {
       return;
     }
 
-    this.syncService.fullSync()
+    this.syncService
+      .fullSync()
       .then(() => {
         this.initialSyncDone.set(true);
       })
-      .catch(err => {
+      .catch((err) => {
         this.errorService.logError(err);
         this.initialSyncDone.set(true);
       });
@@ -127,7 +141,7 @@ export class App implements OnInit {
 
   protected chooseLanguage(id: string) {
     this.settingsService.changeLanguage(id);
-    localStorage.setItem("languageSelected", "true");
+    localStorage.setItem('languageSelected', 'true');
     this.languageSelected.set(true);
   }
 
@@ -151,7 +165,7 @@ export class App implements OnInit {
             if (registration.waiting) {
               registration.waiting.postMessage({
                 type: 'SKIP_WAITING',
-              })
+              });
             }
 
             setTimeout(() => {
@@ -168,6 +182,10 @@ export class App implements OnInit {
     } finally {
       this.updating.set(false);
     }
+  }
+
+  protected removeToast(id: bigint) {
+    this.toastService.removeToast(id);
   }
 
   protected readonly getLanguages = getLanguages;
