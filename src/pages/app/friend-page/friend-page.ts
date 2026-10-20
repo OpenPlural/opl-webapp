@@ -89,8 +89,6 @@ export class FriendPage {
             if (rememberedSearch.flags) {
               this.searchFlags.set(rememberedSearch.flags);
             }
-          } else {
-            rememberFriendSearch(id, '', null);
           }
           this.user.set(user);
         });
