@@ -31,8 +31,13 @@
 
   <div class="toast z-20">
     @for (toast of toasts(); track toast.id) {
-      <div class="alert {{toast.type}} w-80">
-        {{toast.message}}
+      <div class="flex justify-between p-0 alert {{toast.type}} w-85">
+        <app-vertical-center>
+          <span class="p-4">{{toast.message}}</span>
+        </app-vertical-center>
+        <app-vertical-center>
+          <app-icon-button name="actions.close" icon="fa-times" buttonSize="btn-md" (action)="removeToast(toast.id)" />
+        </app-vertical-center>
       </div>
     }
   </div>

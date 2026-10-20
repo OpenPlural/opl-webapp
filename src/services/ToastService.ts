@@ -21,4 +21,8 @@ export class ToastService {
     const validity = Date.now() + TOAST_VALIDITY;
     this._toasts.update(toasts => [...toasts, { id, message, type, validity }]);
   }
+
+  removeToast(id: bigint) {
+    this._toasts.update(toasts => toasts.filter(toast => toast.id !== id));
+  }
 }
