@@ -406,8 +406,8 @@ export class WebService {
     return firstValueFrom(this.http.post(`${BASE_URL}/api/v1/export/`, {}));
   }
 
-  async uploadToCdn(bytes: Uint8Array, type: string): Promise<string> {
-    const res = await firstValueFrom(this.http.post<UploadResponse>(`${BASE_URL}/api/v1/cdn/upload`, bytes.buffer));
+  async uploadToCdn(bytes: ArrayBuffer, type: string): Promise<string> {
+    const res = await firstValueFrom(this.http.post<UploadResponse>(`${BASE_URL}/api/v1/cdn/upload`, bytes));
     return `:cdn:${res.id}:${type}:${res.access}`;
   }
 
