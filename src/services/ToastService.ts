@@ -1,7 +1,8 @@
 import { Injectable, signal } from '@angular/core';
 import { generateLocalId } from '../util/IdGenerator';
 
-const TOAST_VALIDITY = 10000;
+const TOAST_VALIDITY_SUCCESS = 2000;
+const TOAST_VALIDITY_FAULTY = 10000;
 type ToastType = 'alert-warning' | 'alert-error' | 'alert-success';
 
 @Injectable({ providedIn: 'root' })
@@ -18,7 +19,7 @@ export class ToastService {
 
   sendToast(message: string, type: ToastType) {
     const id = generateLocalId();
-    const validity = Date.now() + TOAST_VALIDITY;
+    const validity = Date.now() + (type === 'alert-success' ? TOAST_VALIDITY_SUCCESS : TOAST_VALIDITY_FAULTY);
     this._toasts.update(toasts => [...toasts, { id, message, type, validity }]);
   }
 
