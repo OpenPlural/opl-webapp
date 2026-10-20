@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, output } from '@angular/core';
+import { Component, computed, inject, input, output, signal } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { formatDuration } from '../../util/Duration';
 import { SettingsService } from '../../services/SettingsService';
@@ -10,14 +10,22 @@ import { openDialog } from '../../util/CommonFunctions';
 import { PopupConfirm } from '../popup-confirm/popup-confirm';
 import { SyncService } from '../../services/SyncService';
 import { LocalStorageService } from '../../services/LocalStorageService';
-import { Member } from '../../services/model/Member';
+import { Member, MemberId } from '../../services/model/Member';
 import { ProfilePicture } from '../profile-picture/profile-picture';
 import { VerticalCenter } from '../vertical-center/vertical-center';
 import { toColor } from '../../util/ColorConvert';
+import { MemberSelector } from '../selector/member-selector/member-selector';
 
 @Component({
   selector: 'app-historic-front-entry',
-  imports: [TranslatePipe, IconButton, PopupConfirm, ProfilePicture, VerticalCenter],
+  imports: [
+    TranslatePipe,
+    IconButton,
+    PopupConfirm,
+    ProfilePicture,
+    VerticalCenter,
+    MemberSelector,
+  ],
   templateUrl: './historic-front-entry.html',
 })
 export class HistoricFrontEntry {
@@ -37,6 +45,8 @@ export class HistoricFrontEntry {
   readonly selected = input<boolean>();
   readonly onSelected = output<PointerEvent>();
   readonly update = output();
+
+  protected readonly changingFronter = signal(false);
 
   protected readonly startTimeValue = computed(() => {
     const frontEntry = this.frontEntry();
@@ -69,6 +79,24 @@ export class HistoricFrontEntry {
     const end = Date.parse(endedAt);
     const duration = end - start;
     return formatDuration(duration);
+  }
+
+  protected async updateFronter(selection: MemberId[]) {
+    this.changingFronter.set(false);
+
+    console.log(selection);
+
+    const frontEntry = this.frontEntry();
+    await this.webService.updateFrontEntry({
+      ...frontEntry,
+      member: selection[0],
+      updatedAt: truncateCurrentDate(),
+    }, false);
+    if (!frontEntry.endedAt) {
+      this.localStorageService.markDirty();
+      await this.syncService.fullSync();
+    }
+    this.update.emit();
   }
 
   protected async updateFrontTime(event: SubmitEvent) {
