@@ -51,7 +51,7 @@ export class NavPageContainer implements OnInit {
   readonly searchQuery = input<string | null>(null);
   readonly headerButtons = input<boolean>(false);
   readonly forceNavMenu = input<boolean>(false);
-  readonly search = output<string | null>();
+  readonly searchText = output<string | null>();
   readonly fabAction = output();
 
   ngOnInit() {
@@ -87,7 +87,7 @@ export class NavPageContainer implements OnInit {
   protected toggleSearch() {
     this.searching.update((b) => {
       if (b) {
-        this.search.emit(null);
+        this.searchText.emit(null);
       }
       return !b;
     });
