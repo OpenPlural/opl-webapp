@@ -110,6 +110,7 @@ export class FriendPage {
       ...flags,
       archived: !flags.archived,
     }));
+    this.updateSearch();
   }
 
   protected gotoTab(tab: 'account' | 'members') {
