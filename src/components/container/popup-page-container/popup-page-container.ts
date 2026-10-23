@@ -21,7 +21,7 @@ export class PopupPageContainer {
   readonly footer = input<boolean>(false);
   readonly searchable = input<boolean>(false);
   readonly searchQuery = input<string | null>(null);
-  readonly search = output<string | null>();
+  readonly searchText = output<string | null>();
 
   protected readonly searching = signal(false);
 
@@ -37,7 +37,7 @@ export class PopupPageContainer {
   protected toggleSearch() {
     this.searching.update((b) => {
       if (b) {
-        this.search.emit(null);
+        this.searchText.emit(null);
       }
       return !b;
     });
