@@ -63,6 +63,7 @@ export class Members implements OnInit, OnDestroy {
       ...flags,
       archived: !flags.archived,
     }));
+    this.updateSearch();
   }
 
   protected gotoMembers() {
