@@ -41,13 +41,8 @@ export class App implements OnInit {
   protected readonly update = signal<string | null>(null);
   protected readonly updating = signal(false);
 
-  protected readonly installed = computed(
-    () => !!('serviceWorker' in navigator && navigator.serviceWorker.controller),
-  );
-  protected readonly ready = computed(
-    () =>
-      this.storagePersistRequested() && this.initialSyncDone() && this.localStorageService.ready(),
-  );
+  protected readonly installed = computed(() => !!('serviceWorker' in navigator && navigator.serviceWorker.controller));
+  protected readonly ready = computed(() => this.storagePersistRequested() && this.initialSyncDone() && this.localStorageService.ready());
   protected readonly toasts = computed(() => this.toastService.toasts());
   protected readonly languageCode = computed(() => {
     const lang = this.settingsService.settings().language;
@@ -58,6 +53,8 @@ export class App implements OnInit {
     }
     return;
   });
+
+  private initialSyncTriggered = false;
 
   constructor() {
     hookOnDataDeletion(async () => {
@@ -122,7 +119,9 @@ export class App implements OnInit {
   }
 
   private initialSync() {
-    if (this.initialSyncDone()) return;
+    if (this.initialSyncTriggered || this.initialSyncDone()) return;
+    this.initialSyncTriggered = true;
+
     if (!this.accountService.account()) {
       Promise.resolve().then(() => this.initialSyncDone.set(true));
       return;
