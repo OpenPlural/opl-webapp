@@ -1,7 +1,7 @@
 import { inject, Injectable, isDevMode } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ExtendedUserInfo, UserId, UserInfo } from './model/User';
-import { Folder, FolderId } from './model/Folder';
+import { Folder } from './model/Folder';
 import { ExtendedMember, Member, MemberId } from './model/Member';
 import { AccountInfo } from './model/Auth';
 import { firstValueFrom } from 'rxjs';
@@ -16,26 +16,17 @@ import { Friend, FriendRequest, FriendSettings } from './model/Friend';
 import { PrivacyBucket, PrivacyBucketId, SimplePrivacyBucket } from './model/Privacy';
 import {
   CustomField,
-  CustomFieldDataId,
-  CustomFieldDataValue,
-  CustomFieldId,
   ViewedCustomFieldDataValue
 } from './model/Field';
 import { Session, SessionId } from './model/Session';
 import {
-  translateCustomFieldDataValue,
-  translateFolder,
   translateFrontEntry,
-  translateMember,
-  translatePhotoAlbum,
-  translatePollAnswer,
   translatePrivacyBucket
 } from '../util/IdTranslator';
 import { LocalStorageService } from './LocalStorageService';
 import {ApiKey, ApiKeyId} from './model/ApiKey';
-import { Poll, PollAnswer, PollAnswerId, PollId } from './model/Poll';
 import { Analytics } from './model/Analytics';
-import { PhotoAlbum, PhotoAlbumId } from './model/Gallery';
+import { PhotoAlbum } from './model/Gallery';
 import { UploadResponse } from './model/Cdn';
 import { PkConfig } from './model/PluralKit';
 
@@ -97,44 +88,6 @@ export class WebService {
     return firstValueFrom(this.http.post<FrontSyncResponse>(`${BASE_URL}/api/v2/sync/front`, request));
   }
 
-  async createFolder(folder: Folder): Promise<FolderId> {
-    folder = translateFolder(this.localStorageService, [folder], folder, 'remoteId');
-    return firstValueFrom(this.http.put<IdResponse>(`${BASE_URL}/api/v1/folder/`, folder)).then(res => res.id);
-  }
-
-  async deleteFolder(remoteId: FolderId): Promise<void> {
-    await firstValueFrom(this.http.delete(`${BASE_URL}/api/v1/folder/${remoteId}`));
-  }
-
-  async updateFolder(folder: Folder): Promise<void> {
-    folder = translateFolder(this.localStorageService, [folder], folder, 'remoteId');
-    await firstValueFrom(this.http.patch(`${BASE_URL}/api/v1/folder/${folder.remoteId}`, folder));
-  }
-
-  async createMember(member: Member): Promise<MemberId> {
-    member = translateMember(this.localStorageService, member, 'remoteId');
-    return firstValueFrom(this.http.put<IdResponse>(`${BASE_URL}/api/v1/member/`, member)).then(res => res.id);
-  }
-
-  async deleteMember(remoteId: MemberId): Promise<void> {
-    await firstValueFrom(this.http.delete(`${BASE_URL}/api/v1/member/${remoteId}`));
-  }
-
-  async updateMember(member: Member): Promise<void> {
-    member = translateMember(this.localStorageService, member, 'remoteId');
-    await firstValueFrom(this.http.patch(`${BASE_URL}/api/v1/member/${member.remoteId}`, member));
-  }
-
-  async updateMemberFolders(member: Member): Promise<void> {
-    member = translateMember(this.localStorageService, member, 'remoteId');
-    await firstValueFrom(this.http.patch(`${BASE_URL}/api/v1/member/${member.remoteId}/folders`, member.folders));
-  }
-
-  async createFrontEntry(frontEntry: FrontEntry): Promise<FrontEntryId> {
-    frontEntry = translateFrontEntry(this.localStorageService, frontEntry, 'remoteId');
-    return firstValueFrom(this.http.put<IdResponse>(`${BASE_URL}/api/v1/front/`, frontEntry)).then(res => res.id);
-  }
-
   async deleteFrontEntry(remoteId: FrontEntryId): Promise<void> {
     await firstValueFrom(this.http.delete(`${BASE_URL}/api/v1/front/${remoteId}`));
   }
@@ -143,72 +96,6 @@ export class WebService {
     frontEntry = translateFrontEntry(this.localStorageService, frontEntry, 'remoteId');
     const id = useRemoteId ? frontEntry.remoteId : frontEntry.id;
     await firstValueFrom(this.http.patch(`${BASE_URL}/api/v1/front/${id}`, frontEntry));
-  }
-
-  async createPhotoAlbum(album: PhotoAlbum): Promise<PhotoAlbumId> {
-    album = translatePhotoAlbum(this.localStorageService, album, 'remoteId');
-    return firstValueFrom(this.http.put<IdResponse>(`${BASE_URL}/api/v1/member/${album.memberId}/gallery`, album)).then(res => res.id);
-  }
-
-  async deletePhotoAlbum(remoteId: PhotoAlbumId): Promise<void> {
-    await firstValueFrom(this.http.delete(`${BASE_URL}/api/v1/member/gallery/${remoteId}`));
-  }
-
-  async updatePhotoAlbum(album: PhotoAlbum): Promise<void> {
-    album = translatePhotoAlbum(this.localStorageService, album, 'remoteId');
-    await firstValueFrom(this.http.patch(`${BASE_URL}/api/v1/member/${album.memberId}/gallery/${album.remoteId}`, album));
-  }
-
-  async createCustomField(customField: CustomField): Promise<CustomFieldId> {
-    return firstValueFrom(this.http.put<IdResponse>(`${BASE_URL}/api/v1/field/`, customField)).then(res => res.id);
-  }
-
-  async deleteCustomField(remoteId: CustomFieldId): Promise<void> {
-    await firstValueFrom(this.http.delete(`${BASE_URL}/api/v1/field/${remoteId}`));
-  }
-
-  async updateCustomField(customField: CustomField): Promise<void> {
-    await firstValueFrom(this.http.patch(`${BASE_URL}/api/v1/field/${customField.remoteId}`, customField));
-  }
-
-  async createCustomFieldValue(customFieldValue: CustomFieldDataValue): Promise<CustomFieldDataId> {
-    customFieldValue = translateCustomFieldDataValue(this.localStorageService, customFieldValue, 'remoteId');
-    return firstValueFrom(this.http.put<IdResponse>(`${BASE_URL}/api/v1/field/value/`, customFieldValue)).then(res => res.id);
-  }
-
-  async deleteCustomFieldValue(remoteId: CustomFieldDataId): Promise<void> {
-    await firstValueFrom(this.http.delete(`${BASE_URL}/api/v1/field/value/${remoteId}`));
-  }
-
-  async updateCustomFieldValue(customFieldValue: CustomFieldDataValue): Promise<void> {
-    customFieldValue = translateCustomFieldDataValue(this.localStorageService, customFieldValue, 'remoteId');
-    await firstValueFrom(this.http.patch(`${BASE_URL}/api/v1/field/value/${customFieldValue.remoteId}`, customFieldValue));
-  }
-
-  async createPoll(poll: Poll): Promise<PollId> {
-    return firstValueFrom(this.http.put<IdResponse>(`${BASE_URL}/api/v1/poll/`, poll)).then(res => res.id);
-  }
-
-  async deletePoll(remoteId: PollId): Promise<void> {
-    await firstValueFrom(this.http.delete(`${BASE_URL}/api/v1/poll/${remoteId}`));
-  }
-
-  async updatePoll(poll: Poll): Promise<void> {
-    await firstValueFrom(this.http.patch(`${BASE_URL}/api/v1/poll/${poll.remoteId}`, poll));
-  }
-
-  async createPollAnswer(pollAnswer: PollAnswer): Promise<PollAnswerId> {
-    pollAnswer = translatePollAnswer(this.localStorageService, pollAnswer, 'remoteId');
-    return firstValueFrom(this.http.put<IdResponse>(`${BASE_URL}/api/v1/poll/answer/`, pollAnswer)).then(res => res.id);
-  }
-
-  async deletePollAnswer(remoteId: PollAnswerId): Promise<void> {
-    await firstValueFrom(this.http.delete(`${BASE_URL}/api/v1/poll/answer/${remoteId}`));
-  }
-
-  async updatePollAnswer(pollAnswer: PollAnswer): Promise<void> {
-    pollAnswer = translatePollAnswer(this.localStorageService, pollAnswer, 'remoteId');
-    await firstValueFrom(this.http.patch(`${BASE_URL}/api/v1/poll/answer/${pollAnswer.remoteId}`, pollAnswer));
   }
 
   async createPrivacyBucket(privacyBucket: PrivacyBucket): Promise<PrivacyBucketId> {
