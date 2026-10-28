@@ -67,7 +67,6 @@ export class App implements OnInit {
       const accountReady = this.accountService.ready();
       const settingsReady = this.settingsService.ready();
       if (storagePersistRequested && localStorageReady && accountReady && settingsReady) {
-        this.currentFrontNotifyService.triggerNotificationUpdate();
         this.initialSync();
       }
     });
@@ -130,6 +129,7 @@ export class App implements OnInit {
     this.syncService
       .fullSync()
       .then(() => {
+        this.currentFrontNotifyService.triggerNotificationUpdate();
         this.initialSyncDone.set(true);
       })
       .catch((err) => {
