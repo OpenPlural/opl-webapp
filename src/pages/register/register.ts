@@ -52,7 +52,7 @@ export class Register {
         await this.webService.register(username, password, system === 'on');
         await this.accountService.login(username, password);
         this.localStorageService.markDirty();
-        await this.syncService.fullSync(true);
+        await this.syncService.fullSync();
       } catch (e) {
         this.errorService.logError(e);
         if (e instanceof HttpErrorResponse) {

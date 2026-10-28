@@ -50,6 +50,6 @@ export class MemberListItem {
       await this.localStorageService.addFrontEntry(makeFrontEntry(this.member().id));
     }
     this.currentFrontNotifyService.triggerNotificationUpdate();
-    this.syncService.fullSync();
+    this.syncService.frontSync();
   }
 }

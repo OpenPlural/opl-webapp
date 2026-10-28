@@ -47,14 +47,14 @@ export class Login {
           if (virtualSessionToken) {
             await this.accountService.initVirtualSession(virtualSessionToken);
             this.localStorageService.markDirty();
-            await this.syncService.fullSync(true);
+            await this.syncService.fullSync();
             this.router.navigate(['app']);
           }
           return;
         }
         await this.accountService.login(username, password);
         this.localStorageService.markDirty();
-        await this.syncService.fullSync(true);
+        await this.syncService.fullSync();
       } catch (e) {
         this.errorService.logError(e);
         if (e instanceof HttpErrorResponse) {

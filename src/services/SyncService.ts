@@ -1,10 +1,6 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { WebService } from './WebService';
-import { Folder, FolderId } from './model/Folder';
 import { LocalStorageService } from './LocalStorageService';
-import { Member, MemberId } from './model/Member';
-import { FrontEntry, FrontEntryId } from './model/Front';
-import { CustomField, CustomFieldDataId, CustomFieldDataValue, CustomFieldId } from './model/Field';
 import { AccountService } from './AccountService';
 import { generateLocalId } from '../util/IdGenerator';
 import {
@@ -19,10 +15,9 @@ import { TranslateService } from '@ngx-translate/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ToastService } from './ToastService';
 import {SettingsService} from './SettingsService';
-import { Poll, PollAnswer, PollAnswerId, PollId } from './model/Poll';
-import { PhotoAlbum, PhotoAlbumId } from './model/Gallery';
+import { FrontEntry, FrontEntryId } from './model/Front';
 
-const ABSOLUTE_SYNC_INTERVAL = 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
+type Syncable = { id: bigint; remoteId: bigint | null; updatedAt: string; };
 
 @Injectable({providedIn: 'root'})
 export class SyncService {
@@ -39,13 +34,77 @@ export class SyncService {
   private readonly syncFinished = toSignal<string>(this.translate.getStreamOnTranslationChange('sync.finished'), {
     initialValue: null,
   });
+  private readonly frontSyncFailed = toSignal<string>(this.translate.getStreamOnTranslationChange('sync.front.failed'), {
+    initialValue: null,
+  });
+  private readonly frontSyncFinished = toSignal<string>(this.translate.getStreamOnTranslationChange('sync.front.finished'), {
+    initialValue: null,
+  });
+  private readonly frontSyncRetrying = toSignal<string>(this.translate.getStreamOnTranslationChange('sync.front.retry'), {
+    initialValue: null,
+  });
 
   private readonly _syncInProgress = signal(false);
   private readonly _syncQueued = signal(false);
 
   readonly syncInProgress = this._syncInProgress.asReadonly();
 
-  async fullSync(forceAbsoluteSync: boolean = false): Promise<void> {
+  async frontSync(recurse: number = 0): Promise<void> {
+    if (this.syncInProgress()) {
+      return;
+    }
+
+    if (recurse > 10) {
+      console.error('[SyncService] Front sync failed after 10 recursive attempts. Giving up.');
+      return;
+    }
+
+    let frontSyncRequired = false;
+    try {
+      this._syncInProgress.set(true);
+
+      console.log('[SyncService] Front sync running...');
+
+      const front = this.localStorageService.front();
+      const syncResponse = await this.webService.syncFront({
+        front: this.getTranslatedItems(front, (frontEntry) =>
+          translateFrontEntry(this.localStorageService, frontEntry, 'remoteId'),
+        ),
+      });
+      frontSyncRequired = await this.syncFront(front, syncResponse.assignFront, syncResponse.front);
+
+      console.log('[SyncService] Front sync completed');
+
+      if (!frontSyncRequired && this.settingsService.settings().showSyncToast) {
+        const frontSyncFinished = this.frontSyncFinished();
+        if (frontSyncFinished) {
+          this.toastService.sendToast(frontSyncFinished, 'alert-success');
+        }
+      }
+      return;
+    } catch (e) {
+      frontSyncRequired = false;
+      console.error('[SyncService] Front sync failed', e);
+      const frontSyncFailed = this.frontSyncFailed();
+      if (frontSyncFailed) {
+        this.toastService.sendToast(frontSyncFailed, 'alert-warning');
+      }
+    } finally {
+      this._syncInProgress.set(false);
+      if (frontSyncRequired) {
+        const frontSyncRetrying = this.frontSyncRetrying();
+        if (frontSyncRetrying) {
+          this.toastService.sendToast(frontSyncRetrying, 'alert-warning');
+        }
+        await this.frontSync(recurse + 1);
+      }
+    }
+
+    console.log('[SyncService] Trying full sync after front sync failure...');
+    await this.fullSync();
+  }
+
+  async fullSync(): Promise<void> {
     const syncInProgress = this.syncInProgress();
     if (!this.localStorageService.ready() || !this.localStorageService.dirty() || syncInProgress) {
       if (syncInProgress) {
@@ -54,6 +113,7 @@ export class SyncService {
       return;
     }
 
+    let frontSyncRequired = false;
     try {
       this._syncInProgress.set(true);
 
@@ -64,27 +124,142 @@ export class SyncService {
         lastSyncTime = 0;
       }
 
-      let lastAbsSyncTime = this.localStorageService.getLastAbsoluteSyncTime();
-      if (!lastAbsSyncTime) {
-        lastAbsSyncTime = 0;
-      }
-      const absolute = forceAbsoluteSync || Date.now() - lastAbsSyncTime >= ABSOLUTE_SYNC_INTERVAL;
-
-      const syncData = await this.webService.sync(new Date(lastSyncTime), absolute);
-
-      this.accountService.updateAccountFromSync(syncData.user, syncData.friendCode);
-
       const doServerUpdates = !this.accountService.virtualSessionToken();
-      await this.syncFolders(syncData.updatedFolders, syncData.folderIds, syncData.deletionDelta, doServerUpdates);
-      await this.syncMembers(syncData.updatedMembers, syncData.memberIds, syncData.deletionDelta, doServerUpdates);
-      await this.syncCustomFields(syncData.updatedFields, syncData.fieldIds, syncData.deletionDelta, doServerUpdates);
-      await this.syncCustomFieldValues(syncData.updatedFieldValues, syncData.fieldValueIds, syncData.deletionDelta, doServerUpdates);
-      await this.syncPolls(syncData.updatedPolls, syncData.pollIds, syncData.deletionDelta, doServerUpdates);
-      await this.syncPollAnswers(syncData.updatedPollAnswers, syncData.pollAnswerIds, syncData.deletionDelta, doServerUpdates);
-      await this.syncPhotoAlbums(syncData.updatedPhotoAlbums, syncData.photoAlbumIds, syncData.deletionDelta, doServerUpdates);
-      await this.syncFrontEntries(syncData.front, syncData.endedFront, doServerUpdates);
 
-      await this.localStorageService.updateSyncTime(Date.parse(syncData.time), !syncData.deletionDelta);
+      const folders = this.localStorageService.folders();
+      const members = this.localStorageService.members();
+      const customFields = this.localStorageService.customFields();
+      const customFieldValues = this.localStorageService.customFieldValues();
+      const polls = this.localStorageService.polls();
+      const pollAnswers = this.localStorageService.pollAnswers();
+      const photoAlbums = this.localStorageService.photoAlbums();
+      const front = this.localStorageService.front();
+
+      const { known: knownFolders, updated: updatedFolders } = this.getKnownAndUpdated(folders, lastSyncTime, doServerUpdates);
+      const { known: knownMembers, updated: updatedMembers } = this.getKnownAndUpdated(members, lastSyncTime, doServerUpdates);
+      const { known: knownFields, updated: updatedFields } = this.getKnownAndUpdated(customFields, lastSyncTime, doServerUpdates);
+      const { known: knownFieldValues, updated: updatedFieldValues } = this.getKnownAndUpdated(customFieldValues, lastSyncTime, doServerUpdates);
+      const { known: knownPolls, updated: updatedPolls } = this.getKnownAndUpdated(polls, lastSyncTime, doServerUpdates);
+      const { known: knownPollAnswers, updated: updatedPollAnswers } = this.getKnownAndUpdated(pollAnswers, lastSyncTime, doServerUpdates);
+      const { known: knownPhotoAlbums, updated: updatedPhotoAlbums } = this.getKnownAndUpdated(photoAlbums, lastSyncTime, doServerUpdates);
+
+      const deleted = doServerUpdates ? await this.localStorageService.getDeletions() : [];
+
+      const syncResponse = await this.webService.sync({
+        time: new Date(lastSyncTime).toISOString(),
+        known: {
+          folders: knownFolders,
+          members: knownMembers,
+          fields: knownFields,
+          fieldValues: knownFieldValues,
+          polls: knownPolls,
+          pollAnswers: knownPollAnswers,
+          photoAlbums: knownPhotoAlbums,
+        },
+        updated: this.skipEmptyObject({
+          folders: this.getTranslatedItems(updatedFolders, (folder) => translateFolder(this.localStorageService, updatedFolders, folder, 'remoteId')),
+          members: this.getTranslatedItems(updatedMembers, (member) => translateMember(this.localStorageService, member, 'remoteId')),
+          fields: this.getTranslatedItems(updatedFields, (field) => field),
+          fieldValues: this.getTranslatedItems(updatedFieldValues, (value) => translateCustomFieldDataValue(this.localStorageService, value, 'remoteId')),
+          polls: this.getTranslatedItems(updatedPolls, (poll) => poll),
+          pollAnswers: this.getTranslatedItems(updatedPollAnswers, (answer) => translatePollAnswer(this.localStorageService, answer, 'remoteId')),
+          photoAlbums: this.getTranslatedItems(updatedPhotoAlbums, (album) => translatePhotoAlbum(this.localStorageService, album, 'remoteId')),
+        }),
+        deleted: this.skipEmptyObject({
+          folders: deleted.filter((d) => d.resourceType === 'folder').map((d) => d.resourceId),
+          members: deleted.filter((d) => d.resourceType === 'member').map((d) => d.resourceId),
+          fields: deleted.filter((d) => d.resourceType === 'field').map((d) => d.resourceId),
+          fieldValues: deleted.filter((d) => d.resourceType === 'field-value').map((d) => d.resourceId),
+          polls: deleted.filter((d) => d.resourceType === 'poll').map((d) => d.resourceId),
+          pollAnswers: deleted.filter((d) => d.resourceType === 'poll-answer').map((d) => d.resourceId),
+          photoAlbums: deleted.filter((d) => d.resourceType === 'photo-album').map((d) => d.resourceId),
+        }),
+        front: this.getTranslatedItems(front, (frontEntry) =>
+          translateFrontEntry(this.localStorageService, frontEntry, 'remoteId'),
+        ),
+      });
+
+      await this.doLocalUpdates(
+        folders,
+        updatedFolders,
+        syncResponse.delete?.folders,
+        syncResponse.assign?.folders,
+        syncResponse.update?.folders,
+        (folder) => translateFolder(this.localStorageService, syncResponse.update?.folders || [], folder, 'id'),
+        async (folder) => await this.localStorageService.addFolder(folder),
+        async (folder) => await this.localStorageService.updateFolder(folder),
+        async (folderId) => await this.localStorageService.removeFolderRecursively(folderId, null),
+      );
+      await this.doLocalUpdates(
+        members,
+        updatedMembers,
+        syncResponse.delete?.members,
+        syncResponse.assign?.members,
+        syncResponse.update?.members,
+        (member) => translateMember(this.localStorageService, member, 'id'),
+        async (member) => await this.localStorageService.addMember(member),
+        async (member) => await this.localStorageService.updateMember(member),
+        async (memberId) => await this.localStorageService.removeMember(memberId, null),
+      );
+      await this.doLocalUpdates(
+        customFields,
+        updatedFields,
+        syncResponse.delete?.fields,
+        syncResponse.assign?.fields,
+        syncResponse.update?.fields,
+        (field) => field,
+        async (field) => await this.localStorageService.addCustomField(field),
+        async (field) => await this.localStorageService.updateCustomField(field),
+        async (fieldId) => await this.localStorageService.removeCustomField(fieldId, null),
+      );
+      await this.doLocalUpdates(
+        customFieldValues,
+        updatedFieldValues,
+        syncResponse.delete?.fieldValues,
+        syncResponse.assign?.fieldValues,
+        syncResponse.update?.fieldValues,
+        (value) => translateCustomFieldDataValue(this.localStorageService, value, 'id'),
+        async (value) => await this.localStorageService.addCustomFieldValue(value),
+        async (value) => await this.localStorageService.updateCustomFieldValue(value),
+        async (valueId) => await this.localStorageService.removeCustomFieldValue(valueId, null),
+      );
+      await this.doLocalUpdates(
+        polls,
+        updatedPolls,
+        syncResponse.delete?.polls,
+        syncResponse.assign?.polls,
+        syncResponse.update?.polls,
+        (poll) => poll,
+        async (poll) => await this.localStorageService.addPoll(poll),
+        async (poll) => await this.localStorageService.updatePoll(poll),
+        async (pollId) => await this.localStorageService.removePoll(pollId, null),
+      );
+      await this.doLocalUpdates(
+        pollAnswers,
+        updatedPollAnswers,
+        syncResponse.delete?.pollAnswers,
+        syncResponse.assign?.pollAnswers,
+        syncResponse.update?.pollAnswers,
+        (answer) => translatePollAnswer(this.localStorageService, answer, 'id'),
+        async (answer) => await this.localStorageService.addPollAnswer(answer),
+        async (answer) => await this.localStorageService.updatePollAnswer(answer),
+        async (answerId) => await this.localStorageService.removePollAnswer(answerId, null),
+      );
+      await this.doLocalUpdates(
+        photoAlbums,
+        updatedPhotoAlbums,
+        syncResponse.delete?.photoAlbums,
+        syncResponse.assign?.photoAlbums,
+        syncResponse.update?.photoAlbums,
+        (photoAlbum) => translatePhotoAlbum(this.localStorageService, photoAlbum, 'id'),
+        async (photoAlbum) => await this.localStorageService.addPhotoAlbum(photoAlbum),
+        async (photoAlbum) => await this.localStorageService.updatePhotoAlbum(photoAlbum),
+        async (photoAlbumId) => await this.localStorageService.removePhotoAlbum(photoAlbumId, null),
+      );
+      frontSyncRequired = await this.syncFront(front, syncResponse.assignFront, syncResponse.front);
+
+      this.accountService.updateAccountFromSync(syncResponse.user, syncResponse.friendCode);
+      await this.localStorageService.finalizeSync(Date.parse(syncResponse.time));
 
       console.log('[SyncService] Sync complete');
 
@@ -97,7 +272,7 @@ export class SyncService {
     } catch (e) {
       const syncFailed = this.syncFailed();
       if (syncFailed) {
-        this.toastService.sendToast(syncFailed, 'alert-warning');
+        this.toastService.sendToast(syncFailed, 'alert-error');
       }
       throw e;
     } finally {
@@ -107,318 +282,160 @@ export class SyncService {
           this._syncQueued.set(false);
           this.localStorageService.markDirty();
           this.fullSync();
+        } else if (frontSyncRequired) {
+          this.frontSync();
         }
       }, 50);
     }
   }
 
-  private async syncFrontEntries(serverFront: FrontEntry[], endedFront: FrontEntryId[], doServerUpdates: boolean) {
-    const localFront = this.localStorageService.front();
-    const members = this.localStorageService.members();
-    if (doServerUpdates) {
-      function findConflict(serverEntry: FrontEntry): FrontEntry | null {
-        const member = members.find((m) => m.remoteId === serverEntry.member);
-        if (!member) return null;
-        const localEntry = localFront.find((l) => {
-          if (l.remoteId) {
-            if (l.remoteId === serverEntry.id || endedFront.includes(l.remoteId)) return false;
-          }
-          return l.member === member.id && !l.endedAt;
-        });
-        return localEntry || null;
-      }
-
-      const deleted: FrontEntryId[] = [];
-      const fixed: FrontEntry[] = [];
-      for (const serverEntry of serverFront) {
-        const localEntry = findConflict(serverEntry);
-        if (localEntry) {
-          if (Date.parse(serverEntry.startedAt) >= Date.parse(localEntry.startedAt)) {
-            await this.webService.deleteFrontEntry(serverEntry.id);
-            deleted.push(serverEntry.id);
-          } else {
-            const fix = {
-              ...serverEntry,
-              endedAt: localEntry.startedAt,
-            };
-            await this.webService.updateFrontEntry({
-              ...fix,
-              member: localEntry.member,
-            }, false);
-            fixed.push(fix);
-          }
+  private skipEmptyObject<T>(obj: T): T | undefined {
+    for (const key in obj) {
+      const value = obj[key];
+      if (Array.isArray(value)) {
+        if (value.length > 0) {
+          return obj;
         }
       }
-      serverFront = serverFront.filter((entry) => !deleted.includes(entry.id))
-        .map((entry) => fixed.find((f) => f.id === entry.id) || entry);
     }
-
-    await this.syncGeneric(
-      localFront,
-      serverFront,
-      [],
-      false,
-      '',
-      (frontEntry) => translateFrontEntry(this.localStorageService, frontEntry, 'id'),
-      async (frontEntry) => await this.webService.createFrontEntry(frontEntry),
-      async (_serverEntry, localEntry) => await this.webService.updateFrontEntry(localEntry),
-      async () => {},
-      async (frontEntry) => await this.localStorageService.addFrontEntry(frontEntry),
-      async (frontEntry) => await this.localStorageService.updateFrontEntry(frontEntry),
-      async (frontEntryId) => await this.localStorageService.removeFrontEntry(frontEntryId),
-      doServerUpdates,
-    );
+    return undefined;
   }
 
-  private async syncFolders(updatedFolders: Folder[], folderIds: FolderId[], deletionDelta: boolean, doServerUpdates: boolean) {
-    await this.syncGeneric(
-      this.localStorageService.folders(),
-      updatedFolders,
-      folderIds,
-      deletionDelta,
-      'folder',
-      (folder) => translateFolder(this.localStorageService, updatedFolders, folder, 'id'),
-      async (folder) => await this.webService.createFolder(folder),
-      async (_, localFolder) => await this.webService.updateFolder(localFolder),
-      async (remoteId) => await this.webService.deleteFolder(remoteId),
-      async (folder) => await this.localStorageService.addFolder(folder),
-      async (folder) => await this.localStorageService.updateFolder(folder),
-      async (folderId) => await this.localStorageService.removeFolderRecursively(folderId, null),
-      doServerUpdates,
-    );
-  }
-
-  private async syncMembers(updatedMembers: Member[], memberIds: MemberId[], deletionDelta: boolean, doServerUpdates: boolean) {
-    await this.syncGeneric(
-      this.localStorageService.members(),
-      updatedMembers,
-      memberIds,
-      deletionDelta,
-      'member',
-      (member) => translateMember(this.localStorageService, member, 'id'),
-      async (member) => await this.webService.createMember(member),
-      async (serverMember, localMember) => {
-        await this.webService.updateMember(localMember);
-        if (serverMember && serverMember.folders.length === localMember.folders.length && serverMember.folders.slice().sort().join(";") === localMember.folders.slice().sort().join(";")) {
-          return;
-        }
-        await this.webService.updateMemberFolders(localMember);
-      },
-      async (memberId) => await this.webService.deleteMember(memberId),
-      async (member) => await this.localStorageService.addMember(member),
-      async (member) => await this.localStorageService.updateMember(member),
-      async (memberId) => await this.localStorageService.removeMember(memberId, null),
-      doServerUpdates,
-    );
-  }
-
-  private async syncCustomFields(updatedFields: CustomField[], fieldIds: CustomFieldId[], deletionDelta: boolean, doServerUpdates: boolean) {
-    await this.syncGeneric(
-      this.localStorageService.customFields(),
-      updatedFields,
-      fieldIds,
-      deletionDelta,
-      'field',
-      (field) => field,
-      async (field) => await this.webService.createCustomField(field),
-      async (_, localField) => await this.webService.updateCustomField(localField),
-      async (fieldId) => await this.webService.deleteCustomField(fieldId),
-      async (field) => await this.localStorageService.addCustomField(field),
-      async (field) => await this.localStorageService.updateCustomField(field),
-      async (fieldId) => await this.localStorageService.removeCustomField(fieldId, null),
-      doServerUpdates,
-    );
-  }
-
-  private async syncCustomFieldValues(updatedFieldValues: CustomFieldDataValue[], fieldValueIds: CustomFieldDataId[], deletionDelta: boolean, doServerUpdates: boolean) {
-    await this.syncGeneric(
-      this.localStorageService.customFieldValues(),
-      updatedFieldValues,
-      fieldValueIds,
-      deletionDelta,
-      'field-value',
-      (value) => translateCustomFieldDataValue(this.localStorageService, value, 'id'),
-      async (value) => await this.webService.createCustomFieldValue(value),
-      async (_, localValue) => await this.webService.updateCustomFieldValue(localValue),
-      async (dataId) => await this.webService.deleteCustomFieldValue(dataId),
-      async (value) => await this.localStorageService.addCustomFieldValue(value),
-      async (value) => await this.localStorageService.updateCustomFieldValue(value),
-      async (dataId) => await this.localStorageService.removeCustomFieldValue(dataId, null),
-      doServerUpdates,
-    );
-  }
-
-  private async syncPolls(updatedPolls: Poll[], pollIds: PollId[], deletionDelta: boolean, doServerUpdates: boolean) {
-    await this.syncGeneric(
-      this.localStorageService.polls(),
-      updatedPolls,
-      pollIds,
-      deletionDelta,
-      'poll',
-      (poll) => poll,
-      async (poll) => await this.webService.createPoll(poll),
-      async (_, localPoll) => await this.webService.updatePoll(localPoll),
-      async (pollId) => await this.webService.deletePoll(pollId),
-      async (poll) => await this.localStorageService.addPoll(poll),
-      async (poll) => await this.localStorageService.updatePoll(poll),
-      async (pollId) => await this.localStorageService.removePoll(pollId, null),
-      doServerUpdates,
-    );
-  }
-
-  private async syncPollAnswers(updatedPollAnswers: PollAnswer[], pollAnswerIds: PollAnswerId[], deletionDelta: boolean, doServerUpdates: boolean) {
-    await this.syncGeneric(
-      this.localStorageService.pollAnswers(),
-      updatedPollAnswers,
-      pollAnswerIds,
-      deletionDelta,
-      'poll-answer',
-      (pollAnswer) => translatePollAnswer(this.localStorageService, pollAnswer, 'id'),
-      async (pollAnswer) => await this.webService.createPollAnswer(pollAnswer),
-      async (_, localPollAnswer) => await this.webService.updatePollAnswer(localPollAnswer),
-      async (pollAnswerId) => await this.webService.deletePollAnswer(pollAnswerId),
-      async (pollAnswer) => await this.localStorageService.addPollAnswer(pollAnswer),
-      async (pollAnswer) => await this.localStorageService.updatePollAnswer(pollAnswer),
-      async (pollAnswerId) => await this.localStorageService.removePollAnswer(pollAnswerId, null),
-      doServerUpdates,
-    );
-  }
-
-  private async syncPhotoAlbums(updatedPhotoAlbums: PhotoAlbum[], photoAlbumIds: PhotoAlbumId[], deletionDelta: boolean, doServerUpdates: boolean) {
-    await this.syncGeneric(
-      this.localStorageService.photoAlbums(),
-      updatedPhotoAlbums,
-      photoAlbumIds,
-      deletionDelta,
-      'photo-album',
-      (photoAlbum) => translatePhotoAlbum(this.localStorageService, photoAlbum, 'id'),
-      async (photoAlbum) => await this.webService.createPhotoAlbum(photoAlbum),
-      async (_, localPhotoAlbum) => await this.webService.updatePhotoAlbum(localPhotoAlbum),
-      async (photoAlbumId) => await this.webService.deletePhotoAlbum(photoAlbumId),
-      async (photoAlbum) => await this.localStorageService.addPhotoAlbum(photoAlbum),
-      async (photoAlbum) => await this.localStorageService.updatePhotoAlbum(photoAlbum),
-      async (photoAlbumId) => await this.localStorageService.removePhotoAlbum(photoAlbumId, null),
-      doServerUpdates,
-    );
-  }
-
-  private async syncGeneric<L extends { id: bigint; remoteId: bigint | null; updatedAt: string }, R extends { id: bigint; updatedAt: string }>(
-    localItems: L[],
-    updatedServerItems: R[],
-    serverIds: bigint[],
-    deletionDelta: boolean,
-    deletionType: string,
-    translateRemoteItem: (item: L) => L,
-    webCreate: (item: L) => Promise<bigint>,
-    webUpdate: (serverItem: R | null, localItem: L) => Promise<void>,
-    webDelete: (remoteId: bigint) => Promise<void>,
-    localAdd: (item: L) => Promise<void>,
-    localUpdate: (item: L) => Promise<void>,
-    localRemove: (itemId: bigint) => Promise<void>,
+  private getKnownAndUpdated<T extends Syncable>(
+    known: T[],
+    lastSyncTime: number,
     doServerUpdates: boolean,
-  ) {
-    serverIds = [...serverIds];
-    function isServerKnown(remoteId: bigint): boolean {
-      if (updatedServerItems.find((v) => v.id === remoteId) != undefined) {
-        return true;
-      }
-      if (deletionDelta) {
-        return !serverIds.includes(remoteId);
+  ): { known: bigint[]; updated: T[] } {
+    return {
+      known: known.filter((i) => !!i.remoteId).map((i) => i.remoteId!),
+      updated: doServerUpdates ? known.filter((i) => Date.parse(i.updatedAt) >= lastSyncTime) : [],
+    };
+  }
+
+  private getTranslatedItems<T extends Syncable>(
+    items: T[],
+    translateLocalItem: (item: T) => T,
+  ): T[] {
+    return items.map((i) => {
+      i = translateLocalItem(i);
+      if (i.remoteId) {
+        i.id = i.remoteId;
       } else {
-        return serverIds.includes(remoteId);
+        i.id = 0n;
+      }
+      // @ts-ignore
+      i.remoteId = undefined;
+      return i;
+    });
+  }
+
+  private async doLocalUpdates<T extends Syncable>(
+    localKnown: T[],
+    localUpdated: T[],
+    remove: bigint[] | undefined,
+    assign: bigint[] | undefined,
+    update: T[] | undefined,
+    translateRemoteItem: (item: T) => T,
+    createLocal: (item: T) => Promise<void>,
+    updateLocal: (item: T) => Promise<void>,
+    removeLocal: (id: bigint) => Promise<void>,
+  ) {
+    if (remove) {
+      await Promise.all(
+        remove.map((id) => {
+          return removeLocal(id);
+        }),
+      );
+    }
+
+    if (assign) {
+      let nextIndex = 0;
+      for (const item of localUpdated) {
+        if (!item.remoteId && assign.length > nextIndex) {
+          const remoteId = assign[nextIndex];
+          await updateLocal({
+            ...item,
+            remoteId,
+          });
+          nextIndex++;
+        }
       }
     }
 
-    function makeLocalItem(oldLocalItem: L | null, serverItem: R): L {
-      // @ts-ignore
-      const localItem: L = {
-        ...serverItem,
-        remoteId: serverItem.id,
-        id: oldLocalItem?.id || generateLocalId(),
-      };
-      return translateRemoteItem(localItem);
+    if (update) {
+      await Promise.all(
+        update.map((serverItem) => {
+          const oldLocalItem = localKnown.find((l) => l.remoteId === serverItem.id);
+          if (oldLocalItem) {
+            const localItem = translateRemoteItem({
+              ...serverItem,
+              remoteId: serverItem.id,
+              id: oldLocalItem.id,
+            });
+            return updateLocal(localItem);
+          } else {
+            const localItem = translateRemoteItem({
+              ...serverItem,
+              remoteId: serverItem.id,
+              id: generateLocalId(),
+            });
+            return createLocal(localItem);
+          }
+        }),
+      );
+    }
+  }
+
+  private async syncFront(
+    localFront: FrontEntry[],
+    assignedFront: FrontEntryId[],
+    remoteFront: FrontEntry[],
+  ): Promise<boolean> {
+    let nextIndex = 0;
+    for (const item of localFront) {
+      if (!item.remoteId && assignedFront.length > nextIndex) {
+        item.remoteId = assignedFront[nextIndex];
+        await this.localStorageService.updateFrontEntry({
+          ...item,
+        });
+        nextIndex++;
+      }
     }
 
-    for (const localItem of localItems) {
-      const localId = localItem.id;
-      const remoteId = localItem.remoteId;
-      if (remoteId) {
-        if (isServerKnown(remoteId)) {
-          const localUpdatedAt = Date.parse(localItem.updatedAt);
+    localFront = this.localStorageService.front();
 
-          const updatedServerItem = updatedServerItems.find((v) => v.id === remoteId);
-          if (updatedServerItem) {
-            const serverUpdatedAt = Date.parse(updatedServerItem.updatedAt);
-            if (localUpdatedAt > serverUpdatedAt) {
-              if (doServerUpdates) {
-                await webUpdate(updatedServerItem, localItem);
-              }
-            } else if (localUpdatedAt < serverUpdatedAt) {
-              await localUpdate(makeLocalItem(localItem, updatedServerItem));
-            } else if (doServerUpdates) {
-              await webUpdate(updatedServerItem, localItem);
-            }
-          } else if (localUpdatedAt >= this.localStorageService.getLastSyncTime()) {
-            if (doServerUpdates) {
-              await webUpdate(null, localItem);
-            }
-          }
+    let frontSyncRequired = false;
+    for (let remoteEntry of remoteFront) {
+      const localEntry = localFront.find((f) => f.remoteId === remoteEntry.id);
+      remoteEntry = translateFrontEntry(this.localStorageService, remoteEntry, 'id');
+      if (localEntry) {
+        if (localEntry.endedAt && !remoteEntry.endedAt) {
+          frontSyncRequired = true;
         } else {
-          await localRemove(localId);
+          await this.localStorageService.updateFrontEntry({
+            ...remoteEntry,
+            remoteId: remoteEntry.id,
+            id: localEntry.id,
+          });
         }
-      } else if (doServerUpdates) {
-        const remoteId = await webCreate(localItem);
-        await localUpdate({
-          ...localItem,
-          remoteId
+      } else {
+        await this.localStorageService.addFrontEntry({
+          ...remoteEntry,
+          remoteId: remoteEntry.id,
+          id: generateLocalId(),
         });
       }
     }
 
-    localItems = [...localItems];
-
-    let remainingServerItems = updatedServerItems.filter(si => !localItems.some(li => li.remoteId === si.id));
-    while (remainingServerItems.length > 0) {
-      const failedServerItems = [];
-      for (const serverItem of remainingServerItems) {
-        try {
-          const localItem = makeLocalItem(null, serverItem);
-          await localAdd(localItem);
-          localItems.push(localItem);
-        } catch (e) {
-          if (failedServerItems.length + 1 < remainingServerItems.length) {
-            failedServerItems.push(serverItem);
-          } else {
-            throw e;
-          }
-        }
-      }
-      remainingServerItems = failedServerItems;
-    }
-    for (const serverItem of updatedServerItems) {
-      const remoteId = serverItem.id;
-      if (!localItems.some(li => li.remoteId === remoteId)) {
-        const localItem = makeLocalItem(null, serverItem);
-        await localAdd(localItem);
-        localItems.push(localItem);
-      }
-    }
-    if (doServerUpdates) {
-      if (deletionDelta) {
-        const deletions = await this.localStorageService.getDeletions();
-        for (const deletion of deletions) {
-          if (deletion.resourceType === deletionType && !serverIds.includes(deletion.resourceId) && !localItems.find(li => li.remoteId === deletion.resourceId)) {
-            serverIds.push(deletion.resourceId);
-            await webDelete(deletion.resourceId);
-          }
-        }
-      } else {
-        for (const remoteId of serverIds) {
-          if (!localItems.some(li => li.remoteId === remoteId)) {
-            await webDelete(remoteId);
-          }
+    for (const localEntry of localFront) {
+      if (!remoteFront.find((f) => f.id === localEntry.remoteId)) {
+        if (localEntry.endedAt && localEntry.remoteId) {
+          await this.localStorageService.removeFrontEntry(localEntry.id);
+        } else {
+          frontSyncRequired = true;
         }
       }
     }
+    return frontSyncRequired;
   }
 }

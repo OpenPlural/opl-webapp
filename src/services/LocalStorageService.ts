@@ -29,7 +29,6 @@ export class LocalStorageService {
 
   private idb: IDBDatabase | undefined;
   private lastSyncTime = 0;
-  private lastAbsSyncTime = 0;
 
   private readonly _ready = signal(false);
   private readonly _dirty = signal(true);
@@ -59,7 +58,6 @@ export class LocalStorageService {
   constructor() {
     hookOnDataDeletion(async () => {
       this.lastSyncTime = 0;
-      this.lastAbsSyncTime = 0;
 
       this.ngZone.run(() => {
         this._folders.set([]);
@@ -118,9 +116,8 @@ export class LocalStorageService {
         this.readAll<PollAnswer>(IDB_POLL_ANSWERS).then((pa) => pa.map(this.deserializePollAnswer)),
         this.readAll<PhotoAlbum>(IDB_PHOTO_ALBUMS).then((pa) => pa.map(this.deserializePhotoAlbum)),
         this.getMetadata<string>('lastSyncTime'),
-        this.getMetadata<string>('lastAbsSyncTime')
       ])
-        .then(([folders, members, front, customFields, customFieldValues, polls, pollAnswers, photoAlbums, lastSyncTime, lastAbsSyncTime]) => {
+        .then(([folders, members, front, customFields, customFieldValues, polls, pollAnswers, photoAlbums, lastSyncTime]) => {
           this._folders.set(folders);
           this._members.set(members);
           this._front.set(front);
@@ -131,9 +128,6 @@ export class LocalStorageService {
           this._photoAlbums.set(photoAlbums);
           if (lastSyncTime) {
             this.lastSyncTime = parseInt(lastSyncTime);
-          }
-          if (lastAbsSyncTime) {
-            this.lastAbsSyncTime = parseInt(lastAbsSyncTime);
           }
           this._ready.set(true);
         })
@@ -390,13 +384,9 @@ export class LocalStorageService {
     return res?.value;
   }
 
-  async updateSyncTime(syncTime: number, absolute: boolean): Promise<void> {
-    if (absolute) {
-      this.lastAbsSyncTime = syncTime;
-    }
+  async finalizeSync(syncTime: number): Promise<void> {
     this.lastSyncTime = syncTime;
     await this.setMetadata('lastSyncTime', this.lastSyncTime.toString());
-    await this.setMetadata('lastAbsSyncTime', this.lastAbsSyncTime.toString());
     await this.clearAll(IDB_DELETIONS);
     this.ngZone.run(() => this._dirty.set(false));
   }
@@ -407,10 +397,6 @@ export class LocalStorageService {
 
   getLastSyncTime(): number {
     return this.lastSyncTime;
-  }
-
-  getLastAbsoluteSyncTime(): number {
-    return this.lastAbsSyncTime;
   }
 
   private serializeFolder(folder: Folder): any {

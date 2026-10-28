@@ -6,25 +6,50 @@ import { CustomField, CustomFieldDataId, CustomFieldDataValue, CustomFieldId } f
 import { Poll, PollAnswer, PollAnswerId, PollId } from './Poll';
 import { PhotoAlbum, PhotoAlbumId } from './Gallery';
 
-export interface SyncData {
+export interface SyncRequest {
+  time: string;
+  known: SyncIds;
+  deleted: SyncIds | undefined;
+  updated: SyncUpdates | undefined;
+  front: FrontEntry[];
+}
+
+export interface SyncResponse {
   time: string;
   user: UserInfo;
   friendCode: string;
-  deletionDelta: boolean;
-  folderIds: FolderId[];
-  memberIds: MemberId[];
-  fieldIds: CustomFieldId[];
-  fieldValueIds: CustomFieldDataId[];
-  pollIds: PollId[];
-  pollAnswerIds: PollAnswerId[];
-  photoAlbumIds: PhotoAlbumId[];
-  updatedFolders: Folder[];
-  updatedMembers: Member[];
-  updatedFields: CustomField[];
-  updatedFieldValues: CustomFieldDataValue[];
-  updatedPolls: Poll[];
-  updatedPollAnswers: PollAnswer[];
-  updatedPhotoAlbums: PhotoAlbum[];
+  delete: SyncIds | undefined;
+  assign: SyncIds | undefined;
+  update: SyncUpdates | undefined;
+  assignFront: FrontEntryId[];
   front: FrontEntry[];
-  endedFront: FrontEntryId[];
+}
+
+export interface SyncIds {
+  folders: FolderId[];
+  members: MemberId[];
+  fields: CustomFieldId[];
+  fieldValues: CustomFieldDataId[];
+  polls: PollId[];
+  pollAnswers: PollAnswerId[];
+  photoAlbums: PhotoAlbumId[];
+}
+
+export interface SyncUpdates {
+  folders: Folder[];
+  members: Member[];
+  fields: CustomField[];
+  fieldValues: CustomFieldDataValue[];
+  polls: Poll[];
+  pollAnswers: PollAnswer[];
+  photoAlbums: PhotoAlbum[];
+}
+
+export interface FrontSyncRequest {
+  front: FrontEntry[];
+}
+
+export interface FrontSyncResponse {
+  assignFront: FrontEntryId[];
+  front: FrontEntry[];
 }

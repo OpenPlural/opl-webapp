@@ -9,6 +9,11 @@
   "sync": {
     "failed": "Failed to sync with the server",
     "finished": "Successfully synced with the server",
+    "front": {
+      "failed": "Failed to sync front with the server",
+      "finished": "Successfully synced front with the server",
+      "retry": "Front sync incomplete. Retrying…"
+    },
     "trigger": "Sync now"
   },
   "error": {

@@ -6,7 +6,12 @@ import { ExtendedMember, Member, MemberId } from './model/Member';
 import { AccountInfo } from './model/Auth';
 import { firstValueFrom } from 'rxjs';
 import { FrontEntry, FrontEntryId } from './model/Front';
-import { SyncData } from './model/Sync';
+import {
+  FrontSyncRequest,
+  FrontSyncResponse,
+  SyncRequest,
+  SyncResponse,
+} from './model/Sync';
 import { Friend, FriendRequest, FriendSettings } from './model/Friend';
 import { PrivacyBucket, PrivacyBucketId, SimplePrivacyBucket } from './model/Privacy';
 import {
@@ -84,8 +89,12 @@ export class WebService {
     await firstValueFrom(this.http.delete(`${BASE_URL}/api/v1/session/self`));
   }
 
-  async sync(since: Date, absolute: boolean): Promise<SyncData> {
-    return firstValueFrom(this.http.get<SyncData>(`${BASE_URL}/api/v1/sync/?since=${since.toISOString()}&absolute=${absolute}`));
+  async sync(request: SyncRequest): Promise<SyncResponse> {
+    return firstValueFrom(this.http.post<SyncResponse>(`${BASE_URL}/api/v2/sync/`, request));
+  }
+
+  async syncFront(request: FrontSyncRequest): Promise<FrontSyncResponse> {
+    return firstValueFrom(this.http.post<FrontSyncResponse>(`${BASE_URL}/api/v2/sync/front`, request));
   }
 
   async createFolder(folder: Folder): Promise<FolderId> {

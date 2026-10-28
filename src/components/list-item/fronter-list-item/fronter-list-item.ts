@@ -87,7 +87,7 @@ export class FronterListItem implements AfterViewInit, OnDestroy {
       comment,
       updatedAt: truncateCurrentDate(),
     });
-    this.syncService.fullSync();
+    this.syncService.frontSync();
   }
 
   protected async updateFrontTime(event: string) {
@@ -102,7 +102,7 @@ export class FronterListItem implements AfterViewInit, OnDestroy {
       startedAt: timestamp,
       updatedAt: truncateCurrentDate(),
     });
-    this.syncService.fullSync();
+    this.syncService.frontSync();
   }
 
   protected async updateFronter(selection: MemberId[]) {
@@ -114,7 +114,7 @@ export class FronterListItem implements AfterViewInit, OnDestroy {
       member: selection[0],
       updatedAt: truncateCurrentDate(),
     });
-    this.syncService.fullSync();
+    this.syncService.frontSync();
   }
 
   protected readonly openDialog = openDialog;
