@@ -9,6 +9,7 @@ import { SyncService } from '../../../services/SyncService';
 import { IconButton } from '../../../components/icon-button/icon-button';
 import {VERSION} from '../../../environment';
 import {TranslatePipe} from '@ngx-translate/core';
+import { NativeService } from '../../../services/NativeService';
 
 @Component({
   selector: 'app-dashboard',
@@ -19,6 +20,7 @@ import {TranslatePipe} from '@ngx-translate/core';
 export class Dashboard {
   private readonly accountService = inject(AccountService);
   private readonly localStorageService = inject(LocalStorageService);
+  private readonly nativeService = inject(NativeService);
   private readonly syncService = inject(SyncService);
 
   protected readonly username = computed(() => this.accountService.account()?.user.name || null);
@@ -32,6 +34,10 @@ export class Dashboard {
     //if (!this.syncPending() || this.syncRunning()) return;
 
     await this.syncService.fullSync();
+  }
+
+  protected getNativeVersion(): string | null {
+    return this.nativeService.getAppVersion();
   }
 
   protected readonly VERSION = VERSION;

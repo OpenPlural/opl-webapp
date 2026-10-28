@@ -6,6 +6,9 @@
     "update": "Update to {version}",
     "version": "Version {version}"
   },
+  "native": {
+    "version": "Native {version}"
+  },
   "sync": {
     "failed": "Failed to sync with the server",
     "finished": "Successfully synced with the server",
