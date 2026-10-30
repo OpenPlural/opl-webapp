@@ -33,8 +33,9 @@ import { Analytics } from './model/Analytics';
 import { PhotoAlbum, PhotoAlbumId } from './model/Gallery';
 import { UploadResponse } from './model/Cdn';
 import { PkConfig } from './model/PluralKit';
+import { IS_STAGING } from '../environment';
 
-export const BASE_URL: string = isDevMode() ? 'https://localhost:4200' : 'https://opl-api.webbiii.cc';
+export const BASE_URL: string = isDevMode() ? 'https://localhost:4200' : (IS_STAGING ? 'https://opl-staging-api.webbiii.cc' : 'https://opl-api.webbiii.cc');
 
 @Injectable({providedIn: 'root'})
 export class WebService {
