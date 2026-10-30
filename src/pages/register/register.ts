@@ -9,10 +9,11 @@ import { SyncService } from '../../services/SyncService';
 import { LegalFooter } from '../../components/legal-footer/legal-footer';
 import { ErrorService } from '../../services/ErrorService';
 import {LocalStorageService} from '../../services/LocalStorageService';
+import { StagingWarning } from '../../components/staging-warning/staging-warning';
 
 @Component({
   selector: 'app-register',
-  imports: [FormsModule, TranslatePipe, LegalFooter],
+  imports: [FormsModule, TranslatePipe, LegalFooter, StagingWarning],
   templateUrl: './register.html',
 })
 export class Register {
@@ -41,9 +42,11 @@ export class Register {
 
     if (username && password && confirmPassword) {
       if (password !== confirmPassword) {
-        const passwordConfirmationInput = document.getElementById("passwordConfirmation") as HTMLInputElement;
-        passwordConfirmationInput.value = "";
-        passwordConfirmationInput.parentElement!.className += " input-error";
+        const passwordConfirmationInput = document.getElementById(
+          'passwordConfirmation',
+        ) as HTMLInputElement;
+        passwordConfirmationInput.value = '';
+        passwordConfirmationInput.parentElement!.className += ' input-error';
         return;
       }
       this.loading.set(true);

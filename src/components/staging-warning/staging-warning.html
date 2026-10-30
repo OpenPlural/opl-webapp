@@ -1,0 +1,11 @@
+@if (IS_STAGING) {
+  <div class="flex justify-center mb-2">
+    <div class="flex flex-col gap-2 p-2 border rounded-lg border-warning text-warning text-center">
+      {{'app.staging' | translate:{branch: BRANCH} }}
+      <a [href]="WEBSITE_URL" class="btn btn-primary">
+        {{'app.name' | translate}}
+        <i class="fa fa-arrow-right"></i>
+      </a>
+    </div>
+  </div>
+}

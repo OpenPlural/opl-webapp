@@ -4,7 +4,8 @@
     "loading": "Open Plural is loading, please wait…",
     "language": "Choose your language",
     "update": "Update to {version}",
-    "version": "Version {version}"
+    "version": "Version {version}",
+    "staging": "You are using an unstable version of Open Plural ({branch})"
   },
   "sync": {
     "failed": "Failed to sync with the server",

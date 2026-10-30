@@ -8,10 +8,11 @@ import { SyncService } from '../../services/SyncService';
 import {LegalFooter} from '../../components/legal-footer/legal-footer';
 import {ErrorService} from '../../services/ErrorService';
 import {LocalStorageService} from '../../services/LocalStorageService';
+import { StagingWarning } from '../../components/staging-warning/staging-warning';
 
 @Component({
   selector: 'app-login',
-  imports: [FormsModule, TranslatePipe, LegalFooter],
+  imports: [FormsModule, TranslatePipe, LegalFooter, StagingWarning],
   templateUrl: './login.html',
 })
 export class Login {
@@ -43,7 +44,7 @@ export class Login {
       this.loading.set(true);
       try {
         if (username === '__VIRTUAL' && password === '__VIRTUAL') {
-          const virtualSessionToken = prompt("Please enter your virtual session token:");
+          const virtualSessionToken = prompt('Please enter your virtual session token:');
           if (virtualSessionToken) {
             await this.accountService.initVirtualSession(virtualSessionToken);
             this.localStorageService.markDirty();
