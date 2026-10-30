@@ -36,7 +36,7 @@ export class Dashboard {
     await this.syncService.fullSync();
   }
 
-  protected getNativeVersion(): string | null {
+  protected getNativeVersion(): string | undefined {
     return this.nativeService.getAppVersion();
   }
 
