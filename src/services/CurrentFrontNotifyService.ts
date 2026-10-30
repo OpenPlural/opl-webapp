@@ -40,7 +40,7 @@ export class CurrentFrontNotifyService {
     if (!settings.currentFrontNotify) return;
 
     if (this.nativeService.isNativeApp()) {
-      this.nativeService.notifyCurrentFront(title, body, false);
+      this.nativeService.notifyCurrentFront(title, body, settings.currentFrontNotifySticky);
       return;
     }
 
