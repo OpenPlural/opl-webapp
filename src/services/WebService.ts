@@ -34,7 +34,7 @@ import { PhotoAlbum, PhotoAlbumId } from './model/Gallery';
 import { UploadResponse } from './model/Cdn';
 import { PkConfig } from './model/PluralKit';
 
-export const BASE_URL: string = localStorage.getItem('baseUrl') || (isDevMode() ? 'https://localhost:4200' : 'https://opl-api.webbiii.cc');
+export const BASE_URL: string = isDevMode() ? 'https://localhost:4200' : 'https://opl-api.webbiii.cc';
 
 @Injectable({providedIn: 'root'})
 export class WebService {
