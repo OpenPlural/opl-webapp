@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { AfterViewInit, Component, computed, inject, OnDestroy, signal } from '@angular/core';
 import { NavPageContainer } from '../../../components/container/nav-page-container/nav-page-container';
 import { TranslatePipe } from '@ngx-translate/core';
 import { appRoutes } from '../../../app/app.routes';
@@ -6,6 +6,7 @@ import {Settings, SettingsService} from '../../../services/SettingsService';
 import { ToggleSetting } from '../../../components/toggle-setting/toggle-setting';
 import { getLanguages } from '../../../app/app.config';
 import {PushService} from '../../../services/PushService';
+import {NativeService} from '../../../services/NativeService';
 import {AccountService} from '../../../services/AccountService';
 
 @Component({
@@ -13,12 +14,16 @@ import {AccountService} from '../../../services/AccountService';
   imports: [NavPageContainer, TranslatePipe, ToggleSetting],
   templateUrl: './options.html',
 })
-export class Options {
+export class Options implements AfterViewInit, OnDestroy {
   private readonly accountService = inject(AccountService);
+  private readonly nativeService = inject(NativeService);
   private readonly pushService = inject(PushService);
   private readonly settingsService = inject(SettingsService);
 
+  private timerId?: number;
+
   protected readonly selectedTheme = signal<string>('');
+  protected readonly permissionStatus = signal<string>('default');
 
   protected readonly settings = computed(() => this.settingsService.settings());
 
@@ -40,6 +45,21 @@ export class Options {
   constructor() {
     const theme = localStorage.getItem('theme');
     this.selectedTheme.set(theme || 'dim');
+  }
+
+  ngAfterViewInit() {
+    if (this.hasNotificationSupport()) {
+      this.permissionStatus.set(this.checkNotificationPermissions());
+      this.timerId = setInterval(() => {
+        this.permissionStatus.set(this.checkNotificationPermissions());
+      }, 1000);
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.timerId) {
+      clearInterval(this.timerId);
+    }
   }
 
   protected updateDefaultPage(event: Event) {
@@ -65,6 +85,18 @@ export class Options {
 
   protected toggleSetting(name: keyof Settings, state: boolean) {
     this.settingsService.changeBooleanSetting(name, state);
+  }
+
+  protected isNativeApp() {
+    return this.nativeService.isNativeApp();
+  }
+
+  protected hasNotificationSupport() {
+    return this.isNativeApp() || 'Notification' in window;
+  }
+
+  protected checkNotificationPermissions(): string {
+    return this.nativeService.checkNotificationPermissions() || Notification.permission;
   }
 
   protected requestNotificationPermissions() {

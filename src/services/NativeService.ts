@@ -6,7 +6,18 @@ export class NativeService {
     return 'OpenPluralApp' in window;
   }
 
-  getAppVersion(): string | null {
+  subscribeToNotifications() {
+    this.ifNative((native) => native.subscribeToNotifications());
+  }
+
+  checkNotificationPermissions(): string | undefined {
+    return this.ifNative((native) => native.checkNotificationPermissions());
+  }
+
+  notifyCurrentFront(title: string, fronters: string, sticky: boolean) {
+    this.ifNative((native) => native.notifyCurrentFront(title, fronters, sticky));
+  }
+
   getAppVersion(): string | undefined {
     return this.ifNative((native) => native.getAppVersion());
   }

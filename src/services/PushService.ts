@@ -1,14 +1,20 @@
 import {inject, Injectable} from '@angular/core';
 import {SwPush} from '@angular/service-worker';
+import {NativeService} from './NativeService';
 import {WebService} from './WebService';
 import {firstValueFrom} from 'rxjs';
 
 @Injectable({providedIn: 'root'})
 export class PushService {
   private readonly swPush = inject(SwPush);
+  private readonly nativeService = inject(NativeService);
   private readonly webService = inject(WebService);
 
   async requestPermissions() {
+    if (this.nativeService.isNativeApp()) {
+      this.nativeService.subscribeToNotifications(); // This also requestś permissions if needed
+      return;
+    }
     if (!Notification) {
       return;
     }

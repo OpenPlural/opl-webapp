@@ -1,5 +1,6 @@
 import {computed, inject, Injectable} from '@angular/core';
 import {SettingsService} from './SettingsService';
+import {NativeService} from './NativeService';
 import {LocalStorageService} from './LocalStorageService';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {TranslateService} from '@ngx-translate/core';
@@ -8,6 +9,7 @@ import {TranslateService} from '@ngx-translate/core';
 export class CurrentFrontNotifyService {
   private readonly translate = inject(TranslateService);
   private readonly localStorageService = inject(LocalStorageService);
+  private readonly nativeService = inject(NativeService);
   private readonly settingsService = inject(SettingsService);
 
   private readonly currentFront = toSignal<string>(this.translate.getStreamOnTranslationChange('front.labels.current'), {
@@ -36,6 +38,11 @@ export class CurrentFrontNotifyService {
   private async sendNotification(title: string, body: string) {
     const settings = this.settingsService.settings();
     if (!settings.currentFrontNotify) return;
+
+    if (this.nativeService.isNativeApp()) {
+      this.nativeService.notifyCurrentFront(title, body, false);
+      return;
+    }
 
     if (!Notification || Notification.permission !== 'granted') return;
     if (!('serviceWorker' in navigator)) return;
