@@ -45,5 +45,11 @@
     <div class="text-base-content/70 text-center">
       {{'app.version' | translate:{version: VERSION} }}
     </div>
+    @let nativeVersion = getNativeVersion();
+    @if (nativeVersion) {
+      <div class="text-base-content/70 text-center">
+        {{'native.version' | translate:{version: nativeVersion} }}
+      </div>
+    }
   </main>
 </app-nav-page-container>

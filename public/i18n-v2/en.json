@@ -7,6 +7,9 @@
     "version": "Version {version}",
     "staging": "You are using an unstable version of Open Plural ({branch})"
   },
+  "native": {
+    "version": "Native {version}"
+  },
   "sync": {
     "failed": "Failed to sync with the server",
     "finished": "Successfully synced with the server",
@@ -434,6 +437,10 @@
       "currentFrontNotify": {
         "name": "Show a permanent \"Current fronters\" notification",
         "description": "When enabled, you will see a permanent notification with your current fronters"
+      },
+      "currentFrontNotifySticky": {
+        "name": "Make \"Current fronters\" notification sticky",
+        "description": "When enabled, you will not be able to dismiss the notification"
       },
       "showIds": {
         "name": "Show IDs",

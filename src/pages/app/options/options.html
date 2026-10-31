@@ -75,10 +75,11 @@
       <app-toggle-setting name="options.labels.hideRootMembers" [toggled]="settings.hideRootMembers" (toggle)="toggleSetting('hideRootMembers', $event)" />
 
       <div class="divider">{{'options.titles.notification' | translate}}</div>
-      @if (Notification) {
+      @if (hasNotificationSupport()) {
+        @let permissionStatus = this.permissionStatus();
         <button class="btn btn-accent w-full" (click)="requestNotificationPermissions()">
           {{'options.actions.requestNotificationPermissions' | translate}}
-          @switch (Notification.permission) {
+          @switch (permissionStatus) {
             @case ('granted') {
               <div class="badge badge-soft badge-success btn-circle">
                 <i class="fa fa-check"></i>
@@ -91,8 +92,11 @@
             }
           }
         </button>
-        @if (Notification.permission === 'granted') {
+        @if (permissionStatus === 'granted') {
           <app-toggle-setting name="options.labels.currentFrontNotify" [toggled]="settings.currentFrontNotify" (toggle)="toggleSetting('currentFrontNotify', $event)" />
+          @if (isNativeApp()) {
+            <app-toggle-setting name="options.labels.currentFrontNotifySticky" [toggled]="settings.currentFrontNotifySticky" (toggle)="toggleSetting('currentFrontNotifySticky', $event)" />
+          }
         }
       } @else {
         <div class="text-center">
