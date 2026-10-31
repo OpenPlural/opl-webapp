@@ -42,6 +42,7 @@ export class AccountService {
       const accountInfo = await this.webService.initVirtualSession();
       localStorage.setItem('account', toJson(accountInfo));
       localStorage.setItem('virtualSessionToken', token);
+      this._account.set(accountInfo);
     } catch (e) {
       this._virtualSessionToken.set(null);
       throw e;
