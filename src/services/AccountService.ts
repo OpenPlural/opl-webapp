@@ -51,7 +51,9 @@ export class AccountService {
 
   logout() {
     localStorage.removeItem('account');
+    localStorage.removeItem('virtualSessionToken');
     this._account.set(null);
+    this._virtualSessionToken.set(null);
   }
 
   updateAccountFromSync(user: UserInfo, friendCode: string) {
