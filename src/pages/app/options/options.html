@@ -77,26 +77,28 @@
       <div class="divider">{{'options.titles.notification' | translate}}</div>
       @if (hasNotificationSupport()) {
         @let permissionStatus = this.permissionStatus();
-        <button class="btn btn-accent w-full" (click)="requestNotificationPermissions()">
+        @let requestingNotificationPermissions = this.requestingNotificationPermissions();
+        <button class="btn btn-accent w-full" [disabled]="requestingNotificationPermissions" (click)="requestNotificationPermissions()">
           {{'options.actions.requestNotificationPermissions' | translate}}
-          @switch (permissionStatus) {
-            @case ('granted') {
-              <div class="badge badge-soft badge-success btn-circle">
-                <i class="fa fa-check"></i>
-              </div>
-            }
-            @case ('denied') {
-              <div class="badge badge-soft badge-error btn-circle">
-                <i class="fa fa-times"></i>
-              </div>
+          @if (requestingNotificationPermissions) {
+            <span class="loading loading-spinner"></span>
+          } @else {
+            @switch (permissionStatus) {
+              @case ('granted') {
+                <div class="badge badge-soft badge-success btn-circle">
+                  <i class="fa fa-check"></i>
+                </div>
+              }
+              @case ('denied') {
+                <div class="badge badge-soft badge-error btn-circle">
+                  <i class="fa fa-times"></i>
+                </div>
+              }
             }
           }
         </button>
         @if (permissionStatus === 'granted') {
           <app-toggle-setting name="options.labels.currentFrontNotify" [toggled]="settings.currentFrontNotify" (toggle)="toggleSetting('currentFrontNotify', $event)" />
-          @if (isNativeApp()) {
-            <app-toggle-setting name="options.labels.currentFrontNotifySticky" [toggled]="settings.currentFrontNotifySticky" (toggle)="toggleSetting('currentFrontNotifySticky', $event)" />
-          }
         }
       } @else {
         <div class="text-center">

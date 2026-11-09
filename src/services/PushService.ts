@@ -12,9 +12,21 @@ export class PushService {
 
   async requestPermissions() {
     if (this.nativeService.isNativeApp()) {
-      this.nativeService.subscribeToNotifications(); // This also requestś permissions if needed
-      return;
+      await this.requestNativePermissions();
+    } else {
+      await this.requestWebPermissions();
     }
+  }
+
+  private async requestNativePermissions() {
+    await this.nativeService.requestNotificationPermissions();
+    const id = await this.nativeService.subscribeToNotifications();
+    if (id) {
+      await this.webService.subscribeToNotificationsViaFCM(id);
+    }
+  }
+
+  private async requestWebPermissions() {
     if (!Notification) {
       return;
     }
@@ -25,10 +37,10 @@ export class PushService {
         return;
       }
     }
-    this.setupSubscription();
+    await this.setupWebPushSubscription();
   }
 
-  private async setupSubscription() {
+  private async setupWebPushSubscription() {
     try {
       if (!Notification || Notification.permission !== 'granted') {
         return;
@@ -47,7 +59,7 @@ export class PushService {
       const subscription = await this.swPush.requestSubscription({
         serverPublicKey: 'BP7jwMFFZ4qKgmjFZWCtnU89Xig4rjoLv77qc1bdLyOIZFRYiDNnkGuUFqjiWwC3U_yc0BToPl6XEh6EPoRHc1M'
       });
-      await this.webService.subscribeToNotifications(subscription);
+      await this.webService.subscribeToNotificationsViaWebPush(subscription);
     } catch (e) {
       console.error("Can't subscribe to notifications", e);
     }

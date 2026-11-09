@@ -395,8 +395,12 @@ export class WebService {
     await firstValueFrom(this.http.delete(`${BASE_URL}/api/v1/api-key/${id}`));
   }
 
-  async subscribeToNotifications(subscription: PushSubscription) {
-    await firstValueFrom(this.http.post(`${BASE_URL}/api/v1/notification/subscribe`, subscription.toJSON()));
+  async subscribeToNotificationsViaWebPush(subscription: PushSubscription) {
+    await firstValueFrom(this.http.post(`${BASE_URL}/api/v1/notification/web`, subscription.toJSON()));
+  }
+
+  async subscribeToNotificationsViaFCM(id: string) {
+    await firstValueFrom(this.http.post(`${BASE_URL}/api/v1/notification/fcm`, { installationId: id }));
   }
 
   async import(data: any) {
