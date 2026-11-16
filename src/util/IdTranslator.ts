@@ -93,7 +93,7 @@ function resolve<T extends LocalRemoteIdPair>(array: T[], id: bigint, fieldName:
   if (obj) {
     return obj;
   }
-  throw new Error('Resource object not found.');
+  throw new Error('Resource object not found. Tried to find id ' + id + ' by field ' + fieldName + ' in array: ' + JSON.stringify(array));
 }
 
 function getOpposite(target: TargetField): TargetField {
