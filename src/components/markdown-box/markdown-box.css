@@ -28,3 +28,8 @@ div.markdown ::ng-deep .censored:not([data-uncensored="true"]) {
   @apply bg-neutral text-neutral;
   @apply select-none;
 }
+
+div.markdown ::ng-deep table:has(th:not(:empty)) th,
+div.markdown ::ng-deep table:has(th:not(:empty)) td {
+  @apply border p-1.5;
+}
