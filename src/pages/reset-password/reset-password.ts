@@ -5,13 +5,11 @@ import {Router} from '@angular/router';
 import {HttpErrorResponse} from '@angular/common/http';
 import {ErrorService} from '../../services/ErrorService';
 import {WebService} from '../../services/WebService';
+import { StagingWarning } from '../../components/staging-warning/staging-warning';
 
 @Component({
   selector: 'app-reset-password',
-  imports: [
-    FormsModule,
-    TranslatePipe
-  ],
+  imports: [FormsModule, TranslatePipe, StagingWarning],
   templateUrl: './reset-password.html',
 })
 export class ResetPassword {

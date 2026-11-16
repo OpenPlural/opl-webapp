@@ -42,6 +42,7 @@ export class AccountService {
       const accountInfo = await this.webService.initVirtualSession();
       localStorage.setItem('account', toJson(accountInfo));
       localStorage.setItem('virtualSessionToken', token);
+      this._account.set(accountInfo);
     } catch (e) {
       this._virtualSessionToken.set(null);
       throw e;
@@ -50,7 +51,9 @@ export class AccountService {
 
   logout() {
     localStorage.removeItem('account');
+    localStorage.removeItem('virtualSessionToken');
     this._account.set(null);
+    this._virtualSessionToken.set(null);
   }
 
   updateAccountFromSync(user: UserInfo, friendCode: string) {

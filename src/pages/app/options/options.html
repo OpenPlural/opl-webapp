@@ -75,23 +75,29 @@
       <app-toggle-setting name="options.labels.hideRootMembers" [toggled]="settings.hideRootMembers" (toggle)="toggleSetting('hideRootMembers', $event)" />
 
       <div class="divider">{{'options.titles.notification' | translate}}</div>
-      @if (Notification) {
-        <button class="btn btn-accent w-full" (click)="requestNotificationPermissions()">
+      @if (hasNotificationSupport()) {
+        @let permissionStatus = this.permissionStatus();
+        @let requestingNotificationPermissions = this.requestingNotificationPermissions();
+        <button class="btn btn-accent w-full" [disabled]="requestingNotificationPermissions" (click)="requestNotificationPermissions()">
           {{'options.actions.requestNotificationPermissions' | translate}}
-          @switch (Notification.permission) {
-            @case ('granted') {
-              <div class="badge badge-soft badge-success btn-circle">
-                <i class="fa fa-check"></i>
-              </div>
-            }
-            @case ('denied') {
-              <div class="badge badge-soft badge-error btn-circle">
-                <i class="fa fa-times"></i>
-              </div>
+          @if (requestingNotificationPermissions) {
+            <span class="loading loading-spinner"></span>
+          } @else {
+            @switch (permissionStatus) {
+              @case ('granted') {
+                <div class="badge badge-soft badge-success btn-circle">
+                  <i class="fa fa-check"></i>
+                </div>
+              }
+              @case ('denied') {
+                <div class="badge badge-soft badge-error btn-circle">
+                  <i class="fa fa-times"></i>
+                </div>
+              }
             }
           }
         </button>
-        @if (Notification.permission === 'granted') {
+        @if (permissionStatus === 'granted') {
           <app-toggle-setting name="options.labels.currentFrontNotify" [toggled]="settings.currentFrontNotify" (toggle)="toggleSetting('currentFrontNotify', $event)" />
         }
       } @else {

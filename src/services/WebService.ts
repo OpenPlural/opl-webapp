@@ -29,8 +29,9 @@ import { Analytics } from './model/Analytics';
 import { PhotoAlbum } from './model/Gallery';
 import { UploadResponse } from './model/Cdn';
 import { PkConfig } from './model/PluralKit';
+import { IS_STAGING } from '../environment';
 
-export const BASE_URL: string = localStorage.getItem('baseUrl') || (isDevMode() ? 'https://localhost:4200' : 'https://opl-api.webbiii.cc');
+export const BASE_URL: string = isDevMode() ? 'https://localhost:4200' : (IS_STAGING ? 'https://opl-staging-api.webbiii.cc' : 'https://opl-api.webbiii.cc');
 
 @Injectable({providedIn: 'root'})
 export class WebService {
@@ -290,8 +291,12 @@ export class WebService {
     await firstValueFrom(this.http.delete(`${BASE_URL}/api/v1/api-key/${id}`));
   }
 
-  async subscribeToNotifications(subscription: PushSubscription) {
-    await firstValueFrom(this.http.post(`${BASE_URL}/api/v1/notification/subscribe`, subscription.toJSON()));
+  async subscribeToNotificationsViaWebPush(subscription: PushSubscription) {
+    await firstValueFrom(this.http.post(`${BASE_URL}/api/v1/notification/web`, subscription.toJSON()));
+  }
+
+  async subscribeToNotificationsViaFCM(id: string) {
+    await firstValueFrom(this.http.post(`${BASE_URL}/api/v1/notification/fcm`, { installationId: id }));
   }
 
   async import(data: any) {

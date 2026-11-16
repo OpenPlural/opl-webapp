@@ -1,0 +1,19 @@
+<div class="w-full h-full">
+  <img src="/icons/icon-transparent.png" class="mx-auto py-5 md:py-10 w-1/4 sm:w-1/5 md:w-1/6" alt="Open Plural" />
+  <app-staging-warning />
+  <form (submit)="virtualLogin($event)">
+    <div class="px-2 w-full join join-horizontal">
+      <label class="grow input input-lg join-item">
+        <input type="text" name="token" required>
+      </label>
+
+      @let loading = this.loading();
+      <button type="submit" class="btn btn-primary btn-lg join-item" [disabled]="loading">
+        @if (loading) {
+          <span class="loading loading-spinner"></span>
+        }
+        {{'auth.actions.login' | translate}}
+      </button>
+    </div>
+  </form>
+</div>

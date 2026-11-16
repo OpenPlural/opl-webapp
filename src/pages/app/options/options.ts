@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { AfterViewInit, Component, computed, inject, signal } from '@angular/core';
 import { NavPageContainer } from '../../../components/container/nav-page-container/nav-page-container';
 import { TranslatePipe } from '@ngx-translate/core';
 import { appRoutes } from '../../../app/app.routes';
@@ -6,6 +6,7 @@ import {Settings, SettingsService} from '../../../services/SettingsService';
 import { ToggleSetting } from '../../../components/toggle-setting/toggle-setting';
 import { getLanguages } from '../../../app/app.config';
 import {PushService} from '../../../services/PushService';
+import {NativeService} from '../../../services/NativeService';
 import {AccountService} from '../../../services/AccountService';
 
 @Component({
@@ -13,12 +14,15 @@ import {AccountService} from '../../../services/AccountService';
   imports: [NavPageContainer, TranslatePipe, ToggleSetting],
   templateUrl: './options.html',
 })
-export class Options {
+export class Options implements AfterViewInit {
   private readonly accountService = inject(AccountService);
+  private readonly nativeService = inject(NativeService);
   private readonly pushService = inject(PushService);
   private readonly settingsService = inject(SettingsService);
 
   protected readonly selectedTheme = signal<string>('');
+  protected readonly permissionStatus = signal<string>('default');
+  protected readonly requestingNotificationPermissions = signal<boolean>(false);
 
   protected readonly settings = computed(() => this.settingsService.settings());
 
@@ -40,6 +44,12 @@ export class Options {
   constructor() {
     const theme = localStorage.getItem('theme');
     this.selectedTheme.set(theme || 'dim');
+  }
+
+  ngAfterViewInit() {
+    if (this.hasNotificationSupport()) {
+      this.permissionStatus.set(this.checkNotificationPermissions());
+    }
   }
 
   protected updateDefaultPage(event: Event) {
@@ -67,8 +77,31 @@ export class Options {
     this.settingsService.changeBooleanSetting(name, state);
   }
 
-  protected requestNotificationPermissions() {
-    this.pushService.requestPermissions();
+  protected isNativeApp() {
+    return this.nativeService.isNativeApp();
+  }
+
+  protected hasNotificationSupport() {
+    return this.isNativeApp() || 'Notification' in window;
+  }
+
+  protected checkNotificationPermissions(): string {
+    if (this.isNativeApp()) {
+      return this.nativeService.checkNotificationPermissions()!;
+    } else if ('Notification' in window) {
+      return Notification.permission;
+    }
+    return 'default';
+  }
+
+  protected async requestNotificationPermissions() {
+    this.requestingNotificationPermissions.set(true);
+    try {
+      await this.pushService.requestPermissions();
+    } finally {
+      this.requestingNotificationPermissions.set(false);
+      this.permissionStatus.set(this.checkNotificationPermissions());
+    }
   }
 
   protected getThemeName(theme: string): string {
@@ -76,7 +109,6 @@ export class Options {
   }
 
   protected readonly getLanguages = getLanguages;
-  protected readonly Notification = Notification;
   protected readonly THEMES = THEMES;
 }
 

@@ -33,6 +33,7 @@ import { PollEdit } from '../pages/app/poll-edit/poll-edit';
 import { Poll } from '../pages/app/poll/poll';
 import { Analytics } from '../pages/app/analytics/analytics';
 import { Pluralkit } from '../pages/app/pluralkit/pluralkit';
+import { VirtualLogin } from '../pages/virtual-login/virtual-login';
 
 export const appRoutes: Routes = [
   {
@@ -178,6 +179,10 @@ export const routes: Routes = [
       }, {
         path: 'reset-password',
         component: ResetPassword
+      },
+      {
+        path: 'virtual',
+        component: VirtualLogin
       }
     ]
   }
